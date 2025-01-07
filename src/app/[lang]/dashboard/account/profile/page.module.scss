@@ -1,0 +1,80 @@
+// UpdateProfilePage.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$page-theme-map: (
+  dark: (
+    background: transparent,
+    text-primary: $text-primary,
+    text-secondary: $text-secondary,
+  ),
+  light: (
+    background: $white-light,
+    text-primary: $black-base,
+    text-secondary: $text-secondary,
+  ),
+  custom: (
+    background: var(--page-background),
+    text-primary: var(--page-text-primary),
+    text-secondary: var(--page-text-secondary),
+  ),
+);
+
+.profile-page {
+  width: 100%;
+  min-height: 100vh;
+  margin-top: $spacing-md; //   padding: $spacing-md $spacing-xxl;
+
+  @include mobile {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  // Theme variations
+  @each $theme, $values in $page-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+    }
+  }
+
+  &__container {
+    // @include container;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  &__title {
+    margin-bottom: $spacing-md;
+  }
+
+  &__description {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__form-container {
+    @include elevation(1);
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+  }
+
+  &__select {
+    width: 100%;
+    height: 48px;
+    padding: 0 $spacing-md;
+    border: 1px solid convert-to-rgba($text-primary, 0.2);
+    border-radius: $border-radius-md;
+    background-color: transparent;
+    color: inherit;
+    font-size: 0.938rem;
+    @include transition(all);
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+
+    option {
+      background-color: $black-light;
+      color: $text-primary;
+    }
+  }
+}
