@@ -209,7 +209,7 @@
     "options": {
       "viewProfile": {
         "label": "Ver Perfil",
-        "href": "/dashboard/profile"
+        "href": "/dashboard/account/profile"
       },
       "divider1": "divider",
       "signOut": {
