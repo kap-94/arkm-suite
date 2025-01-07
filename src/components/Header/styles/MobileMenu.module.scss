@@ -1,0 +1,110 @@
+// styles/MobileMenu.module.scss
+@import "../styles/variables";
+@import "../styles/mixins";
+.mobile {
+  position: fixed;
+  inset: 0;
+  background: $black-overlay;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: $z-index-modal;
+  display: flex;
+
+  &--left {
+    .mobile__content {
+      margin-right: auto;
+    }
+  }
+
+  &--right {
+    .mobile__content {
+      margin-left: auto;
+    }
+  }
+
+  &--center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__content {
+    padding: $spacing-xl;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba($header-background, 0.95);
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    top: $spacing-xl;
+    right: $spacing-xl;
+    background: none;
+    border: none;
+    color: $text-primary;
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: $border-radius-sm;
+    transition: all $transition-duration-fast ease;
+
+    &:hover {
+      background: rgba($text-primary, 0.1);
+    }
+  }
+
+  &__links {
+    margin-top: calc($header-height + $spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  &__link {
+    font-size: 24px;
+    color: $text-primary;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color $transition-duration-fast ease;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    &:hover {
+      color: $primary-light;
+    }
+
+    &-icon {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__actions {
+    margin-top: $spacing-xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__action {
+    &-wrapper {
+      width: 100%;
+    }
+
+    &-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  &__language {
+    margin-top: auto;
+    padding-top: $spacing-xl;
+    display: flex;
+    justify-content: center;
+  }
+}

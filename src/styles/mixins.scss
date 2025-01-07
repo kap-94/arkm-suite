@@ -1,0 +1,245 @@
+// src/styles/_mixins.scss
+
+// Breakpoint mixins
+@mixin mobile-small {
+  @media only screen and (max-width: $mobile-small-breakpoint) {
+    @content;
+  }
+}
+
+@mixin mobile-medium {
+  @media only screen and (max-width: $mobile-medium-breakpoint) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media only screen and (max-width: $mobile-breakpoint) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: $tablet-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (max-width: $desktop-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop-medium {
+  @media only screen and (max-width: $desktop-medium-breakpoint) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media only screen and (max-width: $desktop-large-breakpoint) {
+    @content;
+  }
+}
+
+// Flex mixins
+@mixin flex($direction: row, $justify: flex-start, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Grid mixins
+@mixin grid($columns: 1, $gap: $spacing-md) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Typography mixins
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// Color utilities
+@function convert-to-rgba($color, $alpha) {
+  @if (
+    type-of($color) ==
+      "color" and
+      type-of($alpha) ==
+      "number" and
+      $alpha >=
+      0 and
+      $alpha <=
+      1
+  ) {
+    @return rgba(red($color), green($color), blue($color), $alpha);
+  }
+  @warn "Invalid arguments for `convert-to-rgba`";
+  @return null;
+}
+
+// Layout mixins
+@mixin container {
+  width: 100%;
+  max-width: $content-max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+
+  @include mobile {
+    padding: 0 $spacing-sm;
+  }
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// Interactive states mixins
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    @content;
+  }
+}
+
+// Animation mixins
+@mixin transition($properties...) {
+  $transitions: ();
+
+  @each $property in $properties {
+    $transitions: append(
+      $transitions,
+      $property $transition-duration-fast $transition-bezier,
+      comma
+    );
+  }
+
+  transition: $transitions;
+}
+
+@mixin fade-in($duration: $transition-duration-fast) {
+  animation: fadeIn $duration $transition-bezier;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+// Gradient mixins
+@mixin gradient-border {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, $primary-color, transparent) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    transition: background 0.6s $transition-bezier;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+// Glass effect mixin
+@mixin glass-effect($color: $black-base, $background-alpha: 0.7, $blur: 8px) {
+  background: rgba($color, $background-alpha);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+}
+
+// Custom scrollbar mixin
+@mixin custom-scrollbar(
+  $width: 6px,
+  $track-color: transparent,
+  $thumb-color: rgba($text-primary, 0.2)
+) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $border-radius-full;
+
+    &:hover {
+      background: rgba($text-primary, 0.3);
+    }
+  }
+}
+
+// Shadow mixins
+@mixin elevation($level: 1) {
+  @if $level == 1 {
+    box-shadow: $shadow-sm;
+  } @else if $level == 2 {
+    box-shadow: $shadow-md;
+  } @else if $level == 3 {
+    box-shadow: $shadow-lg;
+  }
+}
+
+// Motion mixins
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Range mixin
+@mixin viewport-between($min, $max) {
+  @media only screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}

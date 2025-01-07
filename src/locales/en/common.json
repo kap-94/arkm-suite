@@ -1,0 +1,244 @@
+{
+  "navigation": {
+    "main": {
+      "dashboard": {
+        "title": "Dashboard",
+        "path": "/dashboard"
+      },
+      "projects": {
+        "title": "Projects",
+        "path": "/dashboard/projects",
+        "children": {
+          "webDesign": {
+            "title": "Overall Progress",
+            "path": "/dashboard/projects/web-design"
+          },
+          "webDevelopment": {
+            "title": "Web Development",
+            "path": "/dashboard/projects/web-development"
+          },
+          "uxResearch": {
+            "title": "Web Analytics",
+            "path": "/dashboard/projects/ux-research"
+          },
+          "contentStrategy": {
+            "title": "Content Strategy",
+            "path": "/dashboard/projects/content-strategy"
+          }
+        }
+      },
+      "documents": {
+        "title": "Documents",
+        "path": "/dashboard/documents"
+      }
+    },
+    "bottom": {
+      "settings": {
+        "title": "Settings",
+        "path": "/dashboard/settings"
+      }
+    }
+  },
+  "hero": {
+    "headline": {
+      "create": "Create",
+      "scale": "Scale",
+      "transform": "Transform"
+    },
+    "agency": {
+      "subtitle": "Web Design & Development",
+      "description": "Transforming visions into exceptional digital experiences",
+      "cta": "Start Your Project"
+    },
+    "scroll": "Scroll to Explore"
+  },
+  "solutions": {
+    "title": "Our Solutions",
+    "web": {
+      "title": "Web Development",
+      "description": "Custom websites and applications"
+    },
+    "automation": {
+      "title": "AI Integration",
+      "description": "Business AI process optimization"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Submit"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions"
+  },
+  "auth": {
+    "signin": {
+      "title": "Sign In",
+      "clientAccess": "Client Access",
+      "enterDashboard": "Enter your personalized dashboard",
+      "adminNote": "* Access provided by the administrator",
+      "clientSuite": {
+        "title": "Client Suite",
+        "subtitle": "Exclusive portal for our valued clients"
+      },
+      "features": {
+        "projectControl": {
+          "title": "Project Control",
+          "description": "Full visibility of your project's status and deliverables"
+        },
+        "assetManagement": {
+          "title": "Asset Management",
+          "description": "Access all project files in one place"
+        },
+        "analytics": {
+          "title": "Analytics",
+          "description": "Detailed insights into your project's performance"
+        }
+      },
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter your email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password"
+        },
+        "errors": {
+          "invalidEmail": "Please enter a valid email",
+          "emailRequired": "Email is required",
+          "passwordMin": "Password must be at least 8 characters",
+          "passwordUppercase": "Password must contain at least one uppercase letter",
+          "passwordLowercase": "Password must contain at least one lowercase letter",
+          "passwordNumber": "Password must contain at least one number",
+          "passwordSpecial": "Password must contain at least one special character",
+          "passwordRequired": "Password is required",
+          "invalidCredentials": "Invalid email or password",
+          "unexpected": "An unexpected error occurred"
+        },
+        "buttons": {
+          "access": "Access",
+          "or": "or",
+          "google": "Continue with Google",
+          "resetPassword": "Forgot your password?"
+        }
+      }
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "instructions": "Enter your email and we'll send you instructions to reset your password.",
+      "securityNote": "* For security reasons, reset links expire after 24 hours",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter your email"
+        },
+        "token": {
+          "label": "Reset Token",
+          "placeholder": "Enter the token from your email"
+        },
+        "newPassword": {
+          "label": "New Password",
+          "placeholder": "Enter your new password"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "Confirm your new password"
+        },
+        "errors": {
+          "invalidEmail": "Please enter a valid email",
+          "emailRequired": "Email is required",
+          "tokenRequired": "Reset token is required",
+          "passwordMin": "Password must be at least 8 characters",
+          "passwordUppercase": "Password must contain at least one uppercase letter",
+          "passwordLowercase": "Password must contain at least one lowercase letter",
+          "passwordNumber": "Password must contain at least one number",
+          "passwordSpecial": "Password must contain at least one special character",
+          "passwordRequired": "Password is required",
+          "confirmRequired": "Password confirmation is required",
+          "passwordMatch": "Passwords must match",
+          "unexpected": "An unexpected error occurred"
+        },
+        "success": "Your password has been successfully reset",
+        "buttons": {
+          "reset": "Reset Password",
+          "backToLogin": "Back to Login"
+        }
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your application preferences",
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the look and feel of your application",
+      "options": {
+        "lightMode": "Light",
+        "darkMode": "Dark"
+      }
+    },
+    "language": {
+      "title": "Language Settings",
+      "description": "Choose your preferred language",
+      "options": {
+        "spanish": "ES",
+        "english": "EN"
+      }
+    }
+  },
+  "search": {
+    "placeholder": "Search projects, tasks, files...",
+    "label": "Search",
+    "button": "Search",
+    "loading": "Loading...",
+    "types": {
+      "project": "Projects",
+      "task": "Tasks",
+      "file": "Files"
+    },
+    "noResults": "No results found"
+  },
+  "userInfo": {
+    "options": {
+      "viewProfile": {
+        "label": "View Profile",
+        "href": "/dashboard/profile"
+      },
+      "divider1": "divider",
+      "signOut": {
+        "label": "Sign Out"
+      }
+  },
+    "roles": {
+      "admin": "Administrator",
+      "user": "User",
+      "manager": "Manager",
+      "developer": "Developer",
+      "designer": "Designer",
+      "productOwner": "Product Owner"
+    },
+    "accessibility": {
+      "userMenu": "User menu",
+      "userAvatar": "User avatar",
+      "userSettings": "User settings"
+    },
+    "status": {
+      "online": "Online",
+      "offline": "Offline",
+      "away": "Away",
+      "busy": "Busy"
+    }
+  },    
+  "common": {
+    "loading": "Loading...",
+    "error": "An error has occurred",
+    "try_again": "Try again"
+  }
+}

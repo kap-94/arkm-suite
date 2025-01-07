@@ -1,0 +1,396 @@
+// src/components/ProjectForm/ProjectForm.module.scss
+@import "@/styles/variables";
+
+.project-form {
+  &__wrapper {
+    width: 100%;
+    max-width: 600px;
+    min-width: 420px;
+    margin: 0 auto;
+  }
+
+  &__progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $spacing-xl;
+    padding: 0 $spacing-md;
+    gap: $spacing-sm;
+  }
+
+  &__progress-step {
+    flex: 1;
+    height: 4px;
+    background: rgba($text-primary, 0.1);
+    border-radius: $border-radius-sm;
+    transition: all $transition-duration-fast $transition-bezier;
+    position: relative;
+
+    &--active {
+      background: $primary-color;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $spacing-sm;
+        height: $spacing-sm;
+        background: $primary-color;
+        border-radius: $border-radius-full;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &--completed {
+      background: $primary-light;
+      opacity: 0.7;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: bold;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+    letter-spacing: -0.02em;
+  }
+
+  &__subtitle {
+    color: $text-secondary;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__group {
+    margin-bottom: $spacing-lg;
+    transition: all $transition-duration-fast $transition-bezier;
+
+    &--enter {
+      opacity: 0;
+      transform: translateY($spacing-md);
+    }
+
+    &--enter-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &--exit {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &--exit-active {
+      opacity: 0;
+      transform: translateY(-$spacing-md);
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-weight: 500;
+    color: $text-primary;
+  }
+
+  &__input,
+  &__select {
+    width: 100%;
+    padding: $spacing-md;
+    border: 1px solid rgba($text-primary, 0.2);
+    border-radius: $border-radius-md;
+    background: transparent;
+    color: $text-primary;
+    transition: all $transition-duration-fast $transition-bezier;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+
+    &::placeholder {
+      color: $text-secondary;
+    }
+
+    &--error {
+      border-color: #ef4444;
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(#ef4444, 0.2);
+      }
+    }
+
+    &--success {
+      border-color: #22c55e;
+
+      &:focus {
+        box-shadow: 0 0 0 2px rgba(#22c55e, 0.2);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing-md center;
+    background-size: $spacing-lg $spacing-lg;
+    padding-right: $spacing-xl;
+  }
+
+  &__error-message {
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: $spacing-xs;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    &::before {
+      content: "!";
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: #ef4444;
+      color: $text-primary;
+      border-radius: $border-radius-full;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: $spacing-md;
+    margin-top: $spacing-xl;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -$spacing-md;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba($text-primary, 0.1),
+        transparent
+      );
+    }
+  }
+
+  &__button {
+    padding: $spacing-md $spacing-xl;
+    border-radius: $border-radius-md;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all $transition-duration-fast $transition-bezier;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    font-size: 16px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: rgba($text-primary, 0.2);
+      border-radius: inherit;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.3s $transition-bezier;
+      pointer-events: none;
+    }
+
+    &:active::after {
+      transform: translate(-50%, -50%) scale(1);
+      transition-duration: 0.1s;
+    }
+
+    &--primary {
+      background: $primary-color;
+      color: $text-primary;
+
+      &:hover {
+        background: $primary-dark;
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    &--secondary {
+      background: rgba($text-primary, 0.1);
+      color: $text-primary;
+
+      &:hover {
+        background: rgba($text-primary, 0.15);
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__summary {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+  }
+
+  &__summary-section {
+    background: rgba($text-primary, 0.05);
+    padding: $spacing-lg;
+    border-radius: $border-radius-md;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: $primary-color;
+      border-radius: $border-radius-sm;
+    }
+
+    &:hover {
+      background: rgba($text-primary, 0.08);
+    }
+  }
+
+  &__summary-title {
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+    font-weight: 500;
+  }
+
+  &__summary-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: $spacing-sm $spacing-lg;
+    margin: 0;
+  }
+
+  &__summary-term {
+    color: $text-secondary;
+    font-weight: normal;
+  }
+
+  &__summary-description {
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__calendar {
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid rgba($text-primary, 0.1);
+  }
+
+  &__calendar-title {
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+    font-weight: 500;
+  }
+
+  &__calendar-text {
+    color: $text-secondary;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__calendar-container {
+    border: 2px dashed rgba($text-primary, 0.2);
+    border-radius: $border-radius-md;
+    padding: $spacing-lg;
+    text-align: center;
+    color: $text-secondary;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      content: "Calendar integration coming soon";
+    }
+  }
+
+  @media (max-width: $mobile-breakpoint) {
+    &__buttons {
+      flex-direction: column-reverse;
+    }
+
+    &__button {
+      width: 100%;
+      padding: $spacing-lg;
+
+      &--secondary {
+        order: 1;
+      }
+
+      &--primary {
+        order: 2;
+      }
+    }
+
+    &__summary {
+      gap: $spacing-lg;
+    }
+
+    &__summary-list {
+      grid-template-columns: 1fr;
+      gap: $spacing-xs;
+    }
+
+    &__summary-term {
+      color: $text-primary;
+      font-weight: 500;
+      margin-top: $spacing-sm;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    &__calendar-container {
+      min-height: 150px;
+    }
+  }
+}
+
+// Animaciones
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY($spacing-lg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn $transition-duration $transition-bezier;
+}

@@ -1,0 +1,108 @@
+@import "./variables";
+@import "./mixins";
+
+.header {
+  $self: &;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $header-z-index;
+  height: var(--header-height, #{$header-height});
+  padding: var(--header-padding-desktop, #{$header-padding});
+  transition: all $transition-duration $transition-bezier;
+
+  // Variants
+  &--solid {
+    background: $header-background;
+  }
+
+  &--transparent {
+    background: transparent;
+
+    &#{$self}--scrolled {
+      background: rgba($header-background, 0.8);
+    }
+  }
+
+  &--glass {
+    background: rgba($header-background, 0.6);
+  }
+
+  &--blur {
+    // backdrop-filter: blur(10px);
+    // -webkit-backdrop-filter: blur(10px);
+  }
+
+  &__content {
+    width: 100%;
+    max-width: $content-max-width;
+    margin: 0 auto;
+    height: 100%;
+  }
+
+  &__nav {
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    &-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: $spacing-md;
+    }
+  }
+
+  &__menu-trigger {
+    position: relative;
+    z-index: calc($z-index-modal + 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__divider {
+    position: relative;
+    margin: 0 $spacing-lg;
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba($primary-color, 0.25) 15%,
+      rgba($primary-color, 0.25) 85%,
+      transparent
+    );
+
+    &--mobile {
+      @media (min-width: $mobile-breakpoint) {
+        display: none;
+      }
+    }
+  }
+
+  &__portal-button {
+    margin-right: 40px;
+
+    span {
+      font-weight: 700;
+    }
+  }
+
+  &__actions-group {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    @media (max-width: $mobile-breakpoint) {
+      .header__portal-button,
+      .header__divider,
+      .header__language-selector {
+        // Adjust class name based on your LanguageSelector component
+        display: none;
+      }
+    }
+  }
+}

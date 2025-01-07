@@ -1,0 +1,66 @@
+// src/app/settings/page.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+.settings {
+  &__content {
+    @include flex(column, flex-start, left);
+    gap: $spacing-xl;
+    max-width: 600px;
+  }
+
+  &__section {
+    @include flex(column, flex-start, left);
+    gap: $spacing-sm;
+    padding: 0 $spacing-sm $spacing-sm;
+
+    &-header {
+      @include flex(column, flex-start, left);
+      gap: $spacing-xs;
+    }
+
+    &-content {
+      flex: 1;
+      padding: $spacing-md 0;
+      max-width: 240px;
+    }
+  }
+
+  &__skeleton {
+    &-title {
+      height: $spacing-lg; // 24px
+      width: 128px;
+      border-radius: $border-radius-sm;
+      background-color: $text-tertiary;
+    }
+
+    &-description {
+      height: $spacing-md; // 16px
+      width: 256px;
+      margin-top: $spacing-sm;
+      border-radius: $border-radius-sm;
+      background-color: $text-tertiary-30;
+    }
+
+    &-toggle {
+      height: 40px;
+      width: 192px;
+      border-radius: $border-radius-sm;
+      background-color: $text-tertiary;
+    }
+
+    &-animation {
+      animation: pulse $transition-duration-fast $transition-bezier infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

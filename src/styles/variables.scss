@@ -1,0 +1,115 @@
+// styles/variables.scss
+
+// Brand Colors
+$primary-color: #6366f1;
+$primary-color-90: rgba($primary-color, 0.9);
+$primary-color-80: rgba($primary-color, 0.8);
+
+$primary-light: #818cf8;
+
+$primary-dark: #4f46e5;
+$primary-dark-90: rgba($primary-dark, 0.9);
+$primary-dark-80: rgba($primary-dark, 0.8);
+
+$indigo-light: #9698fd;
+
+// White Colors
+$white-base: rgb(241, 228, 228);
+$white-light: #f7f7f7; // Suave para fondos
+$white-dark: #e0e0e0; // Oscuro para bordes o fondos sutiles
+
+// Black Colors
+$black-base: #000000;
+$black-light: #2a2a2a; // Suave para fondos o textos secundarios
+$black-dark: #121212; // intenso para secciones con alta contrastabilidad
+
+// Success Colors
+$success-color: #22c55e;
+$success-light: #4ade80;
+$success-dark: #16a34a;
+$success-bg: rgba(34, 197, 94, 0.05);
+
+// Error Colors
+$error-color: #ef4444;
+$error-light: #f87171;
+$error-dark: #dc2626;
+$error-bg: rgba(239, 68, 68, 0.05);
+
+// Text Colors System
+// Base
+$text-base: rgb(241, 228, 228);
+
+// Primary Text
+$text-primary: $text-base;
+$text-primary-90: rgba($text-primary, 0.9);
+$text-primary-80: rgba($text-primary, 0.8);
+
+// Secondary Text
+$text-secondary: rgba($text-primary, 0.7);
+$text-secondary-60: rgba($text-primary, 0.6);
+$text-secondary-50: rgba($text-primary, 0.5);
+
+// Tertiary Text
+$text-tertiary: rgba($text-primary, 0.4);
+$text-tertiary-30: rgba($text-primary, 0.3);
+$text-tertiary-20: rgba($text-primary, 0.2);
+
+// Interactive Text
+$text-link: $primary-color;
+$text-link-hover: $primary-light;
+$text-link-visited: $indigo-light;
+$text-disabled: rgba($text-primary, 0.4);
+
+// Feedback Text
+$text-success: $success-color;
+$text-error: $error-color;
+$text-warning: #fbbf24;
+$text-info: #60a5fa;
+
+// Overlay Colors
+$black-overlay: rgba(0, 0, 0, 0.95);
+
+// Layout
+$content-max-width: 1920px;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 40px;
+
+// Breakpoints
+$mobile-small-breakpoint: 480px; // Móviles pequeños
+$mobile-medium-breakpoint: 640px; // Móviles medianos
+$mobile-breakpoint: 768px; // Tablets/Móviles grandes (existente)
+$tablet-breakpoint: 1024px; // Laptops/Tablets horizontales (existente)
+$desktop-breakpoint: 1280px; // Desktop estándar (existente)
+$desktop-medium-breakpoint: 1160px; // Desktop medio (para grids)
+$desktop-large-breakpoint: 1200px; // Desktop grande
+$desktop-max-breakpoint: 1920px; // Máximo ancho de contenedor
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-full: 9999px;
+
+// Animations
+$transition-bezier: cubic-bezier(0.16, 1, 0.3, 1);
+$transition-duration: 0.5s;
+$transition-duration-fast: 0.3s;
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// Z-indices
+$z-index-header: 100;
+$z-index-modal: 200;
+$z-index-dropdown: 300;
+$z-index-tooltip: 400;

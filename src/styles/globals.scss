@@ -1,0 +1,25 @@
+@import "@/styles/variables.scss";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+// html {
+//   scroll-behavior: smooth;
+// }
+
+body {
+  box-sizing: border-box;
+}
+
+:root {
+  // background-color: #0a0a0a;
+}
+
+.no-transition * {
+  transition: none !important;
+}
