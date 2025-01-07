@@ -1,0 +1,238 @@
+// UpdateProfile.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$profile-theme-map: (
+  dark: (
+    background: linear-gradient(180deg, #000000, #0a0a0a),
+    input-background: convert-to-rgba($black-light, 0.2),
+    text: $text-primary,
+    label: $text-secondary-60,
+    button-background: $primary-color,
+    button-text: $text-primary,
+    border-color: convert-to-rgba($text-primary, 0.12),
+    error: $error-color,
+    hover-background: $primary-dark,
+    focus-border: $primary-color,
+    disabled-background: convert-to-rgba($black-base, 0.15),
+    disabled-text: $text-disabled,
+    shadow: 0 4px 24px -8px rgba($black-base, 0.3),
+    hover-shadow: 0 8px 32px -12px rgba($black-base, 0.4),
+  ),
+  light: (
+    background:
+      linear-gradient(180deg, $white-light 0%, rgba($white-base, 0.98) 100%),
+    input-background: convert-to-rgba($white-base, 0.5),
+    text: $black-base,
+    label: $text-secondary-60,
+    button-background: $primary-color,
+    button-text: $text-primary,
+    border-color: convert-to-rgba($black-base, 0.12),
+    error: $error-color,
+    hover-background: $primary-dark,
+    focus-border: $primary-color,
+    disabled-background: convert-to-rgba($white-dark, 0.5),
+    disabled-text: rgba($black-base, 0.4),
+    shadow: 0 4px 24px -8px rgba($black-base, 0.1),
+    hover-shadow: 0 8px 32px -12px rgba($black-base, 0.15),
+  ),
+  custom: (
+    background: var(--profile-form-background),
+    input-background: var(--profile-form-input-background),
+    text: var(--profile-form-text),
+    label: var(--profile-form-label),
+    button-background: var(--profile-form-button-background),
+    button-text: var(--profile-form-button-text),
+    border-color: var(--profile-form-border-color),
+    error: var(--profile-form-error),
+    hover-background: var(--profile-form-hover-background),
+    focus-border: var(--profile-form-focus-border),
+    disabled-background: var(--profile-form-disabled-background),
+    disabled-text: var(--profile-form-disabled-text),
+    shadow: var(--profile-form-shadow),
+    hover-shadow: var(--profile-form-hover-shadow),
+  ),
+);
+
+.profile-form {
+  width: 100%;
+  // padding: $spacing-xl $spacing-xxl;
+  border-radius: $border-radius-lg;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  @include transition(all);
+
+  // Theme variations
+  @each $theme, $values in $profile-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+      box-shadow: map-get($values, shadow);
+
+      &:hover {
+        box-shadow: map-get($values, hover-shadow);
+      }
+
+      .profile-form__field {
+        &-label {
+          color: map-get($values, label);
+        }
+
+        &-input {
+          background-color: map-get($values, input-background);
+          color: map-get($values, text);
+          border-color: map-get($values, border-color);
+
+          &--error {
+            border-color: map-get($values, error);
+            background-color: convert-to-rgba(map-get($values, error), 0.05);
+          }
+
+          &:disabled {
+            background-color: map-get($values, disabled-background);
+            color: map-get($values, disabled-text);
+            border-color: transparent;
+          }
+
+          &:focus {
+            border-color: map-get($values, focus-border);
+            box-shadow: 0
+              0
+              0
+              3px
+              convert-to-rgba(map-get($values, focus-border), 0.15);
+          }
+
+          @include hover {
+            &:not(:disabled):not(:focus) {
+              border-color: convert-to-rgba(map-get($values, text), 0.2);
+            }
+          }
+        }
+      }
+
+      .profile-form__error {
+        color: map-get($values, error);
+      }
+
+      .profile-form__submit {
+        background-color: map-get($values, button-background);
+        color: map-get($values, button-text);
+
+        @include hover {
+          @if $theme != "custom" {
+            background-color: map-get($values, hover-background);
+          }
+        }
+
+        &:disabled {
+          background-color: convert-to-rgba(
+            map-get($values, button-background),
+            0.5
+          );
+          color: convert-to-rgba(map-get($values, button-text), 0.7);
+        }
+      }
+    }
+  }
+
+  &__field {
+    @include flex($direction: column, $align: flex-start, $gap: $spacing-xs);
+    margin-bottom: $spacing-lg;
+    position: relative;
+
+    &-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    &-input {
+      width: 100%;
+      height: 52px;
+      padding: 0 $spacing-md;
+      border: 1px solid transparent;
+      border-radius: $border-radius-md;
+      font-size: 0.938rem;
+      @include transition(all);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      &::placeholder {
+        color: $text-tertiary;
+      }
+
+      &--with-flag {
+        padding-right: 48px;
+      }
+    }
+
+    &--with-flag {
+      position: relative;
+
+      &-container {
+        position: relative;
+        width: 100%;
+      }
+
+      &-image {
+        position: absolute;
+        right: $spacing-md;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 16px;
+        width: auto;
+        border-radius: $border-radius-sm;
+        box-shadow: 0 2px 4px rgba($black-base, 0.1);
+        @include transition(transform);
+
+        @include hover {
+          transform: translateY(-50%) scale(1.05);
+        }
+      }
+    }
+  }
+
+  &__error {
+    font-size: 0.813rem;
+    margin-top: $spacing-xs;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+
+    &::before {
+      content: "⚠️";
+      font-size: 0.75rem;
+    }
+  }
+
+  &__actions {
+    @include flex($justify: flex-start, $gap: $spacing-md);
+    margin-top: $spacing-xl;
+    padding-top: $spacing-lg;
+    border-top: 1px solid;
+    border-color: inherit;
+  }
+
+  &__submit {
+    width: 100%;
+    @include transition(all);
+  }
+
+  @include mobile {
+    // padding: $spacing-lg;
+
+    &__field {
+      margin-bottom: $spacing-md;
+
+      &-input {
+        height: 48px;
+        font-size: 0.875rem;
+      }
+    }
+
+    &__actions {
+      margin-top: $spacing-lg;
+      padding-top: $spacing-md;
+    }
+  }
+}
