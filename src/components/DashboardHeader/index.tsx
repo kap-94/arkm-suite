@@ -118,7 +118,7 @@ const getSearchOptions = (
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   className,
-  theme = { type: "dark" },
+  theme = { type: "light" },
   search,
   userInfo,
   onSignOut,
@@ -180,20 +180,22 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           </div>
 
           <SearchBar
+            buttonText={search.button}
+            closeOnScroll
+            label={search.label}
+            onOptionSelect={handleOptionSelect}
+            onSearch={handleSearch}
             options={searchOptions}
-            theme={theme}
             placeholder={search.placeholder}
             showButton={true}
-            buttonText={search.button}
             showLabel={false}
-            label={search.label}
-            onSearch={handleSearch}
-            onOptionSelect={handleOptionSelect}
+            theme={theme}
           />
         </div>
 
         <div className={cx("dashboard-header__actions")}>
           <UserInfo
+            closeOnScroll
             userName="Marc Vega"
             userRole={userInfo.roles.productOwner}
             options={dropdownOptions}

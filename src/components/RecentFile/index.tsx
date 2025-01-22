@@ -7,9 +7,11 @@ import {
   PenTool,
   File,
 } from "lucide-react";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import styles from "./RecentFile.module.scss";
 import type { RecentFileProps, FileType } from "./types";
 import { formatDistanceToNow } from "date-fns";
+import { defaultTheme } from "./types";
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +23,12 @@ const FileIcons: Record<FileType, React.ElementType> = {
   Other: File,
 };
 
-export const RecentFile: React.FC<RecentFileProps> = ({ file, onClick }) => {
+export const RecentFile: React.FC<RecentFileProps> = ({
+  file,
+  onClick,
+  theme = defaultTheme,
+  className,
+}) => {
   const { id, name, size, type, lastModified } = file;
   const IconComponent = FileIcons[type] || FileIcons.Other;
 
@@ -30,29 +37,52 @@ export const RecentFile: React.FC<RecentFileProps> = ({ file, onClick }) => {
   };
 
   return (
-    <div className={cx("recent-file")} onClick={handleClick}>
-      {/* <div
-        className={cx(
-          "recent-file__icon-wrapper",
-          `recent-file__icon-wrapper--${type.toLowerCase()}`
-        )}
-      >
-        <IconComponent
-          className={cx("recent-file__icon")}
-          size={24}
-          strokeWidth={1.65}
-        />
-      </div> */}
+    <div
+      className={cx(
+        "recent-file",
+        className,
+        `recent-file--theme-${theme.type}`
+      )}
+      onClick={handleClick}
+      style={
+        theme.type === "custom"
+          ? ({
+              "--recent-file-background": theme.colors?.background,
+              "--recent-file-background-hover": theme.colors?.backgroundHover,
+              "--recent-file-border": theme.colors?.border,
+              "--recent-file-icon-color": theme.colors?.iconColor,
+              "--recent-file-text": theme.colors?.text,
+              "--recent-file-text-secondary": theme.colors?.textSecondary,
+              "--recent-file-type-background": theme.colors?.typeBackground,
+            } as React.CSSProperties)
+          : undefined
+      }
+    >
       <div className={cx("recent-file__content")}>
         <div className={cx("recent-file__main")}>
-          <p className={cx("recent-file__name")}>{name}</p>
-          <span className={cx("recent-file__type")}>{type}</span>
+          <ThemedTypography
+            variant="p2"
+            className={cx("recent-file__name")}
+            noWrap
+          >
+            {name}
+          </ThemedTypography>
+          <ThemedTypography
+            variant="p3"
+            color="tertiary"
+            fontWeight={500}
+            className={cx("recent-file__type")}
+          >
+            {type}
+          </ThemedTypography>
         </div>
         <div className={cx("recent-file__meta")}>
-          <p className={cx("recent-file__size")}>{size}</p>
-          <span className={cx("recent-file__date")}>
+          <ThemedTypography variant="p3" className={cx("recent-file__size")}>
+            {size}
+          </ThemedTypography>
+          <ThemedTypography variant="p3" className={cx("recent-file__date")}>
             {formatDistanceToNow(lastModified, { addSuffix: true })}
-          </span>
+          </ThemedTypography>
         </div>
       </div>
     </div>

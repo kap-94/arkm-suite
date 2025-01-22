@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 export function SettingsSkeleton() {
   return (
     <div className={cx("settings__content")}>
-      {[1, 2].map((index) => (
+      {[1].map((index) => (
         <div key={index} className={cx("settings__section")}>
           <div className={cx("settings__section-header")}>
             <div

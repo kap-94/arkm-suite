@@ -13,27 +13,31 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.9",
-    "@supabase/supabase-js": "^2.47.9",
-    "classnames": "^2.5.1",
+    "@fortawesome/fontawesome-svg-core": "^6.7.",
+    "@fortawesome/react-fontawesome": "^0..",
+    "@supabase/supabase-js": "^.47.9",
+    "classnames": "^.5.1",
     "date-fns": "^4.1.0",
-    "formik": "^2.4.6",
+    "formik": "^.4.6",
     "framer-motion": "^11.15.0",
     "gsap": "^3.12.5",
     "lucide-react": "^0.468.0",
     "negotiator": "^1.0.0",
-    "next": "14.2.17",
+    "next": "14..17",
     "next-auth": "^5.0.0-beta.25",
     "next-i18next": "^15.4.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-i18next": "^15.2.0",
+    "react": "^18..0",
+    "react-dom": "^18..0",
+    "react-i18next": "^15..0",
+    "recharts": "^.15.0",
     "sass": "^1.83.0",
     "three": "^0.171.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
-    "@testing-library/user-event": "^14.5.2",
+    "@testing-library/user-event": "^14.5.",
+    "@types/js-cookie": "^3.0.6",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -41,6 +45,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "happy-dom": "^16.3.0",
     "typescript": "^5",
-    "vitest": "^2.1.8"
+    "vitest": "^.1.8"
   }
 }

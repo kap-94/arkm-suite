@@ -1,0 +1,120 @@
+// app/dashboard/project/[id]/mockComponents.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+.mock-header {
+  $self: &;
+  @include flex(column, flex-start, stretch, $spacing-md);
+  padding: $spacing-lg;
+  background: linear-gradient(
+    to right,
+    rgba($primary-color, 0),
+    rgba($primary-color, 0)
+  );
+  border-radius: $border-radius-sm;
+  border: 1px solid rgba($white-color, 0.1);
+  // background: $white-color;
+  box-shadow: $shadow-sm;
+  // margin-bottom: $spacing-xl;
+
+  &__title {
+    margin: 0;
+  }
+
+  &__status {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__progress {
+    height: 8px;
+    background-color: rgba($primary-color, 0.1);
+    border-radius: $border-radius-full;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background-color: $primary-color;
+    transition: width 0.3s $transition-bezier;
+  }
+}
+
+.mock-planning {
+  $self: &;
+  @include flex(column, flex-start, stretch, $spacing-md);
+  padding: $spacing-lg;
+  background-color: rgba($primary-color, 0.05);
+  background: linear-gradient(
+    to right,
+    rgba($primary-color, 0.08),
+    rgba($primary-color, 0.05)
+  );
+  border-radius: $border-radius-sm;
+  margin-bottom: $spacing-xl;
+
+  &__title {
+    margin: 0 0 $spacing-sm;
+  }
+}
+
+.mock-deliverable {
+  $self: &;
+  @include flex(column, flex-start, stretch, $spacing-md);
+  padding: $spacing-lg;
+  border: 1px solid rgba($primary-color, 0);
+  border-radius: $border-radius-lg;
+  background-color: rgba($white-color, 0.5);
+  transition: border-color 0.3s $transition-bezier;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.4);
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__info {
+    @include flex(row, space-between, center, $spacing-md);
+  }
+
+  &__progress {
+    height: 6px;
+    background-color: rgba($primary-color, 0.1);
+    border-radius: $border-radius-full;
+    overflow: hidden;
+    margin-top: $spacing-sm;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background-color: $success-color;
+    transition: width 0.3s $transition-bezier;
+  }
+}
+
+.mock-file {
+  $self: &;
+  @include flex(row, space-between, center);
+  padding: $spacing-md;
+  border-bottom: 1px solid rgba($primary-color, 0.1);
+  transition: background-color 0.3s $transition-bezier;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  &__name {
+    @include text-truncate;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__size {
+    margin: 0 0 0 $spacing-md;
+  }
+}

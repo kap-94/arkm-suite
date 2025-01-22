@@ -3,9 +3,10 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import classNames from "classnames/bind";
-import styles from "./SearchBar.module.scss";
-import { ThemedTypography } from "../Typography/ThemedTypography";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
+import Spinner from "@/components/Spinner";
+import styles from "./SearchBar.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +46,7 @@ interface SearchBarProps {
   loading?: boolean;
   showButton?: boolean;
   buttonText?: string;
+  closeOnScroll?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
@@ -60,6 +62,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   loading = false,
   showButton = true,
   buttonText = "Search",
+  closeOnScroll = false,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -83,6 +86,20 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       ? "top"
       : "bottom";
   }, []);
+
+  // Handle scroll event
+  useEffect(() => {
+    if (!closeOnScroll) return;
+
+    const handleScroll = () => {
+      if (isDropdownVisible) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [closeOnScroll, isDropdownVisible]);
 
   useEffect(() => {
     const handlePositionUpdate = () => {
@@ -251,13 +268,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             )}
           >
             <div className={cx("search-bar__loading")}>
-              <ThemedTypography
-                variant="p2"
-                color="secondary"
-                theme={theme.type}
-              >
-                Loading...
-              </ThemedTypography>
+              <Spinner size="sm" theme={theme} />
             </div>
           </div>
         )}

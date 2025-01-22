@@ -1,50 +1,90 @@
-$file-types: (
-  document: #60a5fa,
-  design: #f472b6,
-  spreadsheet: #4ade80,
-  image: #818cf8,
-  other: #94a3b8,
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$recent-file-theme-map: (
+  dark: (
+    background: rgba($white-base, 0.02),
+    background-hover: rgba($white-base, 0.05),
+    border: rgba($white-base, 0.05),
+    icon-color: $white-base,
+    text: $text-primary,
+    text-secondary: rgba($text-primary, 0.65),
+    type-background: rgba($white-base, 0.07),
+  ),
+  light: (
+    background: #ffffff,
+    background-hover: $white-light,
+    border: rgba($black-base, 0.07),
+    icon-color: $black-base,
+    text: $black-base,
+    text-secondary: rgba($black-base, 0.65),
+    type-background: rgba($black-base, 0.03),
+  ),
 );
 
 .recent-file {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.2s ease;
+  @include flex($align: center);
+  padding: $spacing-md $spacing-lg;
+  // border-radius: $border-radius-lg;
+  transition: all $transition-duration-fast ease;
   cursor: pointer;
-  margin-bottom: 8px;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    // transform: translateY(-1px);
+  @include tablet {
+    padding: $spacing-md;
   }
 
-  &__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 0.5rem;
-    margin-right: 1rem;
-    transition: all 0.2s ease;
+  @each $theme, $values in $recent-file-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+      border-bottom: 1px solid map-get($values, border);
 
-    @each $type, $color in $file-types {
-      &--#{$type} {
-        // background-color: rgba($color, 0.2);
-        color: $color;
-        color: rgb(241, 228, 228);
+      &:hover {
+        background: map-get($values, background-hover);
+      }
+
+      .recent-file__icon {
+        color: map-get($values, icon-color);
+      }
+
+      .recent-file__type {
+        background: map-get($values, type-background);
       }
     }
   }
 
-  &__icon {
-    transition: transform 0.2s ease;
-    .recent-file:hover & {
-      // transform: scale(1.1);
+  &--theme-custom {
+    background: var(--recent-file-background);
+    border: 1px solid var(--recent-file-border);
+
+    &:hover {
+      background: var(--recent-file-background-hover);
+    }
+
+    .recent-file__icon {
+      color: var(--recent-file-icon-color);
+    }
+
+    .recent-file__name {
+      color: var(--recent-file-text);
+    }
+
+    .recent-file__type,
+    .recent-file__size,
+    .recent-file__date {
+      color: var(--recent-file-text-secondary);
+    }
+
+    .recent-file__type {
+      background: var(--recent-file-type-background);
+    }
+  }
+
+  &__icon-wrapper {
+    @include flex($justify: center, $align: center);
+    margin-right: $spacing-lg;
+
+    @include tablet {
+      margin-right: $spacing-md;
     }
   }
 
@@ -54,44 +94,20 @@ $file-types: (
   }
 
   &__main {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.25rem;
-  }
-
-  &__name {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgb(241, 228, 228);
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    @include flex($align: center, $gap: $spacing-sm);
+    margin-bottom: $spacing-xs;
   }
 
   &__type {
-    font-size: 0.75rem;
-    color: rgba(241, 228, 228, 0.65);
-    padding: 0.125rem 0.375rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 9999px;
+    padding: 2px $spacing-sm;
+    border-radius: $border-radius-full;
   }
 
   &__meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
+    @include flex($align: center, $gap: $spacing-md);
 
-  &__size {
-    font-size: 0.75rem;
-    color: rgba(241, 228, 228, 0.65);
-    margin: 0;
-  }
-
-  &__date {
-    font-size: 0.75rem;
-    color: rgba(241, 228, 228, 0.65);
+    @include mobile {
+      gap: $spacing-sm;
+    }
   }
 }

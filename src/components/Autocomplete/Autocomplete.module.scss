@@ -10,7 +10,7 @@ $autocomplete-theme-map: (
     text: $text-primary,
     highlighted-text: $primary-color,
     divider-color: convert-to-rgba($text-primary, 0.1),
-    scrollbar-color: convert-to-rgba($text-primary, 0.2),
+    scrollbar-color: convert-to-rgba($text-primary, 0),
   ),
   light: (
     background: $white-base,
@@ -18,7 +18,7 @@ $autocomplete-theme-map: (
     text: $black-base,
     highlighted-text: $primary-color,
     divider-color: convert-to-rgba($black-base, 0.1),
-    scrollbar-color: convert-to-rgba($black-base, 0.2),
+    scrollbar-color: convert-to-rgba($black-base, 0),
   ),
   custom: (
     background: var(--autocomplete-background),
@@ -35,7 +35,7 @@ $autocomplete-theme-map: (
   width: 100%;
   margin-top: $spacing-xs;
   border-radius: $border-radius-md;
-  @include elevation(2);
+  @include elevation();
   z-index: $z-index-dropdown;
   overflow: hidden;
 

@@ -1,30 +1,49 @@
-// UpdateProfileForm.tsx
 "use client";
 
 import React from "react";
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames/bind";
-import { ThemedTypography } from "@/components/Typography/ThemedTypography";
-import { UpdateProfileFormProps, User } from "./types";
+import { TextField } from "@/components/TextField";
+import type { UpdateProfileFormProps } from "./types";
+import { Button } from "@/components/Button";
+import { AtSign } from "lucide-react";
+import { User } from "@/types/User.types";
+import { ProfileDictionary } from "@/types/dictionary/profile.types";
 import styles from "./UpdateProfileForm.module.scss";
-import { Button } from "../Button";
 
 const cx = classNames.bind(styles);
 
-const validationSchema = Yup.object().shape({
-  fullName: Yup.string().required("Full name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  nationality: Yup.string().required("Nationality is required"),
-  nationalID: Yup.string().required("National ID is required"),
-});
+const createValidationSchema = (dictionary: ProfileDictionary) =>
+  Yup.object().shape({
+    fullName: Yup.string().required(
+      dictionary.form.validation.fullNameRequired
+    ),
+    email: Yup.string()
+      .email(dictionary.form.validation.emailInvalid)
+      .required(dictionary.form.validation.emailRequired)
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{,}$/,
+        dictionary.form.validation.emailInvalid
+      )
+      .max(254, dictionary.form.validation.emailTooLong),
+    nationality: Yup.string().required(
+      dictionary.form.validation.nationalityRequired
+    ),
+    nationalID: Yup.string().required(
+      dictionary.form.validation.nationalIDRequired
+    ),
+  });
 
 export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
   user,
   children,
   theme = { type: "light" },
   onSubmit,
+  dictionary,
 }) => {
+  const validationSchema = createValidationSchema(dictionary);
+
   const handleSubmit = async (
     values: User,
     { setSubmitting }: FormikHelpers<User>
@@ -42,120 +61,43 @@ export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ isSubmitting }) => (
         <Form
           className={cx("profile-form", `profile-form--theme-${theme.type}`)}
+          noValidate // Prevents browser's default email validation
         >
-          <div className={cx("profile-form__field")}>
-            <ThemedTypography
-              as="label"
-              variant="label"
-              className={cx("profile-form__field-label")}
-              theme={theme.type}
-            >
-              Full name
-            </ThemedTypography>
-            <Field
-              id="fullName"
-              name="fullName"
-              disabled
-              className={cx("profile-form__field-input", {
-                "profile-form__field-input--error":
-                  errors.fullName && touched.fullName,
-              })}
-            />
-            {errors.fullName && touched.fullName && (
-              <div className={cx("profile-form__error")}>{errors.fullName}</div>
-            )}
-          </div>
+          <div className={cx("profile-form__field")}>{children}</div>
 
-          <div className={cx("profile-form__field")}>
-            <ThemedTypography
-              as="label"
-              variant="label"
-              className={cx("profile-form__field-label")}
-              theme={theme.type}
-            >
-              Email address
-            </ThemedTypography>
-            <Field
-              id="email"
-              name="email"
-              disabled
-              className={cx("profile-form__field-input", {
-                "profile-form__field-input--error":
-                  errors.email && touched.email,
-              })}
-            />
-            {errors.email && touched.email && (
-              <div className={cx("profile-form__error")}>{errors.email}</div>
-            )}
-          </div>
-
-          <div
-            className={cx(
-              "profile-form__field",
-              "profile-form__field--with-flag"
-            )}
-          >
-            <div className={cx("profile-form__field-header")}>
-              <ThemedTypography
-                as="label"
-                variant="label"
-                className={cx("profile-form__field-label")}
-                theme={theme.type}
-              >
-                Where are you from?
-              </ThemedTypography>
-            </div>
-            <div className={cx("profile-form__field--with-flag-container")}>
-              {children}
-              <img
-                src={user.countryFlag}
-                alt="Country flag"
-                className={cx("profile-form__field--with-flag-image")}
-              />
-            </div>
-            {errors.nationality && touched.nationality && (
-              <div className={cx("profile-form__error")}>
-                {errors.nationality}
-              </div>
-            )}
-          </div>
-
-          <div className={cx("profile-form__field")}>
-            <ThemedTypography
-              as="label"
-              variant="label"
-              className={cx("profile-form__field-label")}
-              theme={theme.type}
-            >
-              National ID number
-            </ThemedTypography>
-            <Field
-              id="nationalID"
-              name="nationalID"
-              className={cx("profile-form__field-input", {
-                "profile-form__field-input--error":
-                  errors.nationalID && touched.nationalID,
-              })}
-            />
-            {errors.nationalID && touched.nationalID && (
-              <div className={cx("profile-form__error")}>
-                {errors.nationalID}
-              </div>
-            )}
-          </div>
+          <TextField
+            label={dictionary.form.fields.email.label}
+            name="email"
+            type="email"
+            theme={theme}
+            variant="primary"
+            showError
+            // disabled={isSubmitting}
+            disabled
+            icon={<AtSign size={18} />}
+            placeholder={dictionary.form.fields.email.placeholder}
+            autoComplete="email"
+            inputMode="email"
+            spellCheck={false}
+            aria-label={dictionary.aria.emailInput}
+            aria-required="true"
+          />
 
           <div className={cx("profile-form__actions")}>
             <Button
               type="submit"
-              disabled={isSubmitting}
+              // disabled={isSubmitting}
+              disabled
               size="lg"
-              radius="lg"
+              radius="md"
               className={cx("profile-form__submit")}
             >
-              {isSubmitting ? "Updating..." : "Update profile"}
+              {isSubmitting
+                ? dictionary.form.buttons.submitting
+                : dictionary.form.buttons.submit}
             </Button>
           </div>
         </Form>

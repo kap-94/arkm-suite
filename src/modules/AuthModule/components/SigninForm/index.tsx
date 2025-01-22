@@ -18,14 +18,14 @@ interface SigninFormProps {
 }
 
 export function SigninForm({ className }: SigninFormProps) {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
   const { isLoading, error, validationSchema, handleSubmit } = useSignInForm();
 
   return (
     <div className={cx("signin-form", className)}>
-      <h2 className={cx("signin-form__title")}>{t("auth.signin.title")}</h2>
+      {/* <h2 className={cx("signin-form__title")}>{t("auth.signin.title")}</h2> */}
       <p className={cx("signin-form__description")}>
-        {t("auth.signin.enterDashboard")}
+        {/* {t("auth.signin.enterDashboard")} */}
       </p>
 
       <Formik
@@ -48,7 +48,7 @@ export function SigninForm({ className }: SigninFormProps) {
               </div>
             )}
 
-            <TextField
+            {/* <TextField
               name="email"
               label={t("auth.signin.form.email.label")}
               type="email"
@@ -80,10 +80,10 @@ export function SigninForm({ className }: SigninFormProps) {
               ) : (
                 t("auth.signin.form.buttons.access")
               )}
-            </Button>
+            </Button> */}
 
             <div className={cx("signin-form__separator")}>
-              <span>{t("auth.signin.form.buttons.or")}</span>
+              {/* <span>{t("auth.signin.form.buttons.or")}</span> */}
             </div>
 
             <GoogleButton
@@ -92,11 +92,11 @@ export function SigninForm({ className }: SigninFormProps) {
               radius="md"
               className={cx("signin-form__google-button")}
             >
-              {t("auth.signin.form.buttons.google")}
+              {/* {t("auth.signin.form.buttons.google")} */}
             </GoogleButton>
 
             <small className={cx("signin-form__note")}>
-              {t("auth.signin.adminNote")}
+              {/* {t("auth.signin.adminNote")} */}
             </small>
           </Form>
         )}

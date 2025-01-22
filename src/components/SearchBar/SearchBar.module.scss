@@ -20,12 +20,12 @@ $search-bar-theme-map: (
   ),
   light: (
     background: transparent,
-    input-background: convert-to-rgba($white-base, 0.1),
+    input-background: convert-to-rgba($white-light, 0.7),
     text: $black-base,
     placeholder: $black-light,
-    button-background: convert-to-rgba($white-dark, 0.2),
+    button-background: convert-to-rgba($white-light, 0.7),
     button-text: $black-light,
-    border-color: convert-to-rgba($black-base, 0.2),
+    border-color: convert-to-rgba($black-base, 0),
     hover-background: convert-to-rgba($white-dark, 0.3),
     dropdown-background: $white-light,
     dropdown-text: $black-base,
@@ -57,7 +57,6 @@ $search-bar-theme-map: (
       .search-bar__button {
         background-color: map-get($values, input-background);
         color: map-get($values, text);
-        border-color: map-get($values, border-color);
       }
 
       .search-bar__input {
@@ -81,6 +80,9 @@ $search-bar-theme-map: (
       .search-bar__button {
         background-color: map-get($values, button-background);
         color: map-get($values, button-text);
+        border-left: 1px
+          solid
+          convert-to-rgba(map-get($values, border-color), 0.072);
 
         &-icon {
           color: map-get($values, button-text);
@@ -96,7 +98,7 @@ $search-bar-theme-map: (
       .search-bar__wrapper {
         border-color: map-get($values, border-color);
         &:focus-within {
-          border-color: rgba(map-get($values, text), 0.2);
+          border-color: rgba(map-get($values, text), 0);
           @include elevation(1);
         }
       }
@@ -201,7 +203,6 @@ $search-bar-theme-map: (
   &__button {
     @include flex($justify: center, $gap: $spacing-sm);
     border: none;
-    border-left: 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     cursor: pointer;
@@ -235,7 +236,7 @@ $search-bar-theme-map: (
     width: 100%;
     margin-top: $spacing-xs;
     border-radius: $border-radius-lg;
-    @include elevation(2);
+    @include elevation();
     z-index: $z-index-dropdown + 1;
     overflow: hidden;
     backdrop-filter: blur(8px);
@@ -317,7 +318,7 @@ $search-bar-theme-map: (
   &__options-list {
     max-height: 300px;
     overflow-y: auto;
-    padding: $spacing-xs 0;
+
     @include custom-scrollbar(
       3px,
       transparent,
@@ -326,7 +327,6 @@ $search-bar-theme-map: (
 
     @include mobile {
       max-height: 75vh;
-      padding: $spacing-md 0;
     }
   }
 

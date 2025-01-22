@@ -1,4 +1,3 @@
-// src/app/settings/page.module.scss
 @import "@/styles/variables";
 @import "@/styles/mixins";
 
@@ -7,6 +6,12 @@
     @include flex(column, flex-start, left);
     gap: $spacing-xl;
     max-width: 600px;
+    margin: $spacing-lg 0 0 $spacing-lg;
+
+    @include mobile-medium {
+      margin: $spacing-md $spacing-xs;
+      // padding: 0 $spacing-sm;
+    }
   }
 
   &__section {
@@ -52,6 +57,16 @@
     &-animation {
       animation: pulse $transition-duration-fast $transition-bezier infinite;
     }
+  }
+
+  &__pattern-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    background: transparent;
   }
 }
 

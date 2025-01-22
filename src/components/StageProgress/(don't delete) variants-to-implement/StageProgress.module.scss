@@ -1,0 +1,695 @@
+// Variables
+$colors: (
+  primary: #6366f1,
+  primary-light: #818cf8,
+  background: #f1f5f9,
+  border: #e2e8f0,
+  text: (
+    primary: rgba(241, 228, 228, 0.8),
+    secondary: #64748b,
+    tertiary: #94a3b8,
+    white: rgb(241, 228, 228),
+  ),
+  dark: #1e293b,
+  gradient: (
+    start: #3b82f6,
+    end: #6366f1,
+  ),
+);
+
+// Spacing
+$spacing: (
+  xs: 0.25rem,
+  sm: 0.5rem,
+  md: 1rem,
+  lg: 1.5rem,
+  xl: 2rem,
+);
+
+// Typography
+$font-sizes: (
+  xs: 0.7rem,
+  sm: 0.75rem,
+  base: 0.875rem,
+  lg: 1rem,
+);
+
+// Transitions
+$transition-base: all 0.3s ease;
+$transition-fast: all 0.2s ease;
+
+// Border Radius
+$radius: (
+  full: 9999px,
+  lg: 0.5rem,
+  base: 4px,
+);
+
+// Mixins
+@mixin flex($direction: row, $justify: center, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+@mixin absolute-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin label-base {
+  position: absolute;
+  font-size: map-get($font-sizes, sm);
+  transition: $transition-base;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  color: map-get($colors, text, primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: map-get($radius, full);
+  background-color: transparent;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+@mixin track-base {
+  position: relative;
+  height: 1rem;
+  background-color: map-get($colors, background);
+  border-radius: map-get($radius, full);
+  // overflow: hidden;
+}
+
+@mixin hover-transition {
+  transition: $transition-base;
+  cursor: pointer;
+}
+
+.stage-progress {
+  width: 100%;
+
+  // Modifiers
+  &--small {
+    .stage-progress__track--timeline {
+      padding: 0.6rem 0;
+      overflow: visible;
+    }
+
+    .stage-progress__type {
+      font-size: map-get($font-sizes, sm);
+    }
+  }
+
+  // Header
+  &__header {
+    @include flex(row, space-between);
+    margin-bottom: map-get($spacing, md);
+  }
+
+  &__type {
+    font-size: map-get($font-sizes, base);
+    color: map-get($colors, text, primary);
+    letter-spacing: 0.01em;
+
+    @media only screen and (max-width: 640px) {
+      font-size: map-get($font-sizes, sm);
+    }
+  }
+
+  &__progress {
+    font-size: map-get($font-sizes, base);
+    font-weight: 600;
+    color: map-get($colors, text, white);
+
+    @media only screen and (max-width: 640px) {
+      font-size: map-get($font-sizes, sm);
+    }
+  }
+
+  // Labels
+  .stage-progress__stage-label,
+  .stage-progress__segment-label,
+  .stage-progress__step-label,
+  .stage-progress__timeline-title {
+    @include label-base;
+  }
+
+  &--pill {
+    .stage-progress__stage-label,
+    .stage-progress__segment-label,
+    .stage-progress__step-label,
+    .stage-progress__timeline-title {
+      @include label-base;
+      top: -2rem;
+      @include absolute-center;
+      background: map-get($colors, primary);
+      color: white;
+      padding: map-get($spacing, xs) map-get($spacing, sm);
+      font-weight: 600;
+      font-size: map-get($font-sizes, xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+    }
+  }
+
+  // Track Base
+  &__track {
+    @include track-base;
+
+    &--gradient,
+    &--segmented {
+      background-color: transparent;
+    }
+
+    &--steps,
+    &--timeline {
+      height: auto;
+      background: none;
+    }
+
+    &--steps {
+      padding: map-get($spacing, md) 0;
+    }
+
+    &--timeline {
+      padding: map-get($spacing, xl) 0;
+
+      @media only screen and (max-width: 1280px) {
+        padding: map-get($spacing, sm) 0;
+      }
+    }
+
+    &--ladder,
+    &--stacked {
+      height: 300px;
+      background: none;
+      position: relative;
+    }
+
+    &--diagonal {
+      height: auto;
+      background: none;
+      padding: map-get($spacing, xl) 0;
+    }
+  }
+
+  // Fill
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    transition: width 0.5s ease-out, background 0.3s ease;
+    border-radius: map-get($radius, full);
+  } // Variant Specific Styles
+  // Default Variant
+  &__stages {
+    position: absolute;
+    inset: 0;
+    @include flex;
+  }
+
+  &__stage {
+    flex: 1;
+    position: relative;
+    opacity: 0.2;
+    transition: $transition-base;
+
+    &--active {
+      opacity: 1;
+    }
+
+    &-label {
+      @include absolute-center;
+      top: -1.5rem;
+      font-size: map-get($font-sizes, sm);
+      color: map-get($colors, text, secondary);
+    }
+  }
+
+  // Segmented Variant
+  &__segments {
+    position: absolute;
+    inset: 0;
+    @include flex;
+  }
+
+  &__segment {
+    flex: 1;
+    position: relative;
+    border-right: 1px solid white;
+    transition: background-color 0.3s ease;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &--active {
+      opacity: 1;
+    }
+
+    &-label {
+      @include absolute-center;
+      top: -1.5rem;
+      font-size: map-get($font-sizes, sm);
+      color: map-get($colors, text, secondary);
+    }
+  }
+
+  // Steps Variant
+  &__steps-container {
+    @include flex(row, space-between);
+    position: relative;
+    padding: 0 map-get($spacing, md);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: map-get($spacing, xl);
+      left: map-get($spacing, xl);
+      right: map-get($spacing, xl);
+      height: 2px;
+      background-color: map-get($colors, border);
+      z-index: 0;
+    }
+  }
+
+  &__step {
+    @include flex(column, center, center, map-get($spacing, sm));
+    position: relative;
+    z-index: 1;
+    @include hover-transition;
+
+    &--active {
+      .stage-progress__step-circle {
+        border-color: currentColor;
+      }
+    }
+
+    &--current {
+      .stage-progress__step-circle {
+        animation: pulse 2s infinite;
+      }
+    }
+
+    &-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 2px solid map-get($colors, border);
+      background-color: white;
+      @include flex;
+      font-weight: 600;
+      transition: $transition-base;
+    }
+
+    &-content {
+      @include flex(column, center, center, map-get($spacing, xs));
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: map-get($font-sizes, base);
+      color: map-get($colors, text, secondary);
+    }
+
+    &-threshold {
+      font-size: map-get($font-sizes, sm);
+      color: map-get($colors, text, tertiary);
+    }
+
+    &-tooltip {
+      position: absolute;
+      top: -4rem;
+      @include absolute-center;
+      background-color: map-get($colors, dark);
+      color: white;
+      padding: map-get($spacing, sm);
+      border-radius: map-get($radius, lg);
+      font-size: map-get($font-sizes, sm);
+      white-space: nowrap;
+      @include flex(column, center, stretch, map-get($spacing, xs));
+      z-index: 10;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.25rem;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: map-get($spacing, sm);
+        height: map-get($spacing, sm);
+        background-color: map-get($colors, dark);
+      }
+    }
+  }
+
+  &__timeline {
+    &-container {
+      position: relative;
+      height: 100%;
+      padding: map-get($spacing, lg) 0;
+      width: calc(100% - 24px);
+      overflow: visible;
+    }
+
+    &-line-wrapper {
+      position: relative;
+      width: 100%;
+      height: 2px;
+      background: rgba(map-get($colors, border), 0.3);
+    }
+
+    &-progress {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(
+        to right,
+        map-get($colors, gradient, start),
+        map-get($colors, gradient, end)
+      );
+      transition: width 0.5s ease-out;
+    }
+
+    &-item {
+      position: absolute;
+      transform: translateX(-50%);
+      @include flex(column);
+
+      &--small {
+        .stage-progress__timeline-marker,
+        .stage-progress__timeline-circle-wrapper {
+          width: 22px;
+          height: 22px;
+
+          svg {
+            width: 22px;
+            height: 22px;
+          }
+        }
+
+        .stage-progress__timeline-tooltip {
+          display: block;
+        }
+      }
+    }
+
+    &-marker {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      @include flex;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      z-index: 2;
+      padding: 0;
+
+      svg {
+        background: linear-gradient(180deg, #0a0a0a, #141426);
+        border-radius: 50%;
+        width: 26px;
+        height: 26px;
+        display: block;
+      }
+    }
+
+    &-circle-wrapper {
+      @include flex;
+      width: 100%;
+      height: 100%;
+
+      svg {
+        background: #4a4e55;
+        border-radius: 50%;
+        color: transparent;
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+    }
+
+    &-tooltip {
+      background: transparent;
+      border-radius: map-get($radius, full);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      color: map-get($colors, text, primary);
+      font-size: map-get($font-sizes, sm);
+      font-weight: 500;
+      @include absolute-center;
+      overflow: hidden;
+      padding: 0.4rem 0.8rem;
+      position: absolute;
+      top: -2.8rem;
+      transition: $transition-fast;
+      visibility: hidden;
+      white-space: nowrap;
+      z-index: 10;
+      display: none; // Hidden by default
+
+      // Show tooltip for small screens in default mode
+      @media only screen and (max-width: 1280px) {
+        display: block;
+      }
+
+      &--visible {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    &-title {
+      @include absolute-center;
+      top: -2rem;
+      font-size: map-get($font-sizes, base);
+      font-weight: 500;
+      color: map-get($colors, text, white);
+      white-space: nowrap;
+      transition: $transition-base;
+
+      @media only screen and (max-width: 1280px) {
+        display: none;
+      }
+    }
+  }
+
+  // Ladder Variant
+  &__ladder {
+    &-container {
+      height: 100%;
+      @include flex(column-reverse, space-between);
+      padding: map-get($spacing, md) 0;
+    }
+
+    &-step {
+      @include flex(row, flex-start, center, map-get($spacing, md));
+      opacity: 0.5;
+      transition: $transition-base;
+
+      &--active {
+        opacity: 1;
+        transform: translateX(0.5rem);
+      }
+    }
+
+    &-rung {
+      background-color: currentColor;
+      padding: map-get($spacing, sm) map-get($spacing, md);
+      border-radius: map-get($radius, lg);
+      color: white;
+      @include flex(row, flex-start, center, map-get($spacing, sm));
+    }
+
+    &-name {
+      font-weight: 500;
+    }
+
+    &-threshold {
+      font-size: map-get($font-sizes, base);
+      opacity: 0.8;
+    }
+
+    &-connector {
+      width: 2px;
+      height: 2rem;
+      background-color: map-get($colors, border);
+      margin-left: calc(0.5rem - 1px);
+    }
+
+    &-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0.5rem;
+      width: 2px;
+      background: linear-gradient(
+        to top,
+        map-get($colors, gradient, start),
+        map-get($colors, gradient, end)
+      );
+      transition: height 0.5s ease-out;
+    }
+  }
+
+  // Diagonal Variant
+  &__diagonal {
+    &-container {
+      @include flex(row, flex-start, stretch, map-get($spacing, xs));
+    }
+
+    &-segment {
+      flex: 1;
+      padding: map-get($spacing, md);
+      opacity: 0.6;
+      transition: $transition-base;
+
+      &--active {
+        opacity: 1;
+      }
+    }
+
+    &-content {
+      color: white;
+      @include flex(column, center, center, map-get($spacing, xs));
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: map-get($font-sizes, base);
+    }
+
+    &-threshold {
+      font-size: map-get($font-sizes, sm);
+      opacity: 0.8;
+    }
+  }
+
+  // Stacked Variant
+  &__stacked {
+    &-container {
+      height: 100%;
+      position: relative;
+      @include flex(column, space-between, stretch);
+      padding: map-get($spacing, md);
+    }
+
+    &-segment {
+      @include flex(column, flex-start, stretch);
+      opacity: 0.6;
+      transition: $transition-base;
+
+      &--active {
+        opacity: 1;
+      }
+    }
+
+    &-bar {
+      padding: 0.75rem;
+      border-radius: map-get($radius, lg);
+      color: white;
+    }
+
+    &-content {
+      @include flex(row, space-between, center);
+    }
+
+    &-name {
+      font-weight: 500;
+    }
+
+    &-threshold {
+      font-size: map-get($font-sizes, base);
+      opacity: 0.8;
+    }
+
+    &-connector {
+      width: 2px;
+      height: 2rem;
+      background-color: map-get($colors, border);
+      margin: map-get($spacing, sm) auto;
+    }
+
+    &-fill {
+      position: absolute;
+      bottom: 0;
+      left: calc(50% - 1px);
+      width: 2px;
+      background: linear-gradient(
+        to top,
+        map-get($colors, gradient, start),
+        map-get($colors, gradient, end)
+      );
+      transition: height 0.5s ease-out;
+    }
+  }
+
+  // Animation Keyframes
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  // Responsive Styles
+  @media (max-width: 640px) {
+    // &__header {
+    //   flex-direction: column;
+    //   align-items: flex-start;
+    //   gap: map-get($spacing, sm);
+    // }
+
+    &__timeline {
+      &-container {
+        padding: map-get($spacing, md) 0;
+      }
+
+      &-marker {
+        width: 24px;
+        height: 24px;
+      }
+
+      &-tooltip {
+        font-size: map-get($font-sizes, xs);
+        padding: 0.3rem 0.6rem;
+      }
+    }
+
+    &--pill {
+      .stage-progress__stage-label,
+      .stage-progress__segment-label,
+      .stage-progress__step-label,
+      .stage-progress__timeline-title {
+        font-size: map-get($font-sizes, lg);
+        padding: 0.3rem 0.6rem;
+      }
+    }
+
+    &__stage-label,
+    &__segment-label,
+    &__step-label,
+    &__timeline-title {
+      font-size: map-get($font-sizes, lg);
+    }
+
+    &__step {
+      &-name {
+        display: none;
+      }
+    }
+
+    &__ladder-container {
+      padding: map-get($spacing, sm) 0;
+    }
+  }
+}

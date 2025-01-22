@@ -19,23 +19,29 @@ interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children }: AuthLayoutProps) {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
 
   const features = [
     {
       icon: Gauge,
-      title: t("auth.signin.features.projectControl.title"),
-      description: t("auth.signin.features.projectControl.description"),
+      title: "auth.signin.features.projectControl.title",
+      description: "auth.signin.features.projectControl.description",
+      // title: t("auth.signin.features.projectControl.title"),
+      // description: t("auth.signin.features.projectControl.description"),
     },
     {
       icon: Layers,
-      title: t("auth.signin.features.assetManagement.title"),
-      description: t("auth.signin.features.assetManagement.description"),
+      title: "auth.signin.features.assetManagement.title",
+      description: "auth.signin.features.assetManagement.description",
+      // title: t("auth.signin.features.assetManagement.title"),
+      // description: t("auth.signin.features.assetManagement.description"),
     },
     {
       icon: BarChart,
-      title: t("auth.signin.features.analytics.title"),
-      description: t("auth.signin.features.analytics.description"),
+      title: "auth.signin.features.analytics.title",
+      description: "auth.signin.features.analytics.description",
+      // title: t("auth.signin.features.analytics.title"),
+      // description: t("auth.signin.features.analytics.description"),
     },
   ] as const;
 
@@ -56,10 +62,10 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             <div className={cx("auth__content")}>
               <div className={cx("auth__header")}>
                 <h1 className={cx("auth__title")}>
-                  {t("auth.signin.clientSuite.title")}
+                  {/* {t("auth.signin.clientSuite.title")} */}
                 </h1>
                 <p className={cx("auth__subtitle")}>
-                  {t("auth.signin.clientSuite.subtitle")}
+                  {/* {t("auth.signin.clientSu  ite.subtitle")} */}
                 </p>
               </div>
               <div className={cx("auth__features")}>

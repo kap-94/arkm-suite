@@ -1,20 +1,21 @@
-// StageProgress.tsx
 import React from "react";
 import classNames from "classnames/bind";
-import styles from "./StageProgress.module.scss";
 import { StageProgressProps } from "./types";
 import { VARIANTS } from "./variants";
 import { sortStages } from "./utils";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
+import styles from "./StageProgress.module.scss";
+import { capitalizeAndFormat } from "@/utils/textUtils";
 
 const cx = classNames.bind(styles);
 
 const StageProgress: React.FC<StageProgressProps> = ({
   progress,
   stages = [],
-  variant = "default",
-  type = "Generic",
-  labelStyle = "default",
+  variant = "timeline",
+  type = "Other",
   size = "default",
+  theme = { type: "light" },
   gradientVariant = "progressive",
 }) => {
   const sortedStages = sortStages(stages);
@@ -25,19 +26,27 @@ const StageProgress: React.FC<StageProgressProps> = ({
       className={cx(
         "stage-progress",
         `stage-progress--${variant}`,
-        labelStyle !== "default" ? `stage-progress--${labelStyle}` : "",
+        `stage-progress--theme-${theme.type}`,
         size === "small" ? "stage-progress--small" : ""
       )}
     >
       <div className={cx("stage-progress__header")}>
-        <span className={cx("stage-progress__type")}>{type}</span>
-        <span className={cx("stage-progress__progress")}>{progress}%</span>
+        <ThemedTypography variant="p2" className={cx("stage-progress__type")}>
+          {capitalizeAndFormat(type)}
+        </ThemedTypography>
+        <ThemedTypography
+          variant="p2"
+          className={cx("stage-progress__progress")}
+        >
+          {progress}%
+        </ThemedTypography>
       </div>
       <SelectedVariant
         progress={progress}
         stages={sortedStages}
         gradientVariant={gradientVariant}
         size={size}
+        theme={theme}
       />
     </div>
   );

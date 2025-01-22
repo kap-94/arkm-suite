@@ -1,6 +1,6 @@
-// variants/DefaultVariant.tsx
 import React from "react";
 import classNames from "classnames/bind";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import styles from "../StageProgress.module.scss";
 import { VariantProps } from "../types";
 import { getProgressBarStyle } from "../gradients";
@@ -33,9 +33,12 @@ export const DefaultVariant: React.FC<VariantProps> = ({
               "stage-progress__stage--active": progress >= stage.threshold,
             })}
           >
-            {/* <span className={cx("stage-progress__stage-label")}>
+            <ThemedTypography 
+              variant="p3" 
+              className={cx("stage-progress__stage-label")}
+            >
               {stage.name}
-            </span> */}
+            </ThemedTypography>
           </div>
         ))}
       </div>

@@ -77,6 +77,26 @@ function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
   return newUrl;
 }
 
+function setDefaultViewPreference(
+  request: NextRequest,
+  response: NextResponse
+): void {
+  // Solo establecer si no existe en cookies ni como header
+  if (
+    !request.cookies.has("preferredView") &&
+    !request.headers.get("x-preferred-view")
+  ) {
+    const defaultView = "list";
+    response.cookies.set("preferredView", defaultView, {
+      httpOnly: false,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365, // 1 año
+    });
+  }
+}
+
 export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -85,7 +105,7 @@ export default auth(async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Ignora otras rutas que no necesitan procesamiento
+  // . Ignora otras rutas que no necesitan procesamiento
   if (isIgnoredPath(pathname)) {
     return NextResponse.next();
   }
@@ -104,12 +124,22 @@ export default auth(async function middleware(request: NextRequest) {
     }
   }
 
-  // 4. Si la ruta ya tiene un locale válido, continuar
+  // 4. Si la ruta ya tiene un locale válido
   if (hasValidLocale(pathname)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    // 5. Verificar y establecer preferencia de vista para rutas del dashboard
+    if (
+      pathname.includes("/dashboard") &&
+      !request.cookies.has("preferredView")
+    ) {
+      setDefaultViewPreference(request, response);
+    }
+
+    return response;
   }
 
-  // 5. Para rutas sin locale, redirigir a la versión localizada
+  // 6. Para rutas sin locale, redirigir a la versión localizada
   const locale = getPreferredLocale(request);
   const localizedUrl = buildLocalizedUrl(request, locale);
   const response = NextResponse.redirect(localizedUrl);
@@ -118,6 +148,14 @@ export default auth(async function middleware(request: NextRequest) {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
+
+  // 7. Establecer preferencia de vista si es necesario
+  if (
+    pathname.includes("/dashboard") &&
+    !request.cookies.has("preferredView")
+  ) {
+    setDefaultViewPreference(request, response);
+  }
 
   return response;
 });

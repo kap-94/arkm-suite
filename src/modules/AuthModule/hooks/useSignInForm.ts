@@ -11,22 +11,34 @@ interface SignInValues {
 }
 
 export const useSignInForm = () => {
-  const { t } = useLanguage();
+  // const { t } = useLanguage();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // const validationSchema = Yup.object().shape({
+  //   email: Yup.string()
+  //     .email(t("auth.signin.form.errors.invalidEmail"))
+  //     .required(t("auth.signin.form.errors.emailRequired")),
+  //   password: Yup.string()
+  //     .min(8, t("auth.signin.form.errors.passwordMin"))
+  //     .matches(/[A-Z]/, t("auth.signin.form.errors.passwordUppercase"))
+  //     .matches(/[a-z]/, t("auth.signin.form.errors.passwordLowercase"))
+  //     .matches(/[0-9]/, t("auth.signin.form.errors.passwordNumber"))
+  //     .matches(/[^A-Za-z0-9]/, t("auth.signin.form.errors.passwordSpecial"))
+  //     .required(t("auth.signin.form.errors.passwordRequired")),
+  // });
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .email(t("auth.signin.form.errors.invalidEmail"))
-      .required(t("auth.signin.form.errors.emailRequired")),
+      .email("auth.signin.form.errors.invalidEmail")
+      .required("auth.signin.form.errors.emailRequired"),
     password: Yup.string()
-      .min(8, t("auth.signin.form.errors.passwordMin"))
-      .matches(/[A-Z]/, t("auth.signin.form.errors.passwordUppercase"))
-      .matches(/[a-z]/, t("auth.signin.form.errors.passwordLowercase"))
-      .matches(/[0-9]/, t("auth.signin.form.errors.passwordNumber"))
-      .matches(/[^A-Za-z0-9]/, t("auth.signin.form.errors.passwordSpecial"))
-      .required(t("auth.signin.form.errors.passwordRequired")),
+      .min(8, "auth.signin.form.errors.passwordMin")
+      .matches(/[A-Z]/, "auth.signin.form.errors.passwordUppercase")
+      .matches(/[a-z]/, "auth.signin.form.errors.passwordLowercase")
+      .matches(/[0-9]/, "auth.signin.form.errors.passwordNumber")
+      .matches(/[^A-Za-z0-9]/, "auth.signin.form.errors.passwordSpecial")
+      .required("auth.signin.form.errors.passwordRequired"),
   });
 
   const handleSubmit = async (
@@ -45,7 +57,8 @@ export const useSignInForm = () => {
 
       if (result?.error) {
         // Si hay un error, configurar el mensaje de error
-        setError(t("auth.signin.form.errors.invalidCredentials"));
+        // setError(t("auth.signin.form.errors.invalidCredentials"));
+        setError("auth.signin.form.errors.invalidCredentials");
         // Asegurarse de que los campos sean tocados para mostrar los errores
         setTouched({ email: true, password: true });
       } else if (result?.ok) {
@@ -55,7 +68,8 @@ export const useSignInForm = () => {
         router.replace("/dashboard");
       }
     } catch (err) {
-      setError(t("auth.signin.form.errors.unexpected"));
+      setError("auth.signin.form.errors.unexpected");
+      // setError(t("auth.signin.form.errors.unexpected"));
     } finally {
       setIsLoading(false);
       setSubmitting(false);

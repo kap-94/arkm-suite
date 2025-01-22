@@ -6,10 +6,9 @@ import classNames from "classnames/bind";
 import { useSidebarContext } from "./context/SidebarContext";
 import { SidebarProps } from "./types/sidebar.types";
 import { SidebarItem } from "./components/SidebarItem";
-import { Typography } from "../Typography";
 import { Hamburger } from "../Hamburger";
-import styles from "./styles/Sidebar.module.scss";
 import { Brand } from "../Header/components";
+import styles from "./styles/Sidebar.module.scss";
 
 const cx = classNames.bind(styles);
 

@@ -96,7 +96,7 @@ $hamburger-theme-map: (
       &--1 {
         width: 28px;
       }
-      &--2 {
+      &-- {
         width: 24px;
         margin-left: auto;
       }
@@ -155,13 +155,13 @@ $hamburger-theme-map: (
   // SlideFade variant
   &--slideFade {
     .hamburger__line {
-      height: 2.5px;
+      height: 0.5px;
       border-radius: 6px;
 
       &--1 {
         width: 32px;
       }
-      &--2 {
+      &-- {
         width: 24px;
         margin-left: 4px;
       }

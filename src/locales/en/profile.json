@@ -1,0 +1,89 @@
+
+{
+    "meta": {
+      "title": "Your Profile",
+      "description": "Manage and update your profile details",
+      "keywords": ["profile", "update", "user information"]
+    },
+    "header": {
+      "title": "Your Profile",
+      "subtitle": "Update your profile details",
+      "aria": "Profile header"
+    },
+    "image": {
+      "upload": {
+        "label": "Profile Image",
+        "button": "Upload Image",
+        "dragDrop": "Drag and drop an image here",
+        "sizeLimit": "Maximum size: 5MB",
+        "formats": "Accepted formats: JPG, PNG"
+      },
+      "errors": {
+        "invalidFormat": "Invalid image format",
+        "sizeExceeded": "Image size exceeds the limit",
+        "uploadFailed": "Image upload failed"
+      }
+    },
+    "form": {
+      "fields": {
+        "fullName": {
+          "label": "Full Name",
+          "placeholder": "Enter your full name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter your email address"
+        },
+        "nationality": {
+          "label": "Nationality",
+          "placeholder": "Select your nationality"
+        },
+        "nationalID": {
+          "label": "National ID",
+          "placeholder": "Enter your national ID"
+        }
+      },
+      "validation": {
+        "required": "This field is required",
+        "fullNameRequired": "Full name is required",
+        "emailRequired": "Email address is required",
+        "emailInvalid": "Invalid email format",
+        "emailTooLong": "Email address is too long",
+        "nationalityRequired": "Nationality is required",
+        "nationalIDRequired": "National ID is required"
+      },
+      "buttons": {
+        "submit": "Submit",
+        "submitting": "Submitting...",
+        "cancel": "Cancel"
+      }
+    },
+    "countries": {
+      "mexico": "Mexico",
+      "unitedStates": "United States",
+      "canada": "Canada",
+      "spain": "Spain",
+      "brazil": "Brazil"
+    },
+    "status": {
+      "loading": "Loading...",
+      "success": "Profile updated successfully",
+      "error": "An error occurred",
+      "updating": "Updating profile...",
+      "updated": "Profile updated"
+    },
+    "errors": {
+      "imageUpdate": "Error updating profile image",
+      "profileUpdate": "Error updating profile",
+      "unexpected": "An unexpected error occurred",
+      "network": "Network error"
+    },
+    "aria": {
+      "profileImage": "Profile image",
+      "emailInput": "Email input",
+      "countrySelect": "Country selection",
+      "uploadButton": "Upload image button",
+      "submitButton": "Submit button"
+    }
+  }
+  

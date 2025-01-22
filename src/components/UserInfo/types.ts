@@ -6,6 +6,7 @@ export interface UserInfoTheme {
   customValues?: {
     background?: string;
     text?: string;
+    initialsColor?: string;
     hoverBackground?: string;
     borderColor?: string;
     dropdownBackground?: string;
@@ -34,4 +35,5 @@ export interface UserInfoProps {
   className?: string;
   options: DropdownOption[];
   theme?: UserInfoTheme;
+  closeOnScroll?: boolean;
 }

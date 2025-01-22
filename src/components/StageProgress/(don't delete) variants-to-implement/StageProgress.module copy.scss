@@ -1,0 +1,719 @@
+// StageProgress.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+@mixin label-base {
+  position: absolute;
+  font-size: 12px;
+  // transition: $transition-base;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  // color: map-get($colors, text, primary);
+  padding: 0.4rem 0.8rem;
+  border-radius: $border-radius-full;
+  background-color: transparent;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+@mixin track-base {
+  position: relative;
+  height: 1rem;
+  background-color: $white-base;
+  border-radius: $border-radius-full;
+  // overflow: hidden;
+}
+
+$stage-progress-theme-map: (
+  dark: (
+    background:
+      linear-gradient(
+        to right,
+        rgba($primary-color, 0.08),
+        rgba($primary-color, 0.05)
+      ),
+    border: rgba($primary-color, 0.2),
+    text: $text-primary,
+    secondary-text: $text-secondary,
+    gradient: linear-gradient(45deg, $primary-color, transparent),
+    track: rgba($text-primary, 0.1),
+    fill: linear-gradient(to right, $primary-color, $primary-light),
+    step-bg: $black-light,
+    timeline-marker: linear-gradient(180deg, #0a0a0a, #141426),
+    timeline-circle: #4a4e55,
+    connector: rgba($text-primary, 0.2),
+  ),
+  light: (
+    background: rgba($white-color, 0.9),
+    border: rgba($primary-light, 0.7),
+    text: $black-base,
+    secondary-text: $text-secondary,
+    gradient: linear-gradient(45deg, $primary-light, transparent),
+    track: rgba($black-base, 0.1),
+    fill: linear-gradient(to right, $primary-color, $primary-light),
+    step-bg: $white-color,
+    timeline-marker: linear-gradient(180deg, $white-light, $white-dark),
+    timeline-circle: $white-dark,
+    connector: rgba($black-base, 0.2),
+  ),
+  custom: (
+    background: var(--stage-progress-background),
+    border: var(--stage-progress-border),
+    text: var(--stage-progress-text),
+    secondary-text: var(--stage-progress-secondary-text),
+    gradient: var(--stage-progress-gradient),
+    track: var(--stage-progress-track),
+    fill: var(--stage-progress-fill),
+    step-bg: var(--stage-progress-step-bg),
+    timeline-marker: var(--stage-progress-timeline-marker),
+    timeline-circle: var(--stage-progress-timeline-circle),
+    connector: var(--stage-progress-connector),
+  ),
+);
+
+.stage-progress {
+  $self: &;
+  width: 100%;
+  position: relative;
+  border-radius: $border-radius-lg;
+  padding: $spacing-xl;
+  isolation: isolate;
+
+  @include mobile {
+    padding: $spacing-lg;
+  }
+
+  // Theme Variations
+  @each $theme, $values in $stage-progress-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+
+      @if $theme == light {
+        box-shadow: $shadow-sm;
+      } @else {
+        border-left: 2px solid map-get($values, border);
+      }
+
+      #{$self}__type,
+      #{$self}__progress {
+        color: map-get($values, text);
+      }
+
+      #{$self}__track {
+        background-color: map-get($values, track);
+      }
+
+      #{$self}__fill {
+        background: map-get($values, fill);
+      }
+
+      #{$self}__stage-label,
+      #{$self}__segment-label,
+      #{$self}__step-label,
+      #{$self}__timeline-title {
+        color: map-get($values, text);
+        border-color: map-get($values, border);
+      }
+
+      #{$self}__step {
+        &-circle {
+          background-color: map-get($values, step-bg);
+          border-color: map-get($values, border);
+        }
+
+        &-name {
+          color: map-get($values, text);
+        }
+
+        &-threshold {
+          color: map-get($values, secondary-text);
+        }
+      }
+
+      #{$self}__timeline {
+        &-marker svg {
+          background: map-get($values, timeline-marker);
+        }
+
+        &-circle-wrapper svg {
+          background: map-get($values, timeline-circle);
+        }
+
+        &-line-wrapper {
+          background: map-get($values, connector);
+        }
+      }
+
+      #{$self}__ladder,
+      #{$self}__stacked {
+        &-connector {
+          background-color: map-get($values, connector);
+        }
+      }
+
+      @if $theme == dark {
+        @include gradient-border;
+      }
+    }
+  }
+
+  // Size Modifier
+  &--small {
+    .stage-progress__track--timeline {
+      padding: 0.6rem 0;
+      overflow: visible;
+    }
+
+    .stage-progress__type {
+      font-size: 12px;
+    }
+  }
+
+  // Header
+  &__header {
+    @include flex(row, space-between);
+    margin-bottom: $spacing-md;
+  }
+
+  &__type {
+    font-size: 14px;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: 12px;
+    }
+  }
+
+  &__progress {
+    font-size: 14px;
+    font-weight: 600;
+
+    @include mobile {
+      font-size: 12px;
+    }
+  }
+
+  // Labels Base
+  .stage-progress__stage-label,
+  .stage-progress__segment-label,
+  .stage-progress__step-label,
+  .stage-progress__timeline-title {
+    @include label-base;
+  }
+
+  // Pill Style
+  &--pill {
+    .stage-progress__stage-label,
+    .stage-progress__segment-label,
+    .stage-progress__step-label,
+    .stage-progress__timeline-title {
+      @include label-base;
+      top: -2rem;
+      @include absolute-center;
+      background: $primary-color;
+      color: $white-base;
+      padding: $spacing-xs $spacing-sm;
+      font-weight: 600;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  // Track Base
+  &__track {
+    @include track-base;
+
+    &--gradient,
+    &--segmented {
+      background-color: transparent;
+    }
+
+    &--steps,
+    &--timeline {
+      height: auto;
+      background: none;
+    }
+
+    &--steps {
+      padding: $spacing-md 0;
+    }
+
+    &--timeline {
+      padding: $spacing-xl 0;
+
+      @include desktop {
+        padding: $spacing-sm 0;
+      }
+    }
+
+    &--ladder,
+    &--stacked {
+      height: 300px;
+      background: none;
+      position: relative;
+    }
+
+    &--diagonal {
+      height: auto;
+      background: none;
+      padding: $spacing-xl 0;
+    }
+  }
+
+  // Fill
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    transition: width $transition-duration-fast $transition-bezier,
+      background $transition-duration-fast $transition-bezier;
+    border-radius: $border-radius-full;
+  }
+
+  // Default Variant
+  &__stages {
+    position: absolute;
+    inset: 0;
+    @include flex;
+  }
+
+  &__stage {
+    flex: 1;
+    position: relative;
+    opacity: 0.2;
+    transition: $transition-duration-fast $transition-bezier;
+
+    &--active {
+      opacity: 1;
+    }
+
+    &-label {
+      @include absolute-center;
+      top: -1.5rem;
+      font-size: 12px;
+    }
+  }
+
+  // Steps Variant
+  &__steps-container {
+    @include flex(row, space-between);
+    position: relative;
+    padding: 0 $spacing-md;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: $spacing-xl;
+      left: $spacing-xl;
+      right: $spacing-xl;
+      height: 2px;
+      z-index: 0;
+    }
+  }
+
+  &__step {
+    @include flex(column, center, center, $spacing-sm);
+    position: relative;
+    z-index: 1;
+    // @include hover-transition;
+    // transition: $transition-base;
+    cursor: pointer;
+
+    &--active {
+      .stage-progress__step-circle {
+        border-color: currentColor;
+      }
+    }
+
+    &--current {
+      .stage-progress__step-circle {
+        animation: pulse 2s infinite;
+      }
+    }
+
+    &-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 2px solid;
+      @include flex;
+      font-weight: 600;
+      transition: $transition-duration-fast $transition-bezier;
+    }
+
+    &-content {
+      @include flex(column, center, center, $spacing-xs);
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    &-threshold {
+      font-size: 12px;
+    }
+  }
+
+  // Timeline Variant
+  &__timeline {
+    &-container {
+      position: relative;
+      height: 100%;
+      padding: $spacing-lg 0;
+      width: calc(100% - 24px);
+      overflow: visible;
+    }
+
+    &-line-wrapper {
+      position: relative;
+      width: 100%;
+      height: 2px;
+    }
+
+    &-progress {
+      position: absolute;
+      inset: 0 auto 0 0;
+      transition: width $transition-duration-fast $transition-bezier;
+    }
+
+    &-item {
+      position: absolute;
+      transform: translateX(-50%);
+      @include flex(column);
+
+      &--small {
+        .stage-progress__timeline-marker,
+        .stage-progress__timeline-circle-wrapper {
+          width: 22px;
+          height: 22px;
+
+          svg {
+            width: 22px;
+            height: 22px;
+          }
+        }
+      }
+    }
+
+    &-marker {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      @include flex;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      z-index: 2;
+      padding: 0;
+
+      svg {
+        border-radius: 50%;
+        width: 26px;
+        height: 26px;
+        display: block;
+      }
+    }
+
+    &-circle-wrapper {
+      @include flex;
+      width: 100%;
+      height: 100%;
+
+      svg {
+        border-radius: 50%;
+        color: transparent;
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+    }
+
+    &-title {
+      @include absolute-center;
+      top: -2rem;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: $transition-duration-fast $transition-bezier;
+
+      @include desktop {
+        display: none;
+      }
+    }
+  }
+
+  // Ladder Variant
+  &__ladder {
+    &-container {
+      height: 100%;
+      @include flex(column-reverse, space-between);
+      padding: $spacing-md 0;
+    }
+
+    &-step {
+      @include flex(row, flex-start, center, $spacing-md);
+      opacity: 0.5;
+      transition: $transition-duration-fast $transition-bezier;
+
+      &--active {
+        opacity: 1;
+        transform: translateX(0.5rem);
+      }
+    }
+
+    &-rung {
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-lg;
+      @include flex(row, flex-start, center, $spacing-sm);
+    }
+
+    &-name {
+      font-weight: 500;
+    }
+
+    &-threshold {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    &-connector {
+      width: 2px;
+      height: 2rem;
+      margin-left: calc(0.5rem - 1px);
+    }
+
+    &-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0.5rem;
+      width: 2px;
+      transition: height $transition-duration-fast $transition-bezier;
+    }
+  }
+
+  // Diagonal Variant
+  &__diagonal {
+    &-container {
+      @include flex(row, flex-start, stretch, $spacing-xs);
+    }
+
+    &-segment {
+      flex: 1;
+      padding: $spacing-md;
+      opacity: 0.6;
+      transition: $transition-duration-fast $transition-bezier;
+
+      &--active {
+        opacity: 1;
+      }
+    }
+
+    &-content {
+      @include flex(column, center, center, $spacing-xs);
+    }
+
+    &-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    &-threshold {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+  }
+
+  // Stacked Variant
+  &__stacked {
+    &-container {
+      height: 100%;
+      position: relative;
+      @include flex(column, space-between, stretch);
+      padding: $spacing-md;
+    }
+
+    &-segment {
+      @include flex(column, flex-start, stretch);
+      opacity: 0.6;
+      transition: $transition-duration-fast $transition-bezier;
+
+      &--active {
+        opacity: 1;
+      }
+    }
+
+    &-bar {
+      padding: 0.75rem;
+      border-radius: $border-radius-lg;
+    }
+
+    &-content {
+      @include flex(row, space-between, center);
+    }
+
+    &-name {
+      font-weight: 500;
+    }
+
+    &-threshold {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    &-connector {
+      width: 2px;
+      height: 2rem;
+      margin: $spacing-sm auto;
+    }
+
+    &-fill {
+      position: absolute;
+      bottom: 0;
+      left: calc(50% - 1px);
+      width: 2px;
+      transition: height $transition-duration-fast $transition-bezier;
+    }
+  }
+
+  // Animation Keyframes
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  // Responsive Styles
+  @include mobile {
+    &__timeline {
+      &-container {
+        padding: $spacing-md 0;
+      }
+
+      &-marker {
+        width: 24px;
+        height: 24px;
+      }
+
+      &-tooltip {
+        font-size: 10px;
+        padding: $spacing-xs $spacing-sm;
+      }
+    }
+
+    &--pill {
+      .stage-progress__stage-label,
+      .stage-progress__segment-label,
+      .stage-progress__step-label,
+      .stage-progress__timeline-title {
+        font-size: 14px;
+        padding: $spacing-xs $spacing-sm;
+      }
+    }
+
+    &__stage-label,
+    &__segment-label,
+    &__step-label,
+    &__timeline-title {
+      font-size: 14px;
+    }
+
+    &__step {
+      &-circle {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      &-name {
+        display: none;
+      }
+    }
+
+    &__ladder-container {
+      padding: $spacing-sm 0;
+    }
+
+    &__diagonal {
+      &-name {
+        font-size: 12px;
+      }
+
+      &-threshold {
+        font-size: 10px;
+      }
+    }
+
+    &__stacked {
+      &-bar {
+        padding: $spacing-sm;
+      }
+
+      &-name,
+      &-threshold {
+        font-size: 12px;
+      }
+
+      &-connector {
+        height: 1.5rem;
+      }
+    }
+  }
+
+  @include tablet {
+    &__timeline {
+      &-title {
+        font-size: 12px;
+      }
+
+      &-marker {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    &__ladder {
+      &-step {
+        gap: $spacing-sm;
+      }
+
+      &-rung {
+        padding: $spacing-xs $spacing-sm;
+      }
+    }
+  }
+
+  @include desktop {
+    &__timeline {
+      &-container {
+        padding: $spacing-lg 0;
+      }
+    }
+
+    &__ladder {
+      &-container {
+        gap: $spacing-lg;
+      }
+    }
+
+    &__diagonal {
+      &-container {
+        gap: $spacing-sm;
+      }
+    }
+
+    &__stacked {
+      &-container {
+        gap: $spacing-lg;
+      }
+    }
+  }
+}

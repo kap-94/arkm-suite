@@ -23,7 +23,7 @@
     background: linear-gradient(45deg, #6366f1, #818cf8);
     border: none;
     border-radius: 9999px;
-    color: white;
+    color: white !important;
     box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
     overflow: hidden;
 
@@ -73,7 +73,7 @@
         linear-gradient(#fff 0 0);
       -webkit-mask-composite: destination-out;
       mask-composite: exclude;
-      transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background 0.6s cubic-bezier(0.4, 0, 0, 1);
       border-radius: inherit;
     }
 
@@ -81,7 +81,7 @@
       background: linear-gradient(to right, transparent, #6366f1, transparent)
         border-box;
       background-size: 100% 100%;
-      animation: gradientFlow 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation: gradientFlow 1.2s cubic-bezier(0.4, 0, 0, 1) forwards;
     }
   }
 

@@ -5,7 +5,9 @@ import { ChevronDown, LockIcon } from "lucide-react";
 import { NavItem, SidebarItemProps } from "../../types/sidebar.types";
 import { useSidebarContext } from "../../context/SidebarContext";
 import { Typography } from "@/components/Typography";
+import { Tooltip } from "@/components/Tooltip";
 import { isPathActive, isDashboardRoot } from "@/utils/path";
+import { useSettings } from "@/context/SettingsContext";
 import styles from "./SidebarItem.module.scss";
 import classNames from "classnames/bind";
 
@@ -21,6 +23,7 @@ const SubItem = ({ item, theme, onSelect }: SubItemProps) => {
   const { state, actions } = useSidebarContext();
   const router = useRouter();
   const pathname = usePathname();
+  const { language } = useSettings();
 
   const isActive = isPathActive(pathname, item.path);
   const themeClass = theme === "dark" ? "theme-dark" : "theme-light";
@@ -31,12 +34,18 @@ const SubItem = ({ item, theme, onSelect }: SubItemProps) => {
 
     onSelect();
     actions.setActiveItem(item.id);
-    router.push(item.path);
+
+    // Construir la ruta con el idioma actual
+    const localizedPath = `/${language}${item.path}`;
+    router.push(localizedPath);
   };
+
+  // Construir la ruta con el idioma actual para el Link
+  const localizedPath = `/${language}${item.path}`;
 
   return (
     <Link
-      href={item.disabled ? "#" : item.path}
+      href={item.disabled ? "#" : localizedPath}
       onClick={handleClick}
       className={cx("subitem", themeClass, {
         "subitem--active": isActive,
@@ -66,6 +75,8 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
   const [childrenHeight, setChildrenHeight] = useState<number | undefined>();
   const childrenRef = useRef<HTMLDivElement>(null);
   const { state, actions } = useSidebarContext();
+  const { language } = useSettings();
+
   const hasChildren = item.children && item.children.length > 0;
 
   const isActive =
@@ -103,10 +114,16 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
 
       actions.collapse();
       actions.setActiveItem(item.id);
-      router.push(item.path);
+
+      // Construir la ruta con el idioma actual
+      const localizedPath = `/${language}${item.path}`;
+      router.push(localizedPath);
     },
-    [item, hasChildren, actions, router]
+    [item, hasChildren, actions, router, language]
   );
+
+  // Construir la ruta con el idioma actual para el Link
+  const localizedPath = `/${language}${item.path}`;
 
   const handleSubItemSelect = useCallback(() => {
     if (state.isMobile) {
@@ -116,57 +133,63 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
 
   const themeClass = theme === "dark" ? "theme-dark" : "theme-light";
 
-  const renderLink = () => (
-    <Link
-      href={item.disabled ? "#" : item.path}
-      onClick={handleClick}
-      className={cx("item__button", themeClass, {
-        "item__button--collapsed": !state.isExpanded,
-        "item__button--expanded": state.isExpanded,
-        "item__button--active": isActive,
-        "item__button--disabled": item.disabled,
-      })}
-    >
+  const renderLink = () => {
+    const iconContent = (
       <span className={cx("item__icon", themeClass)}>{item.icon}</span>
-      {state.isExpanded && (
-        <>
-          <Typography
-            variant="p2"
-            theme={theme}
-            className={cx("item__title", themeClass)}
-            noWrap
-          >
-            {item.title}
-          </Typography>
-          {hasChildren && (
-            <ChevronDown
-              className={cx("item__chevron", themeClass, {
-                "item__chevron--rotated": isOpen,
-              })}
-              strokeWidth={1.5}
-            />
-          )}
-          {item.disabled && <LockIcon className={cx("item__lock")} size={16} />}
-        </>
-      )}
-    </Link>
-  );
+    );
 
-  const renderTooltip = () => {
-    if (!item.disabled) return null;
+    const expandedContent = (
+      <>
+        {iconContent}
+        <Typography
+          variant="p2"
+          theme={theme}
+          className={cx("item__title", themeClass)}
+          noWrap
+        >
+          {item.title}
+        </Typography>
+        {hasChildren && (
+          <ChevronDown
+            className={cx("item__chevron", themeClass, {
+              "item__chevron--rotated": isOpen,
+            })}
+            strokeWidth={1.5}
+          />
+        )}
+        {item.disabled && <LockIcon className={cx("item__lock")} size={16} />}
+      </>
+    );
+
+    const linkClassNames = cx("item__button", themeClass, {
+      "item__button--collapsed": !state.isExpanded,
+      "item__button--expanded": state.isExpanded,
+      "item__button--active": isActive,
+      "item__button--disabled": item.disabled,
+    });
+
+    const linkContent = !state.isExpanded ? (
+      <Tooltip
+        className={cx("item__tooltip")}
+        content={item.title}
+        theme={{ type: theme }}
+        spacing={-4}
+        position="right"
+      >
+        <div className={linkClassNames}>{iconContent}</div>
+      </Tooltip>
+    ) : (
+      <div className={linkClassNames}>{expandedContent}</div>
+    );
 
     return (
-      <div
-        className={cx("tooltip", {
-          "tooltip--collapsed": !state.isExpanded,
-        })}
+      <Link
+        href={item.disabled ? "#" : localizedPath}
+        onClick={handleClick}
+        className={cx("item__link")}
       >
-        <Typography variant="p3" theme={theme} className={cx("tooltip__text")}>
-          Esta es una versión demostrativa con funcionalidades limitadas. El
-          acceso completo al sistema está restringido por derechos de propiedad
-          del cliente.
-        </Typography>
-      </div>
+        {linkContent}
+      </Link>
     );
   };
 
@@ -200,9 +223,10 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
     <li className={cx("item", themeClass)}>
       <div className={cx("item-wrapper", "group")}>
         {renderLink()}
-        {renderTooltip()}
         {renderChildren()}
       </div>
     </li>
   );
 };
+
+export default SidebarItem;

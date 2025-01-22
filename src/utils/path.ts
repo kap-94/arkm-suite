@@ -5,7 +5,7 @@
  */
 export const normalizePathForComparison = (path: string): string => {
   // Elimina el locale y normaliza la ruta
-  const withoutLocale = path.replace(/^\/[a-z]{2}\//, "/");
+  const withoutLocale = path.replace(/^\/[a-z]{}\//, "/");
   // Asegura que la ruta comience con /dashboard si no lo hace
   return withoutLocale.startsWith("/dashboard")
     ? withoutLocale

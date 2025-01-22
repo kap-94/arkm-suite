@@ -57,6 +57,101 @@ export interface UserInfoDictionary {
   };
 }
 
+export interface ProfileDictionary {
+  // Page Header
+  title: string;
+  subtitle: string;
+
+  // Profile Image
+  image: {
+    upload: {
+      label: string;
+      button: string;
+      dragDrop: string;
+      sizeLimit: string;
+      formats: string;
+    };
+    errors: {
+      invalidFormat: string;
+      sizeExceeded: string;
+      uploadFailed: string;
+    };
+  };
+  profileImage: {
+    changePhoto: string;
+  };
+  // Update Profile Form
+  form: {
+    fields: {
+      fullName: {
+        label: string;
+        placeholder: string;
+      };
+      email: {
+        label: string;
+        placeholder: string;
+      };
+      nationality: {
+        label: string;
+        placeholder: string;
+      };
+      nationalID: {
+        label: string;
+        placeholder: string;
+      };
+    };
+    validation: {
+      required: string;
+      fullNameRequired: string;
+      emailRequired: string;
+      emailInvalid: string;
+      emailTooLong: string;
+      nationalityRequired: string;
+      nationalIDRequired: string;
+    };
+    buttons: {
+      submit: string;
+      submitting: string;
+      cancel: string;
+    };
+  };
+
+  // Country Selection
+  countries: {
+    mexico: string;
+    unitedStates: string;
+    canada: string;
+    spain: string;
+    brazil: string;
+  };
+
+  // Status Messages
+  status: {
+    loading: string;
+    success: string;
+    error: string;
+    updating: string;
+    updated: string;
+  };
+
+  // Error Messages
+  errors: {
+    imageUpdate: string;
+    profileUpdate: string;
+    unexpected: string;
+    network: string;
+  };
+
+  // Accessibility
+  aria: {
+    profileImage: string;
+    emailInput: string;
+    countrySelect: string;
+    uploadButton: string;
+    submitButton: string;
+  };
+}
+
 export interface SettingsDictionary {
   title: string;
   subtitle: string;
@@ -211,6 +306,50 @@ export interface AuthDictionary {
   };
 }
 
+export interface DashboardDictionaryOld {
+  title: string;
+  subtitle: string;
+  stats: {
+    activeProjects: {
+      label: string;
+      tooltip: string;
+    };
+    completed: {
+      label: string;
+      tooltip: string;
+    };
+    overallProgress: {
+      label: string;
+      tooltip: string;
+    };
+    notifications: {
+      label: string;
+      tooltip: string;
+    };
+  };
+  projects: {
+    title: string;
+    data: Array<{
+      id: string;
+      name: string;
+      description: string;
+      status: string;
+      progress: number;
+      lastUpdated: string;
+      priority?: "low" | "medium" | "high";
+      client?: string;
+    }>;
+  };
+  recentFiles: {
+    title: string;
+    empty: string;
+  };
+  notifications: {
+    title: string;
+    empty: string;
+  };
+}
+
 export interface CommonDictionary {
   loading: string;
   error: string;
@@ -227,5 +366,7 @@ export interface Dictionary {
   settings: SettingsDictionary;
   search: SearchDictionary;
   userInfo: UserInfoDictionary;
+  profile: ProfileDictionary;
+  dashboard: DashboardDictionary;
   common: CommonDictionary;
 }

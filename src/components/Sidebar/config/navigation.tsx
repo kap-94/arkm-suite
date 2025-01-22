@@ -12,6 +12,7 @@ import {
   EyeIcon,
   FileText,
   Palette,
+  Layers,
 } from "lucide-react";
 
 // Definimos los IDs válidos como un tipo
@@ -27,7 +28,8 @@ type NavigationIconId =
 
 // Mapeo de IDs a iconos con tipo explícito
 export const navigationIcons: Record<NavigationIconId, LucideIcon> = {
-  dashboard: LayoutDashboard,
+  // dashboard: LayoutDashboard,
+  dashboard: Layers,
   projects: Layout,
   documents: Library,
   settings: Settings,

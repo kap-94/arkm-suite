@@ -5,18 +5,18 @@
 $header-theme-map: (
   dark: (
     background: $black-base,
-    border: rgba($white-base, 0.3),
+    border: rgba($white-base, 0.25),
     glow: $primary-color,
     icon: $text-primary,
   ),
   light: (
-    background: $white-light,
+    background: $white-color,
     border: rgba($black-base, 0.1),
     glow: rgba($primary-color, 0.5),
     icon: $black-base,
   ),
   custom: (
-    background: var(--custom-background, rgba($black-base, 0.2)),
+    background: var(--custom-background, rgba($black-base, 0)),
     border: var(--custom-border, rgba($primary-color, 0.3)),
     glow: var(--custom-glow, rgba($primary-color, 0.5)),
     icon: var(--custom-icon, $text-primary),

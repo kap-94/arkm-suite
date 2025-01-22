@@ -6,40 +6,18 @@
 $header-theme-map: (
   dark: (
     background: $black-base,
-    border: rgba($white-base, 0.3),
+    border: rgba($white-base, 0.25),
     glow: $primary-color,
-    search-background: convert-to-rgba($black-light, 0.3),
-    search-border: convert-to-rgba($text-primary, 0.1),
-    search-text: $text-primary,
-    search-placeholder: $text-secondary,
-    search-group-text: convert-to-rgba($text-primary, 0.7),
-    search-hover: convert-to-rgba($primary-color, 0.1),
   ),
   light: (
-    background: $white-light,
+    background: $white-color,
     border: rgba($black-base, 0.1),
     glow: rgba($primary-color, 0.5),
-    search-background: convert-to-rgba($white-dark, 0.1),
-    search-border: convert-to-rgba($black-base, 0.1),
-    search-text: $black-base,
-    search-placeholder: $black-light,
-    search-group-text: convert-to-rgba($black-base, 0.7),
-    search-hover: convert-to-rgba($primary-color, 0.05),
   ),
   custom: (
-    background: var(--custom-background, rgba($black-base, 0.2)),
+    background: var(--custom-background, rgba($black-base, 0)),
     border: var(--custom-border, rgba($primary-color, 0.3)),
     glow: var(--custom-glow, rgba($primary-color, 0.5)),
-    search-background:
-      var(--custom-search-background, convert-to-rgba($black-light, 0.3)),
-    search-border:
-      var(--custom-search-border, convert-to-rgba($text-primary, 0.1)),
-    search-text: var(--custom-search-text, $text-primary),
-    search-placeholder: var(--custom-search-placeholder, $text-secondary),
-    search-group-text:
-      var(--custom-search-group-text, convert-to-rgba($text-primary, 0.7)),
-    search-hover:
-      var(--custom-search-hover, convert-to-rgba($primary-color, 0.1)),
   ),
 );
 
@@ -73,25 +51,6 @@ $header-theme-map: (
       @include subtle-header-glow(
         var(--header-glow, map-get(map-get($header-theme-map, $theme), glow))
       );
-
-      // Search-specific theme styles
-      .search-group-header {
-        color: var(--header-search-group-text);
-        border-bottom: 1px solid var(--header-search-border);
-      }
-
-      .search-option {
-        color: var(--header-search-text);
-
-        &:hover {
-          background-color: var(--header-search-hover);
-        }
-
-        &__icon {
-          color: var(--header-search-text);
-          opacity: 0.7;
-        }
-      }
     }
   }
 
@@ -105,30 +64,7 @@ $header-theme-map: (
   &__left {
     flex: 1;
     @include flex(row, flex-start, center, $spacing-xl);
-    // max-width: 640px;
     max-width: 480px;
-
-    // SearchBar container styles
-    .search-bar {
-      flex: 1;
-      max-width: 100%;
-
-      &__input {
-        background-color: var(--header-search-background);
-        border-color: var(--header-search-border);
-        color: var(--header-search-text);
-
-        &::placeholder {
-          color: var(--header-search-placeholder);
-        }
-      }
-
-      &__button {
-        background-color: var(--header-search-background);
-        border-color: var(--header-search-border);
-        color: var(--header-search-text);
-      }
-    }
   }
 
   &__mobile-menu {
@@ -141,34 +77,6 @@ $header-theme-map: (
 
   &__actions {
     @include flex(row, flex-start, center, $spacing-lg);
-  }
-
-  // Search results styling
-  .search-group-header {
-    padding: $spacing-xs $spacing-md;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .search-option {
-    @include flex(row, flex-start, center, $spacing-sm);
-    padding: $spacing-sm $spacing-md;
-    @include transition(background-color);
-    cursor: pointer;
-
-    &__icon {
-      @include flex-center;
-      width: 20px;
-      height: 20px;
-      @include transition(opacity);
-    }
-
-    &__label {
-      flex: 1;
-      @include text-truncate;
-    }
   }
 
   @include mobile {
@@ -196,34 +104,15 @@ $header-theme-map: (
     &__actions {
       gap: $spacing-md;
     }
-
-    // Adjust search styles for mobile
-    .search-bar {
-      &__button {
-        span {
-          display: none;
-        }
-      }
-    }
   }
 
   @include mobile-small {
     &__left {
       gap: $spacing-sm;
     }
-
-    .search-option {
-      &__label {
-        font-size: 0.875rem;
-      }
-    }
   }
 
   @include reduced-motion {
     transition: none;
-
-    .search-option {
-      transition: none;
-    }
   }
 }

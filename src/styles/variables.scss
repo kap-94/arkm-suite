@@ -14,6 +14,7 @@ $primary-dark-80: rgba($primary-dark, 0.8);
 $indigo-light: #9698fd;
 
 // White Colors
+$white-color: #ffffff;
 $white-base: rgb(241, 228, 228);
 $white-light: #f7f7f7; // Suave para fondos
 $white-dark: #e0e0e0; // Oscuro para bordes o fondos sutiles
@@ -50,9 +51,9 @@ $text-secondary-60: rgba($text-primary, 0.6);
 $text-secondary-50: rgba($text-primary, 0.5);
 
 // Tertiary Text
-$text-tertiary: rgba($text-primary, 0.4);
+$text-tertiary: rgba($text-primary, 0.6);
 $text-tertiary-30: rgba($text-primary, 0.3);
-$text-tertiary-20: rgba($text-primary, 0.2);
+$text-tertiary-20: rgba($text-primary, 0);
 
 // Interactive Text
 $text-link: $primary-color;
@@ -79,6 +80,7 @@ $spacing-md: 16px;
 $spacing-lg: 24px;
 $spacing-xl: 32px;
 $spacing-xxl: 40px;
+$spacing-xxxl: 48px;
 
 // Breakpoints
 $mobile-small-breakpoint: 480px; // Móviles pequeños
@@ -102,11 +104,9 @@ $transition-duration: 0.5s;
 $transition-duration-fast: 0.3s;
 
 // Shadows
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-  0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 10px 25px rgba(0, 0, 0, 0.07);
+$shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.1);
 
 // Z-indices
 $z-index-header: 100;

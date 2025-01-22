@@ -8,13 +8,13 @@
   position: relative;
   padding-top: 122px;
 
-  @include tablet {
-    padding-top: 140px;
+  @include mobile {
+    // padding-top: 142px;
+    padding-top: 150px;
   }
 
   // Theme variants
   &--light {
-    // background: linear-gradient(180deg, $white-light, $white-dark);
     background-color: $white-light;
 
     .layout__content {
@@ -56,15 +56,18 @@
 
   &__content {
     position: relative;
-    @include container;
+    // @include container;
     min-height: 100vh;
     overflow-x: hidden;
     @include elevation(3);
-    padding: $spacing-xl $spacing-xl;
+    padding: $spacing-lg;
 
     @include tablet {
-      padding: $spacing-lg $spacing-md;
       border-radius: 0;
+    }
+
+    @include mobile {
+      padding: $spacing-md;
     }
 
     // Reducción de movimiento para accesibilidad

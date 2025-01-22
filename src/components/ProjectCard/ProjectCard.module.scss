@@ -1,213 +1,185 @@
-// Variables
-$colors: (
-  primary: #6366f1,
-  text: (
-    primary: rgb(241, 228, 228),
-    secondary: rgba(241, 228, 228, 0.8),
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$project-card-theme-map: (
+  dark: (
+    background:
+      linear-gradient(
+        to right,
+        rgba($primary-color, 0.08),
+        rgba($primary-color, 0.05)
+      ),
+    border: rgba($primary-color, 0),
+    text: $text-primary,
+    secondary-text: $text-secondary,
+    gradient: linear-gradient(45deg, $primary-color, transparent),
   ),
-  status: (
-    in-progress: (
-      bg: #fef3c7,
-      text: #854d0e,
-    ),
-    completed: (
-      bg: #d1fae5,
-      text: #064e3b,
-    ),
-    on-hold: (
-      bg: #f3f4f6,
-      text: #374151,
-    ),
+  light: (
+    background: rgba($white-color, 0.9),
+    border: rgba($primary-light, 0.7),
+    text: $black-base,
+    secondary-text: $text-secondary,
+    gradient: linear-gradient(45deg, $primary-light, transparent),
   ),
-  hover: #fdfdfd,
+  custom: (
+    background: var(--project-card-background),
+    border: var(--project-card-border),
+    text: var(--project-card-text),
+    secondary-text: var(--project-card-secondary-text),
+    gradient: var(--project-card-gradient),
+  ),
 );
 
-$spacing: (
-  xs: 0.2rem,
-  sm: 0.5rem,
-  md: 0.75rem,
-  lg: 1rem,
-  xl: 1.25rem,
-  xxl: 1.5rem,
+$status-theme-map: (
+  inProgress: (
+    bg: #fef3c7,
+    text: $black-dark,
+  ),
+  completed: (
+    bg: #d1fae5,
+    text: #064e3b,
+  ),
+  onHold: (
+    bg: #eaeaea,
+    text: $black-dark,
+  ),
 );
-
-$font-sizes: (
-  xs: 0.7rem,
-  sm: 0.75rem,
-  base: 0.875rem,
-  lg: 1rem,
-);
-
-// Mixins
-@mixin flex($justify: flex-start, $align: center) {
-  display: flex;
-  justify-content: $justify;
-  align-items: $align;
-}
-
-@mixin gradient-border {
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    border: 1px solid transparent;
-    background: linear-gradient(45deg, map-get($colors, primary), transparent)
-      border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    z-index: -1;
-  }
-}
 
 .project-card {
   $self: &;
-
-  background: linear-gradient(
-    to right,
-    rgba(map-get($colors, primary), 0.03),
-    rgba(map-get($colors, primary), 0.01)
-  );
-  border-left: 2px solid rgba(map-get($colors, primary), 0.2);
-  border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  padding: map-get($spacing, xxl);
   position: relative;
+  border-radius: $border-radius-md;
+  padding: $spacing-xl;
   isolation: isolate;
+  width: 100%;
 
-  @include gradient-border;
-
-  @media only screen and (max-width: 640px) {
-    padding: map-get($spacing, lg);
+  @include mobile {
+    padding: $spacing-lg;
   }
 
-  // Size Variants
-  &--small {
-    padding: map-get($spacing, lg);
+  @each $theme, $values in $project-card-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
 
-    #{$self}__header {
-      &-status {
-        margin-bottom: 0.85rem;
-        // padding: map-get($spacing, xs) map-get($spacing, sm);
-        font-size: map-get($font-sizes, xs);
+      @if $theme == light {
+        // border-left: 2px solid map-get($values, border);
+        // border: 1px solid map-get($values, border);
+        box-shadow: $shadow-sm;
+      } @else {
+        border-left: 2px solid map-get($values, border);
       }
 
-      &-title {
-        font-size: map-get($font-sizes, base);
-        margin-bottom: map-get($spacing, md);
-        margin-left: 1px;
-        line-height: 1.4;
-      }
-    }
-
-    #{$self}__footer {
-      margin-top: map-get($spacing, md);
-
-      &-updated,
-      &-link {
-        font-size: map-get($font-sizes, sm);
+      #{$self}__header-title {
+        font-weight: 500;
       }
 
-      &-link-icon {
-        width: map-get($font-sizes, base);
-        height: map-get($font-sizes, base);
+      #{$self}__description {
+        font-weight: 400;
+      }
+
+      #{$self}__header-title,
+      #{$self}__description,
+      #{$self}__footer-link {
+        color: map-get($values, text);
+      }
+
+      @if $theme == dark {
+        @include gradient-border;
       }
     }
   }
 
-  // Header
   &__header {
-    @include flex(space-between, flex-start);
+    @include flex(column, flex-start, stretch);
+
+    &-top {
+      @include flex(row, space-between, center);
+      margin-bottom: $spacing-xl;
+
+      @include mobile-medium {
+        margin-bottom: $spacing-lg;
+      }
+    }
 
     &-status {
       display: inline-flex;
       align-items: center;
-      border-radius: 9999px;
+      border-radius: $border-radius-full;
       padding: 0.25rem 0.625rem;
-      font-size: map-get($font-sizes, sm);
-      font-weight: 500;
-      margin-bottom: map-get($spacing, xl);
+      // margin-bottom: $spacing-xl;
 
-      @each $status, $colors in map-get($colors, status) {
+      @each $status, $colors in $status-theme-map {
         &--#{$status} {
           background-color: map-get($colors, bg);
-          color: map-get($colors, text);
+          color: map-get($colors, text) !important;
         }
-      }
-
-      @media only screen and (max-width: 640px) {
-        margin-bottom: map-get($spacing, lg);
-        font-size: map-get($font-sizes, xs);
       }
     }
 
     &-title {
-      font-size: map-get($font-sizes, lg);
-      font-weight: 700;
-      color: map-get($colors, text, primary);
-      letter-spacing: 0.01em;
-
-      @media only screen and (max-width: 640px) {
-        font-size: map-get($font-sizes, base);
-      }
+      margin-top: 0;
     }
   }
 
-  // Description
   &__description {
-    margin-block: map-get($spacing, md) map-get($spacing, xxl);
-    font-size: map-get($font-sizes, lg);
-    letter-spacing: 0.01em;
-    color: map-get($colors, text, primary);
-    line-height: 1.4;
+    margin-block: $spacing-md $spacing-xl;
     max-width: 640px;
 
-    @media only screen and (max-width: 640px) {
-      font-size: map-get($font-sizes, base);
+    @include mobile-medium {
+      margin-block: $spacing-md;
     }
   }
 
-  // Footer
   &__footer {
-    margin-top: map-get($spacing, lg);
-    @include flex(space-between);
+    margin-top: $spacing-lg;
+    @include flex(row, space-between, center);
 
     &-updated {
-      font-size: map-get($font-sizes, base);
-      color: map-get($colors, text, secondary);
-      letter-spacing: 0.01em;
-
-      @media only screen and (max-width: 640px) {
-        font-size: map-get($font-sizes, sm);
-      }
+      margin-bottom: 0.2em;
     }
 
     &-link {
       @include flex;
-      font-size: map-get($font-sizes, base);
-      font-weight: 500;
-      color: map-get($colors, text, primary);
-      transition: color 0.3s ease;
-      letter-spacing: 0.01em;
+      @include transition(color);
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 0.2em;
+      gap: $spacing-xs;
+    }
+  }
+
+  &--small {
+    padding: $spacing-lg;
+
+    @include mobile {
+      padding: $spacing-md;
+    }
+
+    #{$self}__header {
+      &-top {
+        @include flex(row, space-between, center);
+      }
+
+      &-title {
+        margin-bottom: $spacing-md;
+        margin-left: 1px;
+      }
+    }
+
+    & #{$self}__priority {
+      font-size: 12px;
+      margin: unset;
 
       @media only screen and (max-width: 640px) {
-        font-size: map-get($font-sizes, sm);
+        font-size: 11px;
       }
+    }
 
-      &:hover {
-        color: map-get($colors, hover);
-        text-decoration-color: map-get($colors, hover);
-      }
+    #{$self}__footer {
+      margin-top: $spacing-md;
 
-      &-icon {
-        margin-left: 0.3rem;
+      &-updated {
+        margin-bottom: unset;
       }
     }
   }

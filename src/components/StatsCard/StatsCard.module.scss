@@ -1,18 +1,154 @@
-$card-radius: 12px;
-$icon-size: 24px;
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$stats-card-theme-map: (
+  dark: (
+    background:
+      linear-gradient(
+        135deg,
+        rgba($primary-light, 0.75),
+        rgba($primary-color, 0.8)
+      ),
+    border: rgba($primary-color, 0.9),
+    icon-bg: rgba($white-base, 0.1),
+    icon-border: rgba($white-base, 0),
+    icon-color: $white-base,
+    text: $text-primary,
+    secondary-text: $text-primary-90,
+    shadow: $shadow-lg,
+    pattern: rgba($white-base, 0.05),
+    overlay: rgba($white-base, 0.1),
+  ),
+  light: (
+    background: (
+      linear-gradient(135deg, rgba($white-base, 0.8) 100%, $white-color 100%),
+      repeating-linear-gradient(
+        135deg,
+        rgba($white-color, 0.05) 0%,
+        rgba($white-color, 0.05) 10%,
+        transparent 10%,
+        transparent 20%
+      ),
+    ),
+    background-size: (
+      100% 100%,
+      40px 40px,
+    ),
+    background-position: (
+      0 0,
+      0 0,
+    ),
+    border: $white-base,
+    icon-bg: rgba($white-light, 0.15),
+    icon-border: rgba($primary-color, 0),
+    icon-color: $primary-dark,
+    text: rgba($black-base, 0.7),
+    secondary-text: rgba($black-base, 0.7),
+    // secondary-text: $black-base,
+    shadow: $shadow-sm,
+    pattern: rgba($primary-light, 0.05),
+    overlay: rgba($white-base, 0.25),
+    backdrop-filter: blur(8px),
+  ),
+
+  // light: (
+  //   background:
+  //     linear-gradient(
+  //       135deg,
+  //       rgba($primary-light, 0.8),
+  //       rgba($primary-color, 0.9)
+  //     ),
+  //   border: transparent,
+  //   icon-bg: rgba($white-light, 0.15),
+  //   icon-border: rgba($primary-color, 0.),
+  //   icon-color: #ffffff,
+  //   text: #ffffff,
+  //   secondary-text: #ffffff,
+  //   shadow: $shadow-md,
+  //   pattern: rgba($primary-light, 0.05),
+  //   overlay: rgba($white-light, 0.25),
+  //   backdrop-filter: blur(8px),
+  // ),
+  custom:
+    (
+      background: var(--stats-card-background),
+      border: var(--stats-card-border),
+      icon-bg: var(--stats-card-icon-bg),
+      icon-border: var(--stats-card-icon-border),
+      icon-color: var(--stats-card-icon-color),
+      text: var(--stats-card-text),
+      secondary-text: var(--stats-card-secondary-text),
+      shadow: var(--stats-card-shadow),
+      pattern: var(--stats-card-pattern),
+      overlay: var(--stats-card-overlay),
+    ),
+);
 
 .stats-card {
   position: relative;
-  padding: 1.5rem;
-  border-radius: $card-radius;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
-  background: linear-gradient(135deg, rgba(#818cf8, 0.75), rgba(#6366f1, 0.8));
-  border: 1px solid rgba(#6366f1, 0.9);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: $spacing-lg;
+  border-radius: $border-radius-lg;
+  transition: all $transition-duration-fast ease;
   overflow: hidden;
 
-  // Añadimos un sutil patrón de fondo
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: #27ae60;
+    border-radius: 12px;
+  }
+
+  @each $theme, $values in $stats-card-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+      border: 1px solid map-get($values, border);
+      box-shadow: map-get($values, shadow);
+
+      &::before {
+        background: linear-gradient(
+          45deg,
+          map-get($values, pattern) 25%,
+          transparent 25%,
+          transparent 50%,
+          map-get($values, pattern) 50%,
+          map-get($values, pattern) 75%,
+          transparent 75%
+        );
+      }
+
+      .stats-card__icon-wrapper {
+        background: map-get($values, icon-bg);
+        border: 1px solid map-get($values, icon-border);
+      }
+
+      .stats-card__icon {
+        color: map-get($values, icon-color);
+      }
+
+      .stats-card__label {
+        color: map-get($values, secondary-text);
+      }
+
+      .stats-card__value {
+        color: map-get($values, text);
+      }
+
+      .stats-card__graph {
+        &::before {
+          background: linear-gradient(
+            180deg,
+            map-get($values, pattern) 0%,
+            transparent 100%
+          );
+        }
+      }
+    }
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -20,20 +156,10 @@ $icon-size: 24px;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.05) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.05) 50%,
-      rgba(255, 255, 255, 0.05) 75%,
-      transparent 75%
-    );
     background-size: 4px 4px;
     opacity: 0.4;
   }
 
-  // Efecto de brillo en hover
   &::after {
     content: "";
     position: absolute;
@@ -43,137 +169,114 @@ $icon-size: 24px;
     height: 200%;
     background: radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.1) 0%,
+      rgba($white-base, 0.1) 0%,
       transparent 70%
     );
     transform: rotate(45deg);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity $transition-duration-fast ease;
   }
 
   &:hover::after {
     opacity: 1;
   }
 
-  @media only screen and (max-width: 768px) {
-    padding: 1.25rem;
-  }
-
-  @media only screen and (max-width: 640px) {
-    padding: 1rem;
-  }
-
   &__content {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
+    gap: 20px;
     z-index: 1;
-
-    @media only screen and (max-width: 640px) {
-      gap: 0.875rem;
-    }
   }
 
   &__icon-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: $card-radius;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    color: #f5f5f5;
-    transition: all 0.3s ease;
+    @include flex($justify: center, $align: center);
+    padding: 12px;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
-
-    // Efecto de gradiente en hover
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.1),
-        transparent
-      );
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    @media only screen and (max-width: 640px) {
-      padding: 0.575rem;
-    }
   }
 
   &__icon {
-    color: #f5f5f5;
-
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-
-    @media only screen and (max-width: 640px) {
-      height: 20px;
-      width: 20px;
-    }
+    filter: drop-shadow(0 2px 4px rgba($black-base, 0.1));
   }
 
   &__text {
     flex-grow: 1;
     min-width: 0;
-    // text-wrap: nowrap;
-
-    // @media only screen and (max-width: 640px) {
-    //   text-wrap: unset;
-    // }
+    @include flex($direction: column, $align: flex-start, $gap: $spacing-xs);
   }
 
   &__label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 0.325rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    line-height: 1.275;
-
-    @media only screen and (max-width: 640px) {
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-bottom: 0.275rem;
-    }
+    line-height: 1.25;
   }
 
   &__value {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #ffffff;
-    line-height: 1.2;
+    line-height: 1;
     letter-spacing: -0.5px;
 
-    // Añadir una línea decorativa
     &::after {
       content: "";
       display: block;
-      width: 24px;
+      width: 22px;
       height: 2px;
-      background: rgba(255, 255, 255, 0.3);
-      margin-top: 0.5rem;
+      background: currentColor;
+      margin-top: 8px;
       border-radius: 2px;
+      opacity: 0.35;
+    }
+  }
 
-      @media only screen and (max-width: 640px) {
-        margin-top: 0.35rem;
-        width: 16px;
-      }
+  &__graph {
+    position: relative;
+    width: 100%;
+    // height: 120px;
+    margin-top: $spacing-xs;
+    opacity: 0.8;
+    transition: opacity $transition-duration-fast ease;
+    z-index: 1;
+
+    &:hover {
+      opacity: 1;
     }
 
-    @media only screen and (max-width: 640px) {
-      font-size: 1.5rem;
+    // &::before {
+    //   content: "";
+    //   position: absolute;
+    //   inset: 0;
+    //   border-radius: $border-radius-lg;
+    //   pointer-events: none;
+    //   z-index: 1;
+    // }
+  }
+
+  @include tablet {
+    padding: 20px;
+
+    &__content {
+      gap: 14px;
     }
+
+    &__icon-wrapper {
+      padding: 9px;
+    }
+
+    &__icon {
+      height: 20px;
+      width: 20px;
+    }
+
+    &__value::after {
+      margin-top: 6px;
+      width: 16px;
+    }
+  }
+
+  @include mobile {
+    padding: $spacing-md;
   }
 }

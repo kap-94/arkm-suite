@@ -105,11 +105,11 @@ export const DEFAULT_THEME_VALUES: Record<ThemeType, SidebarThemeValues> = {
     text: "rgba(242, 232, 232, 0.965)",
     textSecondary: "rgba(242, 232, 232, 0.7)",
     textTertiary: "rgba(242, 232, 232, 0.5)",
-    border: "rgba(242, 232, 232, 0.2)",
+    border: "rgba(242, 232, 232, 0.)",
     overlayBg: "0, 0, 0",
     overlayOpacity: "0.5",
     overlayBlur: "4px",
-    overlayMobileOpacity: "0.2",
+    overlayMobileOpacity: "0.",
     overlayMobileBlur: "2px",
   },
   light: {
@@ -121,7 +121,7 @@ export const DEFAULT_THEME_VALUES: Record<ThemeType, SidebarThemeValues> = {
     overlayBg: "255, 255, 255",
     overlayOpacity: "0.8",
     overlayBlur: "4px",
-    overlayMobileOpacity: "0.2",
+    overlayMobileOpacity: "0.",
     overlayMobileBlur: "2px",
   },
   custom: {}, // Los valores personalizados se proporcionan a través de props

@@ -1,0 +1,89 @@
+
+{
+    "meta": {
+      "title": "Tu Perfil",
+      "description": "Administra y actualiza los detalles de tu perfil",
+      "keywords": ["perfil", "actualizar", "información del usuario"]
+    },
+    "header": {
+      "title": "Tu Perfil",
+      "subtitle": "Actualiza los detalles de tu perfil",
+      "aria": "Encabezado del perfil"
+    },
+    "image": {
+      "upload": {
+        "label": "Imagen de Perfil",
+        "button": "Subir Imagen",
+        "dragDrop": "Arrastra y suelta una imagen aquí",
+        "sizeLimit": "Tamaño máximo: 5MB",
+        "formats": "Formatos aceptados: JPG, PNG"
+      },
+      "errors": {
+        "invalidFormat": "Formato de imagen inválido",
+        "sizeExceeded": "El tamaño de la imagen excede el límite",
+        "uploadFailed": "Error al subir la imagen"
+      }
+    },
+    "form": {
+      "fields": {
+        "fullName": {
+          "label": "Nombre Completo",
+          "placeholder": "Introduce tu nombre completo"
+        },
+        "email": {
+          "label": "Correo Electrónico",
+          "placeholder": "Introduce tu correo electrónico"
+        },
+        "nationality": {
+          "label": "Nacionalidad",
+          "placeholder": "Selecciona tu nacionalidad"
+        },
+        "nationalID": {
+          "label": "Identificación Nacional",
+          "placeholder": "Introduce tu identificación nacional"
+        }
+      },
+      "validation": {
+        "required": "Este campo es obligatorio",
+        "fullNameRequired": "El nombre completo es obligatorio",
+        "emailRequired": "El correo electrónico es obligatorio",
+        "emailInvalid": "Formato de correo electrónico inválido",
+        "emailTooLong": "El correo electrónico es demasiado largo",
+        "nationalityRequired": "La nacionalidad es obligatoria",
+        "nationalIDRequired": "La identificación nacional es obligatoria"
+      },
+      "buttons": {
+        "submit": "Enviar",
+        "submitting": "Enviando...",
+        "cancel": "Cancelar"
+      }
+    },
+    "countries": {
+      "mexico": "México",
+      "unitedStates": "Estados Unidos",
+      "canada": "Canadá",
+      "spain": "España",
+      "brazil": "Brasil"
+    },
+    "status": {
+      "loading": "Cargando...",
+      "success": "Perfil actualizado con éxito",
+      "error": "Ocurrió un error",
+      "updating": "Actualizando perfil...",
+      "updated": "Perfil actualizado"
+    },
+    "errors": {
+      "imageUpdate": "Error al actualizar la imagen de perfil",
+      "profileUpdate": "Error al actualizar el perfil",
+      "unexpected": "Ocurrió un error inesperado",
+      "network": "Error de red"
+    },
+    "aria": {
+      "profileImage": "Imagen de perfil",
+      "emailInput": "Entrada de correo electrónico",
+      "countrySelect": "Selección de país",
+      "uploadButton": "Botón de subir imagen",
+      "submitButton": "Botón de enviar"
+    }
+  }
+  

@@ -1,5 +1,5 @@
 // utils.ts
-import { Stage, Size } from './types';
+import { Stage, Size, StageProgressTheme } from "./types";
 
 /**
  * Ordena los stages por threshold de menor a mayor
@@ -11,8 +11,8 @@ export const sortStages = (stages: Stage[]): Stage[] => {
 /**
  * Obtiene el tamaño del icono basado en el tamaño del componente
  */
-export const getIconSize = (size: Size = 'default'): number => {
-  return size === 'small' ? 22 : 26;
+export const getIconSize = (size: Size = "default"): number => {
+  return size === "small" ? 22 : 26;
 };
 
 /**
@@ -20,14 +20,19 @@ export const getIconSize = (size: Size = 'default'): number => {
  */
 export const hexToRgb = (hex: string) => {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const fullHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+  const fullHex = hex.replace(
+    shorthandRegex,
+    (_, r, g, b) => r + r + g + g + b + b
+  );
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
-  
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
 };
 
 /**
@@ -35,15 +40,15 @@ export const hexToRgb = (hex: string) => {
  */
 export const getStageColor = (stage: Stage, index: number): string => {
   if (stage.color) return stage.color;
-  
+
   const defaultColors = [
-    '#93c5fd', // Azul claro
-    '#60a5fa', // Azul medio
-    '#4d7fff', // Azul
-    '#14b8a6', // Verde azulado
-    '#4ade80'  // Verde
+    "#93c5fd", // Azul claro
+    "#60a5fa", // Azul medio
+    "#4d7fff", // Azul
+    "#14b8a6", // Verde azulado
+    "#4ade80", // Verde
   ];
-  
+
   return defaultColors[index % defaultColors.length];
 };
 
@@ -66,7 +71,7 @@ export const calculateProgress = (
 export const getCurrentStage = (stages: Stage[], progress: number): Stage => {
   const sortedStages = sortStages(stages);
   return (
-    sortedStages.find(stage => stage.threshold >= progress) ||
+    sortedStages.find((stage) => stage.threshold >= progress) ||
     sortedStages[sortedStages.length - 1]
   );
 };
@@ -86,7 +91,7 @@ export const isStageActive = (
   stages: Stage[],
   progress: number
 ): boolean => {
-  const nextStage = stages.find(s => s.threshold > stage.threshold);
+  const nextStage = stages.find((s) => s.threshold > stage.threshold);
   return (
     progress >= stage.threshold &&
     (!nextStage || progress < nextStage.threshold)
@@ -105,7 +110,7 @@ export const getStageProgress = (
   const prevThreshold = stageIndex > 0 ? stages[stageIndex - 1].threshold : 0;
   const stageRange = stage.threshold - prevThreshold;
   const stageProgress = progress - prevThreshold;
-  
+
   return Math.min(100, Math.max(0, (stageProgress / stageRange) * 100));
 };
 
@@ -126,14 +131,38 @@ export const generateUniqueId = (prefix: string): string => {
 /**
  * Obtiene el total de stages completados
  */
-export const getCompletedStagesCount = (stages: Stage[], progress: number): number => {
-  return stages.filter(stage => progress >= stage.threshold).length;
+export const getCompletedStagesCount = (
+  stages: Stage[],
+  progress: number
+): number => {
+  return stages.filter((stage) => progress >= stage.threshold).length;
 };
 
 /**
  * Calcula el progreso total como fracción (ej: "3/5")
  */
-export const getProgressFraction = (stages: Stage[], progress: number): string => {
+export const getProgressFraction = (
+  stages: Stage[],
+  progress: number
+): string => {
   const completed = getCompletedStagesCount(stages, progress);
   return `${completed}/${stages.length}`;
+};
+
+export const getThemeColors = (
+  theme: StageProgressTheme,
+  defaultThemes: any
+) => {
+  if (theme.type === "custom" && theme.colors) {
+    return {
+      markerComplete:
+        theme.colors.timelineMarker || defaultThemes.light.markerComplete,
+      markerIncomplete:
+        theme.colors.timelineCircle || defaultThemes.light.markerIncomplete,
+      connector: theme.colors.connector || defaultThemes.light.connector,
+      progress: theme.colors.progress || defaultThemes.light.progress,
+    };
+  }
+
+  return defaultThemes[theme.type] || defaultThemes.light;
 };

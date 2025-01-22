@@ -48,7 +48,11 @@ export default async function RootLayout({
   return (
     <html lang={validLang}>
       <head>
-        <link rel="stylesheet" href="https://use.typekit.net/mke4enw.css" />
+        <link
+          rel="stylesheet"
+          href="https://use.typekit.net/mke4enw.css"
+          // as="style"
+        />
         <GoogleAnalytics />
       </head>
       <body className={inter.className}>

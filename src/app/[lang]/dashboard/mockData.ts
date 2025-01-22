@@ -1,4 +1,5 @@
 import { NotificationType } from "@/components/NotificationItem/types";
+import { RecentFileType } from "@/components/RecentFile/types";
 import { subDays, subHours, addDays } from "date-fns";
 
 // Types definition
@@ -194,7 +195,7 @@ export const notifications: NotificationType[] = [
   },
 ];
 // Mock Recent Files
-export const recentFiles: RecentFile[] = [
+export const recentFiles: RecentFileType[] = [
   {
     id: "file-001",
     name: "E-commerce_UX_Wireframes.sketch",

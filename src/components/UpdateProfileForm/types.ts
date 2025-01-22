@@ -1,5 +1,6 @@
 // types.ts
-import { ReactNode } from "react";
+import { ProfileDictionary } from "@/types/dictionary/profile.types";
+import { User } from "@/types/User.types";
 
 export interface ProfileTheme {
   type: "light" | "dark" | "custom";
@@ -14,17 +15,17 @@ export interface ProfileTheme {
   };
 }
 
-export interface User {
-  fullName: string;
-  email: string;
-  nationality: string;
-  nationalID: string;
-  countryFlag: string;
-}
-
+// export interface User {
+//   fullName: string;
+//   email: string;
+//   nationality: string;
+//   nationalID: string;
+//   countryFlag: string;
+// }
 export interface UpdateProfileFormProps {
   user: User;
-  children: ReactNode;
+  children?: React.ReactNode;
   theme?: ProfileTheme;
-  onSubmit?: (values: User) => void;
+  onSubmit?: (values: User) => Promise<void>;
+  dictionary: ProfileDictionary;
 }

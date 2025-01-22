@@ -16,7 +16,7 @@ const cx = classNames.bind(styles);
  * <Autocomplete
  *   options={[
  *     { id: 1, label: 'Option 1', value: 'opt1' },
- *     { id: 2, label: 'Option 2', value: 'opt2' }
+ *     { id: , label: 'Option ', value: 'opt2' }
  *   ]}
  *   onSelect={(option) => console.log(option)}
  *   theme={{ type: 'dark' }}

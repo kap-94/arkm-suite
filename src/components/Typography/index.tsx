@@ -33,7 +33,8 @@ export const Typography = <T extends ElementType = "span">({
   style,
   textTransform = "none",
   variant = "p1",
-  theme = "dark",
+  theme = "light",
+  htmlFor,
   ...rest
 }: TypographyProps<T>) => {
   const Component = as || ELEMENT_MAPPING[variant];
@@ -65,7 +66,12 @@ export const Typography = <T extends ElementType = "span">({
   };
 
   return (
-    <Component className={rootClassName} style={combinedStyles} {...rest}>
+    <Component
+      className={rootClassName}
+      style={combinedStyles}
+      htmlFor={htmlFor}
+      {...rest}
+    >
       {children}
     </Component>
   );
