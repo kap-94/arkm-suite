@@ -10,7 +10,7 @@ export default async function ProfilePage({
   params: { lang: Language };
 }) {
   const { common } = await getMultipleDictionaries(lang, ["profile", "common"]);
-
   const profile = await getPageDictionary(profileDictionary, lang);
+
   return <ProfileClient dictionary={{ profile, common }} />;
 }

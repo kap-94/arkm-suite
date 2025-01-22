@@ -1,0 +1,179 @@
+{
+    "meta": {
+      "version": "1.0",
+      "lastUpdated": "2025-01-22",
+      "description": "Configuración global de navegación para rutas públicas y privadas",
+      "maintainer": "Equipo de Desarrollo"
+    },
+    "navigation": {
+      "public": {
+        "meta": {
+          "title": "Navegación Pública",
+          "description": "Estructura de navegación del sitio web público"
+        },
+        "landing": {
+          "main": {
+            "home": {
+              "title": "Inicio",
+              "path": "/",
+              "aria": "Página de inicio",
+              "icon": "home",
+              "meta": {
+                "description": "Bienvenido a nuestra plataforma",
+                "keywords": ["inicio", "bienvenida", "principal"]
+              }
+            },
+            "features": {
+              "title": "Características",
+              "path": "/caracteristicas",
+              "aria": "Resumen de características",
+              "icon": "features",
+              "meta": {
+                "description": "Explora las características de nuestra plataforma"
+              }
+            },
+            "pricing": {
+              "title": "Precios",
+              "path": "/precios",
+              "aria": "Planes de precios",
+              "icon": "pricing",
+              "meta": {
+                "description": "Ver nuestros planes de precios"
+              }
+            },
+            "about": {
+              "title": "Nosotros",
+              "path": "/nosotros",
+              "aria": "Sobre nosotros",
+              "icon": "info",
+              "meta": {
+                "description": "Conoce nuestra empresa"
+              }
+            }
+          },
+          "footer": {
+            "company": {
+              "title": "Empresa",
+              "aria": "Información de la empresa",
+              "children": {
+                "careers": {
+                  "title": "Empleo",
+                  "path": "/empleo",
+                  "aria": "Oportunidades laborales",
+                  "icon": "briefcase"
+                },
+                "blog": {
+                  "title": "Blog",
+                  "path": "/blog",
+                  "aria": "Blog de la empresa",
+                  "icon": "book"
+                },
+                "legal": {
+                  "title": "Legal",
+                  "path": "/legal",
+                  "aria": "Información legal",
+                  "icon": "shield"
+                }
+              }
+            }
+          }
+        }
+      },
+      "private": {
+        "meta": {
+          "title": "Navegación del Portal de Cliente",
+          "description": "Estructura de navegación del dashboard y portal del cliente"
+        },
+        "dashboard": {
+          "main": {
+            "overview": {
+              "title": "Panel Principal",
+              "path": "/dashboard",
+              "aria": "Panel principal",
+              "icon": "dashboard",
+              "meta": {
+                "description": "Resumen de tus proyectos"
+              }
+            },
+            "projects": {
+              "title": "Proyectos",
+              "path": "/dashboard/proyectos",
+              "aria": "Resumen de proyectos",
+              "icon": "projects",
+              "meta": {
+                "description": "Gestiona tus proyectos"
+              },
+              "actions": {
+                "create": "Crear Proyecto",
+                "filter": "Filtrar Proyectos",
+                "sort": "Ordenar Proyectos"
+              },
+              "children": {
+                "webDesign": {
+                  "title": "Progreso General",
+                  "path": "/dashboard/proyectos/diseno-web",
+                  "aria": "Progreso de diseño web",
+                  "icon": "design"
+                },
+                "webDevelopment": {
+                  "title": "Desarrollo Web",
+                  "path": "/dashboard/proyectos/desarrollo-web",
+                  "aria": "Sección de desarrollo web",
+                  "icon": "code"
+                },
+                "uxResearch": {
+                  "title": "Analítica Web",
+                  "path": "/dashboard/proyectos/analisis-ux",
+                  "aria": "Investigación UX y analítica",
+                  "icon": "analytics"
+                }
+              }
+            },
+            "documents": {
+              "title": "Documentos",
+              "path": "/dashboard/documentos",
+              "aria": "Gestión de documentos",
+              "icon": "document",
+              "meta": {
+                "description": "Accede a tus documentos"
+              },
+              "actions": {
+                "upload": "Subir Documento",
+                "filter": "Filtrar Documentos",
+                "sort": "Ordenar Documentos"
+              }
+            }
+          },
+          "bottom": {
+            "settings": {
+              "title": "Configuración",
+              "path": "/dashboard/configuracion",
+              "aria": "Configuración de la cuenta",
+              "icon": "settings",
+              "meta": {
+                "description": "Gestiona la configuración de tu cuenta"
+              }
+            }
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "skipLinks": {
+        "main": "Saltar al contenido principal",
+        "navigation": "Saltar a navegación"
+      },
+      "aria": {
+        "mainNav": "Navegación principal",
+        "footerNav": "Navegación del pie de página",
+        "dashboardNav": "Navegación del panel de control"
+      }
+    },
+    "messages": {
+      "errors": {
+        "notFound": "Página no encontrada",
+        "unauthorized": "Acceso no autorizado",
+        "forbidden": "Acceso prohibido"
+      }
+    }
+  }

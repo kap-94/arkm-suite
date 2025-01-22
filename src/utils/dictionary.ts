@@ -4,6 +4,7 @@ import type { Language } from "@/config/i18n";
 import type { DashboardDictionary } from "@/types/dictionary/dashboard.types";
 import type { SettingsDictionary } from "@/types/dictionary/settings.types";
 import type { ProfileDictionary } from "@/types/dictionary/profile.types";
+import { NavigationDictionary } from "@/types/dictionary/navigation.types";
 
 export type DictionaryFile = "dashboard" | "settings" | "profile";
 
@@ -38,6 +39,15 @@ const createCachedDictionaryLoader = cache(
 );
 
 // Servicios específicos para cada página
+export const navigationDictionary = new DictionaryService<NavigationDictionary>(
+  {
+    en: () => import("@/locales/en/navigation.json"),
+    es: () => import("@/locales/es/navigation.json"),
+  },
+  (dict) =>
+    validateDictionary<NavigationDictionary>({} as NavigationDictionary, dict)
+);
+
 export const dashboardDictionary = new DictionaryService<DashboardDictionary>(
   {
     en: () => import("@/locales/en/dashboard.json"),

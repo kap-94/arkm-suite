@@ -1,0 +1,179 @@
+{
+    "meta": {
+      "version": "1.0",
+      "lastUpdated": "2025-01-22",
+      "description": "Global navigation configuration for public and private routes",
+      "maintainer": "Development Team"
+    },
+    "navigation": {
+      "public": {
+        "meta": {
+          "title": "Public Navigation",
+          "description": "Main public website navigation structure"
+        },
+        "landing": {
+          "main": {
+            "home": {
+              "title": "Home",
+              "path": "/",
+              "aria": "Home page",
+              "icon": "home",
+              "meta": {
+                "description": "Welcome to our platform",
+                "keywords": ["home", "welcome", "main"]
+              }
+            },
+            "features": {
+              "title": "Features",
+              "path": "/features",
+              "aria": "Features overview",
+              "icon": "features",
+              "meta": {
+                "description": "Explore our platform features"
+              }
+            },
+            "pricing": {
+              "title": "Pricing",
+              "path": "/pricing",
+              "aria": "Pricing plans",
+              "icon": "pricing",
+              "meta": {
+                "description": "View our pricing plans"
+              }
+            },
+            "about": {
+              "title": "About",
+              "path": "/about",
+              "aria": "About us",
+              "icon": "info",
+              "meta": {
+                "description": "Learn about our company"
+              }
+            }
+          },
+          "footer": {
+            "company": {
+              "title": "Company",
+              "aria": "Company information",
+              "children": {
+                "careers": {
+                  "title": "Careers",
+                  "path": "/careers",
+                  "aria": "Career opportunities",
+                  "icon": "briefcase"
+                },
+                "blog": {
+                  "title": "Blog",
+                  "path": "/blog",
+                  "aria": "Company blog",
+                  "icon": "book"
+                },
+                "legal": {
+                  "title": "Legal",
+                  "path": "/legal",
+                  "aria": "Legal information",
+                  "icon": "shield"
+                }
+              }
+            }
+          }
+        }
+      },
+      "private": {
+        "meta": {
+          "title": "Client Portal Navigation",
+          "description": "Dashboard and client portal navigation structure"
+        },
+        "dashboard": {
+          "main": {
+            "overview": {
+              "title": "Dashboard",
+              "path": "/dashboard",
+              "aria": "Main dashboard",
+              "icon": "dashboard",
+              "meta": {
+                "description": "Your project overview"
+              }
+            },
+            "projects": {
+              "title": "Projects",
+              "path": "/dashboard/projects",
+              "aria": "Projects overview",
+              "icon": "projects",
+              "meta": {
+                "description": "Manage your projects"
+              },
+              "actions": {
+                "create": "Create Project",
+                "filter": "Filter Projects",
+                "sort": "Sort Projects"
+              },
+              "children": {
+                "webDesign": {
+                  "title": "Overall Progress",
+                  "path": "/dashboard/projects/web-design",
+                  "aria": "Web design progress",
+                  "icon": "design"
+                },
+                "webDevelopment": {
+                  "title": "Web Development",
+                  "path": "/dashboard/projects/web-development",
+                  "aria": "Web development section",
+                  "icon": "code"
+                },
+                "uxResearch": {
+                  "title": "Web Analytics",
+                  "path": "/dashboard/projects/ux-research",
+                  "aria": "UX research and analytics",
+                  "icon": "analytics"
+                }
+              }
+            },
+            "documents": {
+              "title": "Documents",
+              "path": "/dashboard/documents",
+              "aria": "Document management",
+              "icon": "document",
+              "meta": {
+                "description": "Access your documents"
+              },
+              "actions": {
+                "upload": "Upload Document",
+                "filter": "Filter Documents",
+                "sort": "Sort Documents"
+              }
+            }
+          },
+          "bottom": {
+            "settings": {
+              "title": "Settings",
+              "path": "/dashboard/settings",
+              "aria": "Account settings",
+              "icon": "settings",
+              "meta": {
+                "description": "Manage your account settings"
+              }
+            }
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "skipLinks": {
+        "main": "Skip to main content",
+        "navigation": "Skip to navigation"
+      },
+      "aria": {
+        "mainNav": "Main navigation",
+        "footerNav": "Footer navigation",
+        "dashboardNav": "Dashboard navigation"
+      }
+    },
+    "messages": {
+      "errors": {
+        "notFound": "Page not found",
+        "unauthorized": "Unauthorized access",
+        "forbidden": "Access forbidden"
+      }
+    }
+  }

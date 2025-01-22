@@ -17,6 +17,7 @@ import {
 
 // Definimos los IDs válidos como un tipo
 type NavigationIconId =
+  | "overview"
   | "dashboard"
   | "projects"
   | "documents"
@@ -28,8 +29,8 @@ type NavigationIconId =
 
 // Mapeo de IDs a iconos con tipo explícito
 export const navigationIcons: Record<NavigationIconId, LucideIcon> = {
-  // dashboard: LayoutDashboard,
-  dashboard: Layers,
+  dashboard: LayoutDashboard,
+  overview: Layers,
   projects: Layout,
   documents: Library,
   settings: Settings,
@@ -43,12 +44,10 @@ export const navigationIcons: Record<NavigationIconId, LucideIcon> = {
 export const iconProps = {
   main: {
     size: 24,
-    className: "h-5 w-5",
     strokeWidth: 1.65,
   },
   child: {
     size: 24,
-    className: "h-4 w-4",
     strokeWidth: 1.65,
   },
 } as const;

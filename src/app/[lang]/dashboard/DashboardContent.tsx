@@ -12,7 +12,12 @@ import type {
   NavItem,
   ThemeType,
 } from "@/components/Sidebar/types/sidebar.types";
-import type { SearchDictionary, UserInfoDictionary } from "@/types/dictionary";
+import type {
+  NavigationDictionary,
+  SearchDictionary,
+  UserInfoDictionary,
+} from "@/types/dictionary";
+import { DashboardNavigation } from "@/types/dictionary/navigation.types";
 import styles from "./DashboardContent.module.scss";
 
 const cx = classNames.bind(styles);
@@ -22,10 +27,7 @@ interface DashboardContentProps {
   initialTheme: ThemeType;
   search: SearchDictionary;
   userInfo: UserInfoDictionary;
-  navigation: {
-    main: Record<string, any>;
-    bottom: Record<string, any>;
-  };
+  navigation: DashboardNavigation;
 }
 
 export function DashboardContent({
