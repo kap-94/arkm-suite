@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Dashboard layout configuration including navigation, search, and user management",
+    "maintainer": "Development Team"
+  },
+  "header": {
+    "search": {
+      "config": {
+        "placeholder": "Search projects, tasks, files...",
+        "label": "Search",
+        "buttonText": "Search",
+        "loadingText": "Loading...",
+        "debounceMs": 300,
+        "minSearchLength": 2
+      },
+      "categories": {
+        "project": {
+          "label": "Projects",
+          "icon": "folder",
+          "priority": 1
+        },
+        "task": {
+          "label": "Tasks",
+          "icon": "check-square",
+          "priority": 2
+        },
+        "file": {
+          "label": "Files",
+          "icon": "file",
+          "priority": 3
+        }
+      },
+      "results": {
+        "empty": {
+          "message": "No results found",
+          "suggestion": "Try different keywords or browse categories"
+        },
+        "error": {
+          "message": "Error fetching results",
+          "action": "Retry"
+        },
+        "maxItems": 10,
+        "groupByCategory": true
+      }
+    },
+    "user": {
+      "menu": {
+        "options": [
+          {
+            "id": "profile",
+            "label": "View Profile",
+            "icon": "user",
+            "href": "/dashboard/account/profile",
+            "type": "link"
+          },
+          {
+            "id": "settings",
+            "label": "Settings",
+            "icon": "settings",
+            "href": "/dashboard/settings",
+            "type": "link"
+          },
+          {
+            "id": "divider1",
+            "type": "divider"
+          },
+          {
+            "id": "signout",
+            "label": "Sign Out",
+            "icon": "logout",
+            "type": "action"
+          }
+        ]
+      },
+      "roles": {
+        "types": {
+          "admin": {
+            "label": "Administrator",
+            "level": 1,
+            "permissions": ["all"]
+          },
+          "manager": {
+            "label": "Manager",
+            "level": 2,
+            "permissions": ["manage_team", "manage_projects"]
+          },
+          "productOwner": {
+            "label": "Product Owner",
+            "level": 2,
+            "permissions": ["manage_products", "view_analytics"]
+          },
+          "developer": {
+            "label": "Developer",
+            "level": 3,
+            "permissions": ["manage_code", "manage_tasks"]
+          },
+          "designer": {
+            "label": "Designer",
+            "level": 3,
+            "permissions": ["manage_designs", "manage_assets"]
+          },
+          "user": {
+            "label": "User",
+            "level": 4,
+            "permissions": ["view_assigned"]
+          }
+        },
+        "default": "user"
+      },
+      "status": {
+        "types": {
+          "online": {
+            "label": "Online",
+            "icon": "circle"
+          },
+          "offline": {
+            "label": "Offline",
+            "icon": "circle"
+          },
+          "away": {
+            "label": "Away",
+            "icon": "clock"
+          },
+          "busy": {
+            "label": "Busy",
+            "icon": "minus-circle"
+          },
+          "inMeeting": {
+            "label": "In Meeting",
+            "icon": "video"
+          }
+        },
+        "default": "online",
+        "autoUpdate": true
+      },
+      "accessibility": {
+        "labels": {
+          "userMenu": "User menu",
+          "userAvatar": "User avatar",
+          "userSettings": "User settings",
+          "statusSelector": "Status selector",
+          "searchInput": "Search input"
+        },
+        "keyboardShortcuts": {
+          "toggleMenu": "Alt + M",
+          "focusSearch": "Ctrl + K",
+          "closeMenu": "Escape"
+        }
+      }
+    }
+  },
+  "navigation": {
+    "main": {
+      "overview": {
+        "title": "Dashboard",
+        "path": "/dashboard",
+        "aria": "Main dashboard",
+        "icon": "dashboard",
+        "meta": {
+          "description": "Your project overview"
+        }
+      },
+      "projects": {
+        "title": "Projects",
+        "path": "/dashboard/projects",
+        "aria": "Projects overview",
+        "icon": "projects",
+        "meta": {
+          "description": "Manage your projects"
+        },
+        "actions": {
+          "create": "Create Project",
+          "filter": "Filter Projects",
+          "sort": "Sort Projects"
+        },
+        "children": {
+          "webDesign": {
+            "title": "Overall Progress",
+            "path": "/dashboard/projects/web-design",
+            "aria": "Web design progress",
+            "icon": "design"
+          },
+          "webDevelopment": {
+            "title": "Web Development",
+            "path": "/dashboard/projects/web-development",
+            "aria": "Web development section",
+            "icon": "code"
+          },
+          "uxResearch": {
+            "title": "Web Analytics",
+            "path": "/dashboard/projects/ux-research",
+            "aria": "UX research and analytics",
+            "icon": "analytics"
+          }
+        }
+      },
+      "documents": {
+        "title": "Documents",
+        "path": "/dashboard/documents",
+        "aria": "Document management",
+        "icon": "document",
+        "meta": {
+          "description": "Access your documents"
+        },
+        "actions": {
+          "upload": "Upload Document",
+          "filter": "Filter Documents",
+          "sort": "Sort Documents"
+        }
+      }
+    },
+    "bottom": {
+      "settings": {
+        "title": "Settings",
+        "path": "/dashboard/settings",
+        "aria": "Account settings",
+        "icon": "settings",
+        "meta": {
+          "description": "Manage your account settings"
+        }
+      }
+    }
+  },
+  "accessibility": {
+    "skipLinks": {
+      "main": "Skip to main content",
+      "navigation": "Skip to navigation"
+    },
+    "aria": {
+      "mainNav": "Main navigation",
+      "dashboardNav": "Dashboard navigation"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notFound": "Page not found",
+      "unauthorized": "Unauthorized access",
+      "forbidden": "Access forbidden"
+    }
+  }
+}

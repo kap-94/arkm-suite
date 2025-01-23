@@ -97,7 +97,7 @@
             },
             "projects": {
               "title": "Proyectos",
-              "path": "/dashboard/proyectos",
+              "path": "/dashboard/projects",
               "aria": "Resumen de proyectos",
               "icon": "projects",
               "meta": {
@@ -131,7 +131,7 @@
             },
             "documents": {
               "title": "Documentos",
-              "path": "/dashboard/documentos",
+              "path": "/dashboard/documents",
               "aria": "Gestión de documentos",
               "icon": "document",
               "meta": {
@@ -147,7 +147,7 @@
           "bottom": {
             "settings": {
               "title": "Configuración",
-              "path": "/dashboard/configuracion",
+              "path": "/dashboard/settings",
               "aria": "Configuración de la cuenta",
               "icon": "settings",
               "meta": {

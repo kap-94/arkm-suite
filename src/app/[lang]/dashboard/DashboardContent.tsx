@@ -12,12 +12,11 @@ import type {
   NavItem,
   ThemeType,
 } from "@/components/Sidebar/types/sidebar.types";
-import type {
-  NavigationDictionary,
-  SearchDictionary,
-  UserInfoDictionary,
-} from "@/types/dictionary";
-import { DashboardNavigation } from "@/types/dictionary/navigation.types";
+
+import {
+  DashboardNavigation,
+  HeaderSection,
+} from "@/types/dictionary/dashboardLayout.types";
 import styles from "./DashboardContent.module.scss";
 
 const cx = classNames.bind(styles);
@@ -25,16 +24,14 @@ const cx = classNames.bind(styles);
 interface DashboardContentProps {
   children: React.ReactNode;
   initialTheme: ThemeType;
-  search: SearchDictionary;
-  userInfo: UserInfoDictionary;
+  header: HeaderSection;
   navigation: DashboardNavigation;
 }
 
 export function DashboardContent({
   children,
   initialTheme,
-  search,
-  userInfo,
+  header,
   navigation,
 }: DashboardContentProps) {
   const [mounted, setMounted] = useState(false);
@@ -49,8 +46,7 @@ export function DashboardContent({
     return (
       <SettingsProvider defaultTheme={initialTheme}>
         <DashboardUI
-          search={search}
-          userInfo={userInfo}
+          header={header}
           mainNavigation={MAIN_NAVIGATION_ITEMS}
           bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
         >
@@ -68,8 +64,7 @@ export function DashboardContent({
   return (
     <SettingsProvider defaultTheme={clientTheme}>
       <DashboardUI
-        search={search}
-        userInfo={userInfo}
+        header={header}
         mainNavigation={MAIN_NAVIGATION_ITEMS}
         bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
       >
@@ -81,16 +76,14 @@ export function DashboardContent({
 
 interface DashboardUIProps {
   children: React.ReactNode;
-  search: SearchDictionary;
-  userInfo: UserInfoDictionary;
+  header: HeaderSection;
   mainNavigation: NavItem[];
   bottomNavigation: NavItem[];
 }
 
 function DashboardUI({
   children,
-  search,
-  userInfo,
+  header,
   mainNavigation,
   bottomNavigation,
 }: DashboardUIProps) {
@@ -105,11 +98,7 @@ function DashboardUI({
           bottomNavigation={bottomNavigation}
         />
         <div className={cx("layout__main")}>
-          <DashboardHeader
-            theme={{ type: theme }}
-            search={search}
-            userInfo={userInfo}
-          />
+          <DashboardHeader theme={{ type: theme }} config={header} />
           <main className={cx("layout__content")}>{children}</main>
         </div>
       </SidebarWrapper>

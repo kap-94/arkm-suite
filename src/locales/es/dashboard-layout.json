@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Configuración del diseño del panel que incluye navegación, búsqueda y gestión de usuarios",
+    "maintainer": "Equipo de Desarrollo"
+  },
+  "header": {
+    "search": {
+      "config": {
+        "placeholder": "Buscar proyectos, tareas, archivos...",
+        "label": "Buscar",
+        "buttonText": "Buscar",
+        "loadingText": "Cargando...",
+        "debounceMs": 300,
+        "minSearchLength": 2
+      },
+      "categories": {
+        "project": {
+          "label": "Proyectos",
+          "icon": "folder",
+          "priority": 1
+        },
+        "task": {
+          "label": "Tareas",
+          "icon": "check-square",
+          "priority": 2
+        },
+        "file": {
+          "label": "Archivos",
+          "icon": "file",
+          "priority": 3
+        }
+      },
+      "results": {
+        "empty": {
+          "message": "No se encontraron resultados",
+          "suggestion": "Prueba con otras palabras clave o explora las categorías"
+        },
+        "error": {
+          "message": "Error al obtener los resultados",
+          "action": "Reintentar"
+        },
+        "maxItems": 10,
+        "groupByCategory": true
+      }
+    },
+    "user": {
+      "menu": {
+        "options": [
+          {
+            "id": "profile",
+            "label": "Ver Perfil",
+            "icon": "user",
+            "href": "/dashboard/account/profile",
+            "type": "link"
+          },
+          {
+            "id": "settings",
+            "label": "Configuración",
+            "icon": "settings",
+            "href": "/dashboard/settings",
+            "type": "link"
+          },
+          {
+            "id": "divider1",
+            "type": "divider"
+          },
+          {
+            "id": "signout",
+            "label": "Cerrar Sesión",
+            "icon": "logout",
+            "type": "action"
+          }
+        ]
+      },
+      "roles": {
+        "types": {
+          "admin": {
+            "label": "Administrador",
+            "level": 1,
+            "permissions": ["todo"]
+          },
+          "manager": {
+            "label": "Gerente",
+            "level": 2,
+            "permissions": ["gestionar_equipo", "gestionar_proyectos"]
+          },
+          "productOwner": {
+            "label": "Propietario del Producto",
+            "level": 2,
+            "permissions": ["gestionar_productos", "ver_analíticas"]
+          },
+          "developer": {
+            "label": "Desarrollador",
+            "level": 3,
+            "permissions": ["gestionar_código", "gestionar_tareas"]
+          },
+          "designer": {
+            "label": "Diseñador",
+            "level": 3,
+            "permissions": ["gestionar_diseños", "gestionar_recursos"]
+          },
+          "user": {
+            "label": "Usuario",
+            "level": 4,
+            "permissions": ["ver_asignados"]
+          }
+        },
+        "default": "user"
+      },
+      "status": {
+        "types": {
+          "online": {
+            "label": "En Línea",
+            "icon": "circle"
+          },
+          "offline": {
+            "label": "Fuera de Línea",
+            "icon": "circle"
+          },
+          "away": {
+            "label": "Ausente",
+            "icon": "clock"
+          },
+          "busy": {
+            "label": "Ocupado",
+            "icon": "minus-circle"
+          },
+          "inMeeting": {
+            "label": "En Reunión",
+            "icon": "video"
+          }
+        },
+        "default": "online",
+        "autoUpdate": true
+      },
+      "accessibility": {
+        "labels": {
+          "userMenu": "Menú de Usuario",
+          "userAvatar": "Avatar de Usuario",
+          "userSettings": "Configuración del Usuario",
+          "statusSelector": "Selector de Estado",
+          "searchInput": "Campo de Búsqueda"
+        },
+        "keyboardShortcuts": {
+          "toggleMenu": "Alt + M",
+          "focusSearch": "Ctrl + K",
+          "closeMenu": "Escape"
+        }
+      }
+    }
+  },
+  "navigation": {
+    "main": {
+      "overview": {
+        "title": "Panel",
+        "path": "/dashboard",
+        "aria": "Panel principal",
+        "icon": "dashboard",
+        "meta": {
+          "description": "Resumen de tus proyectos"
+        }
+      },
+      "projects": {
+        "title": "Proyectos",
+        "path": "/dashboard/projects",
+        "aria": "Resumen de proyectos",
+        "icon": "projects",
+        "meta": {
+          "description": "Gestiona tus proyectos"
+        },
+        "actions": {
+          "create": "Crear Proyecto",
+          "filter": "Filtrar Proyectos",
+          "sort": "Ordenar Proyectos"
+        },
+        "children": {
+          "webDesign": {
+            "title": "Progreso General",
+            "path": "/dashboard/projects/web-design",
+            "aria": "Progreso de diseño web",
+            "icon": "design"
+          },
+          "webDevelopment": {
+            "title": "Desarrollo Web",
+            "path": "/dashboard/projects/web-development",
+            "aria": "Sección de desarrollo web",
+            "icon": "code"
+          },
+          "uxResearch": {
+            "title": "Analíticas Web",
+            "path": "/dashboard/projects/ux-research",
+            "aria": "Investigación UX y analíticas",
+            "icon": "analytics"
+          }
+        }
+      },
+      "documents": {
+        "title": "Documentos",
+        "path": "/dashboard/documents",
+        "aria": "Gestión de documentos",
+        "icon": "document",
+        "meta": {
+          "description": "Accede a tus documentos"
+        },
+        "actions": {
+          "upload": "Subir Documento",
+          "filter": "Filtrar Documentos",
+          "sort": "Ordenar Documentos"
+        }
+      }
+    },
+    "bottom": {
+      "settings": {
+        "title": "Configuración",
+        "path": "/dashboard/settings",
+        "aria": "Configuración de la cuenta",
+        "icon": "settings",
+        "meta": {
+          "description": "Gestiona la configuración de tu cuenta"
+        }
+      }
+    }
+  },
+  "accessibility": {
+    "skipLinks": {
+      "main": "Saltar al contenido principal",
+      "navigation": "Saltar a la navegación"
+    },
+    "aria": {
+      "mainNav": "Navegación principal",
+      "dashboardNav": "Navegación del panel"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notFound": "Página no encontrada",
+      "unauthorized": "Acceso no autorizado",
+      "forbidden": "Acceso prohibido"
+    }
+  }
+}

@@ -73,7 +73,7 @@ export const UserInfo = ({
   userRole,
   className,
   options,
-  theme = { type: "dark" },
+  theme = { type: "light" },
   closeOnScroll = false,
 }: UserInfoProps & { closeOnScroll?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);

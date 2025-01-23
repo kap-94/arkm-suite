@@ -1,0 +1,93 @@
+{
+    "meta": {
+      "version": "1.0",
+      "lastUpdated": "2025-01-22",
+      "description": "Configuración principal del diseño para rutas públicas",
+      "maintainer": "Equipo de Desarrollo"
+    },
+    "navigation": {
+      "main": {
+        "home": {
+          "title": "Inicio",
+          "path": "/",
+          "aria": "Página de inicio",
+          "icon": "home",
+          "meta": {
+            "description": "Bienvenido a nuestra plataforma",
+            "keywords": ["inicio", "bienvenida", "principal"]
+          }
+        },
+        "features": {
+          "title": "Características",
+          "path": "/features",
+          "aria": "Resumen de características",
+          "icon": "features",
+          "meta": {
+            "description": "Explora las características de nuestra plataforma"
+          }
+        },
+        "pricing": {
+          "title": "Precios",
+          "path": "/pricing",
+          "aria": "Planes de precios",
+          "icon": "pricing",
+          "meta": {
+            "description": "Consulta nuestros planes de precios"
+          }
+        },
+        "about": {
+          "title": "Acerca de",
+          "path": "/about",
+          "aria": "Acerca de nosotros",
+          "icon": "info",
+          "meta": {
+            "description": "Conoce nuestra empresa"
+          }
+        }
+      },
+      "footer": {
+        "company": {
+          "title": "Empresa",
+          "aria": "Información de la empresa",
+          "children": {
+            "careers": {
+              "title": "Carreras",
+              "path": "/careers",
+              "aria": "Oportunidades de empleo",
+              "icon": "briefcase"
+            },
+            "blog": {
+              "title": "Blog",
+              "path": "/blog",
+              "aria": "Blog de la empresa",
+              "icon": "book"
+            },
+            "legal": {
+              "title": "Legal",
+              "path": "/legal",
+              "aria": "Información legal",
+              "icon": "shield"
+            }
+          }
+        }
+      }
+    },
+    "accessibility": {
+      "skipLinks": {
+        "main": "Saltar al contenido principal",
+        "navigation": "Saltar a la navegación"
+      },
+      "aria": {
+        "mainNav": "Navegación principal",
+        "footerNav": "Navegación del pie de página"
+      }
+    },
+    "messages": {
+      "errors": {
+        "notFound": "Página no encontrada",
+        "unauthorized": "Acceso no autorizado",
+        "forbidden": "Acceso prohibido"
+      }
+    }
+  }
+  

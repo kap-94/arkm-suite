@@ -2,26 +2,22 @@
 
 import React, { useCallback } from "react";
 import classNames from "classnames/bind";
-import {
-  FolderIcon,
-  FileIcon,
-  ListTodoIcon,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react";
-import type { SearchDictionary, UserInfoDictionary } from "@/types/dictionary";
+import { FolderIcon, FileIcon, ListTodoIcon } from "lucide-react";
 import { UserInfo } from "../UserInfo";
-import { SearchBar, SearchBarOption } from "../SearchBar";
+import { SearchBar } from "../SearchBar";
 import { useSidebarContext } from "../Sidebar/context/SidebarContext";
 import { Hamburger } from "../Hamburger";
-import { DropdownOption } from "../UserInfo/types";
-import { Brand } from "../Header/components";
 import styles from "./DashboardHeader.module.scss";
+import type {
+  HeaderSection,
+  SearchSection,
+  UserMenuItem,
+} from "@/types/dictionary/dashboardLayout.types";
+import { getIconComponent } from "@/utils/iconUtils";
 
 const cx = classNames.bind(styles);
 
-export interface Theme {
+interface Theme {
   type: "light" | "dark" | "custom";
   customValues?: {
     background?: string;
@@ -34,120 +30,74 @@ export interface Theme {
 interface DashboardHeaderProps {
   className?: string;
   theme?: Theme;
-  search: SearchDictionary;
-  userInfo: UserInfoDictionary;
+  config: HeaderSection;
   onSignOut?: () => void;
 }
 
-// Mapa de iconos que corresponden a las claves de las opciones
-const OPTION_ICONS: Record<string, React.ElementType> = {
-  viewProfile: User,
-  // settings: Settings,
-  signOut: LogOut,
+const CATEGORY_ICONS = {
+  project: <FolderIcon size={16} />,
+  task: <ListTodoIcon size={16} />,
+  file: <FileIcon size={16} />,
 };
 
-const getDropdownOptions = (
-  dictionary: UserInfoDictionary,
-  callbacks?: Record<string, () => void>
-): DropdownOption[] => {
-  return Object.entries(dictionary.options).reduce<DropdownOption[]>(
-    (acc, [key, value]) => {
-      // Si es un divisor
-      if (value === "divider") {
-        acc.push({
-          id: `divider-${acc.length}`,
-          divider: true,
-        });
-        return acc;
-      }
+const transformSearchOptions = (search: SearchSection) => {
+  const options = [];
+  const categoryEntries = Object.entries(search.categories);
 
-      // Para las opciones regulares
-      const option: DropdownOption = {
-        id: key,
-        label: value.label,
-        ...(OPTION_ICONS[key] && {
-          icon: React.createElement(OPTION_ICONS[key], { size: 16 }),
-        }),
-        ...(value.href && { href: value.href }),
-        ...(callbacks?.[key] && { onClick: callbacks[key] }),
-      };
+  for (const [categoryKey, category] of categoryEntries) {
+    const option = {
+      id: categoryKey,
+      label: category.label,
+      value: categoryKey,
+      type: categoryKey,
+      icon: CATEGORY_ICONS[categoryKey as keyof typeof CATEGORY_ICONS],
+      subtitle: category.label,
+      priority: category.priority,
+    };
 
-      acc.push(option);
-      return acc;
-    },
-    []
-  );
+    options.push(option);
+  }
+
+  return options.slice(0, search.results.maxItems);
 };
 
-const getSearchOptions = (
-  translations: SearchDictionary
-): SearchBarOption[] => [
-  {
-    id: "project-a",
-    label: "Project Alpha",
-    value: "project-alpha",
-    type: "project",
-    icon: <FolderIcon size={16} />,
-    subtitle: translations.types.project,
-  },
-  {
-    id: "project-b",
-    label: "Project Beta",
-    value: "project-beta",
-    type: "project",
-    icon: <FolderIcon size={16} />,
-    subtitle: translations.types.project,
-  },
-  {
-    id: "task-1",
-    label: "Complete Documentation",
-    value: "task-docs",
-    type: "task",
-    icon: <ListTodoIcon size={16} />,
-    subtitle: translations.types.task,
-  },
-  {
-    id: "file-1",
-    label: "Technical Specs",
-    value: "tech-specs",
-    type: "file",
-    icon: <FileIcon size={16} />,
-    subtitle: translations.types.file,
-  },
-];
+const transformUserMenuOptions = (options: UserMenuItem[]) => {
+  return options.map((option) => {
+    if (!option.icon) return option;
+
+    const IconComponent = getIconComponent(option.icon);
+    return {
+      ...option,
+      icon: IconComponent ? <IconComponent size={16} /> : undefined,
+    };
+  });
+};
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   className,
   theme = { type: "light" },
-  search,
-  userInfo,
+  config,
   onSignOut,
 }) => {
   const { state, actions } = useSidebarContext();
-  const searchOptions = getSearchOptions(search);
+  const searchOptions = transformSearchOptions(config.search);
+  const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
 
-  const handleSearch = useCallback((searchTerm: string) => {
-    console.log("Searching for:", searchTerm);
-  }, []);
+  const handleSearch = useCallback(
+    (searchTerm: string) => {
+      if (searchTerm.length >= config.search.config.minSearchLength) {
+        console.log("Searching for:", searchTerm);
+      }
+    },
+    [config.search.config.minSearchLength]
+  );
 
-  const handleOptionSelect = useCallback((option: SearchBarOption) => {
+  const handleOptionSelect = useCallback((option: any) => {
     console.log("Selected option:", option);
     if (option.href) {
       window.location.href = option.href;
     }
   }, []);
-
-  const callbacks = React.useMemo(() => {
-    const cb: Record<string, () => void> = {};
-
-    if (onSignOut) {
-      cb.signOut = onSignOut;
-    }
-
-    return cb;
-  }, [onSignOut]);
-
-  const dropdownOptions = getDropdownOptions(userInfo, callbacks);
 
   return (
     <header
@@ -180,13 +130,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           </div>
 
           <SearchBar
-            buttonText={search.button}
+            buttonText={config.search.config.buttonText}
             closeOnScroll
-            label={search.label}
+            label={config.search.config.label}
             onOptionSelect={handleOptionSelect}
             onSearch={handleSearch}
             options={searchOptions}
-            placeholder={search.placeholder}
+            placeholder={config.search.config.placeholder}
             showButton={true}
             showLabel={false}
             theme={theme}
@@ -196,9 +146,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         <div className={cx("dashboard-header__actions")}>
           <UserInfo
             closeOnScroll
-            userName="Marc Vega"
-            userRole={userInfo.roles.productOwner}
-            options={dropdownOptions}
+            userName={config.user.menu.options[0]?.label || ""}
+            userRole={config.user.roles.types[config.user.roles.default].label}
+            options={userMenuOptions}
             theme={theme}
           />
         </div>

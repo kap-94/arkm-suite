@@ -4,7 +4,10 @@ import type { ThemeType } from "@/components/Sidebar/types/sidebar.types";
 import { DashboardContent } from "./DashboardContent";
 import { getMultipleDictionaries } from "@/utils/getDictionary";
 import type { Language } from "@/config/i18n";
-import { getPageDictionary, navigationDictionary } from "@/utils/dictionary";
+import {
+  dashboardLayoutDictionary,
+  getPageDictionary,
+} from "@/utils/dictionary";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,20 +21,16 @@ export default async function DashboardLayout({
   const cookieStore = cookies();
   const initialTheme = (cookieStore.get("theme")?.value as ThemeType) || "dark";
 
-  const { search, userInfo } = await getMultipleDictionaries(lang, [
-    "search",
-    "userInfo",
-    "navigation",
-  ]);
-
-  const { navigation } = await getPageDictionary(navigationDictionary, lang);
+  const { navigation, header } = await getPageDictionary(
+    dashboardLayoutDictionary,
+    lang
+  );
 
   return (
     <DashboardContent
       initialTheme={initialTheme}
-      search={search}
-      userInfo={userInfo}
-      navigation={navigation.private.dashboard}
+      header={header}
+      navigation={navigation}
     >
       {children}
     </DashboardContent>

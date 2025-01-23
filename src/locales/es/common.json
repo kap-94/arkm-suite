@@ -133,49 +133,6 @@
       }
     }
   },
-  "search": {
-    "placeholder": "Buscar proyectos, tareas, archivos...",
-    "label": "Buscar",
-    "button": "Buscar",
-    "loading": "Cargando...",
-    "types": {
-      "project": "Proyectos",
-      "task": "Tareas",
-      "file": "Archivos"
-    },
-    "noResults": "No se encontraron resultados"
-  },
-  "userInfo": {
-    "options": {
-      "viewProfile": {
-        "label": "Ver Perfil",
-        "href": "/dashboard/account/profile"
-      },
-      "divider1": "divider",
-      "signOut": {
-        "label": "Cerrar Sesión"
-      }
-    },
-    "roles": {
-      "admin": "Administrador",
-      "user": "Usuario",
-      "manager": "Gerente",
-      "developer": "Desarrollador",
-      "designer": "Diseñador",
-      "productOwner": "Product Owner"
-    },
-    "accessibility": {
-      "userMenu": "Menú de usuario",
-      "userAvatar": "Avatar de usuario",
-      "userSettings": "Configuración de usuario"
-    },
-    "status": {
-      "online": "En línea",
-      "offline": "Desconectado",
-      "away": "Ausente",
-      "busy": "Ocupado"
-    }
-  },
   "common": {
     "loading": "Cargando...",
     "error": "Ha ocurrido un error",

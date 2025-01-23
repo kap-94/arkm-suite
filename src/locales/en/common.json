@@ -132,50 +132,7 @@
         }
       }
     }
-  },
-  "search": {
-    "placeholder": "Search projects, tasks, files...",
-    "label": "Search",
-    "button": "Search",
-    "loading": "Loading...",
-    "types": {
-      "project": "Projects",
-      "task": "Tasks",
-      "file": "Files"
-    },
-    "noResults": "No results found"
-  },
-  "userInfo": {
-    "options": {
-      "viewProfile": {
-        "label": "View Profile",
-        "href": "/dashboard/account/profile"
-      },
-      "divider1": "divider",
-      "signOut": {
-        "label": "Sign Out"
-      }
-  },
-    "roles": {
-      "admin": "Administrator",
-      "user": "User",
-      "manager": "Manager",
-      "developer": "Developer",
-      "designer": "Designer",
-      "productOwner": "Product Owner"
-    },
-    "accessibility": {
-      "userMenu": "User menu",
-      "userAvatar": "User avatar",
-      "userSettings": "User settings"
-    },
-    "status": {
-      "online": "Online",
-      "offline": "Offline",
-      "away": "Away",
-      "busy": "Busy"
-    }
-  },    
+  },   
   "common": {
     "loading": "Loading...",
     "error": "An error has occurred",
