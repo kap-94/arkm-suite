@@ -1,4 +1,9 @@
 // src/utils/path.utils.ts
+import type { Language } from "@/config/i18n";
+
+export const buildLocalizedPath = (path: string, locale: Language): string => {
+  return `/${locale}${path.startsWith("/") ? path : `/${path}`}`;
+};
 
 /**
  * Normaliza una ruta eliminando el locale y asegurando que comience con /dashboard

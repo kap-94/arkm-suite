@@ -7,10 +7,12 @@ import { ChevronDown } from "lucide-react";
 import classNames from "classnames/bind";
 import { ThemedTypography } from "../Typography/ThemedTypography";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { buildLocalizedPath } from "@/utils/path";
 import styles from "./UserInfo.module.scss";
 import { UserInfoProps, DropdownOption, UserInfoTheme } from "./types";
 import { getInitials } from "./utils";
 import Typography from "../Typography";
+import { useSettings } from "@/context/SettingsContext";
 
 const cx = classNames.bind(styles);
 
@@ -21,8 +23,10 @@ const DropdownItem = ({
 }: {
   option: DropdownOption;
   theme: UserInfoTheme["type"];
-  onItemClick: () => void;
+  onItemClick: (option: DropdownOption) => void;
 }) => {
+  const { language } = useSettings();
+
   if (option.divider) {
     return <div className={cx("user-info__dropdown-divider")} />;
   }
@@ -39,18 +43,15 @@ const DropdownItem = ({
   );
 
   const handleClick = () => {
-    onItemClick();
-    if (option.onClick) {
-      option.onClick();
-    }
+    onItemClick(option);
   };
 
   if (option.href) {
     return (
       <Link
-        href={option.href}
+        href={buildLocalizedPath(option.href, language)}
         className={cx("user-info__dropdown-item")}
-        onClick={onItemClick}
+        onClick={handleClick}
       >
         {content}
       </Link>
@@ -78,35 +79,32 @@ export const UserInfo = ({
 }: UserInfoProps & { closeOnScroll?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { language } = useSettings();
   const containerRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false));
 
   useEffect(() => {
     if (!closeOnScroll) return;
-
-    const handleScroll = () => {
-      if (isOpen) {
-        setIsOpen(false);
-      }
-    };
-
+    const handleScroll = () => isOpen && setIsOpen(false);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [closeOnScroll, isOpen]);
 
-  // Escucha los cambios de ruta para cerrar el dropdown
   useEffect(() => {
-    const handleRouteChange = () => {
-      if (isOpen) {
-        setIsOpen(false);
-      }
-    };
-
+    const handleRouteChange = () => isOpen && setIsOpen(false);
     window.addEventListener("popstate", handleRouteChange);
     return () => window.removeEventListener("popstate", handleRouteChange);
   }, [isOpen]);
 
-  const handleItemClick = () => {
+  const handleItemClick = (option: DropdownOption) => {
     setIsOpen(false);
+
+    if ("href" in option && option.href) {
+      router.push(buildLocalizedPath(option.href, language));
+    }
+
+    if ("onClick" in option && option.onClick) {
+      option.onClick();
+    }
   };
 
   return (

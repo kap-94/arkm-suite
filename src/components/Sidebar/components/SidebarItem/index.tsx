@@ -6,7 +6,11 @@ import { NavItem, SidebarItemProps } from "../../types/sidebar.types";
 import { useSidebarContext } from "../../context/SidebarContext";
 import { Typography } from "@/components/Typography";
 import { Tooltip } from "@/components/Tooltip";
-import { isPathActive, isDashboardRoot } from "@/utils/path";
+import {
+  isPathActive,
+  isDashboardRoot,
+  buildLocalizedPath,
+} from "@/utils/path";
 import { useSettings } from "@/context/SettingsContext";
 import styles from "./SidebarItem.module.scss";
 import classNames from "classnames/bind";
@@ -34,18 +38,12 @@ const SubItem = ({ item, theme, onSelect }: SubItemProps) => {
 
     onSelect();
     actions.setActiveItem(item.id);
-
-    // Construir la ruta con el idioma actual
-    const localizedPath = `/${language}${item.path}`;
-    router.push(localizedPath);
+    router.push(buildLocalizedPath(item.path, language));
   };
-
-  // Construir la ruta con el idioma actual para el Link
-  const localizedPath = `/${language}${item.path}`;
 
   return (
     <Link
-      href={item.disabled ? "#" : localizedPath}
+      href={item.disabled ? "#" : buildLocalizedPath(item.path, language)}
       onClick={handleClick}
       className={cx("subitem", themeClass, {
         "subitem--active": isActive,
@@ -114,16 +112,10 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
 
       actions.collapse();
       actions.setActiveItem(item.id);
-
-      // Construir la ruta con el idioma actual
-      const localizedPath = `/${language}${item.path}`;
-      router.push(localizedPath);
+      router.push(buildLocalizedPath(item.path, language));
     },
     [item, hasChildren, actions, router, language]
   );
-
-  // Construir la ruta con el idioma actual para el Link
-  const localizedPath = `/${language}${item.path}`;
 
   const handleSubItemSelect = useCallback(() => {
     if (state.isMobile) {
@@ -184,7 +176,7 @@ export const SidebarItem = ({ item, theme = "dark" }: SidebarItemProps) => {
 
     return (
       <Link
-        href={item.disabled ? "#" : localizedPath}
+        href={item.disabled ? "#" : buildLocalizedPath(item.path, language)}
         onClick={handleClick}
         className={cx("item__link")}
       >
