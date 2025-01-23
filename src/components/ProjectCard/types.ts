@@ -1,6 +1,10 @@
 import { Project } from "@/models/project";
+import { ProjectLink } from "@/types/dictionary/dashboard.types";
 
 export type ThemeType = "light" | "dark" | "custom";
+export interface ProjectCardDictionary {
+  links: Record<string, ProjectLink>;
+}
 
 export interface ProjectCardTheme {
   type: ThemeType;
@@ -24,22 +28,9 @@ export interface Stage {
   color?: string;
 }
 
-// export interface Project {
-//   id: string;
-//   name: string;
-//   description: string;
-//   // status: ProjectStatus;
-//   status: string;
-//   progress: number;
-//   lastUpdated: Date | string;
-//   team?: string[];
-//   priority?: ProjectPriority;
-//   client?: string;
-//   stages?: Stage[];
-// }
-
 export interface ProjectCardProps {
   project: Project;
   size?: ProjectSize;
   theme?: ProjectCardTheme;
+  dictionary: ProjectCardDictionary;
 }

@@ -1,10 +1,9 @@
 import {
   MetaContent,
   AccessibilityLabels,
-  ActionButton,
-  StatusMessages,
   FilterOptions,
   PageHeader,
+  ProjectFilters,
 } from "./base.types";
 
 export interface StatsItem {
@@ -24,15 +23,22 @@ export interface DashboardStats {
   };
 }
 
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
 export interface ProjectSection {
   title: string;
   subtitle: string;
   empty: string;
   aria: string;
   actions: Record<string, string>;
-  filters: FilterOptions;
+  filters: ProjectFilters;
   sortOptions: Record<string, string>;
+  viewOptions: Record<string, string>;
   labels: Record<string, string>;
+  links: Record<string, ProjectLink>;
   statuses: Record<string, string>;
 }
 

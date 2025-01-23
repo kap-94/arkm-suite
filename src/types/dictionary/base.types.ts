@@ -35,3 +35,18 @@ export interface FilterOptions {
   all: string;
   [key: string]: string;
 }
+
+export interface ProjectFilters {
+  status: {
+    allStatus: string;
+    inProgress: string;
+    completed: string;
+    onHold: string;
+  };
+  priority: {
+    allPriority: string;
+    high: string;
+    medium: string;
+    low: string;
+  };
+}

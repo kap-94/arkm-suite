@@ -1,4 +1,5 @@
 import { Project } from "@/models/project";
+import { ProjectSection } from "@/types/dictionary/dashboard.types";
 
 // Interface for the theme colors specific to DashboardProjects
 export interface DashboardProjectsThemeColors {
@@ -27,9 +28,11 @@ export type ViewMode = "grid" | "list";
 // Main props interface for the DashboardProjects component
 export interface DashboardProjectsProps {
   projects: Project[];
+  dictionary: ProjectSection;
   title: string;
   theme: DashboardProjectsTheme;
   initialViewMode?: ViewMode;
+  viewOptions: Record<ViewMode, string>;
   className?: string;
 }
 

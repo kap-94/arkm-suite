@@ -1,16 +1,18 @@
 // src/types/project.ts
-export type ProjectStatus =
-  | "pending"
-  | "inProgress"
-  | "completed"
-  | "onHold"
-  | "cancelled";
-export type ProjectPriority = "low" | "medium" | "high";
-export type ProjectType =
-  | "webDesign"
-  | "webDevelopment"
-  | "webDesignAndDevelopment"
-  | "other";
+export type ProjectStatus = {
+  label: string;
+  value: "pending" | "inProgress" | "completed" | "onHold" | "cancelled";
+};
+
+export type ProjectPriority = {
+  label: string;
+  value: "low" | "medium" | "high";
+};
+
+export type ProjectType = {
+  label: string;
+  value: "webDesign" | "webDevelopment" | "webDesignAndDevelopment" | "other";
+};
 
 export interface ProjectStage {
   name: string;

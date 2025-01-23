@@ -1,184 +1,217 @@
 {
-  "meta": {
-      "title": "Panel de Control | Portal del Cliente",
-      "description": "Monitorea y gestiona tus proyectos en tiempo real con nuestro completo panel de control para clientes",
-      "keywords": ["panel de control", "proyectos", "monitoreo", "portal del cliente", "gestión de proyectos"],
-      "ogImage": "/images/dashboard-og.jpg"
-  },
-  "header": {
-      "title": "Portal del Cliente",
-      "subtitle": "¡Bienvenido de nuevo! Esto es lo que está sucediendo con tus proyectos",
-      "aria": "Encabezado principal del panel"
-  },
-  "stats": {
-      "group": {
-          "aria": "Estadísticas del panel",
-          "label": "Resumen de métricas clave"
-      },
-      "items": {
-          "activeProjects": {
-              "label": "Proyectos Activos",
-              "tooltip": "Número de proyectos en curso",
-              "aria": "Contador de proyectos activos",
-              "description": "Proyectos en los que se está trabajando actualmente"
-          },
-          "completed": {
-              "label": "Completados",
-              "tooltip": "Número de proyectos completados",
-              "aria": "Contador de proyectos completados",
-              "description": "Proyectos que se han entregado con éxito"
-          },
-          "overallProgress": {
-              "label": "Progreso General",
-              "tooltip": "Progreso promedio en todos los proyectos",
-              "aria": "Porcentaje de progreso general",
-              "description": "Progreso combinado de todos los proyectos activos"
-          },
-          "notifications": {
-              "label": "Notificaciones",
-              "tooltip": "Número de notificaciones no leídas",
-              "aria": "Contador de notificaciones no leídas",
-              "description": "Actualizaciones y alertas importantes"
-          }
-      }
-  },
-  "sections": {
-      "projects": {
-          "title": "Tus Proyectos",
-          "subtitle": "Resumen de todos tus proyectos activos y completados",
-          "empty": "No se encontraron proyectos",
-          "aria": "Sección de proyectos",
-          "actions": {
-              "viewAll": "Ver todos los proyectos",
-              "create": "Crear nuevo proyecto",
-              "filter": "Filtrar proyectos",
-              "sort": "Ordenar proyectos",
-              "export": "Exportar lista de proyectos"
-          },
-          "filters": {
-              "all": "Todos los Proyectos",
-              "active": "Solo Activos",
-              "completed": "Solo Completados",
-              "onHold": "En Pausa"
-          },
-          "sortOptions": {
-              "recent": "Más Recientes",
-              "name": "Nombre del Proyecto",
-              "progress": "Progreso",
-              "deadline": "Fecha Límite"
-          },
-          "labels": {
-              "projectName": "Nombre del Proyecto",
-              "client": "Cliente",
-              "progress": "Progreso",
-              "status": "Estado",
-              "lastUpdated": "Última Actualización",
-              "dueDate": "Fecha Límite"
-          },
-          "statuses": {
-              "active": "Activo",
-              "completed": "Completado",
-              "onHold": "En Pausa",
-              "cancelled": "Cancelado",
-              "draft": "Borrador"
-          }
-      },
-      "recentFiles": {
-          "title": "Archivos Recientes",
-          "subtitle": "Últimos archivos subidos y modificados",
-          "empty": "No hay archivos recientes",
-          "aria": "Sección de archivos recientes",
-          "actions": {
-              "upload": "Subir archivo",
-              "viewAll": "Ver todos los archivos",
-              "filter": "Filtrar archivos"
-          },
-          "filters": {
-              "all": "Todos los Archivos",
-              "documents": "Documentos",
-              "images": "Imágenes",
-              "other": "Otros"
-          },
-          "labels": {
-              "fileName": "Nombre del Archivo",
-              "size": "Tamaño",
-              "uploadDate": "Fecha de Subida",
-              "type": "Tipo",
-              "project": "Proyecto"
-          }
-      },
-      "notifications": {
-          "title": "Notificaciones Recientes",
-          "subtitle": "Últimas actualizaciones y alertas",
-          "empty": "No hay notificaciones nuevas",
-          "aria": "Sección de notificaciones",
-          "actions": {
-              "markAllRead": "Marcar todas como leídas",
-              "viewAll": "Ver todas las notificaciones",
-              "settings": "Configuración de notificaciones"
-          },
-          "types": {
-              "update": "Actualización",
-              "alert": "Alerta",
-              "reminder": "Recordatorio",
-              "message": "Mensaje",
-              "mention": "Mención"
-          },
-          "filters": {
-              "all": "Todas las Notificaciones",
-              "unread": "No Leídas",
-              "mentions": "Menciones",
-              "updates": "Actualizaciones"
-          },
-          "timeLabels": {
-              "today": "Hoy",
-              "yesterday": "Ayer",
-              "thisWeek": "Esta Semana",
-              "thisMonth": "Este Mes"
-          }
-      }
-  },
-  "tooltips": {
-      "refresh": "Actualizar panel",
-      "settings": "Configuración del panel",
-      "help": "Ayuda y documentación",
-      "profile": "Ver perfil",
-      "notifications": "Ver todas las notificaciones"
-  },
-  "messages": {
-      "welcome": "Bienvenido de nuevo, {name}",
-      "lastLogin": "Último inicio de sesión: {date}",
-      "dataUpdate": "Datos actualizados por última vez: {date}",
-      "loading": "Cargando datos del panel...",
-      "error": "Error al cargar el panel",
-      "retry": "Reintentar carga"
-  },
-  "errors": {
-      "loadFailed": "Error al cargar los datos del panel",
-      "updateFailed": "Error al actualizar el panel",
-      "connectionError": "Error de conexión",
-      "sessionExpired": "Tu sesión ha expirado",
-      "permissions": "Permisos insuficientes"
-  },
-  "accessibility": {
-      "loadingState": "El panel se está cargando",
-      "refreshButton": "Actualizar datos del panel",
-      "settingsButton": "Abrir configuración del panel",
-      "navigationMenu": "Menú de navegación del panel",
-      "notificationBadge": "Número de notificaciones no leídas",
-      "projectProgress": "Indicador de progreso del proyecto"
-  },
-  "dialogs": {
-      "refresh": {
-          "title": "Actualizar Panel",
-          "message": "¿Estás seguro de que deseas actualizar todos los datos del panel?",
-          "confirm": "Sí, actualizar",
-          "cancel": "Cancelar"
-      },
-      "settings": {
-          "title": "Configuración del Panel",
-          "save": "Guardar cambios",
-          "cancel": "Cancelar cambios"
-      }
-  }
+    "meta": {
+        "title": "Panel de Control | Portal del Cliente",
+        "description": "Monitorea y gestiona tus proyectos en tiempo real con nuestro completo panel de control para clientes",
+        "keywords": [
+            "panel de control",
+            "proyectos",
+            "monitoreo",
+            "portal del cliente",
+            "gestión de proyectos"
+        ],
+        "ogImage": "/images/dashboard-og.jpg"
+    },
+    "header": {
+        "title": "Portal del Cliente",
+        "subtitle": "¡Bienvenido de nuevo! Esto es lo que está sucediendo con tus proyectos",
+        "aria": "Encabezado principal del panel"
+    },
+    "stats": {
+        "group": {
+            "aria": "Estadísticas del panel",
+            "label": "Resumen de métricas clave"
+        },
+        "items": {
+            "activeProjects": {
+                "label": "Proyectos Activos",
+                "tooltip": "Número de proyectos en curso",
+                "aria": "Contador de proyectos activos",
+                "description": "Proyectos en los que se está trabajando actualmente"
+            },
+            "completed": {
+                "label": "Completados",
+                "tooltip": "Número de proyectos completados",
+                "aria": "Contador de proyectos completados",
+                "description": "Proyectos que se han entregado con éxito"
+            },
+            "overallProgress": {
+                "label": "Progreso General",
+                "tooltip": "Progreso promedio en todos los proyectos",
+                "aria": "Porcentaje de progreso general",
+                "description": "Progreso combinado de todos los proyectos activos"
+            },
+            "notifications": {
+                "label": "Notificaciones",
+                "tooltip": "Número de notificaciones no leídas",
+                "aria": "Contador de notificaciones no leídas",
+                "description": "Actualizaciones y alertas importantes"
+            }
+        }
+    },
+    "sections": {
+        "projects": {
+            "title": "Tus Proyectos",
+            "subtitle": "Resumen de todos tus proyectos activos y completados",
+            "empty": "No se encontraron proyectos",
+            "aria": "Sección de proyectos",
+            "actions": {
+                "viewAll": "Ver todos los proyectos",
+                "create": "Crear nuevo proyecto",
+                "filter": "Filtrar proyectos",
+                "sort": "Ordenar proyectos",
+                "export": "Exportar lista de proyectos"
+            },
+            "filters": {
+                "status": {
+                    "allStatus": "Estados",
+                    "inProgress": "En Progreso",
+                    "completed": "Completado",
+                    "onHold": "En Espera"
+                },
+                "priority": {
+                    "allPriority": "Prioridades",
+                    "high": "Alta Prioridad",
+                    "medium": "Prioridad Media",
+                    "low": "Baja Prioridad"
+                }
+            },
+            "sortOptions": {
+                "recent": "Más Recientes",
+                "name": "Nombre del Proyecto",
+                "progress": "Progreso",
+                "deadline": "Fecha Límite"
+            },
+            "viewOptions": {
+                "list": "Vista de Lista",
+                "grid": "Vista de Cuadrícula"
+            },
+            "labels": {
+                "projectName": "Nombre del Proyecto",
+                "client": "Cliente",
+                "progress": "Progreso",
+                "status": "Estado",
+                "lastUpdated": "Última Actualización",
+                "dueDate": "Fecha Límite"
+            },
+            "links": {
+                "view": {
+                    "label": "Ver Proyecto",
+                    "url": "/projects/view"
+                },
+                "edit": {
+                    "label": "Editar Proyecto",
+                    "url": "/projects/edit"
+                },
+                "delete": {
+                    "label": "Eliminar Proyecto",
+                    "icon": "trash",
+                    "url": "/projects/delete"
+                }
+            },
+            "statuses": {
+                "active": "Activo",
+                "completed": "Completado",
+                "onHold": "En Pausa",
+                "cancelled": "Cancelado",
+                "draft": "Borrador"
+            }
+        },
+        "recentFiles": {
+            "title": "Archivos Recientes",
+            "subtitle": "Últimos archivos subidos y modificados",
+            "empty": "No hay archivos recientes",
+            "aria": "Sección de archivos recientes",
+            "actions": {
+                "upload": "Subir archivo",
+                "viewAll": "Ver todos los archivos",
+                "filter": "Filtrar archivos"
+            },
+            "filters": {
+                "all": "Todos los Archivos",
+                "documents": "Documentos",
+                "images": "Imágenes",
+                "other": "Otros"
+            },
+            "labels": {
+                "fileName": "Nombre del Archivo",
+                "size": "Tamaño",
+                "uploadDate": "Fecha de Subida",
+                "type": "Tipo",
+                "project": "Proyecto"
+            }
+        },
+        "notifications": {
+            "title": "Notificaciones Recientes",
+            "subtitle": "Últimas actualizaciones y alertas",
+            "empty": "No hay notificaciones nuevas",
+            "aria": "Sección de notificaciones",
+            "actions": {
+                "markAllRead": "Marcar todas como leídas",
+                "viewAll": "Ver todas las notificaciones",
+                "settings": "Configuración de notificaciones"
+            },
+            "types": {
+                "update": "Actualización",
+                "alert": "Alerta",
+                "reminder": "Recordatorio",
+                "message": "Mensaje",
+                "mention": "Mención"
+            },
+            "filters": {
+                "all": "Todas las Notificaciones",
+                "unread": "No Leídas",
+                "mentions": "Menciones",
+                "updates": "Actualizaciones"
+            },
+            "timeLabels": {
+                "today": "Hoy",
+                "yesterday": "Ayer",
+                "thisWeek": "Esta Semana",
+                "thisMonth": "Este Mes"
+            }
+        }
+    },
+    "tooltips": {
+        "refresh": "Actualizar panel",
+        "settings": "Configuración del panel",
+        "help": "Ayuda y documentación",
+        "profile": "Ver perfil",
+        "notifications": "Ver todas las notificaciones"
+    },
+    "messages": {
+        "welcome": "Bienvenido de nuevo, {name}",
+        "lastLogin": "Último inicio de sesión: {date}",
+        "dataUpdate": "Datos actualizados por última vez: {date}",
+        "loading": "Cargando datos del panel...",
+        "error": "Error al cargar el panel",
+        "retry": "Reintentar carga"
+    },
+    "errors": {
+        "loadFailed": "Error al cargar los datos del panel",
+        "updateFailed": "Error al actualizar el panel",
+        "connectionError": "Error de conexión",
+        "sessionExpired": "Tu sesión ha expirado",
+        "permissions": "Permisos insuficientes"
+    },
+    "accessibility": {
+        "loadingState": "El panel se está cargando",
+        "refreshButton": "Actualizar datos del panel",
+        "settingsButton": "Abrir configuración del panel",
+        "navigationMenu": "Menú de navegación del panel",
+        "notificationBadge": "Número de notificaciones no leídas",
+        "projectProgress": "Indicador de progreso del proyecto"
+    },
+    "dialogs": {
+        "refresh": {
+            "title": "Actualizar Panel",
+            "message": "¿Estás seguro de que deseas actualizar todos los datos del panel?",
+            "confirm": "Sí, actualizar",
+            "cancel": "Cancelar"
+        },
+        "settings": {
+            "title": "Configuración del Panel",
+            "save": "Guardar cambios",
+            "cancel": "Cancelar cambios"
+        }
+    }
 }

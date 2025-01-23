@@ -146,7 +146,8 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         <div className={cx("dashboard-header__actions")}>
           <UserInfo
             closeOnScroll
-            userName={config.user.menu.options[0]?.label || ""}
+            userName={"Marc Vega"}
+            // userName={config.user.menu.options[0]?.label || ""}
             userRole={config.user.roles.types[config.user.roles.default].label}
             options={userMenuOptions}
             theme={theme}

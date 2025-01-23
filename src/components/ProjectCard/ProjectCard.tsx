@@ -10,7 +10,6 @@ import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import StageProgress from "../StageProgress";
 import Typography from "../Typography";
 import styles from "./ProjectCard.module.scss";
-import { capitalizeAndFormat } from "@/utils/textUtils";
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +25,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   size = "default",
   theme = { type: "light" },
-  // dictionary,
+  dictionary,
 }) => {
   const {
     id,
@@ -41,9 +40,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   } = project;
 
   const statusClassName = cx("project-card__header-status", {
-    "project-card__header-status--inProgress": ["inProgress"].includes(status),
-    "project-card__header-status--onHold": ["onHold"].includes(status),
-    "project-card__header-status--completed": ["completed"].includes(status),
+    "project-card__header-status--inProgress": ["inProgress"].includes(
+      status.value
+    ),
+    "project-card__header-status--onHold": ["onHold"].includes(status.value),
+    "project-card__header-status--completed": ["completed"].includes(
+      status.value
+    ),
   });
 
   const priorityClassName =
@@ -68,7 +71,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className={cx("project-card__header")}>
         <div className={cx("project-card__header-top")}>
           <Typography as="span" variant="p3" className={statusClassName}>
-            {capitalizeAndFormat(status)}
+            {status.label}
           </Typography>
           {priority && (
             <ThemedTypography
@@ -77,7 +80,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               className={priorityClassName}
               noWrap
             >
-              {priority}
+              {priority.label}
             </ThemedTypography>
           )}
         </div>
@@ -104,7 +107,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         stages={formattedStages}
         gradientVariant="progressive"
         variant="timeline"
-        type={type || "Other"}
+        type={type.label || "Other"}
         size={size}
         theme={{ type: theme.type }}
       />
@@ -125,7 +128,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           href={`/dashboard/project/${id}`}
           className={cx("project-card__footer-link")}
         >
-          <ThemedTypography variant="p2">View Project</ThemedTypography>
+          <ThemedTypography variant="p2">
+            {dictionary.links.view.label}
+          </ThemedTypography>
           <ArrowRight
             className={cx("project-card__footer-link-icon")}
             size={20}

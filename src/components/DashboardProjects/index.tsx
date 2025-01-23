@@ -8,19 +8,27 @@ import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { Dropdown } from "@/components/Dropdown";
 import Spinner from "@/components/Spinner";
 import { useProjectFilters } from "./hooks/useProjectFilters";
-import { DashboardProjectsProps } from "./types";
+import { DashboardProjectsProps, ViewMode } from "./types";
 import styles from "./DashboardProjects.module.scss";
 
 const cx = classNames.bind(styles);
 
-const DashboardProjects: React.FC<DashboardProjectsProps> = ({
+export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
   projects,
   title,
   theme = { type: "light" },
   initialViewMode = "list",
+  viewOptions,
+  dictionary,
   className,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
+
+  const filterConfig = {
+    status: dictionary.filters.status,
+    priority: dictionary.filters.priority,
+    empty: dictionary.empty,
+  };
 
   useEffect(() => {
     const checkMobile = () => {
@@ -43,10 +51,13 @@ const DashboardProjects: React.FC<DashboardProjectsProps> = ({
     setSelectedPriority,
     filteredProjects,
     isLoading,
-  } = useProjectFilters({ projects, initialViewMode });
+  } = useProjectFilters({
+    projects,
+    initialViewMode,
+    filterConfig,
+  });
 
-  const handleGridClick = () => setViewMode("grid");
-  const handleListClick = () => setViewMode("list");
+  const handleViewChange = (mode: ViewMode) => setViewMode(mode);
 
   return (
     <div
@@ -98,13 +109,13 @@ const DashboardProjects: React.FC<DashboardProjectsProps> = ({
               className={cx("dashboard-projects__view-button", {
                 "dashboard-projects__view-button--active": viewMode === "grid",
               })}
-              onClick={handleGridClick}
-              aria-label="Grid view"
+              onClick={() => handleViewChange("grid")}
+              aria-label={viewOptions.grid}
             >
               <Grid size={18} strokeWidth={1.55} />
               <span className={cx("dashboard-projects__view-button-tooltip")}>
                 <ThemedTypography color="secondary" variant="p3">
-                  Switch to grid view
+                  {viewOptions.grid}
                 </ThemedTypography>
               </span>
             </button>
@@ -113,13 +124,13 @@ const DashboardProjects: React.FC<DashboardProjectsProps> = ({
               className={cx("dashboard-projects__view-button", {
                 "dashboard-projects__view-button--active": viewMode === "list",
               })}
-              onClick={handleListClick}
-              aria-label="List view"
+              onClick={() => handleViewChange("list")}
+              aria-label={viewOptions.list}
             >
               <List size={18} strokeWidth={1.55} />
               <span className={cx("dashboard-projects__view-button-tooltip")}>
                 <ThemedTypography color="secondary" variant="p3">
-                  Switch to list view
+                  {viewOptions.list}
                 </ThemedTypography>
               </span>
             </button>
@@ -158,6 +169,7 @@ const DashboardProjects: React.FC<DashboardProjectsProps> = ({
                       : "default"
                   }
                   theme={theme}
+                  dictionary={dictionary}
                 />
               ))
             ) : (
@@ -166,7 +178,7 @@ const DashboardProjects: React.FC<DashboardProjectsProps> = ({
                 color="secondary"
                 className={cx("dashboard-projects__list--empty")}
               >
-                No projects available
+                {dictionary.empty}
               </ThemedTypography>
             )}
           </div>

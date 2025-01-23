@@ -15,7 +15,7 @@ export default async function DashboardPage({
   );
 
   const [projects, dict] = await Promise.all([
-    getProjects(),
+    getProjects(lang),
     getPageDictionary(dashboardDictionary, lang),
   ]);
 

@@ -62,16 +62,28 @@
                 "export": "Export projects list"
             },
             "filters": {
-                "all": "All Projects",
-                "active": "Active Only",
-                "completed": "Completed Only",
-                "onHold": "On Hold"
+                "status": {
+                    "allStatus": "All Status",
+                    "inProgress": "In Progress",
+                    "completed": "Completed",
+                    "onHold": "On Hold"
+                },
+                "priority": {
+                    "allPriority": "All Priority",
+                    "high": "High Priority",
+                    "medium": "Medium Priority",
+                    "low": "Low Priority"
+                }
             },
             "sortOptions": {
                 "recent": "Most Recent",
                 "name": "Project Name",
                 "progress": "Progress",
                 "deadline": "Deadline"
+            },
+            "viewOptions": {
+                "list": "List View",
+                "grid": "Grid View"
             },
             "labels": {
                 "projectName": "Project Name",
@@ -80,6 +92,20 @@
                 "status": "Status",
                 "lastUpdated": "Last Updated",
                 "dueDate": "Due Date"
+            },
+            "links": {
+                "view": {
+                    "label": "View Project",
+                    "url": "/projects/view"
+                },
+                "edit": {
+                    "label": "Edit Project",
+                    "url": "/projects/edit"
+                },
+                "delete": {
+                    "label": "Delete Project",
+                    "url": "/projects/delete"
+                }
             },
             "statuses": {
                 "active": "Active",
