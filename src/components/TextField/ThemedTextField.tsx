@@ -4,13 +4,12 @@ import React, { ElementType, useState } from "react";
 import classNames from "classnames/bind";
 import { useField } from "formik";
 import type { TextFieldProps } from "./types";
-import { Typography } from "@/components/Typography";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import styles from "./TextField.module.scss";
-import { getIconComponent } from "@/utils/iconUtils";
 
 const cx = classNames.bind(styles);
 
-export const TextField = <T extends ElementType = "div">({
+export const ThemedTextField = <T extends ElementType = "div">({
   as,
   className,
   label,
@@ -30,25 +29,18 @@ export const TextField = <T extends ElementType = "div">({
   const [field, meta] = useField(name);
   const [focused, setFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [touched, setTouched] = useState(false);
 
   const Component = as || "div";
   const themeType = typeof theme === "string" ? theme : theme.type;
   const customValues =
     typeof theme === "object" ? theme.customValues : undefined;
 
-  const passwordIcon = getIconComponent(
-    passwordVisible ? "showPassword" : "hidePassword"
-  );
-
-  const showErrorState = touched && showError && meta.error && meta.touched;
-
   const rootClassName = cx(
     "textfield",
     `textfield--${variant}`,
     {
       "textfield--disabled": disabled,
-      "textfield--error": showErrorState,
+      "textfield--error": showError && meta.error && meta.touched,
       "textfield--not-empty": field.value,
       "textfield--focused": focused,
       "textfield--with-icon": icon,
@@ -68,24 +60,16 @@ export const TextField = <T extends ElementType = "div">({
         "--textfield-error": customValues.error,
         "--textfield-placeholder": customValues.placeholder,
         "--textfield-focus": customValues.focus,
-        "--textfield-autofill-bg": customValues.autofillBg,
-        "--textfield-disabled": customValues.disabled,
-        "--textfield-disabled-bg": customValues.disabledBg,
       } as React.CSSProperties)
     : undefined;
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setFocused(true);
-    if (rest.onFocus) {
-      rest.onFocus(e);
-    }
+    field.onBlur(e);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setFocused(false);
-    if (field.value) {
-      setTouched(true);
-    }
     field.onBlur(e);
   };
 
@@ -97,11 +81,9 @@ export const TextField = <T extends ElementType = "div">({
     <Component className={rootClassName} style={style}>
       <div className={cx("textfield__input-container")}>
         {label && (
-          <Typography
-            theme={{ type: themeType }}
+          <ThemedTypography
             as="label"
             variant="label"
-            color={showErrorState ? "error" : undefined}
             className={cx("textfield__label", labelClassName, {
               "textfield__label--focused":
                 variant === "secondary" && (focused || field.value),
@@ -109,7 +91,7 @@ export const TextField = <T extends ElementType = "div">({
             htmlFor={name}
           >
             {label}
-          </Typography>
+          </ThemedTypography>
         )}
 
         <div className={cx("textfield__input-wrapper")}>
@@ -125,36 +107,33 @@ export const TextField = <T extends ElementType = "div">({
             placeholder={variant === "primary" ? placeholder : ""}
           />
 
-          {(icon || type === "password") && (
+          {icon && (
             <div
               className={cx("textfield__icon", {
                 "textfield__icon--clickable": type === "password",
-                "textfield__icon--error": showErrorState,
               })}
               onClick={
                 type === "password" ? togglePasswordVisibility : undefined
               }
             >
-              {type === "password" ? passwordIcon : icon}
+              {icon}
             </div>
           )}
         </div>
       </div>
 
-      {showErrorState && (
-        <Typography
+      {showError && meta.error && meta.touched && (
+        <ThemedTypography
           variant="p3"
-          color="error"
-          theme={{ type: "dark" }}
           className={cx("textfield__error", errorClassName)}
         >
           {meta.error}
-        </Typography>
+        </ThemedTypography>
       )}
     </Component>
   );
 };
 
-TextField.displayName = "TextField";
+ThemedTextField.displayName = "TextField";
 
-export default TextField;
+export default ThemedTextField;

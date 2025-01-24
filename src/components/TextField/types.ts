@@ -12,6 +12,9 @@ export interface TextFieldTheme {
     error?: string;
     placeholder?: string;
     focus?: string;
+    autofillBg?: string;
+    disabled?: string;
+    disabledBg?: string;
   };
 }
 

@@ -12,6 +12,7 @@ $themes: (
     error: $error-color,
     placeholder: rgba($black-base, 0.5),
     focus: rgba($black-light, 0.7),
+    autofill-bg: rgba($black-base, 0.3),
     disabled: rgba($black-base, 0.4),
     disabled-bg: rgba($white-dark, 0.5),
   ),
@@ -19,11 +20,12 @@ $themes: (
     text-primary: $text-primary,
     text-secondary: $text-secondary,
     background: $black-dark,
-    border: rgba($text-primary, 0),
+    border: rgba($text-primary, 0.1),
     label: $text-secondary-60,
     error: $error-color,
     placeholder: $text-tertiary,
     focus: rgba($primary-color, 0.7),
+    autofill-bg: $black-dark,
     disabled: $text-disabled,
     disabled-bg: rgba($black-base, 0.15),
   ),
@@ -36,6 +38,7 @@ $themes: (
     error: var(--textfield-error, $error-color),
     placeholder: var(--textfield-placeholder, $text-tertiary),
     focus: var(--textfield-focus, $primary-color),
+    autofill-bg: var(--textfield-autofill-bg, rgba($black-base, 0.3)),
     disabled: var(--textfield-disabled, $text-disabled),
     disabled-bg: var(--textfield-disabled-bg, rgba($black-base, 0.15)),
   ),
@@ -45,7 +48,6 @@ $themes: (
   @include flex(column, flex-start, stretch, $spacing-sm);
   width: 100%;
 
-  // Hide number input spinners
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -94,7 +96,6 @@ $themes: (
     @include transition(all);
     width: 20px;
     height: 20px;
-    color: currentColor;
 
     &--clickable {
       cursor: pointer;
@@ -104,11 +105,6 @@ $themes: (
   &__error {
     @include flex(row, flex-start, center, $spacing-xs);
     margin-top: $spacing-xs;
-
-    &::before {
-      content: "⚠️";
-      font-size: 0.75rem;
-    }
   }
 
   // Variants
@@ -172,10 +168,32 @@ $themes: (
         &:focus {
           border: 1.82px solid map.get($colors, focus);
         }
+
+        // &:-webkit-autofill,
+        // &:-webkit-autofill:hover,
+        // &:-webkit-autofill:focus {
+        //   -webkit-box-shadow: 0
+        //     0
+        //     0px
+        //     1000px
+        //     map.get($colors, autofill-bg)
+        //     inset;
+        // }
+      }
+
+      .textfield__icon {
+        color: map.get($colors, text-primary);
+
+        &--error {
+          color: map.get($colors, error);
+        }
+      }
+
+      .textfield__error {
+        color: map.get($colors, error);
       }
 
       &.textfield--disabled {
-        // opacity: 0.6;
         cursor: not-allowed;
 
         .textfield__label {
@@ -198,6 +216,15 @@ $themes: (
         .textfield__input {
           border-color: map.get($colors, error);
           background-color: convert-to-rgba(map.get($colors, error), 0.05);
+        }
+
+        .textfield__label {
+          color: map.get($colors, error);
+          background-color: map.get($colors, background);
+        }
+
+        .textfield__icon {
+          color: map.get($colors, error);
         }
       }
     }
