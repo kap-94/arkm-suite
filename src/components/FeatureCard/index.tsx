@@ -1,19 +1,19 @@
-// components/ui/feature-card.tsx
-import { LucideIcon } from "lucide-react";
 import classNames from "classnames/bind";
+import { LucideIcon } from "lucide-react";
+import Typography from "@/components/Typography";
 import styles from "./featureCard.module.scss";
 
 const cx = classNames.bind(styles);
 
 interface FeatureCardProps {
-  icon: LucideIcon;
+  icon: React.ReactNode;
   title: string;
   description: string;
   variant?: "default" | "mobile";
 }
 
 export function FeatureCard({
-  icon: Icon,
+  icon,
   title,
   description,
   variant = "default",
@@ -21,22 +21,42 @@ export function FeatureCard({
   if (variant === "mobile") {
     return (
       <div className={cx("feature-card-mobile")}>
-        <span className={cx("feature-card-mobile__icon")}>
-          <Icon size={18} strokeWidth={1.5} />
-        </span>
-        <h3 className={cx("feature-card-mobile__title")}>{title}</h3>
+        <span className={cx("feature-card-mobile__icon")}>{icon}</span>
+        <Typography
+          variant="p3"
+          color="secondary"
+          fontWeight={500}
+          align="center"
+          theme={{ type: "dark" }}
+          className={cx("feature-card-mobile__title")}
+        >
+          {title}
+        </Typography>
       </div>
     );
   }
 
   return (
     <div className={cx("feature-card")}>
-      <span className={cx("feature-card__icon")}>
-        <Icon size={22} strokeWidth={1.5} />
-      </span>
+      <span className={cx("feature-card__icon")}>{icon}</span>
       <div>
-        <h3>{title}</h3>
-        <p>{description}</p>
+        <Typography
+          variant="h5"
+          // color="secondary"
+          fontWeight={500}
+          theme={{ type: "dark" }}
+          className={cx("feature-card__title")}
+        >
+          {title}
+        </Typography>
+        <Typography
+          variant="p1"
+          color="secondary"
+          fontWeight={300}
+          theme={{ type: "dark" }}
+        >
+          {description}
+        </Typography>
       </div>
     </div>
   );
