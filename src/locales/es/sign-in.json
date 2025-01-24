@@ -51,7 +51,8 @@
       "separator": {
         "text": "o"
       }
-    }
+    },
+    "note": "* Access provided by the administrator"
   },
   "status": {
     "loading": "Cargando...",

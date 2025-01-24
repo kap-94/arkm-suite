@@ -119,6 +119,14 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
                 {dictionary.form.buttons.google.label}
               </Typography>
             </GoogleButton>
+
+            <Typography
+              variant="p3"
+              theme={{ type: "dark" }}
+              className={cx("signin-form__note")}
+            >
+              {dictionary.form.note}
+            </Typography>
           </Form>
         )}
       </Formik>

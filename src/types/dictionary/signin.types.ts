@@ -41,6 +41,7 @@ export interface SignInForm {
       text: string;
     };
   };
+  note?: string;
 }
 
 export interface SignInStatus extends StatusMessages {
