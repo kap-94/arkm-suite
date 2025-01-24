@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Configuración de diseño del panel",
+    "maintainer": "Equipo de Desarrollo"
+  },
+  "header": {
+    "title": "Suite de Clientes",
+    "subtitle": "Portal exclusivo para nuestros valiosos clientes",
+    "icon": "user"
+  },
+  "features": {
+    "projectControl": {
+      "title": "Gestión de Proyectos",
+      "description": "Supervisa y gestiona hitos y entregables de proyectos",
+      "icon": "folder"
+    },
+    "assetManagement": {
+      "title": "Centro de Recursos",
+      "description": "Repositorio centralizado para todos los recursos del proyecto",
+      "icon": "file"
+    },
+    "documentation": {
+      "title": "Centro de Documentación",
+      "description": "Accede a guías de proyecto, manuales y documentación técnica",
+      "icon": "book"
+    }
+  }
+}

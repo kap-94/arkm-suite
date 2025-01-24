@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "title": "Sign In",
+    "description": "Access your personalized dashboard securely",
+    "keywords": [
+      "sign in",
+      "login",
+      "dashboard access"
+    ]
+  },
+  "header": {
+    "title": "Sign In",
+    "subtitle": "Access your personalized dashboard",
+    "aria": "Sign in header"
+  },
+  "form": {
+    "fields": {
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter your email",
+        "icon": "mail"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Enter your password",
+        "icon": "password"
+      }
+    },
+    "validation": {
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordUppercase": "Password must contain at least one uppercase letter",
+      "passwordLowercase": "Password must contain at least one lowercase letter",
+      "passwordNumber": "Password must contain at least one number",
+      "passwordSpecial": "Password must contain at least one special character",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Invalid email or password",
+      "unexpected": "An unexpected error occurred"
+    },
+    "buttons": {
+      "primary": {
+        "label": "Sign In",
+        "loading": "Signing in...",
+        "cancel": "Cancel"
+      },
+      "google": {
+        "label": "Sign in with Google",
+        "loading": "Connecting to Google..."
+      },
+      "separator": {
+        "text": "or"
+      }
+    }
+  },
+  "status": {
+    "loading": "Loading...",
+    "success": "Successfully signed in",
+    "error": "An error occurred",
+    "invalidCredentials": "Invalid email or password",
+    "network": "Network error, please try again later"
+  },
+  "errors": {
+    "email": "Error with email input",
+    "password": "Error with password input",
+    "unexpected": "An unexpected error occurred"
+  },
+  "aria": {
+    "emailInput": "Email input",
+    "passwordInput": "Password input",
+    "submitButton": "Sign in button"
+  }
+}

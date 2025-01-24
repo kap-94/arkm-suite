@@ -5,6 +5,8 @@ import type { DashboardDictionary } from "@/types/dictionary/dashboard.types";
 import type { SettingsDictionary } from "@/types/dictionary/settings.types";
 import type { ProfileDictionary } from "@/types/dictionary/profile.types";
 import { DashboardLayoutDictionary } from "@/types/dictionary/dashboardLayout.types";
+import { SignInDictionary } from "@/types/dictionary/signin.types";
+import { AuthLayoutDictionary } from "@/types/dictionary/authLayout.types";
 
 export type DictionaryFile = "dashboard" | "settings" | "profile";
 
@@ -39,6 +41,23 @@ const createCachedDictionaryLoader = cache(
 );
 
 // Servicios específicos para cada página
+export const signInDictionary = new DictionaryService<SignInDictionary>(
+  {
+    en: () => import("@/locales/en/sign-in.json"),
+    es: () => import("@/locales/es/sign-in.json"),
+  },
+  (dict) => validateDictionary<SignInDictionary>({} as SignInDictionary, dict)
+);
+
+export const authLayoutDictionary = new DictionaryService<AuthLayoutDictionary>(
+  {
+    en: () => import("@/locales/en/auth-layout.json"),
+    es: () => import("@/locales/es/auth-layout.json"),
+  },
+  (dict) =>
+    validateDictionary<AuthLayoutDictionary>({} as AuthLayoutDictionary, dict)
+);
+
 export const dashboardLayoutDictionary =
   new DictionaryService<DashboardLayoutDictionary>(
     {

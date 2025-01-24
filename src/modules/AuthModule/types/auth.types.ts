@@ -1,4 +1,5 @@
 import { Language } from "@/components/LanguageSelector";
+import { SignInDictionary } from "@/types/dictionary/signin.types";
 
 export enum AuthScreenType {
   LOGIN = "login",
@@ -12,21 +13,6 @@ export interface AuthScreenProps {
   nameFormat?: string;
   title?: string;
   subtitle?: string;
+  dictionary: SignInDictionary;
   lang: Language;
-}
-
-export interface AuthScreenBackgroundOptions {
-  boxDropshadow: boolean;
-  backgroundColor: string;
-  backgroundImage: { url: string; alt: string };
-}
-
-export interface SigninFormValues {
-  email: string;
-  password: string;
-}
-
-export interface SigninFormProps {
-  className?: string;
-  nameFormat?: string;
 }

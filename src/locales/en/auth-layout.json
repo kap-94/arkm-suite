@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Dashboard layout configuration",
+    "maintainer": "Development Team"
+  },
+  "header": {
+    "title": "Client Suite",
+    "subtitle": "Exclusive portal for our valued clients",
+    "icon": "users"
+  },
+  "features": {
+    "projectControl": {
+      "title": "Project Management",
+      "description": "Track and manage project milestones and deliverables",
+      "icon": "folder"
+    },
+    "assetManagement": {
+      "title": "Resource Center",
+      "description": "Centralized repository for all project assets",
+      "icon": "file"
+    },
+    "documentation": {
+      "title": "Documentation Hub",
+      "description": "Access project guides, manuals and technical documentation",
+      "icon": "book"
+    }
+  }
+}

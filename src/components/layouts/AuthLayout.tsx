@@ -1,54 +1,33 @@
-// components/layouts/AuthLayout/AuthLayout.tsx
-"use client";
-
-import { Language } from "@/config/i18n";
-import { UIProvider } from "@/context/UIContext";
-import { useLanguage } from "@/context/LanguageContext";
-import { Brand } from "@/components/Header/components";
-import { Gauge, Layers, BarChart, ArrowLeft } from "lucide-react";
-import { FeatureCard } from "@/components/FeatureCard";
 import Link from "next/link";
 import classNames from "classnames/bind";
+import { ArrowLeft, HelpCircle } from "lucide-react";
+import { Language } from "@/config/i18n";
+import { authLayoutDictionary, getPageDictionary } from "@/utils/dictionary";
+import { UIProvider } from "@/context/UIContext";
+import { Brand } from "@/components/Header/components";
+import { FeatureCard } from "@/components/FeatureCard";
+import { getIconComponent } from "@/utils/iconUtils";
+import Typography from "@/components/Typography";
 import styles from "./AuthLayout.module.scss";
 
 const cx = classNames.bind(styles);
 
 interface AuthLayoutProps {
   children: React.ReactNode;
-  lang: Language;
+  params: {
+    lang: Language;
+  };
 }
 
-export function AuthLayout({ children }: AuthLayoutProps) {
-  // const { t } = useLanguage();
-
-  const features = [
-    {
-      icon: Gauge,
-      title: "auth.signin.features.projectControl.title",
-      description: "auth.signin.features.projectControl.description",
-      // title: t("auth.signin.features.projectControl.title"),
-      // description: t("auth.signin.features.projectControl.description"),
-    },
-    {
-      icon: Layers,
-      title: "auth.signin.features.assetManagement.title",
-      description: "auth.signin.features.assetManagement.description",
-      // title: t("auth.signin.features.assetManagement.title"),
-      // description: t("auth.signin.features.assetManagement.description"),
-    },
-    {
-      icon: BarChart,
-      title: "auth.signin.features.analytics.title",
-      description: "auth.signin.features.analytics.description",
-      // title: t("auth.signin.features.analytics.title"),
-      // description: t("auth.signin.features.analytics.description"),
-    },
-  ] as const;
+export default async function AuthLayout({
+  children,
+  params,
+}: AuthLayoutProps) {
+  const dict = await getPageDictionary(authLayoutDictionary, params.lang);
 
   return (
     <UIProvider>
       <div className={cx("auth")}>
-        {/* Desktop Layout */}
         <div className={cx("auth__container")}>
           <section className={cx("auth__form-section")}>
             <Link href="/" className={cx("auth__home-link")}>
@@ -61,20 +40,26 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             <Brand variant="double-border" size="sm" />
             <div className={cx("auth__content")}>
               <div className={cx("auth__header")}>
-                <h1 className={cx("auth__title")}>
-                  {/* {t("auth.signin.clientSuite.title")} */}
-                </h1>
-                <p className={cx("auth__subtitle")}>
-                  {/* {t("auth.signin.clientSu  ite.subtitle")} */}
-                </p>
+                <Typography variant="h2" className={cx("auth__title")}>
+                  {dict.header.title}
+                </Typography>
+                <Typography
+                  variant="p1"
+                  color="secondary"
+                  fontWeight={400}
+                  theme={{ type: "dark" }}
+                  className={cx("auth__subtitle")}
+                >
+                  {dict.header.subtitle}
+                </Typography>
               </div>
               <div className={cx("auth__features")}>
-                {features.map((feature) => (
+                {Object.entries(dict.features).map(([key, feature]) => (
                   <FeatureCard
-                    key={feature.title}
-                    icon={feature.icon}
+                    key={key}
+                    icon={getIconComponent(feature.icon)}
                     title={feature.title}
-                    description={feature.description}
+                    description={feature.description || feature.subtitle || ""}
                   />
                 ))}
               </div>
@@ -82,7 +67,6 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           </section>
         </div>
 
-        {/* Mobile Layout */}
         <div className={cx("auth__mobile-container")}>
           <div className={cx("auth__mobile-header")}>
             <Brand variant="double-border" size="sm" />
@@ -91,12 +75,12 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             </Link>
           </div>
           <div className={cx("auth__mobile-features")}>
-            {features.map((feature) => (
+            {Object.entries(dict.features).map(([key, feature]) => (
               <FeatureCard
-                key={feature.title}
-                icon={feature.icon}
+                key={key}
+                icon={getIconComponent(feature.icon)}
                 title={feature.title}
-                description={feature.description}
+                description={feature.description || feature.subtitle || ""}
                 variant="mobile"
               />
             ))}
