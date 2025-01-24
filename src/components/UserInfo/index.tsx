@@ -27,7 +27,7 @@ const DropdownItem = ({
 }) => {
   const { language } = useSettings();
 
-  if (option.divider) {
+  if (option.type === "divider") {
     return <div className={cx("user-info__dropdown-divider")} />;
   }
 
@@ -36,6 +36,7 @@ const DropdownItem = ({
       {option.icon && (
         <span className={cx("user-info__dropdown-icon")}>{option.icon}</span>
       )}
+
       <ThemedTypography variant="p2" theme={theme}>
         {option.label}
       </ThemedTypography>
