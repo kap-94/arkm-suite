@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@import "@/styles/variables";
 
 .button {
   $self: &;
@@ -105,15 +105,21 @@
   &--disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    pointer-events: none;
+    // pointer-events: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 
-  // Con icono
   &--with-icon {
     padding-right: 1rem;
   }
 
-  // Loading
+  &--fullWidth {
+    width: 100%;
+  }
+
   &--loading {
     color: transparent;
     pointer-events: none;

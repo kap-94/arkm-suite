@@ -25,6 +25,7 @@ export const Button = forwardRef<
       isLoading = false,
       disabled = false,
       onClick,
+      fullWidth = false,
       type = "button",
       ...props
     },
@@ -39,6 +40,7 @@ export const Button = forwardRef<
         "button--disabled": disabled,
         "button--loading": isLoading,
         "button--with-icon": !!icon,
+        "button--fullWidth": fullWidth,
       },
       className
     );
