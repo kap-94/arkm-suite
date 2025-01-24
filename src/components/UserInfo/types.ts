@@ -15,19 +15,14 @@ export interface UserInfoTheme {
   };
 }
 
-export type DropdownOption =
-  | {
-      id: string;
-      divider: true;
-    }
-  | {
-      id: string;
-      label: string;
-      icon?: ReactNode;
-      href?: string;
-      onClick?: () => void;
-      divider?: never;
-    };
+export type DropdownOption = {
+  id: string;
+  label: string;
+  icon?: ReactNode;
+  href?: string;
+  onClick?: () => void;
+  type?: string;
+};
 
 export interface UserInfoProps {
   userName: string;
