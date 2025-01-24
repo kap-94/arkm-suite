@@ -4,7 +4,7 @@ import React from "react";
 import { Formik, Form, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import classNames from "classnames/bind";
-import { TextField } from "@/components/TextField";
+import { ThemedTextField } from "@/components/TextField";
 import type { UpdateProfileFormProps } from "./types";
 import { Button } from "@/components/Button";
 import { AtSign } from "lucide-react";
@@ -68,7 +68,7 @@ export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
         >
           <div className={cx("profile-form__field")}>{children}</div>
 
-          <TextField
+          <ThemedTextField
             label={dictionary.form.fields.email.label}
             name="email"
             type="email"
