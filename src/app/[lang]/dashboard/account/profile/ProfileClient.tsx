@@ -60,10 +60,7 @@ export const mockUser: User = {
 };
 
 interface ProfileClientProps {
-  dictionary: {
-    profile: ProfileDictionary;
-    common: CommonDictionary;
-  };
+  dictionary: ProfileDictionary;
 }
 
 export function ProfileClient({ dictionary }: ProfileClientProps) {
@@ -106,7 +103,7 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error("Error updating profile:", error);
-      throw new Error(dictionary.common.error);
+      throw new Error(dictionary.errors.profileUpdate);
     }
   };
 
@@ -116,7 +113,7 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error("Error updating profile image:", error);
-      throw new Error(dictionary.profile.errors.imageUpdate);
+      throw new Error(dictionary.errors.imageUpdate);
     }
   };
 
@@ -138,8 +135,8 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
 
       <PageHeader
         icon={<UserIcon size={22} />}
-        title={dictionary.profile.header.title}
-        subtitle={dictionary.profile.header.subtitle}
+        title={dictionary.header.title}
+        subtitle={dictionary.header.subtitle}
         theme={{ type: theme }}
       />
 
@@ -150,17 +147,17 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
             theme={{ type: theme }}
             onImageChange={handleImageChange}
             user={mockUser}
-            dictionary={dictionary.profile}
+            dictionary={dictionary}
           />
 
           <UpdateProfileForm
             user={mockUser}
             theme={{ type: theme }}
             onSubmit={handleProfileUpdate}
-            dictionary={dictionary.profile}
+            dictionary={dictionary}
           >
             <Dropdown
-              label={dictionary.profile.form.fields.nationality.label}
+              label={dictionary.form.fields.nationality.label}
               id="nationality"
               options={countryOptions}
               selected={selectedCountry}
