@@ -1,92 +1,124 @@
 {
-    "meta": {
-      "version": "1.0",
-      "lastUpdated": "2025-01-22",
-      "description": "Main layout configuration for public routes",
-      "maintainer": "Development Team"
-    },
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Main layout configuration for public routes",
+    "maintainer": "Development Team"
+  },
+  "header": {
+    "aria": "Main site navigation",
     "navigation": {
-      "main": {
-        "home": {
-          "title": "Home",
-          "path": "/",
-          "aria": "Home page",
-          "icon": "home",
-          "meta": {
-            "description": "Welcome to our platform",
-            "keywords": ["home", "welcome", "main"]
-          }
-        },
-        "features": {
-          "title": "Features",
-          "path": "/features",
-          "aria": "Features overview",
-          "icon": "features",
-          "meta": {
-            "description": "Explore our platform features"
-          }
-        },
-        "pricing": {
-          "title": "Pricing",
-          "path": "/pricing",
-          "aria": "Pricing plans",
-          "icon": "pricing",
-          "meta": {
-            "description": "View our pricing plans"
-          }
-        },
-        "about": {
-          "title": "About",
-          "path": "/about",
-          "aria": "About us",
-          "icon": "info",
-          "meta": {
-            "description": "Learn about our company"
-          }
+      "home": {
+        "label": "Home",
+        "href": "/",
+        "aria": "Home page",
+        "icon": "home",
+        "meta": {
+          "description": "Welcome to our platform",
+          "keywords": [
+            "home",
+            "welcome",
+            "main"
+          ]
         }
       },
-      "footer": {
-        "company": {
-          "title": "Company",
-          "aria": "Company information",
-          "children": {
-            "careers": {
-              "title": "Careers",
-              "path": "/careers",
-              "aria": "Career opportunities",
-              "icon": "briefcase"
-            },
-            "blog": {
-              "title": "Blog",
-              "path": "/blog",
-              "aria": "Company blog",
-              "icon": "book"
-            },
-            "legal": {
-              "title": "Legal",
-              "path": "/legal",
-              "aria": "Legal information",
-              "icon": "shield"
-            }
-          }
+      "features": {
+        "label": "Features",
+        "href": "/features",
+        "aria": "Features overview",
+        "icon": "features",
+        "meta": {
+          "description": "Explore our platform features"
+        }
+      },
+      "pricing": {
+        "label": "Pricing",
+        "href": "/pricing",
+        "aria": "Pricing plans",
+        "icon": "pricing",
+        "meta": {
+          "description": "View our pricing plans"
+        }
+      },
+      "about": {
+        "label": "About",
+        "href": "/about",
+        "aria": "About us",
+        "icon": "info",
+        "meta": {
+          "description": "Learn about our company"
         }
       }
     },
-    "accessibility": {
-      "skipLinks": {
-        "main": "Skip to main content",
-        "navigation": "Skip to navigation"
-      },
-      "aria": {
-        "mainNav": "Main navigation",
-        "footerNav": "Footer navigation"
-      }
+    "clientPortal": {
+      "label": "Client Portal",
+      "href": "/dashboard"
     },
-    "messages": {
-      "errors": {
-        "notFound": "Page not found",
-        "unauthorized": "Unauthorized access",
-        "forbidden": "Access forbidden"
+    "languageOptions": {
+      "english": {
+        "label": "English",
+        "aria": "English language option"
+      },
+      "spanish": {
+        "label": "Spanish",
+        "aria": "Spanish language option"
       }
     }
+  },
+  "footer": {
+    "company": {
+      "title": "Company",
+      "aria": "Company information"
+    },
+    "legends": {
+      "rights": "All rights reserved",
+      "privacy": {
+        "label": "Privacy Policy",
+        "aria": "Privacy policy link",
+        "href": "/privacy-policy"
+      },
+      "terms": {
+        "label": "Terms & Conditions",
+        "aria": "Terms and conditions link",
+        "href": "/terms-and-conditions"
+      }
+    },
+    "navigation": {
+      "careers": {
+        "label": "Careers",
+        "href": "/careers",
+        "aria": "Career opportunities",
+        "icon": "briefcase"
+      },
+      "blog": {
+        "label": "Blog",
+        "href": "/blog",
+        "aria": "Company blog",
+        "icon": "book"
+      },
+      "legal": {
+        "label": "Legal",
+        "href": "/legal",
+        "aria": "Legal information",
+        "icon": "shield"
+      }
+    }
+  },
+  "accessibility": {
+    "skipLinks": {
+      "main": "Skip to main content",
+      "navigation": "Skip to navigation"
+    },
+    "aria": {
+      "mainNav": "Main navigation",
+      "footerNav": "Footer navigation"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notFound": "Page not found",
+      "unauthorized": "Unauthorized access",
+      "forbidden": "Access forbidden"
+    }
   }
+}

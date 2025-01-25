@@ -1,93 +1,124 @@
 {
-    "meta": {
-      "version": "1.0",
-      "lastUpdated": "2025-01-22",
-      "description": "Configuración principal del diseño para rutas públicas",
-      "maintainer": "Equipo de Desarrollo"
-    },
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Configuración principal del diseño para rutas públicas",
+    "maintainer": "Equipo de Desarrollo"
+  },
+  "header": {
+    "aria": "Navegación principal del sitio",
     "navigation": {
-      "main": {
-        "home": {
-          "title": "Inicio",
-          "path": "/",
-          "aria": "Página de inicio",
-          "icon": "home",
-          "meta": {
-            "description": "Bienvenido a nuestra plataforma",
-            "keywords": ["inicio", "bienvenida", "principal"]
-          }
-        },
-        "features": {
-          "title": "Características",
-          "path": "/features",
-          "aria": "Resumen de características",
-          "icon": "features",
-          "meta": {
-            "description": "Explora las características de nuestra plataforma"
-          }
-        },
-        "pricing": {
-          "title": "Precios",
-          "path": "/pricing",
-          "aria": "Planes de precios",
-          "icon": "pricing",
-          "meta": {
-            "description": "Consulta nuestros planes de precios"
-          }
-        },
-        "about": {
-          "title": "Acerca de",
-          "path": "/about",
-          "aria": "Acerca de nosotros",
-          "icon": "info",
-          "meta": {
-            "description": "Conoce nuestra empresa"
-          }
+      "home": {
+        "label": "Inicio",
+        "href": "/",
+        "aria": "Página de inicio",
+        "icon": "home",
+        "meta": {
+          "description": "Bienvenido a nuestra plataforma",
+          "keywords": [
+            "inicio",
+            "bienvenida",
+            "principal"
+          ]
         }
       },
-      "footer": {
-        "company": {
-          "title": "Empresa",
-          "aria": "Información de la empresa",
-          "children": {
-            "careers": {
-              "title": "Carreras",
-              "path": "/careers",
-              "aria": "Oportunidades de empleo",
-              "icon": "briefcase"
-            },
-            "blog": {
-              "title": "Blog",
-              "path": "/blog",
-              "aria": "Blog de la empresa",
-              "icon": "book"
-            },
-            "legal": {
-              "title": "Legal",
-              "path": "/legal",
-              "aria": "Información legal",
-              "icon": "shield"
-            }
-          }
+      "features": {
+        "label": "Características",
+        "href": "/caracteristicas",
+        "aria": "Resumen de características",
+        "icon": "features",
+        "meta": {
+          "description": "Explora las características de nuestra plataforma"
+        }
+      },
+      "pricing": {
+        "label": "Precios",
+        "href": "/precios",
+        "aria": "Planes de precios",
+        "icon": "pricing",
+        "meta": {
+          "description": "Ver nuestros planes de precios"
+        }
+      },
+      "about": {
+        "label": "Nosotros",
+        "href": "/nosotros",
+        "aria": "Acerca de nosotros",
+        "icon": "info",
+        "meta": {
+          "description": "Conoce más sobre nuestra empresa"
         }
       }
     },
-    "accessibility": {
-      "skipLinks": {
-        "main": "Saltar al contenido principal",
-        "navigation": "Saltar a la navegación"
-      },
-      "aria": {
-        "mainNav": "Navegación principal",
-        "footerNav": "Navegación del pie de página"
-      }
+    "clientPortal": {
+      "label": "Portal del Cliente",
+      "href": "/dashboard"
     },
-    "messages": {
-      "errors": {
-        "notFound": "Página no encontrada",
-        "unauthorized": "Acceso no autorizado",
-        "forbidden": "Acceso prohibido"
+    "languageOptions": {
+      "english": {
+        "label": "Inglés",
+        "aria": "Opción de idioma inglés"
+      },
+      "spanish": {
+        "label": "Español",
+        "aria": "Opción de idioma español"
       }
     }
+  },
+  "footer": {
+    "company": {
+      "title": "Empresa",
+      "aria": "Información de la empresa"
+    },
+    "legends": {
+      "rights": "Todos los derechos reservados",
+      "privacy": {
+        "label": "Política de Privacidad",
+        "aria": "Enlace a política de privacidad",
+        "href": "/politica-de-privacidad"
+      },
+      "terms": {
+        "label": "Términos y Condiciones",
+        "aria": "Enlace a términos y condiciones",
+        "href": "/terminos-y-condiciones"
+      }
+    },
+    "navigation": {
+      "careers": {
+        "label": "Carreras",
+        "href": "/carreras",
+        "aria": "Oportunidades laborales",
+        "icon": "briefcase"
+      },
+      "blog": {
+        "label": "Blog",
+        "href": "/blog",
+        "aria": "Blog de la empresa",
+        "icon": "book"
+      },
+      "legal": {
+        "label": "Legal",
+        "href": "/legal",
+        "aria": "Información legal",
+        "icon": "shield"
+      }
+    }
+  },
+  "accessibility": {
+    "skipLinks": {
+      "main": "Saltar al contenido principal",
+      "navigation": "Saltar a la navegación"
+    },
+    "aria": {
+      "mainNav": "Navegación principal",
+      "footerNav": "Navegación del pie de página"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notFound": "Página no encontrada",
+      "unauthorized": "Acceso no autorizado",
+      "forbidden": "Acceso prohibido"
+    }
   }
-  
+}

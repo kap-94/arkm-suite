@@ -1,12 +1,27 @@
 import { Language } from "@/config/i18n";
-import { MainLayout } from "@/components/layouts";
+import { getPageDictionary, mainLayoutDictionary } from "@/utils/dictionary";
+import Header from "@/components/Header";
+import { headerConfig } from "@/config/header.config";
 
-export default function MainLayoutWrapper({
+export default async function MainLayout({
   children,
   params: { lang },
 }: {
   children: React.ReactNode;
-  params: { lang: string };
+  params: { lang: Language };
 }) {
-  return <MainLayout lang={lang as Language}>{children}</MainLayout>;
+  const dictionary = await getPageDictionary(mainLayoutDictionary, lang);
+
+  return (
+    <main lang={lang as Language}>
+      <Header
+        dictionary={dictionary.header}
+        variant={headerConfig.settings.variant}
+        appearance={headerConfig.appearance}
+        breakpoint={headerConfig.settings.breakpoint}
+        menuPosition={headerConfig.settings.menuPosition}
+      />
+      {children}
+    </main>
+  );
 }

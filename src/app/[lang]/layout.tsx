@@ -11,24 +11,11 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://yourdomain.com"), // Add your domain
   title: {
-    default: "ARKM Studio | Web Design & Development",
     template: "%s | ARKM Studio",
+    default: "ARKM Studio",
   },
-  description:
-    "Design and development studio specializing in creating exceptional digital experiences. We transform ideas into innovative and elegant web solutions.",
-  keywords: [
-    "web design",
-    "web development",
-    "digital agency",
-    "ui/ux design",
-    "frontend development",
-    "backend development",
-    "responsive design",
-    "digital branding",
-    "user experience",
-    "ARKM Studio",
-  ],
   authors: [{ name: "ARKM Studio" }],
   creator: "ARKM Studio",
   publisher: "ARKM Studio",

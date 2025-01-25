@@ -61,7 +61,7 @@ export const Header = {
     return (
       <div className={cx("header__menu-trigger")}>
         <Hamburger
-          variant="slide"
+          variant="morph"
           onClick={() => setIsNavOpen(!isNavOpen)}
           isOpen={isNavOpen}
           className={cx("header__menu-trigger-button")}
