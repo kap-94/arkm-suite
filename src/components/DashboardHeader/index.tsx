@@ -68,7 +68,7 @@ const transformUserMenuOptions = (options: UserMenuItem[]) => {
     const IconComponent = getIconComponent(option.icon);
     return {
       ...option,
-      icon: IconComponent ? <IconComponent size={16} /> : undefined,
+      icon: IconComponent,
     };
   });
 };

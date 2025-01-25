@@ -64,7 +64,7 @@ $header-theme-map: (
   &__left {
     flex: 1;
     @include flex(row, flex-start, center, $spacing-xl);
-    max-width: 480px;
+    max-width: 460px;
   }
 
   &__mobile-menu {
