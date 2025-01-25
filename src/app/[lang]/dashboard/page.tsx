@@ -1,4 +1,3 @@
-import { getMultipleDictionaries } from "@/utils/getDictionary";
 import type { Language } from "@/config/i18n";
 import { DashboardClient } from "./DashboardClient";
 import { dashboardDictionary, getPageDictionary } from "@/utils/dictionary";
@@ -9,20 +8,10 @@ export default async function DashboardPage({
 }: {
   params: { lang: Language };
 }) {
-  const { dashboard: dashboardOld, common } = await getMultipleDictionaries(
-    lang,
-    ["dashboard", "common"]
-  );
-
   const [projects, dict] = await Promise.all([
     getProjects(lang),
     getPageDictionary(dashboardDictionary, lang),
   ]);
 
-  return (
-    <DashboardClient
-      projects={projects}
-      dictionary={{ dashboardOld, dict, common }}
-    />
-  );
+  return <DashboardClient projects={projects} dictionary={{ dict }} />;
 }

@@ -13,7 +13,11 @@ import type {
   CommonDictionary,
   DashboardDictionaryOld,
 } from "@/types/dictionary";
-import type { StatsCardTheme, GraphConfig } from "@/components/StatsCard/types";
+import type {
+  StatsCardTheme,
+  GraphConfig,
+  CanvasIllustration,
+} from "@/components/StatsCard/types";
 import { PageHeader } from "@/components/PageHeader";
 import { notifications, recentFiles } from "./mockData";
 import { StatsCard } from "@/components/StatsCard";
@@ -25,6 +29,12 @@ import DashboardProjects from "@/components/DashboardProjects";
 import { Project } from "@/models/project";
 import { DashboardDictionary } from "@/types/dictionary/dashboard.types";
 import styles from "./page.module.scss";
+import {
+  renderProgressCanvas,
+  renderNotificationsCanvas,
+  renderActiveProjectsIsoCubes,
+  renderCompletedCircles,
+} from "@/components/StatsCard/canvas-elements";
 
 const cx = classNames.bind(styles);
 
@@ -33,29 +43,28 @@ interface StatsConfig {
   icon: LucideIcon;
   graphData?: Array<{ value: number }>;
   graphConfig?: GraphConfig;
+  illustration?: CanvasIllustration;
 }
 
 interface DashboardClientProps {
   projects: Project[];
   dictionary: {
-    dashboardOld: DashboardDictionaryOld;
     dict: DashboardDictionary;
-    common: CommonDictionary;
   };
 }
 
 const themeColors = {
   light: {
-    activeProjects: "#22c55e", // green
-    completed: "#6366f1", // indigo
-    overallProgress: "#eab308", // yellow
-    notifications: "#ec4899", // pink
+    activeProjects: "#22c55e",
+    completed: "#6366f1",
+    overallProgress: "#eab308",
+    notifications: "#ec4899",
   },
   dark: {
-    activeProjects: "#4ade80", // lighter green
-    completed: "#818cf8", // lighter indigo
-    overallProgress: "#facc15", // lighter yellow
-    notifications: "#f472b6", // lighter pink
+    activeProjects: "#4ade80",
+    completed: "#818cf8",
+    overallProgress: "#facc15",
+    notifications: "#f472b6",
   },
   custom: {
     activeProjects: "var(--stats-active-projects-color)",
@@ -70,8 +79,8 @@ export function DashboardClient({
   projects,
 }: DashboardClientProps) {
   const { theme } = useSettings();
-
   const projectsList = projects;
+
   const calculateOverallProgress = () => {
     const totalProjects = projectsList.length;
     if (totalProjects === 0) return 0;
@@ -90,11 +99,13 @@ export function DashboardClient({
     switch (key) {
       case "activeProjects":
         baseValue = projectsList.filter(
-          (p) => p.status === "inProgress"
+          (p) => p.status.value === "inProgress"
         ).length;
         break;
       case "completed":
-        baseValue = projectsList.filter((p) => p.status === "completed").length;
+        baseValue = projectsList.filter(
+          (p) => p.status.value === "completed"
+        ).length;
         break;
       case "overallProgress":
         baseValue = calculateOverallProgress();
@@ -111,16 +122,12 @@ export function DashboardClient({
 
       let trend: number;
       if (key === "overallProgress") {
-        // Progreso siempre creciente suavemente
         trend = (i / days) * 0.1;
       } else if (key === "completed") {
-        // Patrón escalonado para proyectos completados
         trend = Math.floor(i / 2) * 0.15;
       } else if (key === "activeProjects") {
-        // Fluctuación suave para proyectos activos
         trend = Math.sin(i / 2) * 0.15;
       } else {
-        // Patrón más aleatorio para notificaciones
         trend = (Math.random() - 0.5) * 0.2;
       }
 
@@ -145,60 +152,126 @@ export function DashboardClient({
     {
       key: "activeProjects",
       icon: FileText,
-      graphData: generateMockData("activeProjects", 14),
+      illustration: {
+        type: "canvas",
+        render: renderActiveProjectsIsoCubes,
+        // render: renderActiveProjectsParticlesStatic,
+      },
+      graphData: generateMockData("activeProjects", 7),
       graphConfig: {
+        type: "line",
         dataKey: "value",
         height: 48,
-        showDots: true,
         color: themeColors[theme].activeProjects,
         curveType: "stepAfter",
-        gradientOpacity: { start: 0.3, end: 0.05 },
-        areaProps: {
-          strokeWidth: 2,
+        isAnimationActive: true,
+        animationDuration: 1000,
+        showDots: true,
+        lineProps: {
+          strokeWidth: 3,
+          dot: {
+            r: 4,
+            strokeWidth: 2,
+            stroke: themeColors[theme].activeProjects,
+            fill: "#fff",
+          },
+          activeDot: {
+            r: 6,
+            strokeWidth: 2,
+            stroke: themeColors[theme].activeProjects,
+            fill: "#fff",
+          },
         },
       },
     },
     {
       key: "completed",
       icon: CheckCircle,
+      illustration: {
+        type: "canvas",
+        render: renderCompletedCircles,
+      },
       graphData: generateMockData("completed", 14),
       graphConfig: {
+        type: "area",
         dataKey: "value",
         height: 48,
         color: themeColors[theme].completed,
-        curveType: "stepAfter",
-        gradientOpacity: { start: 0.25, end: 0 },
+        curveType: "monotone",
+        isAnimationActive: true,
+        animationDuration: 1000,
+        gradientOpacity: {
+          start: 0.4,
+          end: 0.1,
+        },
         areaProps: {
           strokeWidth: 2,
+          fillOpacity: 1,
+          activeDot: {
+            r: 4,
+            strokeWidth: 2,
+            stroke: themeColors[theme].completed,
+            fill: "#fff",
+          },
         },
       },
     },
     {
       key: "overallProgress",
       icon: Gauge,
+      illustration: {
+        type: "canvas",
+        render: renderProgressCanvas,
+      },
       graphData: generateMockData("overallProgress", 14),
       graphConfig: {
+        type: "area",
         dataKey: "value",
         height: 48,
         color: themeColors[theme].overallProgress,
         curveType: "monotone",
-        gradientOpacity: { start: 0.2, end: 0 },
+        isAnimationActive: true,
+        animationDuration: 1000,
+        gradientOpacity: {
+          start: 0.3,
+          end: 0.05,
+        },
         areaProps: {
-          strokeWidth: 3,
+          strokeWidth: 2,
+          fillOpacity: 1,
+          activeDot: {
+            r: 4,
+            strokeWidth: 2,
+            stroke: themeColors[theme].overallProgress,
+            fill: "#fff",
+          },
         },
       },
     },
     {
       key: "notifications",
       icon: Bell,
+      illustration: {
+        type: "canvas",
+        render: renderNotificationsCanvas,
+      },
       graphData: generateMockData("notifications", 7),
       graphConfig: {
+        type: "bar",
         dataKey: "value",
         height: 48,
         color: themeColors[theme].notifications,
-        curveType: "basis",
-        showDots: false,
-        gradientOpacity: { start: 0.15, end: 0 },
+        curveType: "linear",
+        isAnimationActive: true,
+        animationDuration: 1000,
+        barProps: {
+          fillOpacity: 0.8,
+          radius: [4, 4, 0, 0],
+          maxBarSize: 8,
+          background: true,
+          stroke: themeColors[theme].notifications,
+          strokeWidth: 1,
+        },
       },
     },
   ];
@@ -206,9 +279,11 @@ export function DashboardClient({
   const getStatsValue = (key: StatsConfig["key"]): number | string => {
     switch (key) {
       case "activeProjects":
-        return projectsList.filter((p) => p.status === "inProgress").length;
+        return projectsList.filter((p) => p.status.value === "inProgress")
+          .length;
       case "completed":
-        return projectsList.filter((p) => p.status === "completed").length;
+        return projectsList.filter((p) => p.status.value === "completed")
+          .length;
       case "overallProgress":
         return `${calculateOverallProgress()}%`;
       case "notifications":
@@ -257,23 +332,28 @@ export function DashboardClient({
 
       <div className={cx("dashboard__container")}>
         <div className={cx("dashboard__stats")}>
-          {statsConfig.map(({ key, icon, graphData, graphConfig }) => (
-            <StatsCard
-              key={key}
-              label={dictionary.dict.stats.items[key].label}
-              value={getStatsValue(key)}
-              icon={icon}
-              theme={cardTheme}
-              graphData={graphData}
-              graphConfig={graphConfig}
-            />
-          ))}
+          {statsConfig.map(
+            ({ key, icon, graphData, graphConfig, illustration }) => (
+              <StatsCard
+                key={key}
+                label={dictionary.dict.stats.items[key].label}
+                value={getStatsValue(key)}
+                icon={icon}
+                theme={cardTheme}
+                graphData={graphData}
+                graphConfig={graphConfig}
+                illustration={illustration}
+              />
+            )
+          )}
         </div>
 
         <div className={cx("dashboard__main")}>
           <DashboardProjects
             projects={projectsList}
+            dictionary={dictionary.dict.sections.projects}
             title={dictionary.dict.sections.projects.title}
+            viewOptions={dictionary.dict.sections.projects.viewOptions}
             theme={{ type: theme }}
             className={cx("dashboard__main-projects")}
           />
@@ -314,13 +394,6 @@ export function DashboardClient({
                     theme={{ type: theme }}
                   />
                 ))}
-                {/* {notifications.map((notification: NotificationType) => (
-                  <NotificationItemOld
-                    key={notification.id}
-                    notification={notification}
-                    onClick={handleNotificationClick}
-                  />
-                ))} */}
               </div>
             </section>
           </div>
