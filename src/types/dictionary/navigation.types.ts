@@ -69,12 +69,6 @@ export type ClientPaths =
 export type NavigationPaths = PublicPaths | ClientPaths;
 
 // Base interfaces
-export interface NavigationMeta {
-  version: string;
-  lastUpdated: string;
-  description: string;
-  maintainer: string;
-}
 
 export interface ItemMeta {
   description: string;
