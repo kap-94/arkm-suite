@@ -2,7 +2,6 @@
 import { cookies } from "next/headers";
 import type { ThemeType } from "@/components/Sidebar/types/sidebar.types";
 import { DashboardContent } from "./DashboardContent";
-import { getMultipleDictionaries } from "@/utils/getDictionary";
 import type { Language } from "@/config/i18n";
 import {
   dashboardLayoutDictionary,
