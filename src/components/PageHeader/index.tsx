@@ -37,37 +37,68 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
     typeof theme === "object" ? theme.customValues : undefined;
 
   return (
-    <header
-      className={cx(
-        "page-header",
-        `page-header--theme-${themeType}`,
-        className
-      )}
-      style={
-        customValues
-          ? ({
-              "--custom-background": customValues.background,
-              "--custom-border": customValues.border,
-              "--custom-glow": customValues.glow,
-              "--custom-icon": customValues.icon,
-            } as React.CSSProperties)
-          : undefined
-      }
-    >
-      <div className={cx("page-header__container")}>
-        <div className={cx("page-header__content")}>
-          <div className={cx("page-header__title-container")}>
-            {icon && (
-              <div className={cx("page-header__title-icon")}>{icon}</div>
+    <div className={cx("page-header-wrapper")}>
+      <header
+        className={cx(
+          "page-header",
+          `page-header--theme-${themeType}`,
+          "page-header--original",
+          className
+        )}
+        style={
+          customValues
+            ? ({
+                "--custom-background": customValues.background,
+                "--custom-border": customValues.border,
+                "--custom-glow": customValues.glow,
+                "--custom-icon": customValues.icon,
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
+        <div className={cx("page-header__container")}>
+          <div className={cx("page-header__content")}>
+            <div className={cx("page-header__title-container")}>
+              {icon && (
+                <div className={cx("page-header__title-icon")}>{icon}</div>
+              )}
+              <ThemedTypography variant="h4">{title}</ThemedTypography>
+            </div>
+            {subtitle && (
+              <ThemedTypography variant="p2">{subtitle}</ThemedTypography>
             )}
-            <ThemedTypography variant="h4">{title}</ThemedTypography>
           </div>
-          {subtitle && (
-            <ThemedTypography variant="p2">{subtitle}</ThemedTypography>
+          {actions && (
+            <div className={cx("page-header__actions")}>{actions}</div>
           )}
         </div>
-        {actions && <div className={cx("page-header__actions")}>{actions}</div>}
-      </div>
-    </header>
+      </header>
+      <header
+        className={cx(
+          "page-header",
+          `page-header--theme-${themeType}`,
+          "page-header--clone",
+          className
+        )}
+        aria-hidden="true"
+      >
+        <div className={cx("page-header__container")}>
+          <div className={cx("page-header__content")}>
+            <div className={cx("page-header__title-container")}>
+              {icon && (
+                <div className={cx("page-header__title-icon")}>{icon}</div>
+              )}
+              <ThemedTypography variant="h4">{title}</ThemedTypography>
+            </div>
+            {subtitle && (
+              <ThemedTypography variant="p2">{subtitle}</ThemedTypography>
+            )}
+          </div>
+          {actions && (
+            <div className={cx("page-header__actions")}>{actions}</div>
+          )}
+        </div>
+      </header>
+    </div>
   );
 };
