@@ -2,7 +2,6 @@
 
 import { useCallback } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import type { DictionaryKey } from "@/utils/getDictionary";
 
 export function useTranslations<T extends Record<string, any>>(
   translations: T
