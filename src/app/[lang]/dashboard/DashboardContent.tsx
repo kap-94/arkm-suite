@@ -98,6 +98,7 @@ function DashboardUI({
           bottomNavigation={bottomNavigation}
         />
         <div className={cx("layout__main")}>
+          <div className={cx("header-spacer")} aria-hidden="true" />
           <DashboardHeader theme={{ type: theme }} config={header} />
           <main className={cx("layout__content")}>{children}</main>
         </div>
