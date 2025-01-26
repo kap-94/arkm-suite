@@ -36,6 +36,16 @@ $error-light: #f87171;
 $error-dark: #dc2626;
 $error-bg: rgba(239, 68, 68, 0.05);
 
+// Warning Colors
+$warning-color: #fbbf24;
+$warning-light: #fde68a;
+$warning-dark: #b45309;
+
+// Info Colors
+$info-color: #60a5fa;
+$info-light: #93c5fd;
+$info-dark: #2563eb;
+
 // Text Colors System
 // Base
 $text-base: rgb(241, 228, 228);
@@ -46,12 +56,12 @@ $text-primary-90: rgba($text-primary, 0.9);
 $text-primary-80: rgba($text-primary, 0.8);
 
 // Secondary Text
-$text-secondary: rgba($text-primary, 0.7);
+$text-secondary: rgba($text-primary, 0.8);
 $text-secondary-60: rgba($text-primary, 0.6);
 $text-secondary-50: rgba($text-primary, 0.5);
 
 // Tertiary Text
-$text-tertiary: rgba($text-primary, 0.6);
+$text-tertiary: rgba($text-primary, 0.7);
 $text-tertiary-30: rgba($text-primary, 0.3);
 $text-tertiary-20: rgba($text-primary, 0);
 
