@@ -32,7 +32,7 @@ $header-theme-map: (
   top: 0;
   left: 80px;
   right: 0;
-  z-index: $z-index-header;
+  z-index: $z-index-header + 1;
   background-color: var(
     --header-background,
     map-get(map-get($header-theme-map, dark), background)

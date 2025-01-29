@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { forwardRef, useCallback } from "react";
 import classNames from "classnames/bind";
 import { FolderIcon, FileIcon, ListTodoIcon } from "lucide-react";
 import { UserInfo } from "../UserInfo";
@@ -73,89 +73,90 @@ const transformUserMenuOptions = (options: UserMenuItem[]) => {
   });
 };
 
-export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  className,
-  theme = { type: "light" },
-  config,
-  onSignOut,
-}) => {
-  const { state, actions } = useSidebarContext();
-  const searchOptions = transformSearchOptions(config.search);
-  const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
+export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
+  ({ className, theme = { type: "light" }, config, onSignOut }, ref) => {
+    const { state, actions } = useSidebarContext();
+    const searchOptions = transformSearchOptions(config.search);
+    const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
 
-  const handleSearch = useCallback(
-    (searchTerm: string) => {
-      if (searchTerm.length >= config.search.config.minSearchLength) {
-        console.log("Searching for:", searchTerm);
+    const handleSearch = useCallback(
+      (searchTerm: string) => {
+        if (searchTerm.length >= config.search.config.minSearchLength) {
+          console.log("Searching for:", searchTerm);
+        }
+      },
+      [config.search.config.minSearchLength]
+    );
+
+    const handleOptionSelect = useCallback((option: any) => {
+      console.log("Selected option:", option);
+      if (option.href) {
+        window.location.href = option.href;
       }
-    },
-    [config.search.config.minSearchLength]
-  );
+    }, []);
 
-  const handleOptionSelect = useCallback((option: any) => {
-    console.log("Selected option:", option);
-    if (option.href) {
-      window.location.href = option.href;
-    }
-  }, []);
+    return (
+      <header
+        ref={ref}
+        className={cx(
+          "dashboard-header",
+          `dashboard-header--theme-${theme.type}`,
+          className
+        )}
+        style={
+          theme.customValues
+            ? ({
+                "--custom-background": theme.customValues.background,
+                "--custom-border": theme.customValues.border,
+                "--custom-glow": theme.customValues.glow,
+                "--custom-icon": theme.customValues.icon,
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
+        <div className={cx("dashboard-header__container")}>
+          <div className={cx("dashboard-header__left")}>
+            <div className={cx("dashboard-header__mobile-menu")}>
+              <Hamburger
+                variant="morph"
+                onClick={actions.toggle}
+                isOpen={state.isExpanded}
+                className={cx("header__menu-trigger")}
+                theme={theme}
+              />
+            </div>
 
-  return (
-    <header
-      className={cx(
-        "dashboard-header",
-        `dashboard-header--theme-${theme.type}`,
-        className
-      )}
-      style={
-        theme.customValues
-          ? ({
-              "--custom-background": theme.customValues.background,
-              "--custom-border": theme.customValues.border,
-              "--custom-glow": theme.customValues.glow,
-              "--custom-icon": theme.customValues.icon,
-            } as React.CSSProperties)
-          : undefined
-      }
-    >
-      <div className={cx("dashboard-header__container")}>
-        <div className={cx("dashboard-header__left")}>
-          <div className={cx("dashboard-header__mobile-menu")}>
-            <Hamburger
-              variant="morph"
-              onClick={actions.toggle}
-              isOpen={state.isExpanded}
-              className={cx("header__menu-trigger")}
+            <SearchBar
+              buttonText={config.search.config.buttonText}
+              closeOnScroll
+              label={config.search.config.label}
+              onOptionSelect={handleOptionSelect}
+              onSearch={handleSearch}
+              options={searchOptions}
+              placeholder={config.search.config.placeholder}
+              showButton={true}
+              showLabel={false}
               theme={theme}
             />
           </div>
 
-          <SearchBar
-            buttonText={config.search.config.buttonText}
-            closeOnScroll
-            label={config.search.config.label}
-            onOptionSelect={handleOptionSelect}
-            onSearch={handleSearch}
-            options={searchOptions}
-            placeholder={config.search.config.placeholder}
-            showButton={true}
-            showLabel={false}
-            theme={theme}
-          />
+          <div className={cx("dashboard-header__actions")}>
+            <UserInfo
+              closeOnScroll
+              userName={"Marc Vega"}
+              userRole={
+                config.user.roles.types[config.user.roles.default].label
+              }
+              options={userMenuOptions}
+              theme={theme}
+            />
+          </div>
         </div>
+      </header>
+    );
+  }
+);
 
-        <div className={cx("dashboard-header__actions")}>
-          <UserInfo
-            closeOnScroll
-            userName={"Marc Vega"}
-            // userName={config.user.menu.options[0]?.label || ""}
-            userRole={config.user.roles.types[config.user.roles.default].label}
-            options={userMenuOptions}
-            theme={theme}
-          />
-        </div>
-      </div>
-    </header>
-  );
-};
+DashboardHeader.displayName = "DashboardHeader";
 
 export default DashboardHeader;
