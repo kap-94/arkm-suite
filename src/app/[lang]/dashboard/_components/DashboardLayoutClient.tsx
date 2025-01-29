@@ -1,7 +1,7 @@
 // src/app/[lang]/dashboard/DashboardContent.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSettings, SettingsProvider } from "@/context/SettingsContext";
 import classNames from "classnames/bind";
 import { generateNavigation } from "@/components/Sidebar/config/navigation";
@@ -17,23 +17,24 @@ import {
   DashboardNavigation,
   HeaderSection,
 } from "@/types/dictionary/dashboardLayout.types";
-import styles from "./DashboardContent.module.scss";
+import styles from "./DashboardLayout.module.scss";
+import { DashboardProvider, useDashboard } from "./DashboardContext";
 
 const cx = classNames.bind(styles);
 
-interface DashboardContentProps {
+interface DashboardLayoutClientProps {
   children: React.ReactNode;
   initialTheme: ThemeType;
   header: HeaderSection;
   navigation: DashboardNavigation;
 }
 
-export function DashboardContent({
+export function DashboardLayoutClient({
   children,
   initialTheme,
   header,
   navigation,
-}: DashboardContentProps) {
+}: DashboardLayoutClientProps) {
   const [mounted, setMounted] = useState(false);
   const { MAIN_NAVIGATION_ITEMS, BOTTOM_NAVIGATION_ITEMS } =
     generateNavigation(navigation);
@@ -45,13 +46,15 @@ export function DashboardContent({
   if (!mounted) {
     return (
       <SettingsProvider defaultTheme={initialTheme}>
-        <DashboardUI
-          header={header}
-          mainNavigation={MAIN_NAVIGATION_ITEMS}
-          bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
-        >
-          {children}
-        </DashboardUI>
+        <DashboardProvider>
+          <DashboardUI
+            header={header}
+            mainNavigation={MAIN_NAVIGATION_ITEMS}
+            bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
+          >
+            {children}
+          </DashboardUI>
+        </DashboardProvider>
       </SettingsProvider>
     );
   }
@@ -63,13 +66,15 @@ export function DashboardContent({
 
   return (
     <SettingsProvider defaultTheme={clientTheme}>
-      <DashboardUI
-        header={header}
-        mainNavigation={MAIN_NAVIGATION_ITEMS}
-        bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
-      >
-        {children}
-      </DashboardUI>
+      <DashboardProvider>
+        <DashboardUI
+          header={header}
+          mainNavigation={MAIN_NAVIGATION_ITEMS}
+          bottomNavigation={BOTTOM_NAVIGATION_ITEMS}
+        >
+          {children}
+        </DashboardUI>
+      </DashboardProvider>
     </SettingsProvider>
   );
 }
@@ -80,7 +85,6 @@ interface DashboardUIProps {
   mainNavigation: NavItem[];
   bottomNavigation: NavItem[];
 }
-
 function DashboardUI({
   children,
   header,
@@ -88,6 +92,36 @@ function DashboardUI({
   bottomNavigation,
 }: DashboardUIProps) {
   const { theme } = useSettings();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const { updateDimensions } = useDashboard();
+
+  useEffect(() => {
+    const updateHeaderDimensions = () => {
+      if (headerRef.current) {
+        const { height } = headerRef.current.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(headerRef.current);
+        const zIndex = parseInt(computedStyle.zIndex) || 99;
+
+        updateDimensions({
+          headerHeight: height,
+          headerZIndex: zIndex,
+        });
+      }
+    };
+
+    // Medición inicial
+    updateHeaderDimensions();
+
+    // Configurar observer para cambios de tamaño
+    const resizeObserver = new ResizeObserver(updateHeaderDimensions);
+    if (headerRef.current) {
+      resizeObserver.observe(headerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [updateDimensions]);
 
   return (
     <div className={cx("layout", `layout--${theme}`)}>
@@ -99,7 +133,11 @@ function DashboardUI({
         />
         <div className={cx("layout__main")}>
           <div className={cx("header-spacer")} aria-hidden="true" />
-          <DashboardHeader theme={{ type: theme }} config={header} />
+          <DashboardHeader
+            ref={headerRef}
+            theme={{ type: theme }}
+            config={header}
+          />
           <main className={cx("layout__content")}>{children}</main>
         </div>
       </SidebarWrapper>

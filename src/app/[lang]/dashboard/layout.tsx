@@ -1,12 +1,13 @@
 // src/app/[lang]/dashboard/layout.tsx
 import { cookies } from "next/headers";
 import type { ThemeType } from "@/components/Sidebar/types/sidebar.types";
-import { DashboardContent } from "./DashboardContent";
+
 import type { Language } from "@/config/i18n";
 import {
   dashboardLayoutDictionary,
   getPageDictionary,
 } from "@/utils/dictionary";
+import { DashboardLayoutClient } from "./_components/DashboardLayoutClient";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -26,12 +27,12 @@ export default async function DashboardLayout({
   );
 
   return (
-    <DashboardContent
+    <DashboardLayoutClient
       initialTheme={initialTheme}
       header={header}
       navigation={navigation}
     >
       {children}
-    </DashboardContent>
+    </DashboardLayoutClient>
   );
 }

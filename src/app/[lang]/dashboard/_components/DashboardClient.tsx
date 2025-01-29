@@ -19,7 +19,7 @@ import type {
   CanvasIllustration,
 } from "@/components/StatsCard/types";
 import { PageHeader } from "@/components/PageHeader";
-import { notifications, recentFiles } from "./mockData";
+import { notifications, recentFiles } from "../mockData";
 import { StatsCard } from "@/components/StatsCard";
 import { useSettings } from "@/context/SettingsContext";
 import { RecentFile } from "@/components/RecentFile";
