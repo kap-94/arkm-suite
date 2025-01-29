@@ -197,12 +197,14 @@
 
 // Custom scrollbar mixin
 @mixin custom-scrollbar(
-  $width: 6px,
+  $width: 4px,
+  $height: 4px,
   $track-color: transparent,
   $thumb-color: rgba($text-primary, 0.2)
 ) {
   &::-webkit-scrollbar {
     width: $width;
+    height: $height; // Added height for horizontal scrollbar
   }
 
   &::-webkit-scrollbar-track {
@@ -218,7 +220,6 @@
     }
   }
 }
-
 // Shadow mixins
 @mixin elevation($level: 1) {
   @if $level == 1 {
