@@ -3,5 +3,5 @@ export { Sidebar } from "./Sidebar";
 export type {
   NavItem,
   SidebarProps,
-  SidebarConfig,
+  // SidebarConfig,
 } from "./types/sidebar.types";

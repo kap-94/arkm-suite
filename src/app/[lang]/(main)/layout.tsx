@@ -1,7 +1,7 @@
-import { Language } from "@/config/i18n";
+import { Language } from "@/lib/config/i18n";
 import { getPageDictionary, mainLayoutDictionary } from "@/utils/dictionary";
 import Header from "@/components/Header";
-import { headerConfig } from "@/config/header.config";
+import { headerConfig } from "@/lib/config/header.config";
 
 export default async function MainLayout({
   children,

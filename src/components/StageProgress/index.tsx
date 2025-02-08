@@ -1,12 +1,6 @@
-import React from "react";
-import classNames from "classnames/bind";
 import { StageProgressProps } from "./types";
 import { VARIANTS } from "./variants";
 import { sortStages } from "./utils";
-import { ThemedTypography } from "@/components/Typography/ThemedTypography";
-import styles from "./StageProgress.module.scss";
-
-const cx = classNames.bind(styles);
 
 const StageProgress: React.FC<StageProgressProps> = ({
   progress,
@@ -21,33 +15,14 @@ const StageProgress: React.FC<StageProgressProps> = ({
   const SelectedVariant = VARIANTS[variant];
 
   return (
-    <div
-      className={cx(
-        "stage-progress",
-        `stage-progress--${variant}`,
-        `stage-progress--theme-${theme.type}`,
-        size === "small" ? "stage-progress--small" : ""
-      )}
-    >
-      <div className={cx("stage-progress__header")}>
-        <ThemedTypography variant="p2" className={cx("stage-progress__type")}>
-          {type}
-        </ThemedTypography>
-        <ThemedTypography
-          variant="p2"
-          className={cx("stage-progress__progress")}
-        >
-          {progress}%
-        </ThemedTypography>
-      </div>
-      <SelectedVariant
-        progress={progress}
-        stages={sortedStages}
-        gradientVariant={gradientVariant}
-        size={size}
-        theme={theme}
-      />
-    </div>
+    <SelectedVariant
+      progress={progress}
+      stages={sortedStages}
+      gradientVariant={gradientVariant}
+      size={size}
+      type={type}
+      theme={theme}
+    />
   );
 };
 

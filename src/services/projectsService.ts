@@ -1,666 +1,366 @@
+// src/services/projectService.ts
 import { cache } from "react";
-import type { Project } from "@/models/project";
-import { Language } from "@/config/i18n";
+import { Language } from "@/lib/config/i18n";
+import { Project } from "@/types/models/Project";
+import { MockProjectRepository } from "@/repositories/mockProjectRepository";
+import { ProjectResponse } from "@/repositories/types";
+import { Content } from "@/types/models/Content";
+import { ErrorDetails, errorService } from "@/services/errorService";
 
-export const getProjects = cache(
-  async (lang: Language = "en"): Promise<Project[]> => {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 100));
+export interface ContentContext {
+  deliverableId?: string;
+  deliverableTitle?: string;
+  projectId: string;
+  projectSlug: string;
+  projectName: string;
+}
 
-    /* When ready to switch to Supabase, uncomment this:
-  const supabase = createServerSupabaseClient()
-  const { data, error } = await supabase
-    .from('projects')
-    .select(...)
-  if (error) throw new Error('Failed to fetch projects')
-  return data
-  */
+export interface ProjectRepository {
+  getProjects(lang: Language): Promise<Project[]>;
+  getProjectById(id: string, lang: Language): Promise<ProjectResponse | null>;
+  getProjectBySlug(
+    slug: string,
+    lang: Language
+  ): Promise<ProjectResponse | null>;
+}
 
-    return lang === "es" ? mockProjectsES : mockProjectsEN;
+export class ProjectService {
+  constructor(private projectRepository: ProjectRepository) {}
+
+  async getProjects(lang: Language = "en"): Promise<Project[]> {
+    try {
+      return await this.projectRepository.getProjects(lang);
+    } catch (error) {
+      // Aquí creamos un nuevo error en lugar de propagar el error desconocido
+      throw errorService.createServerError("Failed to fetch projects", {
+        lang,
+      });
+    }
   }
-);
+
+  async getProjectById(
+    id: string,
+    lang: Language = "en"
+  ): Promise<ProjectResponse> {
+    try {
+      const project = await this.projectRepository.getProjectById(id, lang);
+      if (!project) {
+        throw errorService.createNotFoundError(
+          `Project with id ${id} not found`,
+          { id, lang }
+        );
+      }
+      return project;
+    } catch (error) {
+      // Verificamos si es una instancia de ErrorDetails
+      if (this.isErrorDetails(error)) {
+        throw error;
+      }
+      throw errorService.createServerError(
+        `Failed to fetch project with id ${id}`,
+        { id, lang }
+      );
+    }
+  }
+
+  async getProjectBySlug(
+    slug: string,
+    lang: Language = "en"
+  ): Promise<ProjectResponse> {
+    try {
+      const project = await this.projectRepository.getProjectBySlug(slug, lang);
+      if (!project) {
+        throw errorService.createNotFoundError(
+          `Project with slug ${slug} not found`,
+          { slug, lang }
+        );
+      }
+      return project;
+    } catch (error) {
+      if (this.isErrorDetails(error)) {
+        throw error;
+      }
+      throw errorService.createServerError(
+        `Failed to fetch project with slug ${slug}`,
+        { slug, lang }
+      );
+    }
+  }
+
+  async findContentInProject(
+    projectSlug: string,
+    contentId: string,
+    lang: Language = "en"
+  ): Promise<{ content: Content; context: ContentContext }> {
+    try {
+      const project = await this.getProjectBySlug(projectSlug, lang);
+
+      const contentResult = await this.findContent(contentId, lang);
+
+      if (!contentResult) {
+        throw errorService.createNotFoundError(
+          `Content with id ${contentId} not found`,
+          {
+            contentId,
+            projectSlug,
+            lang,
+          }
+        );
+      }
+
+      if (contentResult.context.projectSlug !== projectSlug) {
+        throw errorService.createValidationError(
+          `Content ${contentId} does not belong to project ${projectSlug}`,
+          {
+            contentId,
+            projectSlug,
+            contentProjectSlug: contentResult.context.projectSlug,
+          }
+        );
+      }
+
+      return contentResult;
+    } catch (error) {
+      if (this.isErrorDetails(error)) {
+        throw error;
+      }
+      throw errorService.createServerError(
+        `Failed to find content ${contentId} in project ${projectSlug}`,
+        { contentId, projectSlug, lang }
+      );
+    }
+  }
+
+  // Helper method para verificar si un error es ErrorDetails
+  private isErrorDetails(error: unknown): error is ErrorDetails {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      "message" in error &&
+      "statusCode" in error
+    );
+  }
+
+  async findContent(
+    contentId: string,
+    lang: Language = "en",
+    projectSlug?: string // Add projectSlug as an optional parameter
+  ): Promise<{ content: Content; context: ContentContext } | null> {
+    try {
+      const projects = await this.getProjects(lang);
+
+      for (const project of projects) {
+        // If projectSlug is provided, skip projects that don't match the slug
+        if (projectSlug && project.slug !== projectSlug) {
+          continue;
+        }
+
+        // Check project contents first
+        const projectContent = this.findContentInProjectContents(
+          contentId,
+          project
+        );
+        if (projectContent) return projectContent;
+
+        // Then check deliverables
+        const deliverableContent = this.findContentInDeliverables(
+          contentId,
+          project
+        );
+
+        if (deliverableContent) return deliverableContent;
+      }
+
+      return null;
+    } catch (error) {
+      throw errorService.createServerError(
+        `Failed to find content ${contentId}`,
+        { contentId, lang }
+      );
+    }
+  }
+
+  private findContentInProjectContents(contentId: string, project: Project) {
+    if (!project.contents?.length) return null;
+
+    const projectContent = project.contents.find(
+      (content) => content.id === contentId
+    );
+
+    if (projectContent) {
+      return {
+        content: this.normalizeContent(
+          projectContent,
+          project.id,
+          project.slug,
+          project.name
+        ),
+        context: {
+          projectId: project.id,
+          projectSlug: project.slug,
+          projectName: project.name,
+        },
+      };
+    }
+
+    return null;
+  }
+
+  private findContentInDeliverables(contentId: string, project: Project) {
+    if (!project.deliverables?.length) return null;
+
+    for (const deliverable of project.deliverables) {
+      // Check deliverable contents
+      const deliverableContent = deliverable.contents?.find(
+        (content) => content.id === contentId
+      );
+
+      if (deliverableContent) {
+        return {
+          content: this.normalizeContent(
+            deliverableContent,
+            project.id,
+            project.slug,
+            project.name
+          ),
+          context: {
+            deliverableId: deliverable.id,
+            deliverableTitle: deliverable.title,
+            projectId: project.id,
+            projectSlug: project.slug,
+            projectName: project.name,
+          },
+        };
+      }
+
+      // Check content references
+      const contentReference = deliverable.contents?.find(
+        (ref) => ref.id === contentId
+      );
+
+      if (contentReference) {
+        const fullContent = project.contents?.find(
+          (content) => content.id === contentId
+        );
+
+        if (fullContent) {
+          return {
+            content: this.normalizeContent(
+              fullContent,
+              project.id,
+              project.slug,
+              project.name
+            ),
+            context: {
+              deliverableId: deliverable.id,
+              deliverableTitle: deliverable.title,
+              projectId: project.id,
+              projectSlug: project.slug,
+              projectName: project.name,
+            },
+          };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private normalizeContent(
+    content: any,
+    projectId: string,
+    projectSlug: string,
+    projectName: string
+  ): Content {
+    try {
+      if ("url" in content) {
+        // File content
+        return {
+          id: content.id,
+          type: "file",
+          title: content.title,
+          description: content.description || "",
+          size: content.size,
+          url: content.url,
+          project: {
+            id: projectId,
+            name: projectName,
+            slug: projectSlug,
+          },
+          fileType: content.fileType,
+          createdBy: content.createdBy,
+          createdAt: content.createdAt,
+          updatedAt: content.updatedAt,
+          metadata: content.metadata || {},
+        };
+      } else {
+        // Component content
+        return {
+          id: content.id,
+          type: "component",
+          title: content.title,
+          description: content.description || "",
+          componentType: content.componentType,
+          project: {
+            id: projectId,
+            name: projectName,
+            slug: projectSlug,
+          },
+          data: content.data,
+          createdBy: content.createdBy,
+          createdAt: content.createdAt,
+          updatedAt: content.updatedAt,
+          metadata: content.metadata || {},
+        };
+      }
+    } catch (error) {
+      throw errorService.createValidationError("Failed to normalize content", {
+        content,
+        projectId,
+        projectSlug,
+        projectName,
+      });
+    }
+  }
+}
+
+// Factory function to create the service
+export function createProjectService() {
+  const projectRepo = new MockProjectRepository();
+  return new ProjectService(projectRepo);
+}
+
+// Cached functions for direct usage
+export const getProjects = cache(async (lang: Language = "en") => {
+  const service = createProjectService();
+  return service.getProjects(lang);
+});
 
 export const getProjectById = cache(
-  async (id: string, lang: Language = "en"): Promise<Project | null> => {
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
-    const projects = lang === "es" ? mockProjectsES : mockProjectsEN;
-    const project = projects.find((p) => p.id === id);
-    if (!project) return null;
-
-    return project;
+  async (id: string, lang: Language = "en") => {
+    const service = createProjectService();
+    return service.getProjectById(id, lang);
   }
 );
 
-const mockProjectsEN: Project[] = [
-  {
-    id: "1",
-    name: "Website Redesign",
-    description:
-      "Complete overhaul of the company's main website with modern design principles and improved user experience",
-    status: { label: "In Progress", value: "inProgress" },
-    progress: 75,
-    lastUpdated: "2024-01-10",
-    priority: { label: "High", value: "high" },
-    type: {
-      label: "Web Design And Development",
-      value: "webDesignAndDevelopment",
-    },
-    client: {
-      id: "client-1",
-      name: "TechCorp",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Discovery", threshold: 20, completed: true },
-      { name: "UX Design", threshold: 40, completed: true },
-      { name: "UI Design", threshold: 60, completed: true },
-      { name: "Development", threshold: 80, completed: false },
-      { name: "Testing", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-1",
-        name: "Sarah Johnson",
-        role: "Project Manager",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-2",
-        name: "Michael Chen",
-        role: "Lead Developer",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-3",
-        name: "Emily Davis",
-        role: "UX Designer",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 160,
-        actual: 145,
-        remaining: 15,
-      },
-      budget: {
-        total: 50000,
-        spent: 37500,
-        remaining: 12500,
-      },
-      tasks: {
-        total: 48,
-        completed: 36,
-        inProgress: 8,
-        blocked: 4,
-      },
-    },
-    nextMilestone: {
-      name: "Beta Launch",
-      dueDate: "2024-02-15",
-      progress: 85,
-    },
-    recentActivities: [
-      {
-        id: "activity-1",
-        type: "update",
-        description: "Development phase 80% complete",
-        timestamp: "2024-01-10T14:30:00Z",
-        user: {
-          name: "Michael Chen",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-      {
-        id: "activity-2",
-        type: "milestone",
-        description: "UI Design phase completed",
-        timestamp: "2024-01-09T11:20:00Z",
-        user: {
-          name: "Emily Davis",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Mobile App Development",
-    description:
-      "Development of a cross-platform mobile application for customer engagement and service delivery",
-    status: { label: "In Progress", value: "inProgress" },
-    progress: 45,
-    lastUpdated: "2024-01-12",
-    priority: { label: "Medium", value: "medium" },
-    type: { label: "Web Development", value: "webDevelopment" },
-    client: {
-      id: "client-2",
-      name: "ServicePro",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Security Audit", threshold: 20, completed: true },
-      { name: "Protocol Design", threshold: 40, completed: true },
-      { name: "Implementation", threshold: 60, completed: false },
-      { name: "Testing", threshold: 80, completed: false },
-      { name: "Deployment", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-4",
-        name: "David Kim",
-        role: "Tech Lead",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-5",
-        name: "Lisa Wong",
-        role: "Mobile Developer",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-6",
-        name: "Tom Wilson",
-        role: "QA Engineer",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 200,
-        actual: 90,
-        remaining: 110,
-      },
-      budget: {
-        total: 75000,
-        spent: 33750,
-        remaining: 41250,
-      },
-      tasks: {
-        total: 60,
-        completed: 27,
-        inProgress: 15,
-        blocked: 8,
-      },
-    },
-    nextMilestone: {
-      name: "First Internal Release",
-      dueDate: "2024-03-01",
-      progress: 45,
-    },
-    recentActivities: [
-      {
-        id: "activity-3",
-        type: "issue",
-        description: "API Integration challenges identified",
-        timestamp: "2024-01-12T09:15:00Z",
-        user: {
-          name: "David Kim",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "3",
-    name: "E-commerce Integration",
-    description:
-      "Integration of e-commerce functionality into existing web platform with payment processing and inventory management",
-    status: { label: "Completed", value: "completed" },
-    progress: 100,
-    lastUpdated: "2024-01-08",
-    priority: { label: "High", value: "high" },
-    type: { label: "Web Development", value: "webDevelopment" },
+export const getProjectBySlug = cache(
+  async (slug: string, lang: Language = "en") => {
+    const service = createProjectService();
+    return service.getProjectBySlug(slug, lang);
+  }
+);
 
-    client: {
-      id: "client-3",
-      name: "RetailPlus",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Market Research", threshold: 20, completed: true },
-      { name: "Content Translation", threshold: 40, completed: true },
-      { name: "SEO Optimization", threshold: 60, completed: true },
-      { name: "Review", threshold: 80, completed: true },
-      { name: "Launch", threshold: 100, completed: true },
-    ],
-    teamMembers: [
-      {
-        id: "user-7",
-        name: "Rachel Martinez",
-        role: "Project Manager",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-8",
-        name: "Steve Johnson",
-        role: "Backend Developer",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 120,
-        actual: 115,
-        remaining: 0,
-      },
-      budget: {
-        total: 45000,
-        spent: 43000,
-        remaining: 2000,
-      },
-      tasks: {
-        total: 40,
-        completed: 40,
-        inProgress: 0,
-        blocked: 0,
-      },
-    },
-    nextMilestone: {
-      name: "Post-Launch Review",
-      dueDate: "2024-01-20",
-      progress: 100,
-    },
-    recentActivities: [
-      {
-        id: "activity-4",
-        type: "completion",
-        description: "Project successfully completed and deployed",
-        timestamp: "2024-01-08T16:45:00Z",
-        user: {
-          name: "Rachel Martinez",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "4",
-    name: "Analytics Dashboard",
-    description:
-      "Development of a comprehensive analytics dashboard for real-time business intelligence",
-    status: { label: "On Hold", value: "onHold" },
-    progress: 30,
-    lastUpdated: "2024-01-05",
-    priority: { label: "Low", value: "low" },
-    type: { label: "Web Development", value: "webDevelopment" },
-    client: {
-      id: "client-4",
-      name: "DataCo",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Concept", threshold: 20, completed: true },
-      { name: "Requirements", threshold: 40, completed: true },
-      { name: "Design", threshold: 60, completed: false },
-      { name: "Prototype", threshold: 80, completed: false },
-      { name: "Approval", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-9",
-        name: "Alex Thompson",
-        role: "Data Analyst",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-10",
-        name: "Jessica Lee",
-        role: "UI Designer",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 90,
-        actual: 27,
-        remaining: 63,
-      },
-      budget: {
-        total: 35000,
-        spent: 10500,
-        remaining: 24500,
-      },
-      tasks: {
-        total: 32,
-        completed: 10,
-        inProgress: 2,
-        blocked: 20,
-      },
-    },
-    nextMilestone: {
-      name: "Client Requirements Review",
-      dueDate: "2024-02-01",
-      progress: 30,
-    },
-    recentActivities: [
-      {
-        id: "activity-5",
-        type: "status_change",
-        description: "Project put on hold pending client review",
-        timestamp: "2024-01-05T10:30:00Z",
-        user: {
-          name: "Alex Thompson",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-];
+export const findContent = cache(
+  async (contentId: string, lang: Language = "en", slug: string) => {
+    const service = createProjectService();
+    return service.findContent(contentId, lang, slug);
+  }
+);
 
-const mockProjectsES: Project[] = [
-  {
-    id: "1",
-    name: "Rediseño de Sitio Web",
-    description:
-      "Renovación completa del sitio web principal de la empresa con principios de diseño moderno y mejor experiencia de usuario",
-    status: { label: "En Progreso", value: "inProgress" },
-    progress: 75,
-    lastUpdated: "2024-01-10",
-    priority: { label: "Alta", value: "high" },
-    type: {
-      label: "Diseño y Desarrollo Web",
-      value: "webDesignAndDevelopment",
-    },
-    client: {
-      id: "client-1",
-      name: "TechCorp",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Descubrimiento", threshold: 20, completed: true },
-      { name: "Diseño UX", threshold: 40, completed: true },
-      { name: "Diseño UI", threshold: 60, completed: true },
-      { name: "Desarrollo", threshold: 80, completed: false },
-      { name: "Pruebas", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-1",
-        name: "Sarah Johnson",
-        role: "Gerente de Proyecto",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-2",
-        name: "Michael Chen",
-        role: "Desarrollador Principal",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-3",
-        name: "Emily Davis",
-        role: "Diseñadora UX",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 160,
-        actual: 145,
-        remaining: 15,
-      },
-      budget: {
-        total: 50000,
-        spent: 37500,
-        remaining: 12500,
-      },
-      tasks: {
-        total: 48,
-        completed: 36,
-        inProgress: 8,
-        blocked: 4,
-      },
-    },
-    nextMilestone: {
-      name: "Lanzamiento Beta",
-      dueDate: "2024-02-15",
-      progress: 85,
-    },
-    recentActivities: [
-      {
-        id: "activity-1",
-        type: "update",
-        description: "Fase de desarrollo 80% completada",
-        timestamp: "2024-01-10T14:30:00Z",
-        user: {
-          name: "Michael Chen",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-      {
-        id: "activity-2",
-        type: "milestone",
-        description: "Fase de diseño UI completada",
-        timestamp: "2024-01-09T11:20:00Z",
-        user: {
-          name: "Emily Davis",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Desarrollo de Aplicación Móvil",
-    description:
-      "Desarrollo de una aplicación móvil multiplataforma para participación del cliente y prestación de servicios",
-    status: { label: "En Progreso", value: "inProgress" },
-    progress: 45,
-    lastUpdated: "2024-01-12",
-    priority: { label: "Media", value: "medium" },
-    type: { label: "Desarrollo Web", value: "webDevelopment" },
-    client: {
-      id: "client-2",
-      name: "ServicePro",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Auditoría de Seguridad", threshold: 20, completed: true },
-      { name: "Diseño de Protocolo", threshold: 40, completed: true },
-      { name: "Implementación", threshold: 60, completed: false },
-      { name: "Pruebas", threshold: 80, completed: false },
-      { name: "Despliegue", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-4",
-        name: "David Kim",
-        role: "Líder Técnico",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-5",
-        name: "Lisa Wong",
-        role: "Desarrolladora Móvil",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-6",
-        name: "Tom Wilson",
-        role: "Ingeniero QA",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 200,
-        actual: 90,
-        remaining: 110,
-      },
-      budget: {
-        total: 75000,
-        spent: 33750,
-        remaining: 41250,
-      },
-      tasks: {
-        total: 60,
-        completed: 27,
-        inProgress: 15,
-        blocked: 8,
-      },
-    },
-    nextMilestone: {
-      name: "Primera Versión Interna",
-      dueDate: "2024-03-01",
-      progress: 45,
-    },
-    recentActivities: [
-      {
-        id: "activity-3",
-        type: "issue",
-        description: "Identificados desafíos de integración API",
-        timestamp: "2024-01-12T09:15:00Z",
-        user: {
-          name: "David Kim",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "3",
-    name: "Integración E-commerce",
-    description:
-      "Integración de funcionalidad e-commerce en plataforma web existente con procesamiento de pagos y gestión de inventario",
-    status: { label: "Completado", value: "completed" },
-    progress: 100,
-    lastUpdated: "2024-01-08",
-    priority: { label: "Alta", value: "high" },
-    type: { label: "Desarrollo Web", value: "webDevelopment" },
-    client: {
-      id: "client-3",
-      name: "RetailPlus",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Investigación de Mercado", threshold: 20, completed: true },
-      { name: "Traducción de Contenido", threshold: 40, completed: true },
-      { name: "Optimización SEO", threshold: 60, completed: true },
-      { name: "Revisión", threshold: 80, completed: true },
-      { name: "Lanzamiento", threshold: 100, completed: true },
-    ],
-    teamMembers: [
-      {
-        id: "user-7",
-        name: "Rachel Martinez",
-        role: "Gerente de Proyecto",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-8",
-        name: "Steve Johnson",
-        role: "Desarrollador Backend",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 120,
-        actual: 115,
-        remaining: 0,
-      },
-      budget: {
-        total: 45000,
-        spent: 43000,
-        remaining: 2000,
-      },
-      tasks: {
-        total: 40,
-        completed: 40,
-        inProgress: 0,
-        blocked: 0,
-      },
-    },
-    nextMilestone: {
-      name: "Revisión Post-Lanzamiento",
-      dueDate: "2024-01-20",
-      progress: 100,
-    },
-    recentActivities: [
-      {
-        id: "activity-4",
-        type: "completion",
-        description: "Proyecto completado y desplegado exitosamente",
-        timestamp: "2024-01-08T16:45:00Z",
-        user: {
-          name: "Rachel Martinez",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-  {
-    id: "4",
-    name: "Panel de Analytics",
-    description:
-      "Desarrollo de un panel de analytics completo para inteligencia empresarial en tiempo real",
-    status: { label: "En Espera", value: "onHold" },
-    progress: 30,
-    lastUpdated: "2024-01-05",
-    priority: { label: "Baja", value: "low" },
-    type: { label: "Desarrollo Web", value: "webDevelopment" },
-    client: {
-      id: "client-4",
-      name: "DataCo",
-      logo: "/api/placeholder/256/256",
-    },
-    stages: [
-      { name: "Concepto", threshold: 20, completed: true },
-      { name: "Requerimientos", threshold: 40, completed: true },
-      { name: "Diseño", threshold: 60, completed: false },
-      { name: "Prototipo", threshold: 80, completed: false },
-      { name: "Aprobación", threshold: 100, completed: false },
-    ],
-    teamMembers: [
-      {
-        id: "user-9",
-        name: "Alex Thompson",
-        role: "Analista de Datos",
-        avatar: "/api/placeholder/256/256",
-      },
-      {
-        id: "user-10",
-        name: "Jessica Lee",
-        role: "Diseñadora UI",
-        avatar: "/api/placeholder/256/256",
-      },
-    ],
-    metrics: {
-      timeSpent: {
-        estimated: 90,
-        actual: 27,
-        remaining: 63,
-      },
-      budget: {
-        total: 35000,
-        spent: 10500,
-        remaining: 24500,
-      },
-      tasks: {
-        total: 32,
-        completed: 10,
-        inProgress: 2,
-        blocked: 20,
-      },
-    },
-    nextMilestone: {
-      name: "Revisión de Requerimientos del Cliente",
-      dueDate: "2024-02-01",
-      progress: 30,
-    },
-    recentActivities: [
-      {
-        id: "activity-5",
-        type: "status_change",
-        description: "Proyecto en pausa pendiente de revisión del cliente",
-        timestamp: "2024-01-05T10:30:00Z",
-        user: {
-          name: "Alex Thompson",
-          avatar: "/api/placeholder/256/256",
-        },
-      },
-    ],
-  },
-];
+export const findContentInProject = cache(
+  async (projectSlug: string, contentId: string, lang: Language = "en") => {
+    const service = createProjectService();
+    return service.findContentInProject(projectSlug, contentId, lang);
+  }
+);

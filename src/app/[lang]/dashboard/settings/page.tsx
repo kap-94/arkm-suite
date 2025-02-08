@@ -1,5 +1,5 @@
 // src/app/[lang]/settings/page.tsx
-import type { Language } from "@/config/i18n";
+import type { Language } from "@/lib/config/i18n";
 import { SettingsClient } from "./components/SettingsClient";
 import { getPageDictionary, settingsDictionary } from "@/utils/dictionary";
 

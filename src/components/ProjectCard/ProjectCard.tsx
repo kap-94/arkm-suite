@@ -1,15 +1,13 @@
-"use client";
-
-import React from "react";
-import classNames from "classnames/bind";
-import { ArrowRight } from "lucide-react";
-import { format } from "date-fns";
 import Link from "next/link";
-import type { ProjectCardProps } from "./types";
+import classNames from "classnames/bind";
+import { format } from "date-fns";
+import type { ProjectCardProps, ProjectCardStage } from "./types";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import StageProgress from "../StageProgress";
-import Typography from "../Typography";
+import Badge from "../Badge";
+
 import styles from "./ProjectCard.module.scss";
+import { buildLocalizedPath } from "@/utils/path";
 
 const cx = classNames.bind(styles);
 
@@ -23,42 +21,51 @@ const DEFAULT_STAGES = [
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
+  language,
   size = "default",
   theme = { type: "light" },
   dictionary,
 }) => {
-  const {
-    id,
-    description,
-    lastUpdated,
-    name,
-    priority,
-    progress,
-    stages,
-    status,
-    type,
-  } = project;
+  const { slug, description, updatedAt, name, progress, stages, status, type } =
+    project;
 
-  const statusClassName = cx("project-card__header-status", {
-    "project-card__header-status--inProgress": ["inProgress"].includes(
-      status.value
-    ),
-    "project-card__header-status--onHold": ["onHold"].includes(status.value),
-    "project-card__header-status--completed": ["completed"].includes(
-      status.value
-    ),
-  });
+  // Helper function to format stages
+  const formatProjectStages = (
+    projectStages: ProjectCardStage[],
+    currentProgress: number
+  ) => {
+    if (!projectStages || projectStages.length === 0) {
+      return DEFAULT_STAGES.map((stage) => ({
+        ...stage,
+        completed: currentProgress >= stage.threshold,
+      }));
+    }
 
-  const priorityClassName =
-    priority &&
-    cx("project-card__priority", `project-card__priority--${priority}`);
+    // Sort stages by order
+    const sortedStages = [...projectStages].sort((a, b) => a.order - b.order);
+    const totalStages = sortedStages.length;
 
-  const formattedStages =
-    stages ||
-    DEFAULT_STAGES.map((stage) => ({
-      ...stage,
-      name: stage.name,
-    }));
+    return sortedStages.map((stage, index) => {
+      // Calculate threshold based on stage position
+      const threshold = Math.round(((index + 1) / totalStages) * 100);
+
+      return {
+        name: stage.name,
+        threshold,
+        completed: stage.status.value === "completed",
+        // Optional color based on status
+        color:
+          stage.status.value === "completed"
+            ? "#4ade80"
+            : stage.status.value === "inProgress"
+            ? "#60a5fa"
+            : undefined,
+      };
+    });
+  };
+
+  // Format stages for StageProgress component
+  const formattedStages = formatProjectStages(stages, progress);
 
   return (
     <div
@@ -69,33 +76,31 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       )}
     >
       <div className={cx("project-card__header")}>
-        <div className={cx("project-card__header-top")}>
-          <Typography as="span" variant="p3" className={statusClassName}>
-            {status.label}
-          </Typography>
-          {priority && (
-            <ThemedTypography
-              as="span"
-              variant="label"
-              className={priorityClassName}
-              noWrap
-            >
-              {priority.label}
-            </ThemedTypography>
-          )}
-        </div>
         <ThemedTypography
           variant={size === "default" ? "h4" : "h5"}
+          // color="secondary"
+          fontWeight={400}
           className={cx("project-card__header-title")}
-          noWrap
+          // noWrap
         >
           {name}
         </ThemedTypography>
+
+        {/* {size === "default" && ( */}
+        <Badge
+          size="small"
+          className={cx("project-card__badge")}
+          label={status.label}
+          status={status.value}
+        />
+        {/* )} */}
       </div>
 
       {size === "default" && (
         <ThemedTypography
           variant="p1"
+          color="secondary"
+          fontWeight={300}
           className={cx("project-card__description")}
         >
           {description}
@@ -119,23 +124,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             color="secondary"
             className={cx("project-card__footer-updated")}
           >
-            {lastUpdated && typeof lastUpdated === "string"}
-            {format(new Date(lastUpdated), "MMM d, yyyy")}
+            {dictionary.labels.lastUpdated}:
+          </ThemedTypography>
+          <ThemedTypography
+            variant="p2"
+            color="secondary"
+            className={cx("project-card__footer-updated")}
+          >
+            {format(updatedAt, "dd/MM/yyyy")}
           </ThemedTypography>
         </div>
 
         <Link
-          href={`/dashboard/project/${id}`}
+          href={`${buildLocalizedPath("dashboard/project", language)}/${slug}`}
           className={cx("project-card__footer-link")}
         >
-          <ThemedTypography variant="p2">
+          <ThemedTypography variant="p2" color="secondary">
             {dictionary.links.view.label}
           </ThemedTypography>
-          <ArrowRight
+          {/* <ArrowRight
             className={cx("project-card__footer-link-icon")}
             size={20}
             strokeWidth={1.5}
-          />
+          /> */}
         </Link>
       </div>
     </div>

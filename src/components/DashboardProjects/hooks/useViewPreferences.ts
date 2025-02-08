@@ -1,51 +1,50 @@
 "use client";
-
+import { VIEW_PREFERENCES } from "@/lib/constants/viewPreferences";
 import { useState, useEffect } from "react";
 import { ViewMode } from "../types";
 
-const COOKIE_NAME = "preferredView";
-const MAX_AGE = 60 * 60 * 24 * 365; // 1 año
+export function useViewPreference(
+  initialMode: ViewMode = VIEW_PREFERENCES.DEFAULT_VIEW
+) {
+  // Siempre inicializar con initialMode para el primer render
+  const [viewMode, setViewModeState] = useState<ViewMode>(initialMode);
+  const [hasMounted, setHasMounted] = useState(false);
 
-const getInitialViewMode = (initialMode: ViewMode): ViewMode => {
-  if (typeof window === "undefined") {
-    return initialMode;
-  }
-
-  const savedView = localStorage.getItem(COOKIE_NAME);
-  if (savedView === "grid" || savedView === "list") {
-    return savedView as ViewMode;
-  }
-
-  return initialMode;
-};
-
-export function useViewPreference(initialMode: ViewMode = "list") {
-  // Siempre declaramos los estados primero
-  const [viewMode, setViewModeState] = useState<ViewMode>(() =>
-    getInitialViewMode(initialMode)
-  );
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Un solo useEffect para manejar la sincronización
   useEffect(() => {
-    // Actualizar localStorage
-    localStorage.setItem(COOKIE_NAME, viewMode);
+    setHasMounted(true);
 
-    // Actualizar cookie
-    document.cookie = `${COOKIE_NAME}=${viewMode};path=/;max-age=${MAX_AGE};SameSite=Lax`;
+    // Leer preferencias solo después del montaje
+    const cookieValue = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${VIEW_PREFERENCES.COOKIE_NAME}=`))
+      ?.split("=")[1] as ViewMode;
 
-    // Marcar como cargado
-    setIsLoading(false);
-  }, [viewMode]);
+    const savedView = localStorage.getItem(
+      VIEW_PREFERENCES.COOKIE_NAME
+    ) as ViewMode;
 
-  // Función para actualizar el modo de vista
-  const setViewMode = (newMode: ViewMode) => {
-    setViewModeState(newMode);
-  };
+    // Priorizar cookie sobre localStorage
+    if (cookieValue === "grid" || cookieValue === "list") {
+      setViewModeState(cookieValue);
+    } else if (savedView === "grid" || savedView === "list") {
+      setViewModeState(savedView);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hasMounted) {
+      document.cookie = `${
+        VIEW_PREFERENCES.COOKIE_NAME
+      }=${viewMode};path=/;max-age=${VIEW_PREFERENCES.MAX_AGE};sameSite=Lax;${
+        process.env.NODE_ENV === "production" ? "Secure;" : ""
+      }`;
+      localStorage.setItem(VIEW_PREFERENCES.COOKIE_NAME, viewMode);
+    }
+  }, [viewMode, hasMounted]);
 
   return {
     viewMode,
-    setViewMode,
-    isLoading,
+    setViewMode: setViewModeState,
+    isLoading: !hasMounted,
   };
 }

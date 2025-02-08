@@ -1,0 +1,48 @@
+{
+    "meta": {
+        "title": "Content Preview | Client Portal",
+        "description": "Preview and download project content and deliverables",
+        "keywords": [
+            "content preview",
+            "deliverables",
+            "downloads",
+            "file preview",
+            "component preview"
+        ]
+    },
+    "header": {
+        "download": {
+            "label": "Download",
+            "loading": "Downloading...",
+            "ariaLabel": "Download content"
+        },
+        "metadata": {
+            "createdBy": "Created By:",
+            "updated": "Updated:",
+            "project": "Project:",
+            "size": "MB",
+            "separator": "-"
+        }
+    },
+    "preview": {
+        "errors": {
+            "downloadError": "Error downloading file",
+            "pdfGenerationError": "Error generating PDF",
+            "previewError": "Preview not available for this component type."
+        },
+        "components": {
+            "designSystem": {
+                "title": "Design System Preview"
+            },
+            "marketResearch": {
+                "title": "Market Research Preview"
+            },
+            "userPersonas": {
+                "title": "User Personas Preview"
+            },
+            "unavailable": {
+                "message": "Preview not available for this component type."
+            }
+        }
+    }
+}

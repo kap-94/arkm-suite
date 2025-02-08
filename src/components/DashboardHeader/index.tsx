@@ -1,3 +1,4 @@
+// src/components/DashboardHeader/DashboardHeader.tsx
 "use client";
 
 import React, { forwardRef, useCallback } from "react";
@@ -5,8 +6,8 @@ import classNames from "classnames/bind";
 import { FolderIcon, FileIcon, ListTodoIcon } from "lucide-react";
 import { UserInfo } from "../UserInfo";
 import { SearchBar } from "../SearchBar";
-import { useSidebarContext } from "../Sidebar/context/SidebarContext";
 import { Hamburger } from "../Hamburger";
+import { useDashboard } from "@/context/DashboardContext";
 import styles from "./DashboardHeader.module.scss";
 import type {
   HeaderSection,
@@ -14,6 +15,7 @@ import type {
   UserMenuItem,
 } from "@/types/dictionary/dashboardLayout.types";
 import { getIconComponent } from "@/utils/iconUtils";
+import { UserProfile } from "@/app/[lang]/dashboard/account/profile/ProfileClient";
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +34,7 @@ interface DashboardHeaderProps {
   theme?: Theme;
   config: HeaderSection;
   onSignOut?: () => void;
+  user: UserProfile;
 }
 
 const CATEGORY_ICONS = {
@@ -74,8 +77,8 @@ const transformUserMenuOptions = (options: UserMenuItem[]) => {
 };
 
 export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
-  ({ className, theme = { type: "light" }, config, onSignOut }, ref) => {
-    const { state, actions } = useSidebarContext();
+  ({ className, theme = { type: "light" }, config, user, onSignOut }, ref) => {
+    const { state, toggleSidebar } = useDashboard();
     const searchOptions = transformSearchOptions(config.search);
     const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
 
@@ -119,8 +122,8 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
             <div className={cx("dashboard-header__mobile-menu")}>
               <Hamburger
                 variant="morph"
-                onClick={actions.toggle}
-                isOpen={state.isExpanded}
+                onClick={toggleSidebar}
+                isOpen={state.isSidebarExpanded}
                 className={cx("header__menu-trigger")}
                 theme={theme}
               />
@@ -143,9 +146,9 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
           <div className={cx("dashboard-header__actions")}>
             <UserInfo
               closeOnScroll
-              userName={"Marc Vega"}
+              userName={user.fullName}
               userRole={
-                config.user.roles.types[config.user.roles.default].label
+                config.user.roles.types[config.user.roles.productOwner].label
               }
               options={userMenuOptions}
               theme={theme}

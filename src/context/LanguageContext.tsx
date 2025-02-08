@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import type { Language } from "@/config/i18n";
+import type { Language } from "@/lib/config/i18n";
 
 interface LanguageContextType {
   language: Language;

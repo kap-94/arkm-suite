@@ -1,9 +1,12 @@
-import { Project } from "@/models/project";
 import { ProjectLink } from "@/types/dictionary/dashboard.types";
+import { Stage } from "../StageProgress/types";
+import { ProjectStatus, TaskStatus } from "@/types/models/Common";
+import { Language } from "@/lib/config/i18n";
 
 export type ThemeType = "light" | "dark" | "custom";
 export interface ProjectCardDictionary {
   links: Record<string, ProjectLink>;
+  labels: Record<string, string>;
 }
 
 export interface ProjectCardTheme {
@@ -18,19 +21,37 @@ export interface ProjectCardTheme {
   };
 }
 
-// export type ProjectStatus = "inProgress" | "completed" | "onHold";
-export type ProjectPriority = "low" | "medium" | "high";
-export type ProjectSize = "default" | "small";
+type ProjectType = {
+  label: string;
+};
 
-export interface Stage {
+export interface ProjectCardStage {
   name: string;
-  threshold: number;
-  color?: string;
+  order: number;
+  status: {
+    value: TaskStatus;
+  };
+}
+
+export interface ProjectCardItem {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  updatedAt: Date;
+  progress: number;
+  stages: ProjectCardStage[];
+  status: {
+    label: string;
+    value: ProjectStatus;
+  };
+  type: ProjectType;
 }
 
 export interface ProjectCardProps {
-  project: Project;
-  size?: ProjectSize;
+  project: ProjectCardItem;
+  language: Language;
+  size?: "default" | "small";
   theme?: ProjectCardTheme;
   dictionary: ProjectCardDictionary;
 }

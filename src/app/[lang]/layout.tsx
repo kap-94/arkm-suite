@@ -1,8 +1,8 @@
 // src/app/[lang]/layout.tsx
 import type { Metadata } from "next";
-import { languages, type Language } from "@/config/i18n";
+import { languages, type Language } from "@/lib/config/i18n";
 import { LanguageProvider } from "@/context/LanguageContext";
-import { inter } from "@/fonts";
+import { inter } from "@/lib/fonts";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "@/styles/globals.scss";
 

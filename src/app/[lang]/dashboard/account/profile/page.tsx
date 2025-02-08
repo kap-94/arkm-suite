@@ -1,4 +1,4 @@
-import type { Language } from "@/config/i18n";
+import type { Language } from "@/lib/config/i18n";
 import { ProfileClient } from "./ProfileClient";
 import { getPageDictionary, profileDictionary } from "@/utils/dictionary";
 
@@ -9,6 +9,27 @@ export default async function ProfilePage({
   params: { lang: Language };
 }) {
   const profile = await getPageDictionary(profileDictionary, lang);
+  const mockGuestUserEn = {
+    fullName: "Guest User",
+    email: "guest@example.com",
+    role: "Product Owner",
+    nationality: "International",
+    nationalID: "GUEST-000",
+    countryFlag: "https://flagcdn.com/un.svg",
+    profileImage: "/guest-avatar.png",
+  };
 
-  return <ProfileClient dictionary={profile} />;
+  const mockGuestUserEs = {
+    fullName: "Usuario Invitado",
+    email: "invitado@example.com",
+    role: "Propietario del producto",
+    nationality: "Internacional",
+    nationalID: "INVITADO-000",
+    countryFlag: "https://flagcdn.com/un.svg",
+    profileImage: "/guest-avatar.png",
+  };
+
+  let guestUser = lang === "en" ? mockGuestUserEn : mockGuestUserEs;
+
+  return <ProfileClient dictionary={profile} user={guestUser} />;
 }

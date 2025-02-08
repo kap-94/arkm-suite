@@ -54,7 +54,6 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   theme = { type: "light" },
 }) => {
   const stops = getThemeColors(theme, defaultThemeColor);
-  console.log({ stops });
 
   return (
     <div

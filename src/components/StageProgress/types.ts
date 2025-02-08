@@ -44,6 +44,7 @@ export interface StageProgressProps {
 }
 
 export interface VariantProps {
+  type?: string;
   progress: number;
   stages: Stage[];
   gradientVariant?: GradientVariant;

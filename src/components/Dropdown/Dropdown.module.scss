@@ -2,7 +2,6 @@
 @import "@/styles/variables";
 @import "@/styles/mixins";
 
-// Theme configurations
 $themes: (
   light: (
     text-primary: $black-base,
@@ -36,29 +35,27 @@ $themes: (
   ),
 );
 
-// Filter variant theme map
 $filter-theme-map: (
   dark: (
-    button-border-color: rgba($primary-light, 0.85),
-    button-color: lighten($indigo-light, 6%),
+    button-border-color: rgba($white-base, 0.25),
+    button-color: rgba($white-base, 0.8),
     background: $black-base,
     hover: convert-to-rgba($primary-color, 0.75),
   ),
   light: (
-    button-border-color: rgba($black-base, 0.18),
+    button-border-color: rgba($black-base, 0.1),
     button-color: rgba($black-base, 0.65),
     background: $white-light,
     hover: convert-to-rgba($primary-color, 0.75),
   ),
   custom: (
-    button-border-color: var(--dropdown-primary, $primary-light),
-    button-color: var(--dropdown-primary, lighten($indigo-light, 7%)),
+    button-border-color: var(--dropdown-border),
+    button-color: var(--dropdown-text, lighten($indigo-light, 7%)),
     background: var(--dropdown-background, $white-color),
     hover: var(--dropdown-primary, $primary-color),
   ),
 );
 
-// Base styles
 .dropdownWrapper {
   @include flex(column, flex-start, stretch, $spacing-md);
 
@@ -85,13 +82,15 @@ $filter-theme-map: (
   position: relative;
   width: 100%;
 
-  // Theme styles
   @each $theme, $colors in $themes {
     &--theme-#{$theme} {
       .dropdown__text {
-        background-color: convert-to-rgba(map.get($colors, background), 0.325);
-        border: 1.3px solid map.get($colors, border);
-        color: map.get($colors, text-primary);
+        background-color: var(
+          --dropdown-background,
+          convert-to-rgba(map.get($colors, background), 0.325)
+        );
+        border: 1.3px solid var(--dropdown-border, map.get($colors, border));
+        color: var(--dropdown-text, map.get($colors, text-primary));
 
         &--disabled {
           background-color: map.get($colors, disabled-bg);
@@ -103,18 +102,24 @@ $filter-theme-map: (
       }
 
       .dropdown__menu {
-        background-color: map.get($colors, background);
+        background-color: var(
+          --dropdown-background,
+          map.get($colors, background)
+        );
         @include elevation();
       }
 
       .dropdown__item {
-        color: map.get($colors, text-primary);
-        background-color: convert-to-rgba(map.get($colors, background), 0.325);
-        border: 1px solid map.get($colors, border);
+        color: var(--dropdown-text, map.get($colors, text-primary));
+        background-color: var(
+          --dropdown-background,
+          convert-to-rgba(map.get($colors, background), 0.325)
+        );
+        border: 1px solid var(--dropdown-border, map.get($colors, border));
         border-top: none;
 
         @include hover {
-          background-color: map.get($colors, hover);
+          background-color: var(--dropdown-primary, map.get($colors, hover));
 
           p {
             color: $white-light;
@@ -122,7 +127,7 @@ $filter-theme-map: (
         }
 
         @include focus-visible {
-          background-color: map.get($colors, hover);
+          background-color: var(--dropdown-primary, map.get($colors, hover));
 
           p {
             color: $white-light;
@@ -144,17 +149,31 @@ $filter-theme-map: (
 
       &.dropdown--variant-filter {
         .dropdown__text {
-          border: 1.3px
+          // border-radius: 0;
+          border: none;
+          border-bottom: 1.3px
             solid
-            map-get($filter-theme-map, #{$theme}, button-border-color);
-          background-color: map-get($filter-theme-map, #{$theme}, background);
+            var(
+              --dropdown-border,
+              map-get($filter-theme-map, #{$theme}, button-border-color)
+            );
+          background-color: var(
+            --dropdown-background,
+            map-get($filter-theme-map, #{$theme}, background)
+          );
         }
 
         .dropdown__menu {
           border: 1.3px
             solid
-            map-get($filter-theme-map, #{$theme}, button-border-color);
-          background-color: map-get($filter-theme-map, #{$theme}, background);
+            var(
+              --dropdown-border,
+              map-get($filter-theme-map, #{$theme}, button-border-color)
+            );
+          background-color: var(
+            --dropdown-background,
+            map-get($filter-theme-map, #{$theme}, background)
+          );
         }
 
         .dropdown__item {
@@ -163,26 +182,34 @@ $filter-theme-map: (
           &:not(:last-child) {
             border-bottom: 1.3px
               solid
-              map-get($filter-theme-map, #{$theme}, button-border-color);
+              var(
+                --dropdown-border,
+                map-get($filter-theme-map, #{$theme}, button-border-color)
+              );
           }
 
           @include hover {
-            background-color: map-get($filter-theme-map, #{$theme}, hover);
+            background-color: var(
+              --dropdown-primary,
+              map-get($filter-theme-map, #{$theme}, hover)
+            );
           }
         }
 
         .dropdown__item-text,
         .dropdown__icon {
-          color: map-get($filter-theme-map, #{$theme}, button-color);
+          color: var(
+            --dropdown-text,
+            map-get($filter-theme-map, #{$theme}, button-color)
+          );
         }
       }
 
-      // Scrollbar theme-specific colors
       .dropdown__menu::-webkit-scrollbar-thumb {
-        background-color: map.get($colors, border);
+        background-color: var(--dropdown-border, map.get($colors, border));
 
         &:hover {
-          background-color: map.get($colors, hover);
+          background-color: var(--dropdown-primary, map.get($colors, hover));
         }
       }
     }
@@ -210,7 +237,7 @@ $filter-theme-map: (
     @include flex-center;
     @include transition(transform);
     margin-left: $spacing-sm;
-    color: currentColor;
+    // color: currentColor;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
@@ -270,13 +297,11 @@ $filter-theme-map: (
     }
   }
 
-  // Variants
   &--variant-filter {
     .dropdown__text {
       min-height: 34px !important;
-      padding: $spacing-xs $spacing-sm;
-      padding-left: 10px;
-      border: 1.3px solid;
+      padding: $spacing-xs 12px;
+      border: 1px solid;
       border-radius: 6px;
       @include transition(all);
 
@@ -300,7 +325,6 @@ $filter-theme-map: (
     }
   }
 
-  // Disabled state
   &--disabled {
     cursor: not-allowed;
 

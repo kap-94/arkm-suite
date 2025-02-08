@@ -26,41 +26,37 @@ export interface NavItem {
   title: string;
   icon: ReactNode;
   path: string;
+  aria: string; // Added aria property
   children?: NavItem[];
   disabled?: boolean;
+  meta?: {
+    description?: string;
+    projectId?: string;
+    status?: string;
+    progress?: number;
+  };
+  actions?: {
+    create?: string;
+    filter?: string;
+    sort?: string;
+    upload?: string;
+  };
 }
 
-export interface SidebarConfig {
+export interface DashboardConfig {
+  breakpoints: {
+    mobile: number;
+    tablet: number;
+    desktop: number;
+  };
+  animations: {
+    duration: number;
+    timing: string;
+  };
   width: {
     expanded: number;
     collapsed: number;
   };
-  animation: {
-    duration: number;
-    timing: string;
-  };
-  breakpoints: {
-    mobile: number;
-  };
-}
-
-export interface SidebarState {
-  isExpanded: boolean;
-  isMobile: boolean;
-  activeItemId?: string;
-}
-
-export interface SidebarActions {
-  toggle: () => void;
-  setActiveItem: (id: string) => void;
-  collapse: () => void;
-  expand: () => void;
-}
-
-export interface SidebarContextValue {
-  state: SidebarState;
-  actions: SidebarActions;
-  config: SidebarConfig;
 }
 
 export interface SidebarProps {
@@ -68,7 +64,6 @@ export interface SidebarProps {
   bottomNavigation: NavItem[];
   theme?: SidebarTheme;
   className?: string;
-  onStateChange?: (state: SidebarState) => void;
 }
 
 export interface SidebarItemProps {
@@ -84,17 +79,19 @@ export type ThemeCSSVariables = {
 };
 
 // Configuración por defecto
-export const DEFAULT_CONFIG: SidebarConfig = {
-  width: {
-    expanded: 256,
-    collapsed: 80,
+export const DEFAULT_DASHBOARD_CONFIG: DashboardConfig = {
+  breakpoints: {
+    mobile: 768,
+    tablet: 1024,
+    desktop: 1280,
   },
-  animation: {
+  animations: {
     duration: 300,
     timing: "ease",
   },
-  breakpoints: {
-    mobile: 768,
+  width: {
+    expanded: 256,
+    collapsed: 80,
   },
 };
 
@@ -105,11 +102,11 @@ export const DEFAULT_THEME_VALUES: Record<ThemeType, SidebarThemeValues> = {
     text: "rgba(242, 232, 232, 0.965)",
     textSecondary: "rgba(242, 232, 232, 0.7)",
     textTertiary: "rgba(242, 232, 232, 0.5)",
-    border: "rgba(242, 232, 232, 0.)",
+    border: "rgba(242, 232, 232, 0.1)",
     overlayBg: "0, 0, 0",
     overlayOpacity: "0.5",
     overlayBlur: "4px",
-    overlayMobileOpacity: "0.",
+    overlayMobileOpacity: "0.7",
     overlayMobileBlur: "2px",
   },
   light: {
@@ -121,10 +118,10 @@ export const DEFAULT_THEME_VALUES: Record<ThemeType, SidebarThemeValues> = {
     overlayBg: "255, 255, 255",
     overlayOpacity: "0.8",
     overlayBlur: "4px",
-    overlayMobileOpacity: "0.",
+    overlayMobileOpacity: "0.9",
     overlayMobileBlur: "2px",
   },
-  custom: {}, // Los valores personalizados se proporcionan a través de props
+  custom: {},
 };
 
 // Función helper para obtener valores del tema

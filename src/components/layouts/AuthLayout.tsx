@@ -1,7 +1,7 @@
 import Link from "next/link";
 import classNames from "classnames/bind";
 import { ArrowLeft, HelpCircle } from "lucide-react";
-import { Language } from "@/config/i18n";
+import { Language } from "@/lib/config/i18n";
 import { authLayoutDictionary, getPageDictionary } from "@/utils/dictionary";
 import { UIProvider } from "@/context/UIContext";
 import { Brand } from "@/components/Header/components";

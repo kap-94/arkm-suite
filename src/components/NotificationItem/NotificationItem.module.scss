@@ -25,7 +25,7 @@ $notification-theme-map: (
 
 .notification {
   @include flex($align: flex-start);
-  padding: $spacing-md $spacing-lg;
+  padding: $spacing-md;
   // border-radius: $border-radius-lg;
   transition: all $transition-duration-fast ease;
   cursor: pointer;
@@ -69,11 +69,12 @@ $notification-theme-map: (
 
   &__header {
     @include flex($justify: space-between, $align: center);
-    margin-bottom: $spacing-xs;
+    margin-bottom: $spacing-sm;
   }
 
   &__title {
     margin: 0;
+    line-height: 1.4 !important;
   }
 
   &__badge-wrapper {
@@ -88,10 +89,10 @@ $notification-theme-map: (
   }
 
   &__badge-text {
-    font-size: 10px !important;
+    font-size: 9px !important;
 
     @include tablet {
-      font-size: 9px !important;
+      font-size: 8px !important;
     }
   }
 
@@ -101,13 +102,17 @@ $notification-theme-map: (
   }
 
   &__description {
-    margin: $spacing-xs 0;
-    line-height: 1.5;
+    line-height: 1.6 !important;
+    max-width: 90%;
   }
 
   &__meta {
-    @include flex($align: center, $gap: $spacing-sm);
+    @include flex($align: center, $gap: 12px);
     margin-top: $spacing-sm;
+
+    @include mobile {
+      gap: $spacing-sm;
+    }
   }
 
   &--link {
@@ -120,8 +125,6 @@ $notification-theme-map: (
   }
 
   @include tablet {
-    padding: $spacing-md;
-
     &__badge-wrapper {
       margin-left: $spacing-sm;
     }

@@ -1,4 +1,5 @@
 // src/components/NotificationItem/types.ts
+import { ProjectReference } from "@/types/models/Common";
 import type { LucideIcon } from "lucide-react";
 
 export type NotificationVariant =
@@ -28,8 +29,7 @@ export interface NotificationTheme {
 export interface BaseNotification {
   id: string;
   variant: NotificationVariant;
-  projectId: string;
-  projectName: string;
+  project: ProjectReference;
   priority: "low" | "medium" | "high";
   read: boolean;
   timestamp: Date;

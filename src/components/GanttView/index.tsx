@@ -1,314 +1,335 @@
-// components/GanttView/GanttView.tsx
-import React, { useState, useCallback } from "react";
-import {
-  Calendar,
-  Clock,
-  Users,
-  AlertCircle,
-  Link as LinkIcon,
-  ChevronRight,
-  Target,
-  ArrowRight,
-} from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import classNames from "classnames/bind";
+import moment from "moment";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
-import { GanttViewProps, Task } from "./types";
-import { mockTasks } from "./mockData";
+import { Dropdown } from "@/components/Dropdown/Dropdown";
+import { GanttViewProps, GanttStage } from "./types";
+import StickyWrapper from "../StickyWrapper";
+import { StageCard } from "./components/StageCard";
+import { StageBar } from "./components/StageBar";
+import { useGantt } from "./hooks/useGantt";
+import { GanttProvider } from "./GanttContext";
+import { calculateCurrentDayPosition } from "./gantt-date-calculations";
+import { formatCustomDate } from "@/utils/date-utils";
+import { useDashboard } from "@/context/DashboardContext";
 import styles from "./GanttView.module.scss";
+import {
+  GanttViewOption,
+  ProjectStatus,
+} from "@/types/dictionary/projectDetails.types";
 
 const cx = classNames.bind(styles);
 
-export const GanttView: React.FC<GanttViewProps> = ({
-  projectId,
-  theme = { type: "light" },
-}) => {
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [showWeekends, setShowWeekends] = useState(true);
-  const [view, setView] = useState<"month" | "week">("month");
+const GanttContent = ({
+  theme,
+  dictionary,
+  gridStyle,
+  stages,
+  projectType,
+  timelineData,
+  view,
+  showWeekends,
+  dateFormatter,
+  getHeaderLabel,
+  getStagePosition,
+  currentDate,
+  setView,
+  updateCurrentDate,
+  navigatePeriod,
+  selectedStageId,
+  toggleStageSelection,
+  stageCardHeights,
+  useStageCardSync,
+  showCurrentDay,
+}: any) => {
+  const { dimensions, language } = useDashboard();
 
-  const tasks = mockTasks;
-  const startDate = new Date("2024-03-01");
-  const endDate = new Date("2024-03-31");
-  const totalDays = Math.ceil(
-    (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
+  const renderCurrentDayIndicator = () => {
+    if (!showCurrentDay) return null;
 
-  const getTaskPosition = useCallback(
-    (task: Task) => {
-      const taskStart = new Date(task.startDate);
-      const taskEnd = new Date(task.endDate);
-      const left =
-        ((taskStart.getTime() - startDate.getTime()) /
-          (1000 * 60 * 60 * 24) /
-          totalDays) *
-        100;
-      const width =
-        ((taskEnd.getTime() - taskStart.getTime()) /
-          (1000 * 60 * 60 * 24) /
-          totalDays) *
-        100;
-      return { left: `${left}%`, width: `${width}%` };
-    },
-    [startDate, totalDays]
-  );
+    const today = moment.utc().startOf("day").toDate();
+    const timelineStart = timelineData.gridItems[0];
+    const timelineEnd =
+      timelineData.gridItems[timelineData.gridItems.length - 1];
 
-  const isWeekend = (day: number) => {
-    const date = new Date(startDate);
-    date.setDate(date.getDate() + day - 1);
-    return [0, 6].includes(date.getDay());
-  };
+    const { position, visible } = calculateCurrentDayPosition(
+      today,
+      timelineStart,
+      timelineEnd,
+      view
+    );
 
-  const getDayLabel = (day: number) => {
-    const date = new Date(startDate);
-    date.setDate(date.getDate() + day - 1);
-    return date.toLocaleDateString("en-US", { weekday: "short" }).charAt(0);
-  };
+    if (!visible) return null;
 
-  const totalMilestones = tasks.reduce(
-    (acc, task) => acc + (task.milestones?.length || 0),
-    0
-  );
-
-  const metrics = [
-    {
-      icon: <Calendar className={cx("gantt__metrics-icon")} />,
-      label: "Start Date",
-      value: "Mar 1, 2024",
-    },
-    {
-      icon: <Calendar className={cx("gantt__metrics-icon")} />,
-      label: "End Date",
-      value: "Mar 31, 2024",
-    },
-    {
-      icon: <Clock className={cx("gantt__metrics-icon")} />,
-      label: "Duration",
-      value: `${totalDays} days`,
-    },
-    {
-      icon: <Target className={cx("gantt__metrics-icon")} />,
-      label: "Milestones",
-      value: totalMilestones,
-    },
-  ];
-
-  const MetricsSection = () => {
     return (
-      <div className={cx("gantt__metrics")}>
-        {metrics.map((metric, index) => (
-          <React.Fragment key={metric.label}>
-            <div className={cx("gantt__metric")}>
-              {metric.icon}
-              <div className={cx("gantt__metric-data")}>
-                <ThemedTypography
-                  variant="p3"
-                  color="secondary"
-                  className={cx("gantt__metric-label")}
-                >
-                  {metric.label}
-                </ThemedTypography>
-                <ThemedTypography
-                  variant="h5"
-                  className={cx("gantt__metric-value")}
-                >
-                  {metric.value}
-                </ThemedTypography>
-              </div>
-            </div>
-            {index < metrics.length - 1 && (
-              <div className={cx("gantt__metric-separator")} />
-            )}
-          </React.Fragment>
+      <div
+        className={cx("gantt__current-day-indicator")}
+        style={{ left: `${position}%` }}
+      />
+    );
+  };
+
+  const renderGridOverlay = () => {
+    if (gridStyle === "none") return null;
+
+    const numberOfRows = 8;
+    const cells = Array.from({
+      length:
+        timelineData.totalUnits * (gridStyle === "cells" ? numberOfRows : 1),
+    });
+
+    return (
+      <div
+        className={cx(
+          "gantt__grid-overlay",
+          `gantt__grid-overlay--${gridStyle}`
+        )}
+        style={
+          {
+            "--total-days": timelineData.totalUnits,
+            "--start-date": formatCustomDate(
+              timelineData.gridItems[0],
+              "YYYY-MM-DD"
+            ),
+          } as React.CSSProperties
+        }
+      >
+        {cells.map((_, index) => (
+          <div key={index} />
         ))}
       </div>
     );
   };
 
   return (
-    <div className={cx("gantt", `gantt--theme-${theme.type}`)}>
+    <div className={cx("gantt", `gantt--theme-${theme.type}`)} data-view={view}>
       <div className={cx("gantt__header")}>
-        {/* <MetricsSection/> */}
-
-        {/* <div className={cx("gantt__metrics")}>
-          {metrics.map((metric) => (
-            <div key={metric.label} className={cx("gantt__metric-card")}>
-              <div className={cx("gantt__metric-content")}>
-                {metric.icon}
-                <div>
-                  <ThemedTypography variant="p2" color="secondary">
-                    {metric.label}
-                  </ThemedTypography>
-                  <ThemedTypography variant="h4">
-                    {metric.value}
-                  </ThemedTypography>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div> */}
-
         <div className={cx("gantt__controls")}>
-          <div className={cx("gantt__status-legend")}>
-            {[
-              { label: "On Track", color: "success" },
-              { label: "At Risk", color: "warning" },
-              { label: "Delayed", color: "error" },
-            ].map((status) => (
-              <div key={status.label} className={cx("gantt__status-item")}>
-                <span
-                  className={cx(
-                    "gantt__status-dot",
-                    `gantt__status-dot--${status.color}`
-                  )}
-                />
-                <ThemedTypography variant="p2" color="secondary">
-                  {status.label}
-                </ThemedTypography>
-              </div>
-            ))}
+          <div className={cx("gantt__period")}>
+            <button
+              className={cx("gantt__period-nav")}
+              onClick={() => navigatePeriod("prev")}
+            >
+              <ChevronLeft size={16} strokeWidth={1.8} />
+            </button>
+            <ThemedTypography variant="p2" noWrap fontWeight={500}>
+              {dateFormatter(currentDate, language)}
+            </ThemedTypography>
+            <button
+              className={cx("gantt__period-nav")}
+              onClick={() => navigatePeriod("next")}
+            >
+              <ChevronRight size={16} strokeWidth={1.8} />
+            </button>
           </div>
 
-          <div className={cx("gantt__view-controls")}>
-            <label className={cx("gantt__checkbox")}>
-              <input
-                type="checkbox"
-                checked={showWeekends}
-                onChange={(e) => setShowWeekends(e.target.checked)}
-                className={cx("gantt__checkbox-input")}
-              />
-              <ThemedTypography variant="p2" color="secondary">
-                Show Weekends
-              </ThemedTypography>
-            </label>
+          <div className={cx("gantt__right-controls")}>
+            <div className={cx("gantt__status-legend")}>
+              {dictionary.controls.statusLegend.map((status: ProjectStatus) => (
+                <div key={status.label} className={cx("gantt__status-item")}>
+                  <span
+                    className={cx(
+                      "gantt__status-dot",
+                      `gantt__status-dot--${status.color}`
+                    )}
+                  />
+                  <ThemedTypography
+                    variant="p3"
+                    fontWeight={500}
+                    noWrap
+                    color="secondary"
+                  >
+                    {status.label}
+                  </ThemedTypography>
+                </div>
+              ))}
+            </div>
 
-            <select
-              value={view}
-              onChange={(e) => setView(e.target.value as "month" | "week")}
-              className={cx("gantt__view-select")}
-            >
-              <option value="month">Month View</option>
-              <option value="week">Week View</option>
-            </select>
+            <div className={cx("gantt__view-controls")}>
+              <Dropdown
+                options={dictionary.controls.viewOptions}
+                selected={{
+                  value: view,
+                  label:
+                    dictionary.controls.viewOptions.find(
+                      (opt: GanttViewOption) => opt.value === view
+                    )?.label || view,
+                }}
+                onSelectedChange={(option) => {
+                  const newView = option.value as "year" | "month" | "week";
+                  setView(newView);
+                  updateCurrentDate(newView);
+                }}
+                theme={theme}
+                icon={<ChevronDown size={16} />}
+                className={cx("gantt__view-select")}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className={cx("gantt__timeline")}>
-        <div className={cx("gantt__timeline-header")}>
-          <div className={cx("gantt__task-column")}>
-            <ThemedTypography variant="p2" color="secondary">
-              Task
+      <div className={cx("gantt__content")}>
+        <div className={cx("gantt__info-column")}>
+          <div className={cx("gantt__stage-header")}>
+            <ThemedTypography variant="p2" fontWeight={500} color="secondary">
+              {projectType}
             </ThemedTypography>
           </div>
-          <div className={cx("gantt__days-grid")}>
-            {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-              <div
-                key={day}
-                className={cx("gantt__day", {
-                  "gantt__day--weekend": showWeekends && isWeekend(day),
-                })}
-              >
-                <div className={cx("gantt__day-label")}>
-                  <ThemedTypography variant="p3" color="tertiary">
-                    {getDayLabel(day)}
-                  </ThemedTypography>
+
+          <div className={cx("gantt__stage-info-list")}>
+            {stages.map((stage: GanttStage) => {
+              const cardRef = useStageCardSync(stage.id);
+              return (
+                <div
+                  key={stage.id}
+                  className={cx("gantt__stage-info-item", {
+                    "gantt__stage-info-item--selected":
+                      selectedStageId === stage.id,
+                  })}
+                  onClick={() => toggleStageSelection(stage.id)}
+                >
+                  <StageCard
+                    ref={cardRef}
+                    stage={stage}
+                    dictionary={dictionary.stageCard.labels}
+                    theme={theme}
+                    isSelected={selectedStageId === stage.id}
+                  />
                 </div>
-                <div className={cx("gantt__day-number")}>
-                  <ThemedTypography variant="p3" color="secondary">
-                    {day}
-                  </ThemedTypography>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        <div className={cx("gantt__tasks")}>
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              className={cx("gantt__task-row", {
-                "gantt__task-row--selected": selectedTask?.id === task.id,
-              })}
-              onClick={() =>
-                setSelectedTask(selectedTask?.id === task.id ? null : task)
-              }
+        <div className={cx("gantt__timeline-column")}>
+          <div className={cx("gantt__timeline-wrapper")}>
+            {renderGridOverlay()}
+            {renderCurrentDayIndicator()}
+
+            <StickyWrapper
+              stickyDirection="top"
+              stickyOffset={dimensions.headerHeight}
+              zIndex={dimensions.headerZIndex - 12}
             >
-              <div className={cx("gantt__task-info")}>
-                <div className={cx("gantt__task-card")}>
-                  <div className={cx("gantt__task-header")}>
-                    <ThemedTypography variant="p1">
-                      {task.name}
-                    </ThemedTypography>
-                    <span
-                      className={cx(
-                        "gantt__task-priority",
-                        `gantt__task-priority--${task.priority}`
-                      )}
-                    >
-                      {task.priority}
-                    </span>
-                  </div>
-
-                  <div className={cx("gantt__task-progress")}>
-                    <div className={cx("gantt__progress-bar")}>
-                      <div
-                        className={cx("gantt__progress-fill")}
-                        style={{ width: `${task.progress}%` }}
-                      />
-                    </div>
-                    <ThemedTypography variant="p3" color="secondary">
-                      {task.progress}%
-                    </ThemedTypography>
-                  </div>
-
-                  {selectedTask?.id === task.id && (
-                    <div className={cx("gantt__task-details")}>
-                      <ThemedTypography variant="p2" color="secondary">
-                        {task.description}
-                      </ThemedTypography>
-
-                      <div className={cx("gantt__task-assignees")}>
-                        <div className={cx("gantt__assignee-avatars")}>
-                          {task.assignees.map((assignee, index) => (
-                            <img
-                              key={index}
-                              src={assignee.avatar}
-                              alt={assignee.name}
-                              className={cx("gantt__assignee-avatar")}
-                            />
-                          ))}
-                        </div>
-                        <ThemedTypography variant="p3" color="secondary">
-                          {task.assignees.map((a) => a.name).join(", ")}
-                        </ThemedTypography>
-                      </div>
-
-                      {/* Dependencies and Milestones sections */}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className={cx("gantt__task-timeline")}>
+              <div className={cx("gantt__timeline-header")}>
                 <div
-                  className={cx(
-                    "gantt__task-bar",
-                    `gantt__task-bar--${task.status}`,
+                  className={cx("gantt__days-grid")}
+                  style={
                     {
-                      "gantt__task-bar--selected": selectedTask?.id === task.id,
-                    }
-                  )}
-                  style={getTaskPosition(task)}
+                      "--total-days": timelineData.totalUnits,
+                      "--is-year-view": view === "year" ? 1 : 0,
+                    } as React.CSSProperties
+                  }
                 >
-                  {/* Dependencies arrows */}
-                  {/* Milestones */}
+                  {timelineData.gridItems.map((date: Date, index: number) => {
+                    const dayMoment = moment.utc(date).startOf("day");
+                    const isWeekend =
+                      view !== "year" &&
+                      showWeekends &&
+                      [0, 6].includes(dayMoment.day());
+                    const isMonthStart = dayMoment.date() === 1;
+
+                    return (
+                      <div
+                        key={index}
+                        className={cx("gantt__day", {
+                          "gantt__day--weekend": isWeekend,
+                          "gantt__day--month-start": isMonthStart,
+                        })}
+                        aria-label={
+                          isWeekend
+                            ? dictionary.timeline.header.aria.weekendDay
+                            : undefined
+                        }
+                      >
+                        <div className={cx("gantt__day-label")}>
+                          <ThemedTypography variant="p3" color="tertiary">
+                            {getHeaderLabel(date, view, dictionary)}
+                          </ThemedTypography>
+                        </div>
+                        {view !== "year" && (
+                          <div
+                            className={cx("gantt__day-number")}
+                            aria-label={
+                              isMonthStart
+                                ? dictionary.timeline.header.aria.monthStart
+                                : undefined
+                            }
+                          >
+                            <ThemedTypography variant="p3" color="secondary">
+                              {dayMoment.date()}
+                            </ThemedTypography>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
+            </StickyWrapper>
+
+            <div className={cx("gantt__timeline-stages")}>
+              {stages.map((stage: GanttStage) => (
+                <div
+                  key={stage.id}
+                  className={cx("gantt__timeline-stage-row", {
+                    "gantt__timeline-stage-row--selected":
+                      selectedStageId === stage.id,
+                  })}
+                  style={{
+                    height: `${stageCardHeights[stage.id] || 88}px`,
+                    transition: "height 0.2s ease-out",
+                  }}
+                  onClick={() => toggleStageSelection(stage.id)}
+                >
+                  <StageBar
+                    stage={stage}
+                    isSelected={selectedStageId === stage.id}
+                    timelineData={timelineData}
+                    view={view}
+                    getStagePosition={getStagePosition}
+                    theme={theme}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+export const GanttView = (props: GanttViewProps) => {
+  return (
+    <GanttProvider>
+      <GanttViewInner {...props} />
+    </GanttProvider>
+  );
+};
+
+const GanttViewInner = ({
+  projectId,
+  projectType,
+  theme = { type: "light" },
+  showCurrentDay = true,
+  gridStyle = "lines",
+  stages,
+  dictionary,
+}: GanttViewProps) => {
+  const ganttProps = useGantt({ stages });
+
+  return (
+    <GanttContent
+      theme={theme}
+      gridStyle={gridStyle}
+      showCurrentDay={showCurrentDay}
+      projectType={projectType}
+      dictionary={dictionary}
+      {...ganttProps}
+    />
+  );
+};
+
+export default GanttView;

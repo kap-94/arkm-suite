@@ -174,6 +174,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               as="label"
               variant="label"
               className={cx("search-bar__label")}
+              color="secondary"
               theme={theme.type}
             >
               {label}
@@ -205,6 +206,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               {buttonText && (
                 <ThemedTypography
                   variant="p2"
+                  color="tertiary"
+                  fontWeight={400}
                   className={cx("search-bar__button-text")}
                   theme={theme.type}
                 >
@@ -238,6 +241,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   <div className={cx("search-bar__option-content")}>
                     <ThemedTypography
                       variant="p2"
+                      color="secondary"
                       className={cx("search-bar__option-label")}
                       theme={theme.type}
                     >
@@ -246,7 +250,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                     {option.subtitle && (
                       <ThemedTypography
                         variant="p3"
-                        color="secondary"
+                        // color="secondary"
                         className={cx("search-bar__option-subtitle")}
                         theme={theme.type}
                       >

@@ -1,6 +1,11 @@
-// components/GanttView/types.ts
+import { GanttViewDictionary } from "@/types/dictionary/projectDetails.types";
+import { Stage } from "@/types/models";
+import { Priority, TaskStatus } from "@/types/models/Common";
 
+// components/GanttView/types.ts
 export type ThemeType = "light" | "dark" | "custom";
+
+export type GridStyle = "none" | "lines" | "cells";
 
 export interface GanttTheme {
   type: ThemeType;
@@ -11,7 +16,7 @@ export interface GanttTheme {
     secondaryText?: string;
     gradient?: string;
     hover?: string;
-    taskBar?: {
+    stageBar?: {
       onTrack?: string;
       atRisk?: string;
       delayed?: string;
@@ -21,64 +26,54 @@ export interface GanttTheme {
       medium?: string;
       high?: string;
     };
+    indicator?: string;
   };
 }
 
-export interface Task {
+export interface GanttStage {
   id: string;
   name: string;
   startDate: string;
   endDate: string;
   progress: number;
   dependencies?: string[];
+  priority: { label: string; value: Priority };
+  status: { label: string; value: TaskStatus };
+  description?: string;
+  milestones?: Array<{
+    dueDate: string;
+    title: string;
+  }>;
   assignees: Array<{
     name: string;
     avatar: string;
   }>;
-  priority: "low" | "medium" | "high";
-  status: "on-track" | "at-risk" | "delayed";
-  milestones?: Array<{
-    date: string;
-    title: string;
-  }>;
-  description?: string;
 }
 
 export interface GanttViewProps {
   projectId: string;
+  projectType: string;
+  dictionary: GanttViewDictionary;
+  stages: Stage[];
   theme?: GanttTheme;
-  onTaskClick?: (taskId: string) => void;
-  onMilestoneClick?: (taskId: string, milestoneId: string) => void;
+  gridStyle?: GridStyle;
+  showCurrentDay?: boolean;
+  onStageClick?: (stageId: string) => void;
+  onMilestoneClick?: (stageId: string, milestoneId: string) => void;
 }
 
 // Tipos auxiliares para el estado interno
 export interface GanttViewState {
-  selectedTask: Task | null;
+  selectedTask: GanttStage | null;
   showWeekends: boolean;
   view: "month" | "week";
 }
 
-export interface TaskPosition {
+export interface StagePosition {
   left: string;
   width: string;
 }
 
-// Tipos para los mapeos de colores
-export type StatusColorMap = {
-  [K in Task["status"]]: {
-    border: string;
-    background: string;
-  };
-};
-
-export type PriorityColorMap = {
-  [K in Task["priority"]]: {
-    text: string;
-    background: string;
-  };
-};
-
-// Tipos para las métricas
 export interface TimeMetrics {
   estimated: number;
   actual: number;

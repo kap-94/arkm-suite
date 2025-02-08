@@ -1,0 +1,36 @@
+{
+    "meta": {
+        "title": "ARKM Studio | Web Design & Development",
+        "description": "Design and development studio specializing in creating exceptional digital experiences. We transform ideas into innovative and elegant web solutions.",
+        "keywords": [
+            "web design",
+            "web development",
+            "digital agency",
+            "ui/ux design",
+            "frontend development",
+            "backend development",
+            "responsive design",
+            "digital branding",
+            "user experience",
+            "ARKM Studio"
+        ],
+        "authors": [
+            { "name": "ARKM Studio" }
+        ],
+        "creator": "ARKM Studio",
+        "publisher": "ARKM Studio"
+    },
+    "hero": {
+        "headline": {
+            "create": "Create",
+            "scale": "Scale",
+            "transform": "Transform"
+        },
+        "description": {
+            "subtitle": "Web Design & Development",
+            "description": "Transforming visions into exceptional digital experiences",
+            "cta": "Start Your Project"
+        },
+        "scroll": "Scroll to Explore"
+    }
+}

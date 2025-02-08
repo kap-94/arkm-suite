@@ -4,7 +4,8 @@ import { useState, useMemo } from "react";
 import type { Option } from "@/components/Dropdown/types";
 import { useViewPreference } from "./useViewPreferences";
 import { ViewMode } from "../types";
-import { Project, ProjectPriority } from "@/models/project";
+import { ProjectCardItem } from "@/components/ProjectCard/types";
+// import { Project } from "@/types/models/Project";
 
 export interface FilterConfig {
   status: {
@@ -13,17 +14,17 @@ export interface FilterConfig {
     completed: string;
     onHold: string;
   };
-  priority: {
-    allPriority: string;
-    high: string;
-    medium: string;
-    low: string;
-  };
+  // priority: {
+  //   allPriority: string;
+  //   high: string;
+  //   medium: string;
+  //   low: string;
+  // };
   empty: string;
 }
 
 export interface UseProjectFiltersProps {
-  projects: Project[];
+  projects: ProjectCardItem[];
   initialViewMode?: ViewMode;
   filterConfig: FilterConfig;
 }
@@ -36,7 +37,8 @@ export const useProjectFilters = ({
   const { viewMode, setViewMode, isLoading } =
     useViewPreference(initialViewMode);
 
-  const { statusOptions, priorityOptions } = useMemo(() => {
+  const { statusOptions } = useMemo(() => {
+    // const { statusOptions, priorityOptions } = useMemo(() => {
     const statusOpts: Option[] = [
       { label: filterConfig.status.allStatus, value: "" },
       { label: filterConfig.status.inProgress, value: "inProgress" },
@@ -44,46 +46,48 @@ export const useProjectFilters = ({
       { label: filterConfig.status.onHold, value: "onHold" },
     ];
 
-    const priorityOpts: Option[] = [
-      { label: filterConfig.priority.allPriority, value: "" },
-      { label: filterConfig.priority.high, value: "high" },
-      { label: filterConfig.priority.medium, value: "medium" },
-      { label: filterConfig.priority.low, value: "low" },
-    ];
+    // const priorityOpts: Option[] = [
+    //   { label: filterConfig.priority.allPriority, value: "" },
+    //   { label: filterConfig.priority.high, value: "high" },
+    //   { label: filterConfig.priority.medium, value: "medium" },
+    //   { label: filterConfig.priority.low, value: "low" },
+    // ];
 
     return {
       statusOptions: statusOpts,
-      priorityOptions: priorityOpts,
+      // priorityOptions: priorityOpts,
     };
   }, [filterConfig]);
 
   const [selectedStatus, setSelectedStatus] = useState<Option>(
     statusOptions[0]
   );
-  const [selectedPriority, setSelectedPriority] = useState<Option>(
-    priorityOptions[0]
-  );
+  // const [selectedPriority, setSelectedPriority] = useState<Option>(
+  //   priorityOptions[0]
+  // );
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const statusMatch =
         !selectedStatus.value || project.status.value === selectedStatus.value;
-      const priorityMatch =
-        !selectedPriority.value ||
-        project.priority?.value === selectedPriority.value;
-      return statusMatch && priorityMatch;
+      // const priorityMatch =
+      //   !selectedPriority.value ||
+      //   project.priority?.value === selectedPriority.value;
+      // return statusMatch && priorityMatch;
+      return statusMatch;
     });
-  }, [projects, selectedStatus, selectedPriority]);
+  }, [projects, selectedStatus]);
+  // }, [projects, selectedStatus, selectedPriority]);
 
   return {
     viewMode,
     setViewMode,
     statusOptions,
-    priorityOptions,
+    // priorityOptions,
     selectedStatus,
     setSelectedStatus,
-    selectedPriority,
-    setSelectedPriority,
+    // selectedPriority,
+    // setSelectedPriority,
     filteredProjects,
     isLoading,
   };

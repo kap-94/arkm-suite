@@ -1,19 +1,34 @@
-import type {
-  NavigationItem,
-  NavigationItemWithActions,
-  NavigationAccessibility,
-  NavigationMeta,
-  NavigationMessages,
-  MenuItemType,
-  UserPermission,
-  AllIcons,
-  UserRole,
-  UserStatus,
-  ClientPaths,
-  SearchIcon,
-} from "./navigation.types";
+// src/types/dictionary/dashboardLayout.types.ts
 
-// Search Types
+// Base types
+export type MenuItemType = "link" | "action" | "divider" | string;
+export type UserRole =
+  | "admin"
+  | "manager"
+  | "productOwner"
+  | "developer"
+  | "designer"
+  | "user"
+  | string;
+export type UserStatus =
+  | "online"
+  | "offline"
+  | "away"
+  | "busy"
+  | "inMeeting"
+  | string;
+export type StatusIcon = "circle" | "clock" | "minus-circle" | "video";
+export type SearchIcon = "folder" | "check-square" | "file";
+export type MenuIcon = "user" | "settings" | "log-out";
+export type AllIcons = SearchIcon | MenuIcon | StatusIcon;
+
+// Base interfaces
+export interface ItemMeta {
+  description: string;
+  keywords?: string[];
+}
+
+// Search related interfaces
 export interface SearchConfig {
   placeholder: string;
   label: string;
@@ -52,19 +67,19 @@ export interface SearchSection {
   results: SearchResults;
 }
 
-// User Types
+// User related interfaces
 export interface UserMenuItem {
   id: string;
   label: string;
   icon?: AllIcons | string;
-  type: MenuItemType | string;
-  href?: ClientPaths | string;
+  type: MenuItemType;
+  href?: string;
 }
 
 export interface Role {
   label: string;
   level: number;
-  permissions: UserPermission[] | string[];
+  permissions: string[];
 }
 
 export interface UserStatusConfig {
@@ -92,12 +107,13 @@ export interface UserSection {
     options: UserMenuItem[];
   };
   roles: {
-    types: Record<UserRole | string, Role>;
-    default: UserRole | string;
+    types: Record<UserRole, Role>;
+    default: UserRole;
+    productOwner: UserRole;
   };
   status: {
     types: Record<UserStatus, UserStatusConfig>;
-    default: UserStatus | string;
+    default: UserStatus;
     autoUpdate: boolean;
   };
   accessibility: UserAccessibility;
@@ -109,17 +125,25 @@ export interface HeaderSection {
   user: UserSection;
 }
 
-// Navigation Section
-export interface DashboardNavigation {
-  main: Record<string, NavigationItemWithActions>;
-  bottom: Record<string, NavigationItem>;
-}
-
 // Main Layout Structure
 export interface DashboardLayoutDictionary {
-  meta: NavigationMeta;
+  meta: ItemMeta;
   header: HeaderSection;
-  navigation: DashboardNavigation;
-  accessibility: NavigationAccessibility;
-  messages: NavigationMessages;
+  accessibility: {
+    skipLinks: {
+      main: string;
+      navigation: string;
+    };
+    aria: {
+      mainNav: string;
+      dashboardNav: string;
+    };
+  };
+  messages: {
+    errors: {
+      notFound: string;
+      unauthorized: string;
+      forbidden: string;
+    };
+  };
 }

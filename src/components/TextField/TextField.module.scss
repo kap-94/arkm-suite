@@ -8,7 +8,7 @@ $themes: (
     text-secondary: rgba($black-base, 0.7),
     background: $white-light,
     border: rgba($black-base, 0),
-    label: $text-secondary-60,
+    label: $text-secondary,
     error: $error-color,
     placeholder: rgba($black-base, 0.5),
     focus: rgba($black-light, 0.7),
@@ -21,7 +21,7 @@ $themes: (
     text-secondary: $text-secondary,
     background: $black-dark,
     border: rgba($text-primary, 0.1),
-    label: $text-secondary-60,
+    label: $text-secondary,
     error: $error-color,
     placeholder: $text-tertiary,
     focus: rgba($primary-color, 0.7),
@@ -34,7 +34,7 @@ $themes: (
     text-secondary: var(--textfield-secondary, $text-secondary),
     background: var(--textfield-background, $black-light),
     border: var(--textfield-border, rgba($text-primary, 0)),
-    label: var(--textfield-label, $text-secondary-60),
+    label: var(--textfield-label, $text-secondary),
     error: var(--textfield-error, $error-color),
     placeholder: var(--textfield-placeholder, $text-tertiary),
     focus: var(--textfield-focus, $primary-color),
@@ -209,6 +209,10 @@ $themes: (
           &::placeholder {
             color: map.get($colors, disabled);
           }
+        }
+
+        .textfield__icon {
+          color: map.get($colors, disabled) !important;
         }
       }
 

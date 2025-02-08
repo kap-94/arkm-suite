@@ -67,7 +67,6 @@
   &__separator {
     @include flex-center;
     margin-bottom: $spacing-lg;
-    color: $text-secondary-50;
     width: 100%;
 
     &::before,
@@ -75,7 +74,7 @@
       content: "";
       height: 1px;
       flex: 1;
-      background-color: rgba($text-secondary, 0.2);
+      background-color: rgba($text-secondary, 0.15);
     }
 
     span {

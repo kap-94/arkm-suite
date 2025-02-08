@@ -9,13 +9,11 @@ import { ModernPattern } from "@/components/ModernPattern";
 import { Dropdown } from "@/components/Dropdown";
 import { ProfileImage } from "@/components/ProfileImage";
 import { useSettings } from "@/context/SettingsContext";
-import type { CommonDictionary } from "@/types/dictionary";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { PatternTheme } from "@/components/ModernPattern/types";
-import { User } from "@/types/User.types";
+import { ProfileDictionary } from "@/types/dictionary/profile.types";
 
 import styles from "./page.module.scss";
-import { ProfileDictionary } from "@/types/dictionary/profile.types";
 
 const cx = classNames.bind(styles);
 
@@ -49,25 +47,26 @@ const countryOptions: Option[] = [
   ),
 }));
 
-export const mockUser: User = {
-  fullName: "Marc Vega",
-  email: "john.doe@example.com",
-  role: "Product Owner",
-  nationality: "US",
-  nationalID: "123-45-6789",
-  countryFlag: "https://flagcdn.com/us.svg",
-  profileImage: "/default-avatar.png",
-};
+export interface UserProfile {
+  fullName: string;
+  email: string;
+  role: string;
+  nationality: string;
+  nationalID: string;
+  countryFlag: string;
+  profileImage: string;
+}
 
 interface ProfileClientProps {
   dictionary: ProfileDictionary;
+  user: UserProfile;
 }
 
-export function ProfileClient({ dictionary }: ProfileClientProps) {
+export function ProfileClient({ dictionary, user }: ProfileClientProps) {
   const { theme } = useSettings();
   const [selectedCountry, setSelectedCountry] = useState<Option>(() => {
     const country = countryOptions.find(
-      (opt) => opt.value === mockUser.nationality
+      (opt) => opt.value === user.nationality
     );
     return country || countryOptions[0];
   });
@@ -97,7 +96,7 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
     },
   };
 
-  const handleProfileUpdate = async (updatedUser: User) => {
+  const handleProfileUpdate = async (updatedUser: any) => {
     try {
       console.log("Updating user profile:", updatedUser);
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -120,7 +119,7 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
   const handleCountryChange = (option: Option) => {
     setSelectedCountry(option);
     const updatedUser = {
-      ...mockUser,
+      ...user,
       nationality: option.value,
       countryFlag: `https://flagcdn.com/${option.value.toLowerCase()}.svg`,
     };
@@ -143,15 +142,15 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
       <div className={cx("profile-page__container")}>
         <div className={cx("profile-page__form-container")}>
           <ProfileImage
-            imageUrl={mockUser.profileImage}
+            imageUrl={user.profileImage}
             theme={{ type: theme }}
             onImageChange={handleImageChange}
-            user={mockUser}
+            user={user}
             dictionary={dictionary}
           />
 
           <UpdateProfileForm
-            user={mockUser}
+            user={user}
             theme={{ type: theme }}
             onSubmit={handleProfileUpdate}
             dictionary={dictionary}
@@ -167,7 +166,10 @@ export function ProfileClient({ dictionary }: ProfileClientProps) {
               closeOnScroll
               disabled
               icon={
-                <ChevronDown className={cx("profile-page__dropdown-icon")} />
+                <ChevronDown
+                  color="rgba(241, 228, 228, 0.4)"
+                  className={cx("profile-page__dropdown-icon")}
+                />
               }
             />
           </UpdateProfileForm>

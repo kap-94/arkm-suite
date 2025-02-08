@@ -88,6 +88,7 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
               <div className={cx("profile-image__initials")}>
                 <ThemedTypography
                   variant="h3"
+                  color="secondary"
                   className={cx("profile-image__initials-text")}
                 >
                   {initials}
@@ -113,13 +114,18 @@ export const ProfileImage: React.FC<ProfileImageProps> = ({
       </div>
 
       <div className={cx("profile-image__info")}>
-        <ThemedTypography variant="h3" className={cx("profile-image__name")}>
+        <ThemedTypography
+          variant="h3"
+          fontWeight={400}
+          color="secondary"
+          className={cx("profile-image__name")}
+        >
           {user.fullName}
         </ThemedTypography>
 
         <ThemedTypography
           variant="p2"
-          color="secondary"
+          color="tertiary"
           className={cx("profile-image__role")}
         >
           {user.role}

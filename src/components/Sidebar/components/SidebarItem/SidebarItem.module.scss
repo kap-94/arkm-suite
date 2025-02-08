@@ -99,11 +99,11 @@
       padding: $sidebar-spacing-md;
 
       &::before {
-        top: 0;
+        top: 90%;
         left: 50%;
         transform: translateX(-50%);
         width: 24px;
-        height: 3px;
+        height: 2.4px;
         border-radius: 0 0 4px 4px;
       }
     }
@@ -219,6 +219,7 @@
     &__text {
       opacity: 0.8;
       flex: 1;
+      max-width: 216px;
 
       &.theme-dark {
         color: map-get($sidebar-dark, "icon");
@@ -253,39 +254,24 @@
       opacity: 0.8;
     }
 
-    &.theme-dark {
-      &:hover:not(&--disabled) {
+    // Movemos las clases active y disabled fuera de los temas
+    &--active {
+      &.theme-dark {
+        // background: rgba(map-get($sidebar-dark, "active"), 0.15);
         background: linear-gradient(
           90deg,
-          rgba(map-get($sidebar-dark, "hover"), 0.1) 0%,
+          rgba(map-get($sidebar-dark, "active"), 0.125) 0%,
           transparent 100%
         );
       }
 
-      &--active {
-        background: rgba(map-get($sidebar-dark, "active"), 0.1);
-      }
-
-      .subitem__lock {
-        color: map-get($sidebar-dark, "icon");
-      }
-    }
-
-    &.theme-light {
-      &:hover:not(&--disabled) {
+      &.theme-light {
+        // background: rgba(map-get($sidebar-light, "active"), 0.1);
         background: linear-gradient(
           90deg,
-          rgba(map-get($sidebar-light, "hover"), 0.1) 0%,
+          rgba(map-get($sidebar-light, "active"), 0.125) 0%,
           transparent 100%
         );
-      }
-
-      &--active {
-        background: rgba(map-get($sidebar-light, "active"), 0.1);
-      }
-
-      .subitem__lock {
-        color: map-get($sidebar-light, "icon");
       }
     }
 
@@ -295,6 +281,35 @@
 
       &:hover {
         background-color: transparent;
+      }
+    }
+
+    // Movemos los hover a los temas
+    &.theme-dark {
+      &:hover:not(.subitem--disabled) {
+        background: linear-gradient(
+          90deg,
+          rgba(map-get($sidebar-dark, "hover"), 0.1) 0%,
+          transparent 100%
+        );
+      }
+
+      .subitem__lock {
+        color: map-get($sidebar-dark, "icon");
+      }
+    }
+
+    &.theme-light {
+      &:hover:not(.subitem--disabled) {
+        background: linear-gradient(
+          90deg,
+          rgba(map-get($sidebar-light, "hover"), 0.1) 0%,
+          transparent 100%
+        );
+      }
+
+      .subitem__lock {
+        color: map-get($sidebar-light, "icon");
       }
     }
 

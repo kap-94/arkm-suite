@@ -54,9 +54,12 @@ $page-theme-map: (
       }
 
       .profile-page__dropdown {
-        &-icon {
-          color: map-get($values, text-primary);
-        }
+        // &-icon {
+        //   svg {
+        //     color: rgba($black-base, 0.4) !important;
+        //   }
+        // color: map-get($values, text-primary);
+        // }
       }
     }
   }
@@ -73,11 +76,13 @@ $page-theme-map: (
 
     @include mobile {
       grid-template-columns: 1fr;
-      padding: $spacing-lg;
+      padding: $spacing-xl;
+      max-width: 600px;
+      margin-inline: auto;
     }
 
     @include mobile-medium {
-      padding: $spacing-sm;
+      padding: $spacing-md;
     }
   }
 
@@ -97,7 +102,7 @@ $page-theme-map: (
     overflow: hidden;
     padding: $spacing-xl;
     margin-left: $spacing-xl;
-    margin-top: $spacing-md;
+    margin-top: $spacing-xl;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition: all 0.3s ease;
@@ -108,6 +113,9 @@ $page-theme-map: (
       max-width: 100%;
       min-width: 100%;
       padding: $spacing-lg;
+    }
+
+    @include mobile-small {
     }
   }
 

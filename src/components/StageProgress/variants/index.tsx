@@ -1,16 +1,14 @@
 // variants/index.ts
 import { ProgressVariant, VariantProps } from "../types";
+import { TimelineVariant } from "./TimelineVariant/TimelineVariant";
 // import { DiagonalVariant } from "./DiagonalVariant";
-// import { DefaultVariant } from "./DefaultVariant";
 // import { LadderVariant } from "./LadderVariant";
 // import { StackedVariant } from "./StackedVariant";
 // import { StepsVariant } from "./StepsVariant";
-import { TimelineVariant } from "./TimelineVariant";
 
 const VARIANTS: Record<ProgressVariant, React.FC<VariantProps>> = {
-  // default: DefaultVariant,
-  // steps: StepsVariant,
   timeline: TimelineVariant,
+  // steps: StepsVariant,
   // ladder: LadderVariant,
   // diagonal: DiagonalVariant,
   // stacked: StackedVariant,
@@ -18,10 +16,9 @@ const VARIANTS: Record<ProgressVariant, React.FC<VariantProps>> = {
 
 export {
   VARIANTS,
+  TimelineVariant,
   // DiagonalVariant,
-  // DefaultVariant,
   // LadderVariant,
   // StackedVariant,
   // StepsVariant,
-  TimelineVariant,
 };

@@ -2,7 +2,7 @@
 
 import classNames from "classnames/bind";
 import { Sun, Moon } from "lucide-react";
-import type { Language } from "@/config/i18n";
+import type { Language } from "@/lib/config/i18n";
 import { useSettings } from "@/context/SettingsContext";
 import type { SettingsDictionary } from "@/types/dictionary/settings.types";
 import { ToggleGroup, ToggleOption } from "@/components/ToggleGroup";

@@ -48,7 +48,7 @@ $info-dark: #2563eb;
 
 // Text Colors System
 // Base
-$text-base: rgb(241, 228, 228);
+$text-base: rgba(241, 228, 228, 0.96);
 
 // Primary Text
 $text-primary: $text-base;
@@ -56,14 +56,14 @@ $text-primary-90: rgba($text-primary, 0.9);
 $text-primary-80: rgba($text-primary, 0.8);
 
 // Secondary Text
-$text-secondary: rgba($text-primary, 0.8);
-$text-secondary-60: rgba($text-primary, 0.6);
-$text-secondary-50: rgba($text-primary, 0.5);
+$text-secondary: rgba($text-base, 0.9);
+$text-secondary-90: rgba($text-secondary, 0.9);
+$text-secondary-80: rgba($text-secondary, 0.8);
 
 // Tertiary Text
-$text-tertiary: rgba($text-primary, 0.7);
-$text-tertiary-30: rgba($text-primary, 0.3);
-$text-tertiary-20: rgba($text-primary, 0);
+$text-tertiary: rgba($text-base, 0.7);
+$text-tertiary-90: rgba($text-tertiary, 0.9);
+$text-tertiary-80: rgba($text-tertiary, 0.8);
 
 // Interactive Text
 $text-link: $primary-color;

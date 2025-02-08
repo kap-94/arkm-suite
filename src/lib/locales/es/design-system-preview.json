@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "colors": {
+      "title": "Sistema de Colores",
+      "copiedText": "¡Copiado!"
+    },
+    "typography": {
+      "title": "Tipografía",
+      "sampleText": "El rápido zorro marrón salta sobre el perro perezoso"
+    },
+    "spacing": {
+      "title": "Valores de Espaciado",
+      "unitsLabel": "px"
+    },
+    "components": {
+      "title": "Componentes",
+      "buttons": {
+        "title": "Botones",
+        "variants": {
+          "primary": "Variante Primaria",
+          "secondary": "Variante Secundaria"
+        },
+        "sizes": {
+          "large": "Grande",
+          "default": "Por defecto",
+          "small": "Pequeño"
+        },
+        "states": {
+          "withIcon": "Con Icono",
+          "loading": "Cargando",
+          "disabled": "Deshabilitado"
+        }
+      },
+      "formControls": {
+        "title": "Controles de Formulario",
+        "labels": {
+          "default": "Campo por defecto",
+          "withIcon": "Con Icono",
+          "floating": "Etiqueta Flotante",
+          "error": "Estado de Error",
+          "disabled": "Estado Deshabilitado"
+        },
+        "placeholders": {
+          "default": "Escribe algo..."
+        },
+        "errorMessage": "Este campo tiene un error"
+      }
+    }
+  },
+  "themeLabels": {
+    "custom": "Tema: Personalizado"
+  }
+}

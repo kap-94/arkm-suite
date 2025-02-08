@@ -2,8 +2,15 @@ import React from "react";
 import classNames from "classnames/bind";
 import { FileText } from "lucide-react";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
-import { Area, AreaChart, ResponsiveContainer } from "recharts";
-import type { StatsCardProps, StatsCardTheme, GraphConfig } from "./types";
+import { Area, Line, Bar, ComposedChart, ResponsiveContainer } from "recharts";
+import type {
+  StatsCardProps,
+  StatsCardTheme,
+  GraphConfig,
+  AreaGraphConfig,
+  LineGraphConfig,
+  BarGraphConfig,
+} from "./types";
 import styles from "./StatsCard.module.scss";
 
 const cx = classNames.bind(styles);
@@ -29,14 +36,17 @@ const defaultGraphConfig: GraphConfig = {
   type: "area",
   height: 120,
   dataKey: "value",
-  showDots: false,
-  curveType: "monotone",
   color: null,
+  curveType: "monotone",
+  isAnimationActive: true,
+  animationDuration: 1000,
   gradientOpacity: {
     start: 0.2,
     end: 0,
   },
-  areaProps: {},
+  areaProps: {
+    strokeWidth: 2,
+  },
 };
 
 export const StatsCard: React.FC<StatsCardProps> = ({
@@ -47,42 +57,47 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   theme = defaultTheme,
   graphData,
   graphConfig: userGraphConfig,
+  illustration,
 }) => {
-  const graphConfig = React.useMemo(() => {
-    return {
+  const graphConfig = React.useMemo(
+    () => ({
       ...defaultGraphConfig,
       ...(userGraphConfig || {}),
-    } as GraphConfig;
-  }, [userGraphConfig]);
+    }),
+    [userGraphConfig]
+  );
 
-  const getThemeColor = () => {
+  const getThemeColor = (): string => {
     if (theme.type === "custom" && theme.colors?.text) {
       return theme.colors.text;
     }
     return graphConfig.color ?? (theme.type === "dark" ? "#27AE60" : "#4F46E5");
   };
 
-  const renderGraph = () => {
+  const renderChart = (): JSX.Element | null => {
     if (!graphData) return null;
 
     const color = getThemeColor();
-    const { height, dataKey, showDots, gradientOpacity, areaProps, curveType } =
-      graphConfig;
+    const {
+      height,
+      dataKey,
+      type,
+      curveType,
+      isAnimationActive,
+      animationDuration,
+    } = graphConfig;
 
-    const areaDefaultProps = {
-      type: curveType || "monotone",
+    const commonProps = {
       dataKey,
       stroke: color,
-      strokeWidth: 2,
-      fill: `url(#graphGradient-${label})`,
-      isAnimationActive: true,
-      animationDuration: 1000,
-      dot: showDots,
+      isAnimationActive,
+      animationDuration,
+      type: curveType,
     };
 
     return (
       <ResponsiveContainer width="100%" height={height ?? 120}>
-        <AreaChart
+        <ComposedChart
           data={graphData}
           margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
         >
@@ -97,18 +112,63 @@ export const StatsCard: React.FC<StatsCardProps> = ({
               <stop
                 offset="0%"
                 stopColor={color}
-                stopOpacity={gradientOpacity?.start ?? 0.2}
+                stopOpacity={
+                  (graphConfig as AreaGraphConfig).gradientOpacity?.start ?? 0.2
+                }
               />
               <stop
                 offset="95%"
                 stopColor={color}
-                stopOpacity={gradientOpacity?.end ?? 0}
+                stopOpacity={
+                  (graphConfig as AreaGraphConfig).gradientOpacity?.end ?? 0
+                }
               />
             </linearGradient>
           </defs>
-          <Area {...areaDefaultProps} {...(areaProps as any)} />
-        </AreaChart>
+
+          {type === "area" && (
+            <Area
+              {...commonProps}
+              {...(graphConfig as AreaGraphConfig).areaProps}
+              fill={`url(#graphGradient-${label})`}
+            />
+          )}
+          {type === "line" && (
+            <Line
+              {...commonProps}
+              {...(graphConfig as LineGraphConfig).lineProps}
+              dot={
+                (graphConfig as LineGraphConfig).showDots
+                  ? { fill: color, strokeWidth: 2 }
+                  : false
+              }
+            />
+          )}
+          {type === "bar" && (
+            <Bar
+              {...commonProps}
+              {...(graphConfig as BarGraphConfig).barProps}
+              fill={color}
+            />
+          )}
+        </ComposedChart>
       </ResponsiveContainer>
+    );
+  };
+
+  const renderIllustration = () => {
+    if (!illustration?.node) return null;
+
+    return (
+      <div
+        className={cx(
+          "stats-card__illustration",
+          `stats-card__illustration--${illustration.position || "bottom"}`,
+          illustration.className
+        )}
+      >
+        {illustration.node}
+      </div>
     );
   };
 
@@ -132,26 +192,46 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           : undefined
       }
     >
+      {illustration?.position === "background" && renderIllustration()}
+      {illustration?.position === "top" && renderIllustration()}
       <div className={cx("stats-card__content")}>
-        <div className={cx("stats-card__icon-wrapper")}>
-          <Icon className={cx("stats-card__icon")} aria-hidden="true" />
-        </div>
         <div className={cx("stats-card__text")}>
           <ThemedTypography
             variant="label"
+            color="primary"
             className={cx("stats-card__label")}
             fontWeight={600}
           >
             {label}
           </ThemedTypography>
-          <ThemedTypography variant="h3" className={cx("stats-card__value")}>
-            {value}
-          </ThemedTypography>
+          <div className={cx("stats-card__footer")}>
+            {/* <div className={cx("stats-card__icon-wrapper")}>
+              <Icon
+                className={cx("stats-card__icon")}
+                size={22}
+                aria-hidden="true"
+              />
+            </div> */}
+            <ThemedTypography
+              variant="h3"
+              fontWeight={600}
+              // color="secondary"
+              className={cx("stats-card__value")}
+            >
+              {value}
+            </ThemedTypography>
+          </div>
         </div>
       </div>
       {graphData && (
-        <div className={cx("stats-card__graph")}>{renderGraph()}</div>
+        <div className={cx("stats-card__graph")}>{renderChart()}</div>
       )}
+      {illustration?.position !== "top" &&
+        illustration?.position !== "background" && (
+          <div className={cx("stats-card__illustration-wrapper")}>
+            {renderIllustration()}
+          </div>
+        )}
     </div>
   );
 };

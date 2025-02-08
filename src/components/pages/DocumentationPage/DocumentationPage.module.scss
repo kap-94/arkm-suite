@@ -1,0 +1,245 @@
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$documentation-theme-map: (
+  dark: (
+    background: transparent,
+    text: $text-primary,
+    secondary-text: $text-secondary,
+    border: rgba($white-base, 0.15),
+    nav-background: rgba($black-base, 0.05),
+    card-background: rgba($white-base, 0.02),
+    sidebar-background: rgba($black-base, 0.1),
+    nav-item-hover: rgba($white-base, 0.05),
+    nav-item-active: rgba($primary-color, 0.15),
+  ),
+  light: (
+    background: $white-color,
+    text: $black-base,
+    secondary-text: $text-secondary,
+    border: rgba($primary-light, 0.1),
+    nav-background: rgba($black-base, 0.02),
+    card-background: $white-color,
+    sidebar-background: rgba($black-base, 0.02),
+    nav-item-hover: rgba($black-base, 0.03),
+    nav-item-active: rgba($primary-color, 0.08),
+  ),
+  custom: (
+    background: var(--documentation-background),
+    text: var(--documentation-text),
+    secondary-text: var(--documentation-secondary-text),
+    border: var(--documentation-border),
+    nav-background: var(--documentation-nav-background),
+    card-background: var(--documentation-card-background),
+    sidebar-background: var(--documentation-sidebar-background),
+    nav-item-hover: var(--documentation-nav-item-hover),
+    nav-item-active: var(--documentation-nav-item-active),
+  ),
+);
+
+.documentation {
+  $self: &;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+
+  &__sidebar-wrapper {
+    width: 280px;
+    min-height: 100vh;
+    border-right: 1px solid;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &__sidebar {
+    width: 280px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    padding: $spacing-xl 0;
+    overflow-y: auto;
+
+    @include tablet {
+      position: fixed;
+      left: 0;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+      border-right: 1px solid;
+
+      &--open {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &__sidebar-header {
+    padding: 0 $spacing-xl $spacing-lg;
+    margin-bottom: $spacing-lg;
+    border-bottom: 1px solid;
+  }
+
+  &__nav-links {
+    @include flex(column, flex-start, stretch);
+  }
+
+  &__nav-link {
+    @include flex(column, flex-start, stretch);
+    padding: 14px $spacing-xl;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    gap: $spacing-xs;
+    position: relative;
+
+    &:hover {
+      background: rgba($primary-color, 0.05);
+    }
+
+    // &--active {
+    //   p {
+    //     font-weight: 400 !important;
+    //   }
+    // }
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: $primary-color;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    &--active {
+      // p {
+      //   font-weight: 500 !important;
+      // }
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &:hover:not(&--active) {
+      &::before {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &__nav-link-content {
+    @include flex(row, flex-start, center);
+    gap: $spacing-md;
+    width: 100%;
+  }
+
+  &__main {
+    flex: 1;
+    padding: $spacing-xl $spacing-lg;
+    overflow: hidden;
+
+    @include tablet {
+      padding: $spacing-lg;
+    }
+
+    @include mobile {
+      padding: $spacing-md;
+    }
+  }
+
+  &__mobile-header {
+    display: none;
+    margin-bottom: $spacing-xl;
+
+    @include tablet {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__menu-button {
+    @include flex-center;
+    width: 40px;
+    height: 40px;
+    border-radius: $border-radius-md;
+    background: transparent;
+    cursor: pointer;
+    border: 1px solid;
+
+    &:hover {
+      background: rgba($primary-color, 0.05);
+    }
+  }
+
+  &__content {
+    max-width: 1024px;
+    // margin: 0 auto;
+  }
+
+  &__section {
+    display: none;
+    width: 100%;
+
+    &--active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  }
+
+  @each $theme, $values in $documentation-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+      color: map-get($values, text);
+
+      #{$self}__sidebar-wrapper,
+      #{$self}__sidebar {
+        background: map-get($values, sidebar-background);
+        border-color: map-get($values, border);
+      }
+
+      #{$self}__sidebar-header {
+        border-color: map-get($values, border);
+      }
+
+      #{$self}__nav-link {
+        &--active {
+          background: map-get($values, nav-item-active);
+        }
+
+        &:hover:not(&--active) {
+          background: map-get($values, nav-item-hover);
+        }
+      }
+
+      #{$self}__nav-link-icon {
+        background: rgba($primary-color, 0.1);
+        color: $primary-color;
+      }
+
+      #{$self}__menu-button {
+        border-color: map-get($values, border);
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

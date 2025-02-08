@@ -1,0 +1,179 @@
+// components/DocumentationSection/DocumentationSection.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$section-theme-map: (
+  dark: (
+    card-background: rgba($white-base, 0.02),
+    border: rgba($white-base, 0.15),
+    text: $text-primary,
+    secondary-text: $text-secondary,
+    number-background: rgba($primary-color, 0.1),
+  ),
+  light: (
+    card-background: $white-color,
+    border: rgba($primary-light, 0.1),
+    text: $black-base,
+    secondary-text: $text-secondary,
+    number-background: rgba($primary-color, 0.08),
+  ),
+  custom: (
+    card-background: var(--section-card-background),
+    border: var(--section-border),
+    text: var(--section-text),
+    secondary-text: var(--section-secondary-text),
+    number-background: var(--section-number-background),
+  ),
+);
+
+.section {
+  $self: &;
+  max-width: 1024px;
+  margin: 0 auto;
+  width: 100%;
+
+  &__header {
+    @include flex(column, flex-start, stretch);
+    margin-bottom: $spacing-xl;
+
+    @include tablet {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  &__title {
+    margin-bottom: $spacing-md;
+  }
+
+  &__description {
+    max-width: 720px;
+  }
+
+  &__features {
+    @include flex(column, flex-start, stretch);
+    margin-bottom: $spacing-xl;
+
+    @include tablet {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  &__features-title {
+    margin-bottom: $spacing-lg;
+  }
+
+  &__features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $spacing-md;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: $spacing-md;
+    }
+  }
+
+  &__feature-card {
+    @include flex(column, flex-start, stretch);
+    padding: $spacing-lg;
+    border-radius: $border-radius-lg;
+    border: 1px solid;
+    transition: all 0.2s ease;
+  }
+
+  &__feature-title {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__feature-description {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__feature-image {
+    width: 100%;
+    height: auto;
+    border-radius: $border-radius-md;
+    margin-top: $spacing-md;
+  }
+
+  &__usage {
+    @include flex(column, flex-start, stretch);
+    margin-bottom: $spacing-xxl;
+
+    @include tablet {
+      margin-bottom: $spacing-xl;
+    }
+  }
+
+  &__usage-title {
+    margin-bottom: $spacing-lg;
+  }
+
+  &__steps {
+    @include flex(column, flex-start, stretch);
+    gap: $spacing-lg;
+
+    @include mobile {
+      gap: $spacing-md;
+    }
+  }
+
+  &__step {
+    @include flex(row, flex-start, flex-start);
+    gap: $spacing-md;
+  }
+
+  &__step-number {
+    @include flex-center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-top: $spacing-xs;
+
+    @include mobile {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &__step-content {
+    @include flex(column, flex-start, stretch);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__step-title {
+    margin-bottom: $spacing-xs;
+  }
+
+  @each $theme, $values in $section-theme-map {
+    &--theme-#{$theme} {
+      color: map-get($values, text);
+
+      #{$self}__feature-card {
+        background: map-get($values, card-background);
+        border-color: map-get($values, border);
+      }
+
+      #{$self}__step-number {
+        background: map-get($values, number-background);
+      }
+
+      #{$self}__step-content {
+        color: map-get($values, secondary-text);
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -37,10 +37,10 @@ function SettingsSection({
   return (
     <div className={cx("settings__section")}>
       <div className={cx("settings__section-header")}>
-        <ThemedTypography variant="h4" gutterBottom>
+        <ThemedTypography variant="h4" color="primary" fontWeight={400}>
           {title}
         </ThemedTypography>
-        <ThemedTypography variant="p2" color="secondary" gutterBottom>
+        <ThemedTypography variant="p1" fontWeight={400} color="secondary">
           {description}
         </ThemedTypography>
       </div>
@@ -96,7 +96,7 @@ export function SettingsClient({ dictionary }: SettingsClientProps) {
     <div className={cx("settings")}>
       {/* Patrón de fondo */}
       <div className={cx("settings__pattern-background")}>
-        <ModernPattern theme={patternTheme} />
+        {/* <ModernPattern theme={patternTheme} /> */}
       </div>
 
       <PageHeader

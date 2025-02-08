@@ -1,13 +1,16 @@
-// src/components/NotificationItem/NotificationItem.tsx
 import React from "react";
 import classNames from "classnames/bind";
 import Link from "next/link";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { formatDistanceToNow } from "date-fns";
-import { NotificationIcon, variantLabels } from "./constants";
+import { es } from "date-fns/locale";
+import { NotificationIcon, getVariantLabel, variantColors } from "./constants";
 import { getNotificationContent } from "./utils";
 import { NotificationItemProps, NotificationTheme } from "./types";
 import styles from "./NotificationItem.module.scss";
+import { useDashboard } from "@/context/DashboardContext";
+
+const cx = classNames.bind(styles);
 
 export const defaultTheme: NotificationTheme = {
   type: "dark",
@@ -22,38 +25,18 @@ export const defaultTheme: NotificationTheme = {
   },
 };
 
-const variantColors = {
-  status: {
-    background: "#f3f4f6",
-    text: "#374151",
+const priorityTranslations = {
+  en: {
+    high: "high priority",
+    medium: "medium priority",
+    low: "low priority",
   },
-  progress: {
-    background: "#d1fae5",
-    text: "#064e3b",
-  },
-  team: {
-    background: "#fef3c7",
-    text: "#854d0e",
-  },
-  milestone: {
-    background: "#ddd6fe",
-    text: "#5b21b6",
-  },
-  comment: {
-    background: "#e0f2fe",
-    text: "#075985",
-  },
-  file: {
-    background: "#f1f5f9",
-    text: "#334155",
-  },
-  mention: {
-    background: "#fae8ff",
-    text: "#86198f",
+  es: {
+    high: "prioridad alta",
+    medium: "prioridad media",
+    low: "prioridad baja",
   },
 };
-
-const cx = classNames.bind(styles);
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({
   notification,
@@ -61,21 +44,32 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   theme = defaultTheme,
   className,
 }) => {
+  const { language } = useDashboard();
+
   const IconComponent = NotificationIcon[notification.variant];
-  const content = getNotificationContent(notification);
+  const content = getNotificationContent(notification, language);
+  const variantLabel = getVariantLabel(notification.variant, language);
+  const priorityLabel = priorityTranslations[language][notification.priority];
+
   const [timestamp, setTimestamp] = React.useState(() =>
-    formatDistanceToNow(notification.timestamp, { addSuffix: true })
+    formatDistanceToNow(notification.timestamp, {
+      addSuffix: true,
+      locale: language === "es" ? es : undefined,
+    })
   );
 
   React.useEffect(() => {
     const updateTimestamp = () => {
       setTimestamp(
-        formatDistanceToNow(notification.timestamp, { addSuffix: true })
+        formatDistanceToNow(notification.timestamp, {
+          addSuffix: true,
+          locale: language === "es" ? es : undefined,
+        })
       );
     };
     const timer = setInterval(updateTimestamp, 60000);
     return () => clearInterval(timer);
-  }, [notification.timestamp]);
+  }, [notification.timestamp, language]);
 
   const variantStyle = variantColors[notification.variant];
 
@@ -84,11 +78,12 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
       <div className={cx("notification__header")}>
         <ThemedTypography
           variant="p2"
-          fontWeight={600}
+          fontWeight={500}
+          color="secondary"
           className={cx("notification__title")}
           noWrap
         >
-          {notification.projectName}
+          {notification.project.name}
         </ThemedTypography>
         <div className={cx("notification__badge-wrapper")}>
           <span
@@ -109,15 +104,17 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
               variant="p3"
               className={cx("notification__badge-text")}
               textTransform="uppercase"
+              fontWeight={500}
               style={{ color: variantStyle.text }}
             >
-              {variantLabels[notification.variant]}
+              {variantLabel}
             </ThemedTypography>
           </span>
         </div>
       </div>
       <ThemedTypography
         variant="p3"
+        fontWeight={400}
         color="secondary"
         className={cx("notification__description")}
       >
@@ -130,7 +127,12 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         >
           {timestamp}
         </ThemedTypography>
-        <span className={cx("notification__separator")}>•</span>
+        <ThemedTypography
+          variant="p3"
+          className={cx("notification__separator")}
+        >
+          •
+        </ThemedTypography>
         <ThemedTypography
           variant="p3"
           className={cx(
@@ -138,7 +140,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
             `notification__priority--${notification.priority}`
           )}
         >
-          {notification.priority}
+          {priorityLabel}
         </ThemedTypography>
       </div>
     </div>

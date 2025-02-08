@@ -10,6 +10,8 @@ import Spinner from "@/components/Spinner";
 import { useProjectFilters } from "./hooks/useProjectFilters";
 import { DashboardProjectsProps, ViewMode } from "./types";
 import styles from "./DashboardProjects.module.scss";
+import { useDashboard } from "@/context/DashboardContext";
+import { VIEW_PREFERENCES } from "@/lib/constants/viewPreferences";
 
 const cx = classNames.bind(styles);
 
@@ -17,11 +19,12 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
   projects,
   title,
   theme = { type: "light" },
-  initialViewMode = "list",
+  initialViewMode = VIEW_PREFERENCES.DEFAULT_VIEW,
   viewOptions,
   dictionary,
   className,
 }) => {
+  const { language } = useDashboard();
   const [isMobile, setIsMobile] = useState(false);
 
   const filterConfig = {
@@ -44,11 +47,8 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
     viewMode,
     setViewMode,
     statusOptions,
-    priorityOptions,
     selectedStatus,
     setSelectedStatus,
-    selectedPriority,
-    setSelectedPriority,
     filteredProjects,
     isLoading,
   } = useProjectFilters({
@@ -58,6 +58,10 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
   });
 
   const handleViewChange = (mode: ViewMode) => setViewMode(mode);
+
+  const getOppositeView = () => {
+    return viewMode === "list" ? "grid" : "list";
+  };
 
   return (
     <div
@@ -71,6 +75,7 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
         <div className={cx("dashboard-projects__title-wrapper")}>
           <ThemedTypography
             variant="h4"
+            fontWeight={400}
             className={cx("dashboard-projects__title")}
             noWrap
           >
@@ -91,46 +96,22 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
               className={cx("dashboard-projects__dropdown")}
               closeOnScroll
             />
-            <Dropdown
-              options={priorityOptions}
-              selected={selectedPriority}
-              onSelectedChange={setSelectedPriority}
-              theme={theme}
-              icon={<ChevronDown size={18} />}
-              id="priority-filter"
-              variant="filter"
-              className={cx("dashboard-projects__dropdown")}
-              closeOnScroll
-            />
           </div>
 
           <div className={cx("dashboard-projects__view-toggles")}>
             <button
-              className={cx("dashboard-projects__view-button", {
-                "dashboard-projects__view-button--active": viewMode === "grid",
-              })}
-              onClick={() => handleViewChange("grid")}
-              aria-label={viewOptions.grid}
+              className={cx("dashboard-projects__view-button")}
+              onClick={() => handleViewChange(getOppositeView())}
+              aria-label={viewOptions[getOppositeView()]}
             >
-              <Grid size={18} strokeWidth={1.55} />
+              {getOppositeView() === "grid" ? (
+                <Grid size={18} strokeWidth={1.55} />
+              ) : (
+                <List size={18} strokeWidth={1.55} />
+              )}
               <span className={cx("dashboard-projects__view-button-tooltip")}>
                 <ThemedTypography color="secondary" variant="p3">
-                  {viewOptions.grid}
-                </ThemedTypography>
-              </span>
-            </button>
-
-            <button
-              className={cx("dashboard-projects__view-button", {
-                "dashboard-projects__view-button--active": viewMode === "list",
-              })}
-              onClick={() => handleViewChange("list")}
-              aria-label={viewOptions.list}
-            >
-              <List size={18} strokeWidth={1.55} />
-              <span className={cx("dashboard-projects__view-button-tooltip")}>
-                <ThemedTypography color="secondary" variant="p3">
-                  {viewOptions.list}
+                  {viewOptions[getOppositeView()]}
                 </ThemedTypography>
               </span>
             </button>
@@ -151,9 +132,12 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
           <div
             className={cx("dashboard-projects__list", {
               "dashboard-projects__list--grid":
-                viewMode === "grid" && filteredProjects.length > 0,
+                !isLoading &&
+                viewMode === "grid" &&
+                filteredProjects.length > 0,
               "dashboard-projects__list--list":
-                viewMode === "list" || filteredProjects.length === 0,
+                !isLoading &&
+                (viewMode === "list" || filteredProjects.length === 0),
             })}
           >
             {filteredProjects.length > 0 ? (
@@ -169,6 +153,7 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
                       : "default"
                   }
                   theme={theme}
+                  language={language}
                   dictionary={dictionary}
                 />
               ))

@@ -72,22 +72,14 @@ $dashboard-theme-map: (
   }
 
   &__container {
-    margin-bottom: $spacing-xl;
-
-    & > *:not(:last-child) {
-      margin-bottom: $spacing-xl;
-
-      @include tablet {
-        margin-bottom: $spacing-lg;
-      }
-    }
   }
 
   &__stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: $spacing-lg;
+    gap: $spacing-md;
     position: relative;
+    padding: $spacing-lg;
 
     &::before {
       content: "";
@@ -104,15 +96,11 @@ $dashboard-theme-map: (
 
     @include desktop-medium {
       grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    @include tablet {
-      gap: 16px;
+      gap: $spacing-md;
     }
 
     @include mobile {
-      gap: 14px;
+      gap: 12px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -122,6 +110,7 @@ $dashboard-theme-map: (
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $spacing-lg;
+    margin-inline: $spacing-lg;
 
     @include tablet {
       grid-template-columns: 1fr;
@@ -168,18 +157,23 @@ $dashboard-theme-map: (
       @include tablet {
         max-height: 360px;
         overflow-y: auto;
-        @include custom-scrollbar(6px, transparent, rgba($primary-light, 0.3));
+        @include custom-scrollbar(
+          6px,
+          6px,
+          transparent,
+          rgba($black-light, 0.3)
+        );
       }
     }
 
     .dashboard__main-sidebar-section-title {
       @include flex(row, flex-start, center);
-      min-height: 75px;
-      padding: $spacing-lg;
+      min-height: 67px;
+      padding: $spacing-md;
 
       @include tablet {
         min-height: unset;
-        padding: $spacing-lg $spacing-md;
+        padding: $spacing-md;
       }
     }
   }

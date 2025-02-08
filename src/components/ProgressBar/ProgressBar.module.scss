@@ -3,7 +3,7 @@
 
 $progress-bar-theme-map: (
   dark: (
-    background: rgba($primary-color, 0.08),
+    background: rgba($primary-light, 0.1),
     text: $text-primary,
     secondary-text: $text-secondary,
     border: rgba($primary-color, 0.3),
@@ -32,12 +32,6 @@ $progress-bar-theme-map: (
     position: relative;
     height: 6px;
     border-radius: $border-radius-sm;
-
-    @each $theme, $values in $progress-bar-theme-map {
-      &--theme-#{$theme} {
-        background: map-get($values, background);
-      }
-    }
   }
 
   &__fill {
@@ -46,5 +40,11 @@ $progress-bar-theme-map: (
     transition: width 0.5s ease-out, background 0.3s ease;
     border-radius: $border-radius-sm;
     overflow: hidden;
+  }
+
+  @each $theme, $values in $progress-bar-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+    }
   }
 }

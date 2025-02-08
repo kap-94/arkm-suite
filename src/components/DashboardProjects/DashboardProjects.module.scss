@@ -8,11 +8,11 @@ $dashboard-projects-theme-map: (
     text-secondary: $text-secondary,
     card-bg: rgba(15, 15, 15, 0.6),
     card-border: rgba(255, 255, 255, 0.15),
-    button-border-color: rgba($primary-light, 0.85),
-    button-color: $primary-light,
-    button-active-bg: rgba($primary-light, 0.65),
+    button-border-color: rgba($white-base, 0),
+    button-color: rgba($primary-light, 0.8),
+    button-active-bg: rgba($primary-light, 0),
     button-active-border: rgba($primary-light, 0.5),
-    button-active-color: rgba($white-base, 0.825),
+    button-active-color: rgba($primary-light, 1),
     tooltip-bg: rgba($black-base, 0.6),
   ),
   light: (
@@ -48,114 +48,10 @@ $dashboard-projects-theme-map: (
   position: relative;
   border-radius: $border-radius-sm;
 
-  // Theme variations
-  @each $theme, $values in $dashboard-projects-theme-map {
-    &--theme-#{$theme} {
-      background: map-get($values, background);
-      color: map-get($values, text-primary);
-
-      @if $theme == "dark" {
-        border-top: 0;
-        border-right: 0;
-
-        @include mobile {
-          border-bottom: 0;
-        }
-
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 1px;
-          background: linear-gradient(
-            to left,
-            map-get($values, card-border) 70%,
-            transparent
-          );
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 1px;
-          height: 60%;
-          background: linear-gradient(
-            to bottom,
-            map-get($values, card-border),
-            transparent
-          );
-        }
-      }
-
-      .dashboard-projects__header {
-        @if $theme == "light" {
-          border-bottom: 1px solid rgba($black-base, 0.065);
-        }
-
-        @if $theme == "dark" {
-          padding: $spacing-md $spacing-md $spacing-lg 0;
-
-          @include mobile {
-            padding: $spacing-md;
-            padding-left: 0;
-          }
-        }
-      }
-
-      .dashboard-projects__list--grid {
-        @if $theme == "light" {
-          padding: $spacing-md;
-
-          @include mobile {
-            padding: 0;
-          }
-        }
-      }
-
-      .dashboard-projects__title {
-        color: map-get($values, text-primary);
-      }
-
-      .dashboard-projects__view-button {
-        background-color: map-get($values, card-bg);
-        border-color: map-get($values, button-border-color);
-
-        svg {
-          color: map-get($values, button-color);
-        }
-
-        &--active {
-          background-color: map-get($values, button-active-bg);
-          border-color: map-get($values, button-active-border);
-
-          svg {
-            color: map-get($values, button-active-color);
-          }
-        }
-      }
-
-      .dashboard-projects__view-button-tooltip {
-        background-color: map-get($values, tooltip-bg);
-        border-color: map-get($values, button-border-color);
-
-        &::after {
-          border-color: convert-to-rgba(map-get($values, button-color), 0.625)
-            transparent
-            transparent
-            transparent;
-        }
-      }
-    }
-  }
-
   &__header {
     display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
+    flex-direction: row;
+    gap: $spacing-lg;
     position: relative;
     padding: $spacing-md;
     width: 100%;
@@ -201,7 +97,8 @@ $dashboard-projects-theme-map: (
 
   &__filters {
     display: flex;
-    gap: $spacing-sm;
+    gap: $spacing-md;
+    align-items: center;
     flex-wrap: wrap;
     flex: 1;
     max-width: 300px;
@@ -218,14 +115,14 @@ $dashboard-projects-theme-map: (
   }
 
   &__dropdown {
-    width: 136px;
-    min-width: 100px;
-    max-width: 136px;
+    width: 148px;
+    min-width: 116px;
+    max-width: 148px;
     flex-shrink: 1;
 
     @include mobile {
       width: 100%;
-      min-width: 108px;
+      min-width: 116px;
     }
   }
 
@@ -242,17 +139,17 @@ $dashboard-projects-theme-map: (
   &__view-button {
     @include flex(row, center, center);
     background-color: transparent;
-    border: 1.25px solid;
+    // border-bottom: 1.25px solid;
     border-radius: 6px;
-    padding: $spacing-xs;
+    border: 0;
+    padding: 0;
     cursor: pointer;
-    height: 34px;
-    width: 34px;
+
     position: relative;
     @include transition(all);
 
     &:hover {
-      filter: brightness(1.1);
+      filter: brightness(1.2);
 
       .dashboard-projects__view-button-tooltip {
         opacity: 1;
@@ -260,18 +157,13 @@ $dashboard-projects-theme-map: (
       }
     }
 
-    @include mobile {
-      height: 32px;
-      width: 32px;
-    }
-
     svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
 
       @include mobile {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
       }
     }
   }
@@ -360,6 +252,111 @@ $dashboard-projects-theme-map: (
     }
 
     @include custom-scrollbar(6px, transparent, rgba($primary-light, 0.3));
+  }
+
+  // Theme variations
+  @each $theme, $values in $dashboard-projects-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+      // color: map-get($values, text-primary);
+
+      @if $theme == "dark" {
+        border-top: 0;
+        border-right: 0;
+
+        @include mobile {
+          border-bottom: 0;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(
+            to left,
+            map-get($values, card-border) 70%,
+            transparent
+          );
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 1px;
+          height: 60%;
+          background: linear-gradient(
+            to bottom,
+            map-get($values, card-border),
+            transparent
+          );
+        }
+      }
+
+      .dashboard-projects__header {
+        @if $theme == "light" {
+          border-bottom: 1px solid rgba($black-base, 0.065);
+        }
+
+        @if $theme == "dark" {
+          padding-block: $spacing-lg;
+          padding-inline: 0 $spacing-lg;
+
+          @include mobile {
+            padding: $spacing-md;
+            padding-left: 0;
+          }
+        }
+      }
+
+      .dashboard-projects__list--grid {
+        @if $theme == "light" {
+          padding: $spacing-md;
+
+          @include mobile {
+            padding: 0;
+          }
+        }
+      }
+
+      .dashboard-projects__title {
+        // color: map-get($values, text-primary);
+      }
+
+      .dashboard-projects__view-button {
+        background-color: map-get($values, card-bg);
+        border-color: map-get($values, button-border-color);
+
+        svg {
+          color: map-get($values, button-color);
+        }
+
+        &--active {
+          background-color: map-get($values, button-active-bg);
+          border-color: map-get($values, button-active-border);
+
+          svg {
+            color: map-get($values, button-active-color);
+          }
+        }
+      }
+
+      .dashboard-projects__view-button-tooltip {
+        background-color: map-get($values, tooltip-bg);
+        border-color: map-get($values, button-border-color);
+
+        &::after {
+          border-color: convert-to-rgba(map-get($values, button-color), 0.625)
+            transparent
+            transparent
+            transparent;
+        }
+      }
+    }
   }
 }
 

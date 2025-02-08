@@ -9,7 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import { ThemeType } from "@/components/Sidebar/types/sidebar.types";
-import type { Language } from "@/config/i18n";
+import type { Language } from "@/lib/config/i18n";
 import { useLanguage } from "./LanguageContext";
 
 interface SettingsContextType {
