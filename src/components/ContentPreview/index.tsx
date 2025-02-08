@@ -16,12 +16,18 @@ import { PDFService } from "@/services/pdfService";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { DesignSystemPreview } from "@/components/DesignSystemPreview";
 import { FilePreviewFactory } from "./PreviewComponents";
-import DesignSystemPDF from "../pdfTemplates/DesignSystemPDF/DesignSystemPDF";
 
 import { formatCustomDate } from "@/utils/date-utils";
 import { downloadFile } from "./utils";
 
 import styles from "./ContentPreview.module.scss";
+import { PDFSection } from "@/services/pdfService.types";
+import {
+  ColorPalette,
+  TypographySection,
+  SpacingSection,
+} from "../pdfTemplates/DesignSystemPDF/DesignSystemPDF";
+import { DOMWrapper } from "../pdfTemplates/DOMWrapper";
 
 const cx = classNames.bind(styles);
 
@@ -37,19 +43,44 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
   const { theme } = useSettings();
   const componentRef = useRef<HTMLDivElement>(null);
 
-  // Mover el registro del template a un useEffect
-  useEffect(() => {
-    PDFService.registerTemplate("design-system", DesignSystemPDF, undefined, {
-      waitForFonts: true,
-      waitForImages: true,
-      scale: 2,
-      background: "#ffffff",
-    });
-  }, []);
-
   const handleError = (errorMessage: string) => {
     setError(errorMessage);
     onError?.(errorMessage);
+  };
+
+  const generatePDFSections = (data: DesignSystemContent): PDFSection[] => {
+    return [
+      {
+        id: "colors",
+        Component: ColorPalette,
+        data: {
+          title: data.labels.colors.title,
+          colorPalette: data.colorPalette,
+        },
+        startNewPage: true,
+        minHeight: 100,
+      },
+      {
+        id: "typography",
+        Component: TypographySection,
+        data: {
+          title: data.labels.typography.title,
+          typographyStyles: data.typographyStyles,
+          sampleText: data.labels.typography.sampleText,
+        },
+        startNewPage: true,
+      },
+      {
+        id: "spacing",
+        Component: SpacingSection,
+        data: {
+          title: data.labels.spacing.title,
+          spacingScale: data.spacingScale,
+          unitsLabel: data.labels.spacing.unitsLabel,
+        },
+        startNewPage: true,
+      },
+    ];
   };
 
   const handleDownload = async () => {
@@ -61,24 +92,59 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
       if (content.type === "file") {
         await downloadFile(content.url, content.title);
       } else {
-        const element =
-          content.componentType === "design-system"
-            ? null
-            : componentRef.current;
-
-        await PDFService.generatePDF(element, {
+        const pdfOptions = {
           title: content.title,
-          type: content.componentType,
-          data: content.data,
-          theme,
+          project: content.project.name,
+          metadata: {
+            author: content.createdBy?.name,
+            creator: "Design System Generator",
+            creationDate: content.createdAt,
+            modificationDate: content.updatedAt,
+          },
           styling: {
             colors: {
               header: "#212121",
               text: "#646464",
               accent: "#c8c8c8",
+              background: "#ffffff",
+            },
+            fonts: {
+              header: "Helvetica",
+              body: "Arial",
             },
           },
-        });
+          dictionary,
+          theme,
+        };
+
+        if (content.componentType === "design-system") {
+          await PDFService.generatePDF({
+            ...pdfOptions,
+            sections: generatePDFSections(content.data as DesignSystemContent),
+          });
+        } else {
+          // Para otros tipos de componentes
+          const element = componentRef.current;
+          if (!element) {
+            throw new Error("Component reference not found");
+          }
+
+          const ComponentToPDF: React.FC = () => (
+            <DOMWrapper content={element} />
+          );
+
+          await PDFService.generatePDF({
+            ...pdfOptions,
+            sections: [
+              {
+                id: "main",
+                Component: ComponentToPDF,
+                data: {},
+                startNewPage: false,
+              },
+            ],
+          });
+        }
       }
 
       onDownloadComplete?.();
@@ -195,18 +261,6 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
             {content.project.name}
           </ThemedTypography>
         </div>
-        {/* <div className={cx("preview__metadata-item")}>
-          <ThemedTypography variant="p2" color="secondary">
-            {dictionary.header.metadata.createdBy}
-          </ThemedTypography>
-          <ThemedTypography variant="p2" color="secondary">
-            {content.createdBy.name}
-          </ThemedTypography>
-        </div> */}
-
-        {/* <ThemedTypography variant="p2" color="secondary">
-          -
-        </ThemedTypography> */}
 
         <div className={cx("preview__metadata-item")}>
           <ThemedTypography variant="p3" fontWeight={400} color="tertiary">

@@ -1,356 +1,389 @@
-"use client";
+// services/PDFService.ts
 
 import jsPDF from "jspdf";
 import html2canvas, { Options as Html2CanvasOptions } from "html2canvas";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import {
-  BaseData,
-  CustomTemplateData,
-  DefaultTemplateData,
   PDFGenerationOptions,
-  PDFTemplateData,
+  PDFMetadata,
+  PDFSection,
 } from "./pdfService.types";
 
-interface PDFTemplate {
-  Component: React.ComponentType<{
-    data: PDFTemplateData;
-    dictionary?: any;
-    theme?: string;
-  }>;
-  styles?: string;
-  options?: {
-    scale?: number;
-    quality?: number;
-    background?: string;
-    waitForFonts?: boolean;
-    waitForImages?: boolean;
-  };
+interface FontConfig {
+  size: number;
+  weight: number;
+  lineHeight: number;
+  letterSpacing: number;
 }
 
-// Constants
-const DEFAULT_PDF_SCALE = 2;
-
-// Template Registry
-class PDFTemplateRegistry {
-  private static templates: Record<string, PDFTemplate> = {};
-  private static initialized = false;
-
-  static register(type: string, template: PDFTemplate): void {
-    this.templates[type] = template;
-    this.initialized = true;
-  }
-
-  static get(type: string): PDFTemplate | undefined {
-    if (!this.initialized) {
-      throw new Error(
-        "PDFTemplateRegistry is not initialized. Please register templates before use."
-      );
-    }
-    return this.templates[type];
-  }
-
-  static has(type: string): boolean {
-    return type in this.templates;
-  }
-
-  static remove(type: string): void {
-    delete this.templates[type];
-  }
-
-  static getTypes(): string[] {
-    return Object.keys(this.templates);
-  }
-
-  static clear(): void {
-    this.templates = {};
-    this.initialized = false;
-  }
-}
-
-// Template Generator
-class TemplatePDFGenerator {
-  async generateContent(
-    pdf: jsPDF,
-    options: PDFGenerationOptions,
-    element?: HTMLElement
-  ): Promise<void> {
-    try {
-      const template = PDFTemplateRegistry.get(options.type);
-      if (!template) {
-        throw new Error(`No template registered for type: ${options.type}`);
-      }
-
-      const containerDiv = element || document.createElement("div");
-
-      if (!element) {
-        containerDiv.style.width = `${PDFService.CONTENT_WIDTH}mm`;
-        containerDiv.style.margin = "0";
-        containerDiv.style.padding = "0";
-        containerDiv.style.position = "absolute";
-        containerDiv.style.left = "-9999px";
-        containerDiv.style.top = "0";
-        containerDiv.style.backgroundColor =
-          template.options?.background || "#ffffff";
-
-        const componentContainer = document.createElement("div");
-        containerDiv.appendChild(componentContainer);
-
-        const root = createRoot(componentContainer);
-        root.render(
-          React.createElement(template.Component, {
-            data: options.data,
-            dictionary: options.dictionary,
-            theme: options.theme,
-          })
-        );
-
-        document.body.appendChild(containerDiv);
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      }
-
-      try {
-        if (template.options?.waitForFonts) {
-          await document.fonts.ready;
-        }
-
-        if (template.options?.waitForImages) {
-          const images = Array.from(containerDiv.getElementsByTagName("img"));
-          await Promise.all(
-            images.map((img) =>
-              img.complete
-                ? Promise.resolve()
-                : new Promise((resolve) => {
-                    img.onload = resolve;
-                    img.onerror = resolve;
-                  })
-            )
-          );
-        }
-
-        const html2CanvasOptions: Html2CanvasOptions = {
-          backgroundColor: template.options?.background || "#ffffff",
-          foreignObjectRendering: false,
-          scale: template.options?.scale || PDFService.DEFAULT_SCALE,
-          useCORS: true,
-          logging: false,
-          windowWidth: containerDiv.scrollWidth,
-          windowHeight: containerDiv.scrollHeight,
-          scrollX: 0,
-          scrollY: 0,
-          x: 0,
-          y: 0,
-          width: containerDiv.offsetWidth,
-          height: containerDiv.offsetHeight,
-          removeContainer: false,
-          allowTaint: true,
-          imageTimeout: 15000,
-          onclone: (clonedDoc: Document, element: HTMLElement) => {
-            const navElements =
-              element.getElementsByClassName("navigation-section");
-            Array.from(navElements).forEach((nav) => nav.remove());
-          },
-        };
-
-        const canvas = await html2canvas(containerDiv, html2CanvasOptions);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        await PDFService.addPagesStatic(pdf, canvas);
-      } finally {
-        if (!element && document.body.contains(containerDiv)) {
-          const componentContainer = containerDiv.firstElementChild;
-          if (componentContainer) {
-            const root = (componentContainer as any)._reactRootContainer;
-            if (root) {
-              root.unmount();
-            }
-          }
-          document.body.removeChild(containerDiv);
-        }
-      }
-    } catch (error) {
-      console.error("Error generating PDF content:", error);
-      throw error;
-    }
-  }
-}
-
-// Main PDF Service
 export class PDFService {
   // Constants
   static readonly PAGE_MARGIN = 20;
-  static readonly PAGE_MARGIN_TOP = 24;
+  static readonly PAGE_MARGIN_TOP = 22;
   static readonly PAGE_MARGIN_BOTTOM = 64;
   static readonly PAGE_WIDTH = 210;
   static readonly CONTENT_WIDTH = 170;
-  static readonly DEFAULT_SCALE = DEFAULT_PDF_SCALE;
+  static readonly DEFAULT_SCALE = 2;
   private static readonly MAX_HEIGHT = 260;
-  private static readonly MAX_HEIGHT_SUBSEQUENT = 275;
+  private static readonly HEADER_HEIGHT = 24;
 
-  private static readonly generator = new TemplatePDFGenerator();
+  private static readonly TYPOGRAPHY_CONFIG: Record<string, FontConfig> = {
+    h1: { size: 64, weight: 700, lineHeight: 1, letterSpacing: 0.01 },
+    h2: { size: 32, weight: 600, lineHeight: 1, letterSpacing: 0.01 },
+    h3: { size: 24, weight: 600, lineHeight: 1.4, letterSpacing: 0.01 },
+    h4: { size: 20, weight: 500, lineHeight: 1.5, letterSpacing: 0.01 },
+    h5: { size: 16, weight: 600, lineHeight: 1.4, letterSpacing: 0.01 },
+    p1: { size: 16, weight: 400, lineHeight: 1.6, letterSpacing: 0.01 },
+    p2: { size: 14, weight: 400, lineHeight: 1.5, letterSpacing: 0.01 },
+    p3: { size: 12, weight: 400, lineHeight: 1.4, letterSpacing: 0.01 },
+    label: { size: 14, weight: 400, lineHeight: 1.4, letterSpacing: 0.01 },
+  };
 
-  static registerTemplate(
-    type: string,
-    Component: React.ComponentType<any>,
-    styles?: string,
-    options?: PDFTemplate["options"]
-  ): void {
-    PDFTemplateRegistry.register(type, { Component, styles, options });
+  private static normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .replace(/[ñ]/g, "n")
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-+|-+$/g, ""); // Remove hyphens from start and end
   }
 
-  static removeTemplate(type: string): void {
-    PDFTemplateRegistry.remove(type);
+  private static getColorFromTheme(
+    color: string | undefined,
+    theme: string
+  ): string {
+    const colorMap = {
+      light: {
+        text: "#000000",
+        secondary: "rgba(0, 0, 0, 0.7)",
+        tertiary: "rgba(0, 0, 0, 0.6)",
+        disabled: "rgba(0, 0, 0, 0.4)",
+        success: "#16a34a",
+        error: "#dc2626",
+        warning: "#d97706",
+        info: "#2563eb",
+      },
+      dark: {
+        text: "rgba(241, 228, 228, 0.96)",
+        secondary: "rgba(241, 228, 228, 0.9)",
+        tertiary: "rgba(241, 228, 228, 0.7)",
+        disabled: "rgba(241, 228, 228, 0.4)",
+        success: "#22c55e",
+        error: "#ef4444",
+        warning: "#fbbf24",
+        info: "#60a5fa",
+      },
+    };
+
+    return color
+      ? colorMap[theme as keyof typeof colorMap][
+          color as keyof (typeof colorMap)["light"]
+        ] || colorMap[theme as keyof typeof colorMap].text
+      : colorMap[theme as keyof typeof colorMap].text;
   }
 
-  static hasTemplate(type: string): boolean {
-    return PDFTemplateRegistry.has(type);
+  private static getTypographyStyles(element: HTMLElement): {
+    variant: string;
+    color?: string;
+    fontWeight?: number;
+    customStyles: CSSStyleDeclaration;
+  } {
+    const classList = Array.from(element.classList);
+    const customStyles = window.getComputedStyle(element);
+
+    const variantClass = classList.find(
+      (className) =>
+        className.startsWith("typography--") &&
+        !className.startsWith("typography--theme-") &&
+        !className.startsWith("typography--truncate") &&
+        !className.startsWith("typography--gutterBottom") &&
+        !className.startsWith("typography--paragraph")
+    );
+    const variant = variantClass
+      ? variantClass.replace("typography--", "")
+      : "p1";
+
+    const colorClass = classList.find((className) =>
+      [
+        "secondary",
+        "tertiary",
+        "disabled",
+        "success",
+        "error",
+        "warning",
+        "info",
+      ].some((color) => className === `typography--${color}`)
+    );
+    const color = colorClass
+      ? colorClass.replace("typography--", "")
+      : undefined;
+
+    return {
+      variant,
+      color,
+      fontWeight: customStyles.fontWeight
+        ? parseInt(customStyles.fontWeight)
+        : undefined,
+      customStyles,
+    };
   }
 
-  static getRegisteredTemplates(): string[] {
-    return PDFTemplateRegistry.getTypes();
-  }
-
-  static async generatePDF(
-    element: HTMLElement | null,
+  private static async renderSection(
+    section: PDFSection,
     options: PDFGenerationOptions
-  ): Promise<void> {
+  ): Promise<{ element: HTMLElement; textElements: HTMLElement[] }> {
+    const containerDiv = document.createElement("div");
+    containerDiv.id = `pdf-section-${section.id}`;
+    containerDiv.style.width = `${this.CONTENT_WIDTH}mm`;
+    containerDiv.style.margin = "0";
+    containerDiv.style.padding = "0";
+    containerDiv.style.position = "absolute";
+    containerDiv.style.left = "-9999px";
+    containerDiv.style.top = "0";
+    containerDiv.style.backgroundColor =
+      options.styling?.colors?.background || "#ffffff";
+
+    if (section.minHeight) {
+      containerDiv.style.minHeight = `${section.minHeight}mm`;
+    }
+    if (section.maxHeight) {
+      containerDiv.style.maxHeight = `${section.maxHeight}mm`;
+    }
+
+    const componentContainer = document.createElement("div");
+    containerDiv.appendChild(componentContainer);
+
+    const root = createRoot(componentContainer);
+    root.render(
+      React.createElement(section.Component, {
+        data: section.data,
+        dictionary: options.dictionary,
+        theme: options.theme,
+      })
+    );
+
+    document.body.appendChild(containerDiv);
+
+    await Promise.all([
+      new Promise((resolve) => setTimeout(resolve, 500)),
+      document.fonts.ready,
+      ...Array.from(containerDiv.getElementsByTagName("img")).map((img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+            })
+      ),
+    ]);
+
+    const textElements = Array.from(
+      containerDiv.getElementsByClassName("typography")
+    ).filter(
+      (element): element is HTMLElement => element instanceof HTMLElement
+    );
+
+    return { element: containerDiv, textElements };
+  }
+
+  private static async generateSectionCanvas(
+    element: HTMLElement,
+    scale: number = this.DEFAULT_SCALE
+  ): Promise<HTMLCanvasElement> {
+    const options: Html2CanvasOptions = {
+      backgroundColor: "#ffffff",
+      foreignObjectRendering: false,
+      scale: scale,
+      useCORS: true,
+      logging: false,
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
+      x: 0,
+      y: 0,
+      width: element.offsetWidth,
+      height: element.offsetHeight,
+      removeContainer: false,
+      allowTaint: true,
+      imageTimeout: 15000,
+      onclone: (clonedDoc: Document, element: HTMLElement) => {
+        const navElements =
+          element.getElementsByClassName("navigation-section");
+        Array.from(navElements).forEach((nav) => nav.remove());
+      },
+    };
+
+    const canvas = await html2canvas(element, options);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return canvas;
+  }
+
+  private static async addSectionToPDF(
+    pdf: jsPDF,
+    sectionData: { element: HTMLElement; textElements: HTMLElement[] },
+    canvas: HTMLCanvasElement,
+    startNewPage: boolean,
+    currentY: number,
+    isFirstSection: boolean,
+    options: PDFGenerationOptions
+  ): Promise<number> {
+    const scale = canvas.width / this.CONTENT_WIDTH;
+    const contentHeight = canvas.height / scale;
+
+    if (startNewPage && !isFirstSection) {
+      pdf.addPage();
+      currentY = this.PAGE_MARGIN_TOP;
+    }
+
+    const maxPageHeight = isFirstSection
+      ? this.MAX_HEIGHT - this.HEADER_HEIGHT
+      : this.MAX_HEIGHT;
+    const availableSpace = maxPageHeight - (currentY - this.PAGE_MARGIN_TOP);
+
+    if (contentHeight > availableSpace) {
+      if (!isFirstSection) {
+        pdf.addPage();
+        currentY = this.PAGE_MARGIN_TOP;
+      }
+    }
+
+    pdf.addImage(
+      canvas.toDataURL("image/png", 1.0),
+      "PNG",
+      this.PAGE_MARGIN,
+      currentY,
+      this.CONTENT_WIDTH,
+      contentHeight,
+      undefined,
+      "FAST"
+    );
+
+    sectionData.textElements.forEach((el) => {
+      const { variant, color, fontWeight, customStyles } =
+        this.getTypographyStyles(el);
+
+      const config = this.TYPOGRAPHY_CONFIG[variant];
+      if (!config) return;
+
+      const rect = el.getBoundingClientRect();
+      const x = rect.left / scale + this.PAGE_MARGIN;
+      let y = rect.top / scale + currentY;
+
+      y += (config.size * config.lineHeight * (72 / 96)) / 2;
+
+      pdf.setFontSize(config.size * (72 / 96));
+      const effectiveWeight = fontWeight || config.weight;
+      pdf.setFont("helvetica", effectiveWeight >= 600 ? "bold" : "normal");
+
+      const effectiveColor = this.getColorFromTheme(
+        color,
+        options.theme || "light"
+      );
+      const tempDiv = document.createElement("div");
+      tempDiv.style.color = effectiveColor;
+      document.body.appendChild(tempDiv);
+      const computedColor = window.getComputedStyle(tempDiv).color;
+      document.body.removeChild(tempDiv);
+      const [r, g, b] = computedColor.match(/\d+/g)!.map(Number);
+      pdf.setTextColor(r, g, b);
+
+      const text = el.textContent?.trim() || "";
+      const textWidth = pdf.getTextWidth(text);
+      let xPos = x;
+
+      switch (customStyles.textAlign) {
+        case "center":
+          xPos = x + (rect.width / scale - textWidth) / 2;
+          break;
+        case "right":
+          xPos = x + (rect.width / scale - textWidth);
+          break;
+      }
+
+      pdf.text(text, xPos, y);
+    });
+
+    return currentY + contentHeight + this.PAGE_MARGIN_BOTTOM;
+  }
+
+  static async generatePDF(options: PDFGenerationOptions): Promise<void> {
     try {
-      const pdf = this.initializePDF();
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
 
       if (options.metadata) {
         this.setMetadata(pdf, options.metadata);
       }
 
       this.addHeader(pdf, options);
+      let currentY = this.PAGE_MARGIN_TOP + 24;
 
-      if (element) {
-        await this.generator.generateContent(pdf, options, element);
-      } else {
-        await this.generator.generateContent(pdf, options);
+      for (let i = 0; i < options.sections.length; i++) {
+        const section = options.sections[i];
+        const sectionData = await this.renderSection(section, options);
+        const canvas = await this.generateSectionCanvas(
+          sectionData.element,
+          section.scale || this.DEFAULT_SCALE
+        );
+
+        currentY = await this.addSectionToPDF(
+          pdf,
+          sectionData,
+          canvas,
+          section.startNewPage ?? true,
+          currentY,
+          i === 0,
+          options
+        );
+
+        if (document.body.contains(sectionData.element)) {
+          const root = (sectionData.element.firstElementChild as any)
+            ?._reactRootContainer;
+          if (root) {
+            root.unmount();
+          }
+          document.body.removeChild(sectionData.element);
+        }
       }
 
-      this.savePDF(pdf, options.title, options.type);
+      for (let i = 1; i <= pdf.getNumberOfPages(); i++) {
+        pdf.setPage(i);
+        this.addPageNumber(pdf, i);
+      }
+
+      this.savePDF(pdf, options.title, options.project);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
       console.error("Error generating PDF:", error);
-      throw new Error(`Failed to generate PDF: ${errorMessage}`);
+      throw new Error(
+        `Failed to generate PDF: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
   }
 
-  static async addPagesStatic(
-    pdf: jsPDF,
-    canvas: HTMLCanvasElement,
-    totalPadding: number = 0
-  ): Promise<void> {
-    const scale = canvas.width / this.CONTENT_WIDTH;
-    const totalHeight = (canvas.height + totalPadding) / scale;
-    let remainingHeight = totalHeight;
-    let sourceY = 0;
-    let currentY = this.PAGE_MARGIN_TOP + 24;
-    let pageNumber = 1;
-
-    const getMaxHeight = (pageNum: number) => {
-      return (
-        this.MAX_HEIGHT -
-        (this.PAGE_MARGIN_TOP + this.PAGE_MARGIN_BOTTOM) / scale
-      );
-      // if (pageNum === 1) {
-      // } else {
-      //   const topMargin = 20;
-      //   const bottomMargin = 16;
-      //   return this.MAX_HEIGHT_SUBSEQUENT - (topMargin + bottomMargin) / scale;
-      // }
-    };
-
-    while (remainingHeight > 0) {
-      const currentPageHeight = Math.min(
-        remainingHeight,
-        getMaxHeight(pageNumber)
-      );
-      const tempCanvas = document.createElement("canvas");
-      const tempCtx = tempCanvas.getContext("2d");
-
-      if (!tempCtx) {
-        throw new Error("Could not get canvas context");
-      }
-
-      tempCanvas.width = canvas.width;
-      tempCanvas.height = currentPageHeight * scale;
-
-      tempCtx.drawImage(
-        canvas,
-        0,
-        sourceY * scale,
-        canvas.width,
-        currentPageHeight * scale,
-        0,
-        0,
-        canvas.width,
-        currentPageHeight * scale
-      );
-
-      const imageData = tempCanvas.toDataURL("image/png", 1.0);
-      const pageY = pageNumber === 1 ? currentY : this.PAGE_MARGIN_TOP - 4;
-
-      pdf.addImage(
-        imageData,
-        "PNG",
-        this.PAGE_MARGIN,
-        pageY,
-        this.CONTENT_WIDTH,
-        currentPageHeight,
-        `page-${pageNumber}`,
-        "FAST"
-      );
-
-      remainingHeight -= currentPageHeight;
-      this.addPageNumber(pdf, pageNumber);
-
-      if (remainingHeight > 0) {
-        pdf.addPage();
-        sourceY += currentPageHeight;
-        pageNumber++;
-      }
-
-      tempCanvas.remove();
-    }
-  }
-
-  private static initializePDF(): jsPDF {
-    return new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
-  }
-
-  private static setMetadata(
-    pdf: jsPDF,
-    metadata: NonNullable<PDFGenerationOptions["metadata"]>
-  ): void {
+  private static setMetadata(pdf: jsPDF, metadata: PDFMetadata): void {
     const properties: Record<string, any> = {};
 
-    if (metadata.author) properties.author = metadata.author;
-    if (metadata.subject) properties.subject = metadata.subject;
-    if (metadata.keywords) properties.keywords = metadata.keywords.join(", ");
-    if (metadata.creator) properties.creator = metadata.creator;
-    if (metadata.creationDate)
-      properties.creationDate = new Date(metadata.creationDate);
-    if (metadata.modificationDate)
-      properties.modDate = new Date(metadata.modificationDate);
-
     Object.entries(metadata).forEach(([key, value]) => {
-      if (
-        ![
-          "author",
-          "subject",
-          "keywords",
-          "creator",
-          "creationDate",
-          "modificationDate",
-        ].includes(key)
-      ) {
-        properties[key] = value;
+      if (value !== undefined) {
+        if (key === "creationDate" || key === "modificationDate") {
+          properties[key === "creationDate" ? "creationDate" : "modDate"] =
+            new Date(value);
+        } else if (key === "keywords" && Array.isArray(value)) {
+          properties.keywords = value.join(", ");
+        } else {
+          properties[key] = value;
+        }
       }
     });
 
@@ -368,11 +401,7 @@ export class PDFService {
 
     pdf.setFontSize(12);
     pdf.setTextColor(textColor);
-    pdf.text(
-      `Type: ${options.type}`,
-      this.PAGE_MARGIN,
-      this.PAGE_MARGIN_TOP + 10
-    );
+    pdf.text(`${options.project}`, this.PAGE_MARGIN, this.PAGE_MARGIN_TOP + 10);
 
     const dateText = new Date().toLocaleDateString();
     const textWidth = pdf.getTextWidth(dateText);
@@ -394,28 +423,19 @@ export class PDFService {
   private static addPageNumber(pdf: jsPDF, pageNumber: number): void {
     pdf.setFontSize(8);
     pdf.setTextColor(150, 150, 150);
-    // const bottomMargin = pageNumber === 1 ? this.PAGE_MARGIN_BOTTOM : 12;
-    const bottomMargin = 16;
+    const text = `Page ${pageNumber}`;
+    const textWidth = pdf.getTextWidth(text);
     pdf.text(
-      `Page ${pageNumber}`,
-      this.PAGE_WIDTH - 30,
-      pdf.internal.pageSize.getHeight() - bottomMargin
+      text,
+      this.PAGE_WIDTH - this.PAGE_MARGIN - textWidth,
+      pdf.internal.pageSize.getHeight() - 16
     );
   }
 
-  private static savePDF(pdf: jsPDF, title: string, type: string): void {
-    const formattedTitle = title
-      .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "");
-    pdf.save(`${formattedTitle}-${type}.pdf`);
+  private static savePDF(pdf: jsPDF, title: string, project: string): void {
+    const formattedTitle = this.normalizeText(title);
+    const formattedProject = this.normalizeText(project);
+
+    pdf.save(`${formattedTitle}-${formattedProject}.pdf`);
   }
 }
-
-export type {
-  BaseData,
-  DefaultTemplateData,
-  CustomTemplateData,
-  PDFTemplateData,
-  PDFGenerationOptions,
-};
