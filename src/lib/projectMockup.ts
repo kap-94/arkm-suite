@@ -375,7 +375,7 @@ export const projectDataEN: Project = {
           },
           typography: {
             title: "Typography",
-            sampleText: "The quick brown fox jumps over the lazy dog",
+            sampleText: "Sample Text",
           },
           colors: {
             title: "Color Palette",
@@ -2782,7 +2782,7 @@ export const projectDataES: Project = {
           },
           typography: {
             title: "Tipografía",
-            sampleText: "El veloz murciélago hindú comía feliz cardillo y kiwi",
+            sampleText: "Texto muestra",
           },
           colors: {
             title: "Paleta de Colores",
