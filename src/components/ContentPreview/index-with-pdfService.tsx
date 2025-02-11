@@ -1,22 +1,33 @@
-// components/ContentPreview.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Download, AlertCircle, Component } from "lucide-react";
 import classNames from "classnames/bind";
+
 import {
   ComponentContent,
   DesignSystemContent,
 } from "@/types/models/ComponentContent";
 import { ContentPreviewProps } from "./types";
+
 import { useSettings } from "@/context/SettingsContext";
+import { PDFService } from "@/services/pdfService";
+
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { DesignSystemPreview } from "@/components/DesignSystemPreview";
 import { FilePreviewFactory } from "./PreviewComponents";
-import { DownloadButton } from "@/components/DownloadButton";
-import { downloadFile } from "./utils";
+
 import { formatCustomDateUTC } from "@/utils/date-utils";
+import { downloadFile } from "./utils";
+
 import styles from "./ContentPreview.module.scss";
+import { PDFSection } from "@/services/pdfService.types";
+import {
+  ColorPalette,
+  TypographySection,
+  SpacingSection,
+} from "../pdfTemplates/DesignSystemPDF/DesignSystemPDF";
+import { DOMWrapper } from "../pdfTemplates/DOMWrapper";
 
 const cx = classNames.bind(styles);
 
@@ -29,25 +40,123 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { theme, language } = useSettings();
+  const { theme } = useSettings();
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const handleError = (errorMessage: string) => {
     setError(errorMessage);
     onError?.(errorMessage);
   };
 
+  const generatePDFSections = (data: DesignSystemContent): PDFSection[] => {
+    return [
+      {
+        id: "colors",
+        Component: ColorPalette,
+        data: {
+          title: data.labels.colors.title,
+          colorPalette: data.colorPalette,
+        },
+        startNewPage: true,
+        minHeight: 100,
+      },
+      {
+        id: "typography",
+        Component: TypographySection,
+        data: {
+          title: data.labels.typography.title,
+          typographyStyles: data.typographyStyles,
+          sampleText: data.labels.typography.sampleText,
+        },
+        startNewPage: true,
+      },
+      {
+        id: "spacing",
+        Component: SpacingSection,
+        data: {
+          title: data.labels.spacing.title,
+          spacingScale: data.spacingScale,
+          unitsLabel: data.labels.spacing.unitsLabel,
+        },
+        startNewPage: true,
+      },
+    ];
+  };
+
   const handleDownload = async () => {
-    if (content.type === "file") {
-      try {
-        setIsLoading(true);
-        onDownloadStart?.();
+    try {
+      setIsLoading(true);
+      setError(null);
+      onDownloadStart?.();
+
+      if (content.type === "file") {
         await downloadFile(content.url, content.title);
-        onDownloadComplete?.();
-      } catch (err) {
-        handleError(dictionary.preview.errors.downloadError);
-      } finally {
-        setIsLoading(false);
+      } else {
+        const pdfOptions = {
+          title: content.title,
+          project: content.project.name,
+          metadata: {
+            author: content.createdBy?.name,
+            creator: "Design System Generator",
+            creationDate: content.createdAt,
+            modificationDate: content.updatedAt,
+          },
+          styling: {
+            colors: {
+              header: "#212121",
+              text: "#646464",
+              accent: "#c8c8c8",
+              background: "#ffffff",
+            },
+            fonts: {
+              header: "Helvetica",
+              body: "Arial",
+            },
+          },
+          dictionary,
+          theme,
+        };
+
+        if (content.componentType === "design-system") {
+          await PDFService.generatePDF({
+            ...pdfOptions,
+            sections: generatePDFSections(content.data as DesignSystemContent),
+          });
+        } else {
+          // Para otros tipos de componentes
+          const element = componentRef.current;
+          if (!element) {
+            throw new Error("Component reference not found");
+          }
+
+          const ComponentToPDF: React.FC = () => (
+            <DOMWrapper content={element} />
+          );
+
+          await PDFService.generatePDF({
+            ...pdfOptions,
+            sections: [
+              {
+                id: "main",
+                Component: ComponentToPDF,
+                data: {},
+                startNewPage: false,
+              },
+            ],
+          });
+        }
       }
+
+      onDownloadComplete?.();
+    } catch (err) {
+      const errorMessage =
+        content.type === "file"
+          ? dictionary.preview.errors.downloadError
+          : dictionary.preview.errors.pdfGenerationError;
+      handleError(errorMessage);
+      console.error(errorMessage, err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -123,47 +232,19 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
             )}
           </div>
         </div>
-        {content.type === "file" ? (
-          <button
-            onClick={handleDownload}
-            disabled={isLoading}
-            className={cx("preview__download-button")}
-            aria-label={dictionary.header.download.ariaLabel}
-          >
-            <Download size={20} />
-            <ThemedTypography variant="p2">
-              {isLoading
-                ? dictionary.header.download.loading
-                : dictionary.header.download.label}
-            </ThemedTypography>
-          </button>
-        ) : (
-          <DownloadButton
-            data={content.data as DesignSystemContent}
-            title={content.title}
-            project={content.project.name}
-            className={cx("preview__download-button")}
-            onStart={() => {
-              setIsLoading(true);
-              onDownloadStart?.();
-            }}
-            onComplete={() => {
-              setIsLoading(false);
-              onDownloadComplete?.();
-            }}
-            onError={(error) => {
-              setIsLoading(false);
-              handleError(error);
-            }}
-          >
-            <Download size={20} />
-            <ThemedTypography variant="p2">
-              {isLoading
-                ? dictionary.header.download.loading
-                : dictionary.header.download.label}
-            </ThemedTypography>
-          </DownloadButton>
-        )}
+        <button
+          onClick={handleDownload}
+          disabled={isLoading}
+          className={cx("preview__download-button")}
+          aria-label={dictionary.header.download.ariaLabel}
+        >
+          <Download size={20} />
+          <ThemedTypography variant="p2">
+            {isLoading
+              ? dictionary.header.download.loading
+              : dictionary.header.download.label}
+          </ThemedTypography>
+        </button>
       </div>
 
       <div className={cx("preview__metadata")}>
@@ -204,7 +285,7 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
         )}
       </div>
 
-      <div className={cx("preview__viewer")}>
+      <div ref={componentRef} className={cx("preview__viewer")}>
         {error ? (
           <div className={cx("preview__error")}>
             <AlertCircle size={24} />

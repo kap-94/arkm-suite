@@ -13,7 +13,7 @@ $content-item-theme-map: (
   ),
   light: (
     background: $white-light,
-    background-hover: rgba($white-base, 0.4),
+    background-hover: rgba($primary-color, 0.06),
     border: rgba($black-base, 0.07),
     icon-color: rgba($black-base, 0.7),
     text: rgba($black-base, 0.7),

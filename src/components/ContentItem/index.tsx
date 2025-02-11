@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import type { ContentItemProps, ContentItemType } from "./types";
 import { defaultContentItemTheme } from "./types";
-import { formatCustomDate } from "@/utils/date-utils";
+import { formatCustomDateUTC } from "@/utils/date-utils";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import styles from "./ContentItem.module.scss";
 
@@ -159,7 +159,7 @@ export const ContentItem: React.FC<ContentItemProps> = ({
               noWrap
               align="right"
             >
-              {formatCustomDate(updatedAt)}
+              {formatCustomDateUTC(updatedAt)}
             </ThemedTypography>
           </div>
         </div>

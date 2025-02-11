@@ -1,5 +1,3 @@
-// components/DocumentationSection/DocumentationSection.tsx
-import React from "react";
 import classNames from "classnames/bind";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import styles from "./DocumentationSection.module.scss";
@@ -12,6 +10,20 @@ export function DocumentationSection({
   commonLabels,
   theme,
 }: DocumentationSectionProps) {
+  const handleFeatureClick = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 88;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className={cx("section", `section--theme-${theme.type}`)}>
       {/* Section Header */}
@@ -43,10 +55,20 @@ export function DocumentationSection({
         </ThemedTypography>
         <div className={cx("section__features-grid")}>
           {section.features.map((feature, index) => (
-            <div key={index} className={cx("section__feature-card")}>
+            <div
+              key={index}
+              className={cx("section__feature-card")}
+              onClick={() => handleFeatureClick(`feature-${index}`)} // Manejador de clic
+              role="button" // Para indicar que es clickeable
+              tabIndex={0} // Para hacerlo enfocable
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  handleFeatureClick(`feature-${index}`);
+                }
+              }}
+            >
               <ThemedTypography
-                variant="h5"
-                // color="secondary"
+                variant="p2"
                 fontWeight={500}
                 className={cx("section__feature-title")}
               >
@@ -54,21 +76,82 @@ export function DocumentationSection({
               </ThemedTypography>
               <ThemedTypography
                 variant="p2"
-                color="secondary"
+                color="tertiary"
                 className={cx("section__feature-description")}
               >
                 {feature.description}
               </ThemedTypography>
-              {/* {feature.image && (
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Extended Description and Images */}
+      <div className={cx("section__extended-content")}>
+        {section.features.map((feature, index) => (
+          <div
+            key={index}
+            id={`feature-${index}`} // ID único para cada bloque
+            className={cx("section__extended-item")}
+          >
+            {/* Extended Title */}
+            {feature.extendedTitle && (
+              <div className={cx("section__extended-title-wrapper")}>
+                <ThemedTypography
+                  variant="h4"
+                  fontWeight={500}
+                  className={cx("section__extended-title")}
+                >
+                  {feature.extendedTitle}
+                </ThemedTypography>
+              </div>
+            )}
+
+            {/* Extended Description */}
+            {feature.extendedDescription && (
+              <div className={cx("section__extended-description-wrapper")}>
+                <ThemedTypography
+                  variant="p1"
+                  color="secondary"
+                  className={cx("section__extended-description")}
+                >
+                  {feature.extendedDescription}
+                </ThemedTypography>
+              </div>
+            )}
+
+            {/* Images */}
+            {feature.image && (
+              <div className={cx("section__feature-image-wrapper")}>
                 <img
                   src={feature.image}
                   alt={feature.title}
                   className={cx("section__feature-image")}
                 />
-              )} */}
-            </div>
-          ))}
-        </div>
+              </div>
+            )}
+
+            {theme.type === "light" && feature.imageLight && (
+              <div className={cx("section__feature-image-wrapper")}>
+                <img
+                  src={feature.imageLight}
+                  alt={feature.title}
+                  className={cx("section__feature-image")}
+                />
+              </div>
+            )}
+
+            {theme.type === "dark" && feature.imageDark && (
+              <div className={cx("section__feature-image-wrapper")}>
+                <img
+                  src={feature.imageDark}
+                  alt={feature.title}
+                  className={cx("section__feature-image")}
+                />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Usage Guide */}
@@ -92,6 +175,7 @@ export function DocumentationSection({
                 <ThemedTypography
                   variant="h5"
                   fontWeight={500}
+                  color="secondary"
                   className={cx("section__step-title")}
                 >
                   {step.step}
@@ -111,5 +195,4 @@ export function DocumentationSection({
     </div>
   );
 }
-
 export default DocumentationSection;

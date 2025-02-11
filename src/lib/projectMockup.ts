@@ -375,7 +375,7 @@ export const projectDataEN: Project = {
           },
           typography: {
             title: "Typography",
-            sampleText: "Sample Text",
+            sampleText: "Lorem Ipsum",
           },
           colors: {
             title: "Color Palette",
@@ -2625,7 +2625,7 @@ export const projectDataES: Project = {
         },
         colorPalette: {
           primary: {
-            label: "Colores Primarios",
+            label: "Primarios",
             // colors: {
             //   base: "#6366F1",
             //   "90": "rgba(99, 102, 241, 0.9)",
@@ -2646,13 +2646,13 @@ export const projectDataES: Project = {
             },
           },
           indigo: {
-            label: "Colores Índigo",
+            label: "Índigo",
             colors: {
               light: "#9698FD",
             },
           },
           neutral: {
-            label: "Colores Neutrales",
+            label: "Neutrales",
             colors: {
               "100": "#FFFFFF",
               "200": "#FAFAFA",
@@ -2782,7 +2782,7 @@ export const projectDataES: Project = {
           },
           typography: {
             title: "Tipografía",
-            sampleText: "Texto muestra",
+            sampleText: "Lorem Ipsum",
           },
           colors: {
             title: "Paleta de Colores",

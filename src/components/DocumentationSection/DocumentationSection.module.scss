@@ -1,10 +1,10 @@
-// components/DocumentationSection/DocumentationSection.module.scss
 @import "@/styles/variables";
 @import "@/styles/mixins";
 
 $section-theme-map: (
   dark: (
-    card-background: rgba($white-base, 0.02),
+    // card-background: rgba($white-base, 0.02),
+    card-background: transparent,
     border: rgba($white-base, 0.15),
     text: $text-primary,
     secondary-text: $text-secondary,
@@ -12,7 +12,7 @@ $section-theme-map: (
   ),
   light: (
     card-background: $white-color,
-    border: rgba($primary-light, 0.1),
+    border: rgba($primary-light, 0.2),
     text: $black-base,
     secondary-text: $text-secondary,
     number-background: rgba($primary-color, 0.08),
@@ -34,84 +34,143 @@ $section-theme-map: (
 
   &__header {
     @include flex(column, flex-start, stretch);
-    margin-bottom: $spacing-xl;
+    border-bottom: 1px solid;
+    padding-bottom: $spacing-xl;
+    margin-block: 0 $spacing-lg;
+    max-width: 658px;
 
-    @include tablet {
-      margin-bottom: $spacing-xl;
+    @include mobile {
+      max-width: 600px;
+    }
+
+    @include mobile-medium {
+      padding-bottom: $spacing-lg;
+      margin-block: $spacing-lg;
+    }
+  }
+
+  &__title,
+  &__description {
+    max-width: 658px;
+
+    @include mobile {
+      max-width: 600px;
     }
   }
 
   &__title {
-    margin-bottom: $spacing-md;
-  }
+    margin-bottom: $spacing-lg;
 
-  &__description {
-    max-width: 720px;
-  }
-
-  &__features {
-    @include flex(column, flex-start, stretch);
-    margin-bottom: $spacing-xl;
-
-    @include tablet {
-      margin-bottom: $spacing-xl;
+    @include mobile {
+      margin-bottom: $spacing-md;
     }
   }
 
+  // &__features {
+  //   @include flex(column, flex-start, stretch);
+  //   margin-bottom: $spacing-xl;
+  // }
+
   &__features-title {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-md;
+
+    @include mobile {
+      margin-bottom: $spacing-sm;
+    }
   }
 
   &__features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: $spacing-md;
+    @include flex($direction: column, $align: flex-start, $gap: 0);
+  }
+
+  &__feature-card {
+    width: 85%;
+    @include flex(column, flex-start, stretch);
+    padding: 14px $spacing-sm;
+    border-bottom: 1px solid;
+    transition: all 0.2s ease;
+    cursor: pointer; // Cambia el cursor a pointer
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__feature-title {
+    margin-bottom: $spacing-xs;
+  }
+
+  &__extended-content {
+    margin-block: $spacing-xxxl $spacing-xxl;
+    @include flex(column, flex-start, stretch);
+    gap: $spacing-xxxl;
 
     @include mobile {
-      grid-template-columns: 1fr;
+      margin-block: $spacing-xl;
+      gap: $spacing-xxl;
+    }
+
+    @include mobile-medium {
+      margin-block: $spacing-lg;
+      gap: $spacing-xl;
+    }
+  }
+
+  &__extended-item {
+    @include flex(column, flex-start, stretch, $spacing-lg);
+
+    @include mobile {
       gap: $spacing-md;
     }
   }
 
-  &__feature-card {
-    @include flex(column, flex-start, stretch);
-    padding: $spacing-lg;
-    border-radius: $border-radius-lg;
-    border: 1px solid;
-    transition: all 0.2s ease;
+  &__extended-description-wrapper {
+    margin-bottom: $spacing-md;
+
+    @include mobile {
+      margin-bottom: $spacing-sm;
+    }
   }
 
-  &__feature-title {
-    margin-bottom: $spacing-sm;
-  }
-
-  &__feature-description {
-    margin-bottom: $spacing-sm;
+  &__extended-description {
+    max-width: 600px;
   }
 
   &__feature-image {
     width: 100%;
+    max-width: 600px;
     height: auto;
     border-radius: $border-radius-md;
-    margin-top: $spacing-md;
   }
 
   &__usage {
     @include flex(column, flex-start, stretch);
+    border-top: 1px solid;
+    padding-top: $spacing-xxl;
     margin-bottom: $spacing-xxl;
 
-    @include tablet {
+    @include mobile {
+      padding-top: $spacing-xl;
       margin-bottom: $spacing-xl;
+    }
+
+    @include mobile-medium {
+      padding-top: $spacing-lg;
+      // margin-bottom: $spacing-lg;
     }
   }
 
   &__usage-title {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacing-xl;
+
+    @include mobile {
+      margin-bottom: $spacing-lg;
+    }
   }
 
   &__steps {
     @include flex(column, flex-start, stretch);
-    gap: $spacing-lg;
+    gap: $spacing-xl;
 
     @include mobile {
       gap: $spacing-md;
@@ -141,6 +200,7 @@ $section-theme-map: (
     @include flex(column, flex-start, stretch);
     flex: 1;
     min-width: 0;
+    gap: 2px;
   }
 
   &__step-title {
@@ -151,17 +211,25 @@ $section-theme-map: (
     &--theme-#{$theme} {
       color: map-get($values, text);
 
+      #{$self}__header {
+        border-color: map-get($values, border);
+      }
+
       #{$self}__feature-card {
         background: map-get($values, card-background);
         border-color: map-get($values, border);
+
+        &:hover {
+          background: rgba($primary-color, 0.05); // Efecto hover
+        }
       }
 
       #{$self}__step-number {
         background: map-get($values, number-background);
       }
 
-      #{$self}__step-content {
-        color: map-get($values, secondary-text);
+      #{$self}__usage {
+        border-color: map-get($values, border);
       }
     }
   }

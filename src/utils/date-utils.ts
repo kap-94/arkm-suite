@@ -145,9 +145,9 @@ export const isDateValid = (
 };
 
 /**
- * Formatea una fecha con formato personalizado y manejo de errores
+ * Formatea una fecha con formato personalizado usando hora local
  */
-export const formatCustomDate = (
+export const formatCustomDateUTC = (
   date: string | Date | null | undefined,
   customFormat = "DD/M/YYYY",
   locale: string = "es"
@@ -162,6 +162,23 @@ export const formatCustomDate = (
   return cleanMonthAbbrev(formatted);
 };
 
+/**
+ * Formatea una fecha con formato personalizado usando UTC
+ */
+export const formatCustomDate = (
+  date: string | Date | null | undefined,
+  customFormat = "DD/M/YYYY",
+  locale: string = "es"
+): string => {
+  const lang = locale.startsWith("es") ? "es" : "en";
+  if (!date) return DATE_FORMATS.fallback[lang];
+
+  const momentDate = moment(date);
+  if (!momentDate.isValid()) return DATE_FORMATS.invalid[lang];
+
+  const formatted = momentDate.locale(lang).format(customFormat);
+  return cleanMonthAbbrev(formatted);
+};
 /**
  * Formatea una fecha para mostrar día y mes
  */

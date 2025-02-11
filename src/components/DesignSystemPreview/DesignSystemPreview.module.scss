@@ -107,6 +107,12 @@ $theme-map: (
       }
 
       #{$self}__nav-item {
+        // h5 {
+
+        //     color: map-get($values, text);
+
+        // }
+
         &:hover {
           h5 {
             color: map-get($values, text);
