@@ -17,7 +17,11 @@ export interface ThemeConfig {
 export interface DocumentationFeature {
   title: string;
   description: string;
+  extendedTitle?: string;
+  extendedDescription?: string;
   image?: string;
+  imageDark?: string;
+  imageLight?: string;
 }
 
 // Usage Step Types
@@ -45,12 +49,14 @@ export interface CommonLabels {
 
 // Main Data Structure
 export interface DocumentationData {
+  title: string;
   sections: {
     dashboard: DocumentationSection;
     projectDetails: DocumentationSection;
     deliverables: DocumentationSection;
     contentPreview: DocumentationSection;
     designSystem: DocumentationSection;
+    settings: DocumentationSection;
   };
   commonLabels: CommonLabels;
 }

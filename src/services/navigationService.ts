@@ -139,9 +139,9 @@ const translations: Record<Language, Translations> = {
   },
   es: {
     dashboard: {
-      title: "Panel Principal",
+      title: "Panel de Control",
       description: "Vista general de tu espacio de trabajo",
-      aria: "Panel principal",
+      aria: "Panel de Control",
     },
     projects: {
       title: "Proyectos",

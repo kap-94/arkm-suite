@@ -10,7 +10,7 @@ import { StageBar } from "./components/StageBar";
 import { useGantt } from "./hooks/useGantt";
 import { GanttProvider } from "./GanttContext";
 import { calculateCurrentDayPosition } from "./gantt-date-calculations";
-import { formatCustomDate } from "@/utils/date-utils";
+import { formatCustomDateUTC } from "@/utils/date-utils";
 import { useDashboard } from "@/context/DashboardContext";
 import styles from "./GanttView.module.scss";
 import {
@@ -87,7 +87,7 @@ const GanttContent = ({
         style={
           {
             "--total-days": timelineData.totalUnits,
-            "--start-date": formatCustomDate(
+            "--start-date": formatCustomDateUTC(
               timelineData.gridItems[0],
               "YYYY-MM-DD"
             ),

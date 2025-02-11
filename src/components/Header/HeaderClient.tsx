@@ -11,7 +11,6 @@ import {
 
 import { HeaderContext } from "./context";
 import { useLanguage } from "@/context/LanguageContext";
-import { useUIContext } from "@/context/UIContext";
 
 import { useHeaderScroll } from "./hooks";
 

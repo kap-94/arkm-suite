@@ -10,8 +10,7 @@ $documentation-theme-map: (
     nav-background: rgba($black-base, 0.05),
     card-background: rgba($white-base, 0.02),
     sidebar-background: rgba($black-base, 0.1),
-    nav-item-hover: rgba($white-base, 0.05),
-    nav-item-active: rgba($primary-color, 0.15),
+    overlay: rgba($black-base, 0.5),
   ),
   light: (
     background: $white-color,
@@ -20,9 +19,8 @@ $documentation-theme-map: (
     border: rgba($primary-light, 0.1),
     nav-background: rgba($black-base, 0.02),
     card-background: $white-color,
-    sidebar-background: rgba($black-base, 0.02),
-    nav-item-hover: rgba($black-base, 0.03),
-    nav-item-active: rgba($primary-color, 0.08),
+    sidebar-background: $white-color,
+    overlay: rgba($black-base, 0.2),
   ),
   custom: (
     background: var(--documentation-background),
@@ -32,8 +30,7 @@ $documentation-theme-map: (
     nav-background: var(--documentation-nav-background),
     card-background: var(--documentation-card-background),
     sidebar-background: var(--documentation-sidebar-background),
-    nav-item-hover: var(--documentation-nav-item-hover),
-    nav-item-active: var(--documentation-nav-item-active),
+    overlay: var(--documentation-overlay),
   ),
 );
 
@@ -44,31 +41,39 @@ $documentation-theme-map: (
   width: 100%;
   position: relative;
 
-  &__sidebar-wrapper {
-    width: 280px;
-    min-height: 100vh;
-    border-right: 1px solid;
+  &__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
 
-    @include tablet {
-      display: none;
+    @include mobile {
+      display: block;
     }
   }
 
-  &__sidebar {
+  &__sidebar-wrapper {
     width: 280px;
-    height: 100vh;
+    min-height: 100vh;
     position: sticky;
     top: 0;
-    padding: $spacing-xl 0;
-    overflow-y: auto;
+    z-index: 100;
 
     @include tablet {
+      width: 240px;
+    }
+
+    @include mobile {
+      width: 280px;
       position: fixed;
       left: 0;
+      top: 0;
+      height: 100vh;
       transform: translateX(-100%);
       transition: transform 0.3s ease;
-      z-index: 100;
-      border-right: 1px solid;
 
       &--open {
         transform: translateX(0);
@@ -76,79 +81,15 @@ $documentation-theme-map: (
     }
   }
 
-  &__sidebar-header {
-    padding: 0 $spacing-xl $spacing-lg;
-    margin-bottom: $spacing-lg;
-    border-bottom: 1px solid;
-  }
-
-  &__nav-links {
-    @include flex(column, flex-start, stretch);
-  }
-
-  &__nav-link {
-    @include flex(column, flex-start, stretch);
-    padding: 14px $spacing-xl;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease;
-    gap: $spacing-xs;
-    position: relative;
-
-    &:hover {
-      background: rgba($primary-color, 0.05);
-    }
-
-    // &--active {
-    //   p {
-    //     font-weight: 400 !important;
-    //   }
-    // }
-
-    &::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background-color: $primary-color;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    &--active {
-      // p {
-      //   font-weight: 500 !important;
-      // }
-
-      &::before {
-        opacity: 1;
-      }
-    }
-
-    &:hover:not(&--active) {
-      &::before {
-        opacity: 0.5;
-      }
-    }
-  }
-
-  &__nav-link-content {
-    @include flex(row, flex-start, center);
-    gap: $spacing-md;
-    width: 100%;
-  }
-
   &__main {
     flex: 1;
-    padding: $spacing-xl $spacing-lg;
+    padding: $spacing-xl;
     overflow: hidden;
+    max-width: 780px;
 
     @include tablet {
       padding: $spacing-lg;
+      margin-left: 0;
     }
 
     @include mobile {
@@ -160,10 +101,14 @@ $documentation-theme-map: (
     display: none;
     margin-bottom: $spacing-xl;
 
-    @include tablet {
+    @include mobile {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    @include mobile-medium {
+      margin-bottom: $spacing-lg;
     }
   }
 
@@ -182,8 +127,7 @@ $documentation-theme-map: (
   }
 
   &__content {
-    max-width: 1024px;
-    // margin: 0 auto;
+    max-width: 780px;
   }
 
   &__section {
@@ -201,29 +145,13 @@ $documentation-theme-map: (
       background: map-get($values, background);
       color: map-get($values, text);
 
-      #{$self}__sidebar-wrapper,
-      #{$self}__sidebar {
+      #{$self}__overlay {
+        background: map-get($values, overlay);
+      }
+
+      #{$self}__sidebar-wrapper {
         background: map-get($values, sidebar-background);
         border-color: map-get($values, border);
-      }
-
-      #{$self}__sidebar-header {
-        border-color: map-get($values, border);
-      }
-
-      #{$self}__nav-link {
-        &--active {
-          background: map-get($values, nav-item-active);
-        }
-
-        &:hover:not(&--active) {
-          background: map-get($values, nav-item-hover);
-        }
-      }
-
-      #{$self}__nav-link-icon {
-        background: rgba($primary-color, 0.1);
-        color: $primary-color;
       }
 
       #{$self}__menu-button {

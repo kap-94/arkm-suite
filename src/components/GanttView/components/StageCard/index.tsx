@@ -5,7 +5,7 @@ import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { ProgressBar } from "@/components/ProgressBar";
 import { LinkIcon, Target, Circle } from "lucide-react";
 import styles from "./StageCard.module.scss";
-import { formatCustomDate, formatDateRangeSafe } from "@/utils/date-utils";
+import { formatCustomDateUTC, formatDateRangeSafe } from "@/utils/date-utils";
 import { StageCardLabels } from "@/types/dictionary/projectDetails.types";
 import { useDashboard } from "@/context/DashboardContext";
 
@@ -125,7 +125,7 @@ export const StageCard = forwardRef<HTMLDivElement, StageCardProps>(
                   />
                   <ThemedTypography variant="p3">
                     {milestone.title} (
-                    {formatCustomDate(
+                    {formatCustomDateUTC(
                       milestone.dueDate,
                       language === "es" ? "D [de] MMMM" : "MMMM D"
                     )}

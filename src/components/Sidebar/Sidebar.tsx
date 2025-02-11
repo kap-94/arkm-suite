@@ -88,6 +88,43 @@ export function Sidebar({
           {state.isSidebarExpanded ? (
             <>
               <Brand size="sm" />
+
+              {/* <div
+                style={{ width: 88, height: 24, transform: "translateX(-8px)" }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+                  <rect width="300" height="100" fill="none" />
+
+                  <path
+                    d="M50 80 L70 20 L90 80 M60 55 L80 55"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M100 20 L100 80 M100 20 L130 20 Q150 20 150 40 T130 60 L100 60 L130 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M160 20 L160 80 M160 50 L190 20 M160 50 L190 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M200 80 L200 20 L220 50 L240 20 L240 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+                </svg>
+              </div> */}
+
               <Hamburger
                 variant="morph"
                 onClick={toggleSidebar}

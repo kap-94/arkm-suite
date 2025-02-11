@@ -1,35 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
 import { useSettings } from "@/context/SettingsContext";
+import { Menu } from "lucide-react";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
+import DocumentationSection from "@/components/DocumentationSection";
+import { DocumentationSidebar } from "./components/DocumentationSidebar";
 import styles from "./DocumentationPage.module.scss";
 import { DocumentationPageProps } from "./types";
-import DocumentationSection from "@/components/DocumentationSection";
-import {
-  Menu,
-  LayoutDashboard,
-  Users,
-  Settings,
-  FileText,
-  MessageSquare,
-  Bell,
-} from "lucide-react";
+import { useDashboard } from "@/context/DashboardContext";
 
 const cx = classNames.bind(styles);
 
-const SECTION_ICONS: { [key: string]: React.ComponentType<any> } = {
-  dashboard: LayoutDashboard,
-  clients: Users,
-  projects: FileText,
-  messages: MessageSquare,
-  notifications: Bell,
-  settings: Settings,
-};
-
 export function DocumentationPage({ data }: DocumentationPageProps) {
   const { theme } = useSettings();
+  const { dimensions } = useDashboard();
   const [activeSection, setActiveSection] = useState<string>("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -39,51 +25,35 @@ export function DocumentationPage({ data }: DocumentationPageProps) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const renderNavLink = (id: string, section: any) => {
-    const Icon = SECTION_ICONS[id] || FileText;
-
-    return (
-      <button
-        key={id}
-        onClick={() => {
-          setActiveSection(id);
-          setIsMobileMenuOpen(false);
-        }}
-        className={cx("documentation__nav-link", {
-          "documentation__nav-link--active": activeSection === id,
-        })}
-      >
-        <div className={cx("documentation__nav-link-content")}>
-          <ThemedTypography
-            variant="p1"
-            color={activeSection === id ? "primary" : "secondary"}
-          >
-            {section.title}
-          </ThemedTypography>
-        </div>
-      </button>
-    );
+  const handleSetActiveSection = (section: string) => {
+    setActiveSection(section);
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <div className={cx("documentation", `documentation--theme-${theme}`)}>
-      {/* Sidebar Container */}
-      <div className={cx("documentation__sidebar-wrapper")}>
-        {/* Sticky Sidebar */}
-        <aside
-          className={cx("documentation__sidebar", {
-            "documentation__sidebar--open": isMobileMenuOpen,
-          })}
-        >
-          <div className={cx("documentation__sidebar-header")}>
-            <ThemedTypography variant="h4" color="secondary" fontWeight={500}>
-              Client Suite Guide
-            </ThemedTypography>
-          </div>
-          <nav className={cx("documentation__nav-links")}>
-            {sections.map(([id, section]) => renderNavLink(id, section))}
-          </nav>
-        </aside>
+      {/* Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className={cx("documentation__overlay")}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={cx("documentation__sidebar-wrapper", {
+          "documentation__sidebar-wrapper--open": isMobileMenuOpen,
+        })}
+        style={{ paddingTop: isMobileMenuOpen ? dimensions.headerHeight : "" }}
+      >
+        <DocumentationSidebar
+          activeSection={activeSection}
+          setActiveSection={handleSetActiveSection}
+          theme={theme}
+          data={data}
+          isMobileMenuOpen={isMobileMenuOpen}
+        />
       </div>
 
       {/* Main Content */}
@@ -91,7 +61,7 @@ export function DocumentationPage({ data }: DocumentationPageProps) {
         {/* Mobile Header */}
         <div className={cx("documentation__mobile-header")}>
           <ThemedTypography variant="h4" fontWeight={500}>
-            Client Suite Guide
+            {data.title}
           </ThemedTypography>
           <button
             className={cx("documentation__menu-button")}
@@ -122,3 +92,5 @@ export function DocumentationPage({ data }: DocumentationPageProps) {
     </div>
   );
 }
+
+export default DocumentationPage;

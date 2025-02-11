@@ -97,10 +97,6 @@ export interface NavigationProps {
   items: HeaderNavItem[];
 }
 
-export interface BrandProps {
-  className?: string;
-}
-
 // Tipos para Animaciones
 export interface AnimationVariants extends Variants {
   hovered: {
