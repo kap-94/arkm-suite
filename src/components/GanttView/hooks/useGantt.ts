@@ -240,5 +240,6 @@ export const useGantt = ({ stages, showWeekends = true }: UseGanttProps) => {
     toggleStageSelection,
     stageCardHeights,
     useStageCardSync,
+    totalDays,
   };
 };

@@ -106,10 +106,6 @@
                 {
                     "value": "month",
                     "label": "Month"
-                },
-                {
-                    "value": "week",
-                    "label": "Week"
                 }
             ],
             "statusLegend": [

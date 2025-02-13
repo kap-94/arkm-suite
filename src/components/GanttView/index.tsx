@@ -41,6 +41,8 @@ const GanttContent = ({
   stageCardHeights,
   useStageCardSync,
   showCurrentDay,
+  totalUnits,
+  totalDays,
 }: any) => {
   const { dimensions, language } = useDashboard();
 

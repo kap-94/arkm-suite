@@ -12,11 +12,6 @@ interface TimeRange {
   end: moment.Moment;
 }
 
-const capitalize = (str: string): string => {
-  if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
 const capitalizeMonth = (dateStr: string): string => {
   return dateStr.replace(/^[a-záéíóúñ]/i, (letter) => letter.toUpperCase());
 };
@@ -287,40 +282,109 @@ export const calculateCurrentDayPosition = (
 /**
  * Calcula la posición de un milestone en el timeline
  */
+// export const calculateMilestonePosition = (
+//   milestoneDate: Date,
+//   timelineStart: Date,
+//   timelineEnd: Date,
+//   view: "year" | "month" | "week"
+// ): { position: number; visible: boolean } => {
+//   const milestone = moment.utc(milestoneDate).startOf("day");
+//   const start = moment.utc(timelineStart).startOf("day");
+//   const end = moment.utc(timelineEnd).endOf("day");
+
+//   // Verificar si el milestone está en el rango visible
+//   if (milestone.isBefore(start) || milestone.isAfter(end)) {
+//     return { position: 0, visible: false };
+//   }
+
+//   if (view === "year") {
+//     // Para vista de año, calculamos la posición basada en el rango del stage
+//     const totalTime = end.valueOf() - start.valueOf();
+//     const timeOffset = milestone.valueOf() - start.valueOf();
+//     const position = (timeOffset / totalTime) * 100;
+
+//     return { position, visible: true };
+//   } else {
+//     // Para vista de mes, calculamos por días del mes actual
+//     const daysInMonth = end.date(); // Obtiene el número de días en el mes
+//     const dayOfMonth = milestone.date() - 1; // Días transcurridos en el mes (0-based)
+//     const position = (dayOfMonth / daysInMonth) * 100;
+//     return { position: Math.max(0, Math.min(100, position)), visible: true };
+//   }
+// };
+
 export const calculateMilestonePosition = (
   milestoneDate: Date,
-  timelineStart: Date,
-  timelineEnd: Date,
+  stageStart: Date,
+  stageEnd: Date,
   view: "year" | "month" | "week"
 ): { position: number; visible: boolean } => {
   const milestone = moment.utc(milestoneDate).startOf("day");
-  const start = moment.utc(timelineStart).startOf("day");
-  const end = moment.utc(timelineEnd).endOf("day");
+  const start = moment.utc(stageStart).startOf("day");
+  const end = moment.utc(stageEnd).endOf("day");
 
-  // Verificar si el milestone está en el rango visible
+  // Verificar si el milestone está en el rango del stage
   if (milestone.isBefore(start) || milestone.isAfter(end)) {
     return { position: 0, visible: false };
   }
 
   if (view === "year") {
-    const monthStart = moment.utc(timelineStart).startOf("year");
-    const monthDiff = milestone.diff(monthStart, "months");
-    const daysInMonth = milestone.daysInMonth();
-    const dayOfMonth = milestone.date() - 1;
-
-    // Calcular posición con el día centrado en el mes
-    const monthPosition = monthDiff;
-    const dayProgress = (dayOfMonth + 0.5) / daysInMonth; // Añadimos 0.5 para centrar
-    const position = ((monthPosition + dayProgress) / 12) * 100;
-
-    return { position, visible: true };
-  } else {
+    // Para vista de año, calculamos por meses dentro del stage
     const totalTime = end.valueOf() - start.valueOf();
     const timeOffset = milestone.valueOf() - start.valueOf();
-    // Añadimos medio día para centrar en el día
-    const position = ((timeOffset + 43200000) / totalTime) * 100; // 43200000 es medio día en milisegundos
+    const position = (timeOffset / totalTime) * 100;
 
     return { position, visible: true };
+  } else if (view === "month") {
+    // Para vista de mes, necesitamos manejar milestones en diferentes meses
+    const milestoneMonth = milestone.format("YYYY-MM");
+    const stageStartMonth = start.format("YYYY-MM");
+    const stageEndMonth = end.format("YYYY-MM");
+
+    if (milestoneMonth === stageStartMonth) {
+      // Si el milestone está en el mes inicial del stage
+      const daysInMonth = start.daysInMonth();
+      const dayInMonth = milestone.date() + 0.5;
+      const startDayInMonth = start.date();
+      const position =
+        ((dayInMonth - startDayInMonth) / (daysInMonth - startDayInMonth + 1)) *
+        100;
+      return { position: Math.max(0, Math.min(100, position)), visible: true };
+    } else if (milestoneMonth === stageEndMonth) {
+      // Si el milestone está en el mes final del stage
+      const endDayInMonth = end.date();
+      const dayInMonth = milestone.date() - 0.5;
+      const position = (dayInMonth / endDayInMonth) * 100;
+      return { position: Math.max(0, Math.min(100, position)), visible: true };
+    } else {
+      // Si el milestone está en un mes intermedio del stage
+      const daysInMonth = milestone.daysInMonth();
+      const dayInMonth = milestone.date() - 0.5;
+      const position = (dayInMonth / daysInMonth) * 100;
+      return { position: Math.max(0, Math.min(100, position)), visible: true };
+    }
+  } else {
+    // week view
+    // Obtenemos el inicio de la semana del timeline (lunes)
+    const timelineWeekStart = moment.utc(milestone).startOf("week");
+
+    // Obtenemos el inicio del stage
+    const stageWeekStart = moment.utc(start).startOf("day");
+
+    // Calculamos los días que no se muestran en el timeline (días anteriores al inicio del stage)
+    const hiddenDays = stageWeekStart.diff(timelineWeekStart, "days");
+
+    // Calculamos los días transcurridos desde el inicio del stage hasta el milestone
+    const daysFromStageStart = milestone.diff(stageWeekStart, "days", true);
+
+    // Ajustamos la posición considerando los días ocultos
+    const adjustedPosition =
+      ((daysFromStageStart + hiddenDays + 0.5) / 7) * 100;
+
+    return {
+      position: Math.max(0, Math.min(100, adjustedPosition)),
+      visible: true,
+    };
   }
 };
 

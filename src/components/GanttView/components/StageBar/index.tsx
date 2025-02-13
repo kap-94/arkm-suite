@@ -78,8 +78,7 @@ export const StageBar: React.FC<StageBarProps> = ({
       }
 
       const { position: milestonePosition, visible } =
-        calculateMilestonePosition(milestoneDate, viewStart, viewEnd, view);
-
+        calculateMilestonePosition(milestoneDate, stageStart, stageEnd, view);
       if (!visible) return null;
 
       return (
