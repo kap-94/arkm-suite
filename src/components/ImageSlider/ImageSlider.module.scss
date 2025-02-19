@@ -1,0 +1,196 @@
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+// Constants for better maintainability
+$aspect-ratio: 16 / 9;
+$border-color: rgba($white-base, 0.08);
+$glow-color-primary: rgba($primary-color, 0.2);
+$glow-color-secondary: rgba(#ff3d71, 0.2);
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  border-radius: $border-radius-md;
+  transition: transform 0.3s ease, opacity 0.5s ease;
+  overflow: visible; // Allow outer glow effects
+  opacity: 0;
+  border: 7.25px solid $border-color;
+  will-change: opacity, transform; // Optimize for animations
+
+  &.loaded {
+    opacity: 1;
+  }
+
+  &.slide-change {
+    &::before {
+      animation: corePulse 2.5s ease-in-out;
+    }
+
+    .neon-glow {
+      animation: glowPulse 2.5s ease-in-out;
+    }
+  }
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      rgba($primary-color, 0.08),
+      transparent 40%,
+      rgba(#ff3d71, 0.02) 80%
+    );
+    z-index: 2;
+    pointer-events: none; // Ensure it doesn't block interactions
+  }
+}
+
+.slide {
+  position: relative;
+  width: 100%;
+  border-radius: $border-radius-md;
+
+  &-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 75%,
+      rgba($black-base, 0.4) 85%,
+      $black-base 100%
+    );
+    z-index: 2;
+    pointer-events: none; // Ensure it doesn't block interactions
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  aspect-ratio: $aspect-ratio;
+
+  // Add a fallback for browsers that don't support aspect-ratio
+  @supports not (aspect-ratio: $aspect-ratio) {
+    &::before {
+      content: "";
+      display: block;
+      padding-top: calc(9 / 16 * 100%);
+    }
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: top;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center top; // Set transform origin for better scaling
+  backface-visibility: hidden; // Prevent flickering during animations
+  -webkit-backface-visibility: hidden;
+}
+
+.neon-glow {
+  position: absolute;
+  inset: -50px; // Extended outward
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse at center,
+    $glow-color-primary 0%,
+    $glow-color-secondary 50%,
+    transparent 85%
+  );
+  opacity: 0.25;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  filter: blur(30px);
+  z-index: -1;
+  will-change: opacity, filter; // Optimize glow animations
+}
+
+// Media queries for responsive adjustments
+@include desktop {
+  .slider-container {
+    border-width: 6px;
+  }
+
+  .neon-glow {
+    inset: -40px;
+  }
+}
+
+@include tablet {
+  .neon-glow {
+    inset: -30px;
+    filter: blur(20px);
+  }
+}
+
+@include mobile {
+  .slider-container {
+    border-width: 5px;
+  }
+
+  .neon-glow {
+    inset: -20px;
+    filter: blur(15px);
+  }
+}
+
+@include mobile-medium {
+  .slider-container {
+    border-width: 4px;
+  }
+}
+
+@include mobile-small {
+  .slider-container {
+    border-width: 3px;
+  }
+}
+
+// GPU-accelerated animations for better performance
+@keyframes corePulse {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 15px 5px rgba($primary-color, 0.3),
+      0 0 10px 3px rgba(#ff3d71, 0.2);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 35px 15px $primary-color, 0 0 30px 20px #ff3d71;
+  }
+  100% {
+    opacity: 0.7;
+    box-shadow: 0 0 15px 5px rgba($primary-color, 0.3),
+      0 0 10px 3px rgba(#ff3d71, 0.2);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.25;
+    filter: blur(30px);
+  }
+  50% {
+    opacity: 0.8;
+    filter: blur(25px);
+  }
+  100% {
+    opacity: 0.25;
+    filter: blur(30px);
+  }
+}
