@@ -74,10 +74,21 @@
 }
 
 // Typography mixins
-@mixin text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+@mixin text-truncate($rows: 1) {
+  @if $rows == 1 {
+    // Single line truncation
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    // Multi-line truncation
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $rows;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; // Allow text to wrap
+  }
 }
 
 @mixin text-clamp($lines: 2) {
