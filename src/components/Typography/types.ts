@@ -1,4 +1,3 @@
-// src/components/Typography/types.ts
 import { ElementType, ReactNode, CSSProperties } from "react";
 
 export type ThemeType = "light" | "dark" | "custom";
@@ -42,12 +41,16 @@ export type TypographyAlign =
   | "center"
   | "right"
   | "justify";
+
 export type TypographyTransform =
   | "none"
   | "capitalize"
   | "uppercase"
   | "lowercase";
+
 export type TypographyWeight = 300 | 400 | 500 | 600 | 700;
+
+export type TypographyFontFamily = "default" | "usual" | "kranto";
 
 export interface TypographyProps<T extends ElementType> {
   as?: T;
@@ -56,6 +59,7 @@ export interface TypographyProps<T extends ElementType> {
   className?: string;
   color?: TypographyColor;
   fontWeight?: TypographyWeight;
+  fontFamily?: TypographyFontFamily;
   gutterBottom?: boolean;
   noWrap?: boolean;
   paragraph?: boolean;
@@ -63,5 +67,5 @@ export interface TypographyProps<T extends ElementType> {
   textTransform?: TypographyTransform;
   variant?: TypographyVariant;
   theme?: TypographyTheme | ThemeType;
-  htmlFor?: string; // Add this line
+  htmlFor?: string;
 }
