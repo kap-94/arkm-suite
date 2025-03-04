@@ -7,6 +7,10 @@
   },
   "header": {
     "aria": "Main site navigation",
+    "subtitle": {
+      "firstLetter": "D",
+      "text": "esign and development studio"
+    },
     "navigation": {
       "home": {
         "label": "Home",
@@ -51,7 +55,7 @@
       }
     },
     "clientPortal": {
-      "label": "Client Portal",
+      "label": "Client's Suite",
       "href": "/dashboard"
     },
     "languageOptions": {
@@ -66,6 +70,15 @@
     }
   },
   "footer": {
+    "description": "Creating digital experiences that inspire, transform and innovate.",
+    "cta": "Connect With Us Today",
+    "links": {
+      "showcase": "Showcase",
+      "solutions": "Solutions",
+      "clientSuite": "Client's Suite",
+      "journey": "Journey"
+    },
+    "copyright": "© {year} ARKM Studio. All rights reserved.",
     "company": {
       "title": "Company",
       "aria": "Company information"

@@ -1,0 +1,223 @@
+// Variables (reutilizando tus mismas variables)
+$primary-color: #6366f1;
+$primary-color-90: rgba($primary-color, 0.9);
+$primary-color-80: rgba($primary-color, 0.8);
+$primary-light: #818cf8;
+$primary-dark: #4f46e5;
+$primary-dark-90: rgba($primary-dark, 0.9);
+$primary-dark-80: rgba($primary-dark, 0.8);
+$indigo-light: #9698fd;
+
+// Dark Theme Colors
+$dark-bg: #0a0a0c;
+$dark-surface: rgba(24, 24, 27, 0.7);
+$dark-border: rgba(63, 63, 70, 0.4);
+$dark-text: rgba(228, 228, 231, 0.9);
+$dark-text-secondary: rgba(161, 161, 170, 0.8);
+
+// Glass Effect
+$glass-bg: rgba(24, 24, 27, 0.5);
+$glass-border: rgba(63, 63, 70, 0.2);
+$glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$glass-highlight: rgba(255, 255, 255, 0.05);
+
+// Mixins
+@mixin glass-effect {
+  background: $glass-bg;
+  backdrop-filter: blur(12px);
+  border: 1px solid $glass-border;
+  box-shadow: $glass-shadow;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+// BEM Notation para Wireframe
+.minimal {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background: $dark-bg;
+  overflow: hidden;
+  padding: 2rem;
+  color: $dark-text;
+  display: flex;
+  flex-direction: column;
+
+  // Asegurando que los elementos sean visibles por defecto
+  &__logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: linear-gradient(135deg, $primary-color, $primary-dark);
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    // Quitamos visibility: hidden inicial para ver si es parte del problema
+    opacity: 1;
+  }
+
+  &__container {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  &__content {
+    max-width: 26rem;
+    margin-top: -4rem;
+    // Quitamos visibility: hidden inicial
+    opacity: 1;
+
+    &-badge {
+      height: 1.25rem;
+      width: 5rem;
+      background: linear-gradient(
+        90deg,
+        $primary-dark,
+        rgba($primary-dark, 0.3)
+      );
+      border-radius: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    &-title {
+      height: 3rem;
+      width: 90%;
+      background: linear-gradient(90deg, $dark-text, rgba($dark-text, 0.3));
+      border-radius: 0.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    &-subtitle {
+      height: 1.5rem;
+      width: 75%;
+      background: linear-gradient(
+        90deg,
+        $dark-text-secondary,
+        rgba($dark-text-secondary, 0.2)
+      );
+      border-radius: 0.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    &-text {
+      height: 0.875rem;
+      width: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba($dark-text-secondary, 0.6),
+        rgba($dark-text-secondary, 0.1)
+      );
+      border-radius: 0.25rem;
+      margin-bottom: 2rem;
+    }
+
+    &-button {
+      height: 3rem;
+      width: 10rem;
+      background: linear-gradient(135deg, $primary-color, $primary-dark);
+      border-radius: 0.25rem;
+    }
+  }
+
+  &__visual {
+    position: relative;
+    // Quitamos visibility: hidden inicial
+    opacity: 1;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        $glass-highlight,
+        transparent
+      );
+      transition: none;
+      z-index: 2;
+    }
+
+    &.animate-shine {
+      &::before {
+        animation: shine 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+
+    &-accent {
+      position: absolute;
+      width: 15rem;
+      height: 15rem;
+      background: linear-gradient(
+        135deg,
+        rgba($primary-color, 0.15),
+        rgba($primary-dark, 0.15)
+      );
+      border-radius: 50%;
+      top: -5rem;
+      right: -5rem;
+      z-index: 1;
+    }
+
+    &-image {
+      position: relative;
+      width: 18rem;
+      height: 24rem;
+      background: linear-gradient(
+        135deg,
+        rgba($primary-color, 0.05),
+        rgba($primary-dark, 0.05)
+      );
+      border-radius: 1rem;
+      z-index: 0;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 12rem;
+        height: 12rem;
+        background: linear-gradient(
+          135deg,
+          rgba($primary-color, 0.2),
+          rgba($primary-dark, 0.2)
+        );
+        border-radius: 0.75rem;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0.7;
+  }
+}

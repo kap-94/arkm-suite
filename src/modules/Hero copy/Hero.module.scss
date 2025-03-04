@@ -1,159 +1,19 @@
-@import "../../styles/variables.scss";
+@import "@/styles/variables";
+@import "@/styles/mixins";
 
 .hero {
   $self: &;
+  @include flex(column);
   position: relative;
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #000000, #0a0a0a);
-  display: flex;
-  flex-direction: column;
-
-  &--light {
-    background: linear-gradient(180deg, #ffffff, #f5f5f5);
-
-    #{$self}__grid-background {
-      background-image: linear-gradient(
-          rgba(0, 0, 0, 0.05) 1px,
-          transparent 1px
-        ),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    }
-
-    #{$self}__ambient-glow {
-      background: radial-gradient(
-        circle at center,
-        rgba(99, 102, 241, 0.1) 0%,
-        rgba(99, 102, 241, 0.03) 50%,
-        transparent 100%
-      );
-    }
-
-    #{$self}__title {
-      color: #1a1a1a;
-    }
-
-    #{$self}__info-subtitle,
-    #{$self}__info-description {
-      color: rgba(0, 0, 0, 0.7);
-    }
-
-    #{$self}__scroll-text {
-      color: rgba(0, 0, 0, 0.5);
-
-      &:hover {
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
-
-    #{$self}__scroll-indicator {
-      &::before,
-      &::after {
-        background: linear-gradient(
-          180deg,
-          rgba(0, 0, 0, 0.2),
-          rgba(0, 0, 0, 0)
-        );
-      }
-    }
-  }
-
-  &__ambient-glow {
-    position: absolute;
-    inset: -50% -50% 0 -50%;
-    background: radial-gradient(
-      circle at center,
-      rgba(99, 102, 241, 0.15) 0%,
-      rgba(99, 102, 241, 0.05) 50%,
-      transparent 100%
-    );
-    pointer-events: none;
-    transform-origin: center;
-    z-index: 1;
-  }
-
-  &__grid-background {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-          circle at 50% 50%,
-          transparent 20%,
-          rgba(99, 102, 241, 0.2) 21%,
-          transparent 22%
-        )
-        0 0,
-      repeating-linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.15) 0px,
-        rgba(255, 255, 255, 0.15) 1px,
-        transparent 1px,
-        transparent 20px
-      );
-    background-size: 60px 60px, 40px 40px;
-    transform: perspective(1000px) rotateX(35deg) scale(2.5);
-    transform-origin: center top;
-    mask-image: linear-gradient(to bottom, transparent 10%, black 50%);
-    opacity: 0.4;
-    animation: floatingGrid 25s linear infinite;
-    z-index: 0;
-  }
-
-  @keyframes floatingGrid {
-    0% {
-      background-position: 0 0, 0 0;
-    }
-    100% {
-      background-position: 60px 60px, 40px 40px;
-    }
-  }
-
-  // &__grid-background {
-  //   position: absolute;
-  //   inset: 0;
-  //   background: radial-gradient(
-  //       circle at 50% 50%,
-  //       rgba(99, 102, 241, 0.15) 0%,
-  //       rgba(99, 102, 241, 0.15) 1px,
-  //       transparent 1px
-  //     ),
-  //     repeating-linear-gradient(
-  //       90deg,
-  //       rgba(99, 102, 241, 0.1) 0px,
-  //       rgba(99, 102, 241, 0.1) 1px,
-  //       transparent 1px,
-  //       transparent 50px
-  //     ),
-  //     repeating-linear-gradient(
-  //       0deg,
-  //       rgba(99, 102, 241, 0.2) 0px,
-  //       rgba(99, 102, 241, 0.2) 1px,
-  //       transparent 1px,
-  //       transparent 50px
-  //     );
-  //   background-size: 30px 30px, 50px 50px, 50px 50px;
-  //   transform: perspective(1000px) rotateX(35deg) scale(2);
-  //   transform-origin: center top;
-  //   mask-image: linear-gradient(to bottom, transparent 0%, black 35%);
-  //   opacity: 0.3;
-  //   animation: floatingMinimal 25s linear infinite;
-  //   z-index: 0;
-  // }
-
-  // @keyframes floatingMinimal {
-  //   from {
-  //     background-position: 0 0, 0 0, 0 0;
-  //   }
-  //   to {
-  //     background-position: 30px 30px, 50px 50px, 50px 50px;
-  //   }
-  // }
+  padding-bottom: 24px;
+  background: transparent;
 
   &__headline {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex(row, center, center);
     flex: 1;
     pointer-events: auto;
     perspective: 1000px;
@@ -172,14 +32,16 @@
     letter-spacing: 0.01em;
     line-height: 0.92;
     pointer-events: none;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    @include transition(transform);
+    opacity: 0; /* Inicialmente invisible */
+    transition: opacity 0.5s ease;
+
+    &--visible {
+      opacity: 1; /* Visible cuando tiene esta clase */
+    }
 
     &--behind {
       color: transparent;
-      // -webkit-text-stroke: 1px rgba(244, 114, 182, 0.3);
-      // transform: translateZ(20px);
-      // -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
-      // text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
       animation: glowPulse 4s infinite alternate;
 
       &::before {
@@ -188,7 +50,7 @@
         inset: -20%;
         background: radial-gradient(
           circle at var(--x) var(--y),
-          rgba(244, 114, 182, 0.1),
+          rgba($error-light, 0.1),
           transparent 70%
         );
         filter: blur(15px);
@@ -201,24 +63,49 @@
       z-index: 0;
       background: conic-gradient(
         from 0deg at 50% 50%,
-        rgba(244, 114, 182, 0.2),
-        rgba(251, 207, 232, 0.2),
-        rgba(244, 114, 182, 0.2)
+        rgba($error-light, 0.2),
+        rgba($error-light, 0.2),
+        rgba($error-light, 0.2)
       );
       transform: translateZ(-35px) scale(1.2);
-      animation: hazeRotate 15s linear infinite;
+    }
+
+    &--main {
+      background: linear-gradient(
+        120deg,
+        rgba($error-color, 1) 0%,
+        rgba($error-light, 0.9) 50%,
+        rgba($error-color, 1) 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: contrast(100%) brightness(100%);
+      text-shadow: 0 0 20px rgba($error-color, 0.5);
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at var(--x) var(--y),
+          rgba($error-color, 0.2) 0%,
+          transparent 70%
+        );
+        mix-blend-mode: screen;
+      }
     }
 
     &--white-stroke {
       color: transparent;
-      text-shadow: 0 0 10px rgba(99, 102, 241, 0.8),
-        0 0 20px rgba(99, 102, 241, 0.4), 0 0 30px rgba(99, 102, 241, 0.2);
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 10px rgba($primary-color, 0.8),
+        0 0 20px rgba($primary-color, 0.4), 0 0 30px rgba($primary-color, 0.2);
+      -webkit-text-stroke: 1px rgba($white-color, 0.9);
       background: radial-gradient(
         circle at center,
-        rgba(99, 102, 241, 1) 0%,
-        rgba(129, 140, 248, 0.8) 30%,
-        rgba(99, 102, 241, 0.4) 70%,
+        rgba($primary-color, 1) 0%,
+        rgba($primary-light, 0.8) 30%,
+        rgba($primary-color, 0.4) 70%,
         transparent 100%
       );
       -webkit-background-clip: text;
@@ -227,110 +114,56 @@
 
     &--permanent-stroke {
       color: transparent;
-      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); // Más sutil que el white-stroke normal
-      z-index: 30000; // Asegura que esté por encima del background gradient
-      mix-blend-mode: overlay; // Esto ayuda a que se mezcle mejor con las capas inferiores
-      pointer-events: none;
-      -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
-      text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-      // animation: glowPulse 4s infinite alternate;
-    }
-
-    &--main {
-      background: linear-gradient(
-        120deg,
-        rgba(255, 90, 90, 1) 0%,
-        rgba(255, 170, 90, 0.9) 50%,
-        rgba(255, 90, 90, 1) 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: contrast(100%) brightness(100%);
-      text-shadow: 0 0 20px rgba(255, 90, 90, 0.5);
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          circle at var(--x) var(--y),
-          rgba(255, 90, 90, 0.2) 0%,
-          transparent 70%
-        );
-        mix-blend-mode: screen;
-      }
-    }
-
-    &--front {
-      position: absolute;
-      z-index: 100; // Aseguramos que esté siempre al frente
-      transform: translateZ(100px); // Valor inicial de Z
-    }
-
-    &--shader-complete {
-    }
-
-    &--behind {
-      z-index: 1;
-    }
-
-    &--white-stroke {
-      z-index: 2;
-    }
-
-    &--permanent-stroke {
+      -webkit-text-stroke: 2px rgba($primary-color, 0.8);
       z-index: 3;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      text-shadow: 0 0 20px rgba($primary-color, 0.4);
     }
 
     &--front {
       z-index: 4;
+      /* Siempre invisible inicialmente */
+      opacity: 0;
     }
 
     &-indent {
-      margin-left: 24px;
+      margin-left: $spacing-lg;
     }
 
-    @media only screen and (max-width: 1080px) {
+    @include tablet {
       font-size: clamp(60px, 10vw, 120px);
     }
 
-    @media only screen and (max-width: 600px) {
+    @include mobile {
       font-size: clamp(60px, 8vw, 80px);
-    }
-
-    @media screen and (max-height: 800px) {
-      font-size: clamp(60px, 8vw, 100px);
-    }
-
-    @media screen and (max-height: 600px) {
-      font-size: clamp(60px, 6vw, 80px);
     }
   }
 
   &__webgl-text {
-    font-size: clamp(48px, 12vw, 142px);
+    font-size: clamp(64px, 12vw, 142px);
     text-transform: uppercase;
     letter-spacing: 0.01em;
     line-height: 0.92;
     color: transparent;
     opacity: 1;
-    transition: opacity 1s ease-out;
+    @include transition(opacity);
     position: absolute;
-    margin-top: 24px;
-    margin-right: 16px;
+    margin-top: $spacing-lg;
+    margin-right: $spacing-md;
     top: 0;
     bottom: 0;
+    z-index: 100; /* Mayor z-index para asegurar que está por encima */
 
     &--fade-out {
       opacity: 0;
     }
 
-    @media only screen and (max-width: 1080px) {
+    @include tablet {
       font-size: clamp(60px, 10vw, 120px);
     }
 
-    @media only screen and (max-width: 600px) {
+    @include mobile {
       font-size: clamp(60px, 8vw, 80px);
     }
   }
@@ -367,174 +200,90 @@
       color: transparent;
       -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
       pointer-events: none;
-
-      /* Copiar exactamente el mismo layout que hero__headline-text--front */
       display: block;
-      white-space: pre-line; // Permite mantener los saltos de línea
+      white-space: pre-line;
 
       &-accent {
         display: inline;
         color: transparent;
-        -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
+        -webkit-text-stroke: 2px rgba($primary-color, 0.8);
       }
 
       &-indent {
-        margin-left: 24px;
+        margin-left: $spacing-lg;
       }
 
-      @media only screen and (max-width: 1080px) {
+      @include tablet {
         font-size: clamp(60px, 10vw, 120px);
       }
 
-      @media only screen and (max-width: 600px) {
+      @include mobile {
         font-size: clamp(60px, 8vw, 80px);
-      }
-
-      @media screen and (max-height: 800px) {
-        font-size: clamp(60px, 8vw, 100px);
-      }
-
-      @media screen and (max-height: 600px) {
-        font-size: clamp(60px, 6vw, 80px);
-      }
-    }
-
-    @media only screen and (max-width: 600px) {
-      display: none;
-    }
-
-    &--neon {
-      background: radial-gradient(
-        circle at center,
-        rgba(99, 102, 241, 1) 0%,
-        rgba(129, 140, 248, 0.8) 30%,
-        rgba(99, 102, 241, 0.4) 70%,
-        transparent 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-
-      .hero__mask-text {
-        text-shadow: 0 0 10px rgba(99, 102, 241, 0.8),
-          0 0 20px rgba(99, 102, 241, 0.4), 0 0 30px rgba(99, 102, 241, 0.2);
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
+        display: none;
       }
     }
   }
 
   &__content {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: clamp(5rem, 4vh, 6rem);
-    padding: 2rem;
+    @include flex(column, flex-end, center);
+    gap: clamp($spacing-xxl, 4vh, $spacing-xxxl * 1.5);
+    padding: $spacing-lg;
     z-index: 2;
     margin-top: auto;
     flex: 1;
 
     @media screen and (max-height: 800px) {
-      gap: 1.5rem;
-      padding-bottom: 1.5rem;
+      gap: $spacing-md;
+      padding-bottom: $spacing-md;
     }
 
     @media screen and (max-height: 600px) {
-      gap: 1rem;
-      padding-bottom: 1rem;
+      gap: $spacing-sm;
+      padding-bottom: $spacing-sm;
     }
   }
 
   &__info {
     text-align: center;
     opacity: 0;
-    animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp $transition-duration $transition-bezier forwards;
     animation-delay: 0.5s;
 
     &-subtitle {
-      font-size: 0.875rem;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 1rem;
+      margin-bottom: $spacing-md;
+      letter-spacing: 0.03em;
+      opacity: 0.9;
     }
 
     &-description {
-      font-size: 1.125rem;
-      color: rgba(255, 255, 255, 0.9);
-      max-width: 24rem;
-      letter-spacing: 0.08rem;
+      max-width: 480px;
       margin: 0 auto;
-      margin-bottom: clamp(1rem, 3vh, 2rem);
-      line-height: 1.6;
+      line-height: 1.5 !important;
+      margin-bottom: $spacing-xxxl;
+      letter-spacing: 0.03em;
 
-      @media screen and (max-height: 800px) {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
+      @include mobile {
         max-width: 20rem;
       }
 
       @media screen and (max-height: 600px) {
-        font-size: 0.875rem;
-        margin-bottom: 1rem;
         max-width: 18rem;
-        line-height: 1.4;
       }
     }
   }
 
   &__cta-button {
-    background: linear-gradient(45deg, #6366f1, #818cf8);
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 9999px;
-    color: white;
-    font-weight: 500;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, #818cf8, #6366f1);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
-
-      &::before {
-        opacity: 1;
-      }
-    }
-
-    @media screen and (max-height: 800px) {
-      padding: 0.75rem 1.5rem;
-      font-size: 0.8125rem;
-    }
-
-    @media screen and (max-height: 600px) {
-      padding: 0.5rem 1.25rem;
-      font-size: 0.75rem;
-    }
+    font-family: "usual", sans-serif !important;
+    letter-spacing: 0.02em !important;
+    font-weight: 500 !important;
   }
 
   &__scroll {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-block: $spacing-sm $spacing-md;
     opacity: 0;
-    animation: fadeIn 1s ease forwards;
+    animation: fadeIn $transition-duration ease forwards;
     animation-delay: 1s;
 
     @media screen and (max-height: 600px) {
@@ -542,50 +291,39 @@
     }
 
     &-text {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.6);
-      display: block;
-      margin-bottom: 0.5rem;
-      transition: color 0.3s ease;
-
-      &:hover {
-        color: rgba(255, 255, 255, 0.8);
-      }
+      margin-bottom: $spacing-xs;
     }
 
     &-indicator {
       position: relative;
-      width: 1px;
-      height: 40px;
+      width: 1.2px;
+      height: 24px;
       margin: 0 auto;
+      margin-top: $spacing-sm;
       overflow: visible;
 
       &::before,
       &::after {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         background: linear-gradient(
           180deg,
-          #6366f1 0%,
-          rgba(99, 102, 241, 0) 100%
+          $primary-light 0%,
+          rgba($primary-color, 0.1) 100%
         );
       }
 
       &::before {
-        animation: scrollFadeLeft 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation: scrollFadeLeft 2s $transition-bezier infinite;
       }
 
       &::after {
-        animation: scrollFadeRight 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation: scrollFadeRight 2s $transition-bezier infinite;
       }
 
       @media screen and (max-height: 800px) {
-        height: 30px;
+        height: 20px;
       }
     }
   }
@@ -637,36 +375,29 @@
 
 @keyframes glowPulse {
   0% {
-    text-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    text-shadow: 0 0 20px rgba($primary-color, 0.4);
   }
   100% {
-    text-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
+    text-shadow: 0 0 30px rgba($primary-color, 0.6);
   }
 }
 
-@keyframes neuralGrid {
+@keyframes floatingGrid {
   0% {
-    transform: translateY(0) rotate(0deg);
+    background-position: 0 0, 0 0;
   }
   100% {
-    transform: translateY(-20px) rotate(-360deg);
+    background-position: 60px 60px, 40px 40px;
   }
 }
 
-@property --random-x {
-  syntax: "<length>";
-  initial-value: 0px;
-  inherits: false;
-}
-
-@property --random-y {
-  syntax: "<length>";
-  initial-value: 0px;
-  inherits: false;
-}
-
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
+@keyframes hazeGlow {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
 }

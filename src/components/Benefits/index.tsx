@@ -19,43 +19,45 @@ export interface BenefitProps {
   description: string;
 }
 
-export const benefitsData: BenefitProps[] = [
+// Default benefits data as fallback
+const defaultBenefitsData: Omit<BenefitProps, "icon">[] = [
   {
-    icon: <CollaborationIcon />,
-    title: "Colaboración efectiva",
-    description:
-      "Comunícate directamente con nuestro equipo y evalua cada fase.",
+    title: "Effective Collaboration",
+    description: "Communicate directly with our team and evaluate each phase.",
   },
   {
-    icon: <ProgressIcon />,
-    title: "Seguimiento en tiempo real",
-    description:
-      "Monitorea el progreso de tu proyecto con métricas en tiempo real.",
+    title: "Real-Time Tracking",
+    description: "Monitor your project's progress with real-time metrics.",
   },
   {
-    icon: <DocumentIcon />,
-    title: "Gestión de los documentos",
+    title: "Document Management",
     description:
-      "Accede a toda la documentación, recursos y entregables del proyecto.",
+      "Access all project documentation, resources, and deliverables.",
   },
   {
-    icon: <DataIcon />,
-    title: "Métricas y reportes",
+    title: "Metrics and Reports",
     description:
-      "Analiza el rendimiento y avance con reportes y métricas detalladas.",
+      "Analyze performance and progress with detailed reports and metrics.",
   },
   {
-    icon: <CalendarIcon />,
-    title: "Planificación clara",
+    title: "Clear Planning",
     description:
-      "Visualiza hitos, fechas clave y cronogramas detallados del proyecto.",
+      "Visualize milestones, key dates, and detailed project timelines.",
   },
   {
-    icon: <ChatIcon />,
-    title: "Comunicación directa",
-    description:
-      "Canal de comunicación dedicado con seguimiento de conversaciones.",
+    title: "Direct Communication",
+    description: "Dedicated communication channel with conversation tracking.",
   },
+];
+
+// Icons mapping
+const benefitIcons = [
+  <CollaborationIcon key="collaboration" />,
+  <ProgressIcon key="progress" />,
+  <DocumentIcon key="document" />,
+  <DataIcon key="data" />,
+  <CalendarIcon key="calendar" />,
+  <ChatIcon key="chat" />,
 ];
 
 const BenefitItem = ({
@@ -97,10 +99,27 @@ const BenefitItem = ({
   </div>
 );
 
-export const Benefits = () => (
-  <div className={cx("benefits")}>
-    {benefitsData.map((benefit, index) => (
-      <BenefitItem key={index} {...benefit} delay={index} />
-    ))}
-  </div>
-);
+interface BenefitsProps {
+  benefits?: Omit<BenefitProps, "icon">[];
+}
+
+export const Benefits = ({ benefits }: BenefitsProps) => {
+  // Use provided benefits from dictionary or fallback to default data
+  const benefitsData = benefits || defaultBenefitsData;
+
+  // Map benefits data with icons
+  const benefitsWithIcons = benefitsData.map((benefit, index) => ({
+    ...benefit,
+    icon: benefitIcons[index % benefitIcons.length],
+  }));
+
+  return (
+    <div className={cx("benefits")}>
+      {benefitsWithIcons.map((benefit, index) => (
+        <BenefitItem key={index} {...benefit} delay={index} />
+      ))}
+    </div>
+  );
+};
+
+export default Benefits;

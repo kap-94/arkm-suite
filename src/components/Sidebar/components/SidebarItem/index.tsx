@@ -4,11 +4,7 @@ import Link from "next/link";
 import { ChevronDown, LockIcon } from "lucide-react";
 import { Typography } from "@/components/Typography";
 import { Tooltip } from "@/components/Tooltip";
-import {
-  isPathActive,
-  isDashboardRoot,
-  buildLocalizedPath,
-} from "@/utils/path";
+import { buildLocalizedPath } from "@/utils/path";
 import { useSettings } from "@/context/SettingsContext";
 import { useDashboard } from "@/context/DashboardContext";
 import { useNavigation } from "@/context/NavigationContext";

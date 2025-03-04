@@ -1,3 +1,4 @@
+// layout.types.ts
 export interface Meta {
   version: string;
   lastUpdated: string;
@@ -23,6 +24,10 @@ export interface LanguageOption {
 
 export interface HeaderDictionary {
   aria: string;
+  subtitle?: {
+    firstLetter: string;
+    text: string;
+  };
   navigation: Record<string, NavigationItem>;
   clientPortal: {
     label: string;
@@ -48,13 +53,23 @@ export interface FooterLegends {
   };
 }
 
-export interface Footer {
+export interface FooterDictionary {
   company: {
     title: string;
     aria: string;
   };
   legends: FooterLegends;
   navigation: Record<string, NavigationItem>;
+  // Additional properties for footer content
+  description: string;
+  cta: string;
+  links: {
+    showcase: string;
+    solutions: string;
+    clientSuite: string;
+    journey: string;
+  };
+  copyright: string;
 }
 
 export interface Accessibility {
@@ -79,7 +94,7 @@ export interface Messages {
 export interface MainLayoutDictionary {
   meta: Meta;
   header: HeaderDictionary;
-  footer: Footer;
+  footer: FooterDictionary;
   accessibility: Accessibility;
   messages: Messages;
 }

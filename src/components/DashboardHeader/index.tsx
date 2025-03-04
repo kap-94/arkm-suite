@@ -1,25 +1,33 @@
 // src/components/DashboardHeader/DashboardHeader.tsx
 "use client";
 
-import React, { forwardRef, useCallback } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
-import { FolderIcon, FileIcon, ListTodoIcon } from "lucide-react";
+import { FileIcon, ListTodoIcon, Layout, BookOpen } from "lucide-react";
 import { UserInfo } from "../UserInfo";
-import { SearchBar } from "../SearchBar";
+import { SearchBar, SearchBarOption } from "../SearchBar";
 import { Hamburger } from "../Hamburger";
 import { useDashboard } from "@/context/DashboardContext";
 import styles from "./DashboardHeader.module.scss";
 import type {
   HeaderSection,
-  SearchSection,
   UserMenuItem,
 } from "@/types/dictionary/dashboardLayout.types";
 import { getIconComponent } from "@/utils/iconUtils";
+import { SearchableEntity, searchService } from "@/services/searchService";
 import { UserProfile } from "@/app/[lang]/dashboard/account/profile/ProfileClient";
+import { Language } from "@/lib/config/i18n";
 
 const cx = classNames.bind(styles);
 
-interface Theme {
+interface DashboardHeaderTheme {
   type: "light" | "dark" | "custom";
   customValues?: {
     background?: string;
@@ -31,38 +39,28 @@ interface Theme {
 
 interface DashboardHeaderProps {
   className?: string;
-  theme?: Theme;
+  theme?: DashboardHeaderTheme;
   config: HeaderSection;
   onSignOut?: () => void;
   user: UserProfile;
+  lang: Language;
 }
 
 const CATEGORY_ICONS = {
-  project: <FolderIcon size={16} />,
-  task: <ListTodoIcon size={16} />,
-  file: <FileIcon size={16} />,
+  project: <Layout size={16} strokeWidth={1.9} />,
+  task: <ListTodoIcon size={16} strokeWidth={1.9} />,
+  file: <FileIcon size={16} strokeWidth={1.9} />,
+  documentation: <BookOpen size={16} strokeWidth={1.9} />,
 };
 
-const transformSearchOptions = (search: SearchSection) => {
-  const options = [];
-  const categoryEntries = Object.entries(search.categories);
+const DEBOUNCE_MS = 300; // Ajusta este valor según necesites
 
-  for (const [categoryKey, category] of categoryEntries) {
-    const option = {
-      id: categoryKey,
-      label: category.label,
-      value: categoryKey,
-      type: categoryKey,
-      icon: CATEGORY_ICONS[categoryKey as keyof typeof CATEGORY_ICONS],
-      subtitle: category.label,
-      priority: category.priority,
-    };
-
-    options.push(option);
-  }
-
-  return options.slice(0, search.results.maxItems);
-};
+const transformSearchEntityToOption = (
+  entity: SearchableEntity
+): SearchBarOption => ({
+  ...searchService.toSearchBarOption(entity),
+  icon: CATEGORY_ICONS[entity.type as keyof typeof CATEGORY_ICONS],
+});
 
 const transformUserMenuOptions = (options: UserMenuItem[]) => {
   return options.map((option) => {
@@ -77,26 +75,92 @@ const transformUserMenuOptions = (options: UserMenuItem[]) => {
 };
 
 export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
-  ({ className, theme = { type: "light" }, config, user, onSignOut }, ref) => {
+  ({ className, theme = { type: "light" }, config, user, lang }, ref) => {
+    const router = useRouter();
     const { state, toggleSidebar } = useDashboard();
-    const searchOptions = transformSearchOptions(config.search);
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchResults, setSearchResults] = useState<SearchBarOption[]>([]);
+    const searchTimeoutRef = useRef<NodeJS.Timeout>();
     const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
+
+    const performSearch = useCallback(
+      async (searchTerm: string) => {
+        if (searchTerm.length >= config.search.config.minSearchLength) {
+          setIsSearching(true);
+          try {
+            const results = await searchService.search(searchTerm, lang);
+            setSearchResults(results.map(transformSearchEntityToOption));
+          } catch (error) {
+            console.error("Search error:", error);
+            setSearchResults([]);
+          } finally {
+            setIsSearching(false);
+          }
+        } else {
+          setSearchResults([]);
+        }
+      },
+      [config.search.config.minSearchLength, lang]
+    );
 
     const handleSearch = useCallback(
       (searchTerm: string) => {
-        if (searchTerm.length >= config.search.config.minSearchLength) {
-          console.log("Searching for:", searchTerm);
+        // Clear any existing timeout
+        if (searchTimeoutRef.current) {
+          clearTimeout(searchTimeoutRef.current);
         }
+
+        // If empty search term, clear results immediately
+        if (
+          !searchTerm ||
+          searchTerm.length < config.search.config.minSearchLength
+        ) {
+          setSearchResults([]);
+          setIsSearching(false);
+          return;
+        }
+
+        // Set loading state immediately
+        setIsSearching(true);
+
+        // Set new timeout for search
+        searchTimeoutRef.current = setTimeout(() => {
+          performSearch(searchTerm);
+        }, DEBOUNCE_MS);
       },
-      [config.search.config.minSearchLength]
+      [config.search.config.minSearchLength, performSearch]
     );
 
-    const handleOptionSelect = useCallback((option: any) => {
-      console.log("Selected option:", option);
-      if (option.href) {
-        window.location.href = option.href;
-      }
+    // Cleanup timeout on unmount
+    useEffect(() => {
+      return () => {
+        if (searchTimeoutRef.current) {
+          clearTimeout(searchTimeoutRef.current);
+        }
+      };
     }, []);
+
+    const handleOptionSelect = useCallback(
+      (option: SearchBarOption) => {
+        if (option.href) {
+          router.push(option.href);
+        }
+      },
+      [router]
+    );
+
+    // Función handleSubmit que se pasa al SearchBar
+    const handleSubmit = useCallback(
+      (searchTerm: string) => {
+        if (searchTerm.trim()) {
+          // Redirigir a la página de resultados de búsqueda
+          router.push(
+            `/dashboard/search?query=${encodeURIComponent(searchTerm.trim())}`
+          );
+        }
+      },
+      [router]
+    );
 
     return (
       <header
@@ -135,11 +199,13 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
               label={config.search.config.label}
               onOptionSelect={handleOptionSelect}
               onSearch={handleSearch}
-              options={searchOptions}
+              onSubmit={handleSubmit} // Pasamos handleSubmit como prop
+              options={searchResults}
               placeholder={config.search.config.placeholder}
               showButton={true}
               showLabel={false}
               theme={theme}
+              loading={isSearching}
             />
           </div>
 

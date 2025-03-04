@@ -15,6 +15,7 @@ import { Content } from "@/types/models/Content";
 import { DashboardDictionary } from "@/types/dictionary/dashboard.types";
 import { ProjectCardItem } from "@/components/ProjectCard/types";
 
+import { buildLocalizedPath } from "@/utils/path";
 import { useSettings } from "@/context/SettingsContext";
 
 import {
@@ -32,7 +33,6 @@ import { NotificationItem } from "@/components/NotificationItem";
 import DashboardProjects from "@/components/DashboardProjects";
 
 import styles from "../page.module.scss";
-import { buildLocalizedPath } from "@/utils/path";
 
 const cx = classNames.bind(styles);
 

@@ -7,6 +7,10 @@
   },
   "header": {
     "aria": "Navegación principal del sitio",
+    "subtitle": {
+      "firstLetter": "E",
+      "text": "studio de diseño y desarrollo web"
+    },
     "navigation": {
       "home": {
         "label": "Inicio",
@@ -51,7 +55,7 @@
       }
     },
     "clientPortal": {
-      "label": "Portal del Cliente",
+      "label": "Suite del Cliente",
       "href": "/dashboard"
     },
     "languageOptions": {
@@ -66,6 +70,15 @@
     }
   },
   "footer": {
+    "description": "Creando experiencias digitales que inspiran, innovan y transforman.",
+    "cta": "Conecta Con Nosotros Hoy",
+    "links": {
+      "showcase": "Showcase",
+      "solutions": "Soluciones",
+      "clientSuite": "Suite del Cliente",
+      "journey": "Trayecto"
+    },
+    "copyright": "© {year} ARKM Studio. Todos los derechos reservados.",
     "company": {
       "title": "Empresa",
       "aria": "Información de la empresa"

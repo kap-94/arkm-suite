@@ -71,3 +71,15 @@ export enum Visibility {
   Private = "private",
   Client = "client",
 }
+
+// Theme
+
+export interface Theme {
+  type: "light" | "dark" | "custom";
+  customValues?: {
+    background?: string;
+    border?: string;
+    text?: string;
+    textSecondary?: string;
+  };
+}

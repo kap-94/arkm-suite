@@ -1,0 +1,194 @@
+// src/components/SolutionCard/SolutionCardExpandable.module.scss
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$font: "usual", sans-serif !important;
+
+.solution-card {
+  position: relative;
+  padding: $spacing-xxl 0;
+  border-radius: $border-radius-lg;
+  min-height: 412px;
+  overflow: hidden;
+  @include transition(transform, background);
+  isolation: isolate;
+
+  &__icon-wrapper {
+    @include flex-center;
+    width: 82px;
+    height: 82px;
+    margin-block: 0 $spacing-lg;
+    border-radius: $border-radius-xl;
+    border-radius: $border-radius-full;
+    background: rgba($primary-color, 0.1);
+    color: $primary-color;
+    position: relative;
+    @include transition(transform);
+
+    // Glow effect
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(
+        circle at center,
+        rgba($primary-color, 0.1),
+        transparent 70%
+      );
+      filter: blur(10px);
+    }
+
+    svg {
+      width: 44px;
+      height: 44px;
+      @include transition(transform);
+    }
+  }
+
+  &__content {
+    @include flex(column, flex-start, flex-start, $spacing-md);
+  }
+
+  &__title {
+    position: relative;
+    font-size: 40px;
+    letter-spacing: 0.013em;
+    color: transparent;
+
+    // Capa 1 - texto base con gradiente principal
+    &::before {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background: linear-gradient(120deg, $primary-color, $primary-light);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      z-index: 3;
+    }
+
+    // Capa 2 - sombra superior que da profundidad
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 100%;
+      background: linear-gradient(
+        120deg,
+        lighten($primary-color, 10%),
+        lighten($primary-light, 10%)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      opacity: 0.4;
+      z-index: 2;
+    }
+  }
+
+  &__description {
+    letter-spacing: 0.03em !important;
+    text-align: left;
+  }
+
+  &__features {
+    @include flex(column, flex-start, flex-start, $spacing-md);
+    margin-top: $spacing-md;
+    width: 100%;
+  }
+
+  &__feature-container {
+    width: 100%;
+    @include transition(height);
+  }
+
+  &__feature {
+    @include flex(row, flex-start, center, 8px);
+    letter-spacing: 0.03em !important;
+    cursor: pointer;
+    padding: $spacing-xs $spacing-sm;
+    padding-left: 0;
+    border-radius: $border-radius-sm;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba($primary-color, 0.05);
+    }
+
+    &--expanded {
+      background-color: rgba($primary-color, 0.08);
+    }
+  }
+
+  &__feature-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+  }
+
+  &__feature-icon {
+    color: $primary-color;
+    transition: transform 0.2s ease;
+    stroke-width: 3px;
+  }
+
+  &__feature-description {
+    max-height: 0;
+    text-align: left;
+    letter-spacing: 0.03em !important;
+    overflow: hidden;
+    padding: 0 $spacing-sm 0 $spacing-lg;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+
+    // Mejoramos la transición para hacerla más suave
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.25s ease-in-out, transform 0.3s ease-out,
+      padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &--expanded {
+      max-height: 200px; // Ajustar según el contenido
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  @include tablet {
+    min-height: 380px;
+    padding: $spacing-xl;
+
+    &__icon-wrapper {
+      width: 80px;
+      height: 80px;
+      margin-bottom: $spacing-lg;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
+  @include mobile {
+    min-height: 340px;
+    padding: $spacing-lg;
+
+    &__icon-wrapper {
+      width: 64px;
+      height: 64px;
+
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+}

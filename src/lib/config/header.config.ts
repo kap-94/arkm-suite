@@ -10,10 +10,10 @@ export const headerConfig: HeaderConfig = {
     },
   },
   settings: {
-    variant: "transparent",
+    variant: "glass",
     breakpoint: 768,
     menuPosition: "right",
   },
   // Adding empty actions array to satisfy type requirements
-  actions: [],
+  // actions: [],
 };

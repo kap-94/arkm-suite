@@ -14,7 +14,7 @@ $search-bar-theme-map: (
     hover-background: convert-to-rgba($black-light, 0.4),
     dropdown-background: linear-gradient(180deg, #000000, #0a0a0a),
     dropdown-text: $text-primary,
-    dropdown-border: convert-to-rgba($text-primary, 0.1),
+    dropdown-border: convert-to-rgba($text-primary, 0.18),
     dropdown-hover: convert-to-rgba($primary-color, 0.05),
     dropdown-group: $text-secondary,
   ),
@@ -47,83 +47,6 @@ $search-bar-theme-map: (
 .search-bar {
   position: relative;
   width: 100%;
-
-  // Theme variations
-  @each $theme, $values in $search-bar-theme-map {
-    &--theme-#{$theme} {
-      background: map-get($values, background);
-
-      .search-bar__input,
-      .search-bar__button {
-        background-color: map-get($values, input-background);
-        color: map-get($values, text);
-      }
-
-      .search-bar__input {
-        &::placeholder {
-          color: map-get($values, placeholder);
-        }
-
-        &:-webkit-autofill,
-        &:-webkit-autofill:hover,
-        &:-webkit-autofill:focus {
-          -webkit-text-fill-color: map-get($values, text);
-          -webkit-box-shadow: 0
-            0
-            0px
-            1000px
-            map-get($values, input-background)
-            inset;
-        }
-      }
-
-      .search-bar__button {
-        background-color: map-get($values, button-background);
-        color: map-get($values, button-text);
-        border-left: 1px
-          solid
-          convert-to-rgba(map-get($values, border-color), 0.072);
-
-        &-icon {
-          color: map-get($values, button-text);
-        }
-
-        @include hover {
-          @if $theme != "custom" {
-            background-color: map-get($values, hover-background);
-          }
-        }
-      }
-
-      .search-bar__wrapper {
-        border-color: map-get($values, border-color);
-        &:focus-within {
-          border-color: rgba(map-get($values, text), 0);
-          @include elevation(1);
-        }
-      }
-
-      // Dropdown theme-specific styles
-      .search-bar__dropdown {
-        @if $theme != "custom" {
-          background: map-get($values, dropdown-background);
-          border: 1px solid map-get($values, dropdown-border);
-
-          .search-bar__option {
-            color: map-get($values, dropdown-text);
-
-            &:not(:last-child) {
-              border-bottom: 1px solid map-get($values, dropdown-border);
-            }
-
-            @include hover {
-              background-color: map-get($values, dropdown-hover);
-            }
-          }
-        }
-      }
-    }
-  }
 
   &__form {
     width: 100%;
@@ -235,7 +158,7 @@ $search-bar-theme-map: (
     position: absolute;
     width: 100%;
     margin-top: $spacing-xs;
-    border-radius: $border-radius-lg;
+    border-radius: $border-radius-md;
     @include elevation();
     z-index: $z-index-dropdown + 1;
     overflow: hidden;
@@ -304,17 +227,6 @@ $search-bar-theme-map: (
     }
   }
 
-  // @keyframes mobileDropdownSlide {
-  //   from {
-  //     opacity: 0;
-  //     transform: translateY(100%);
-  //   }
-  //   to {
-  //     opacity: 1;
-  //     transform: translateY(0);
-  //   }
-  // }
-
   &__options-list {
     max-height: 300px;
     overflow-y: auto;
@@ -334,9 +246,10 @@ $search-bar-theme-map: (
     @include flex($align: center, $gap: $spacing-md);
     width: 100%;
     min-height: 40px;
-    padding: $spacing-sm $spacing-md;
+    padding: 12px $spacing-md;
     border: none;
     background: none;
+    border-radius: $border-radius-md;
     cursor: pointer;
     text-align: left;
     @include transition(all);
@@ -383,15 +296,15 @@ $search-bar-theme-map: (
 
     &-icon {
       @include flex-center;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
-      opacity: 0.6;
+      // opacity: 0.9;
       @include transition(all);
 
       svg {
-        width: 16px;
-        height: 16px;
+        width: 17px;
+        height: 17px;
 
         @include mobile {
           width: 20px;
@@ -406,10 +319,15 @@ $search-bar-theme-map: (
     }
 
     &-content {
-      @include flex($direction: column, $align: flex-start);
+      @include flex($direction: column, $align: flex-start, $gap: 2px);
       flex: 1;
       min-width: 0;
       @include transition(transform);
+    }
+
+    &-content-header {
+      @include flex($align: center, $justify: space-between, $gap: $spacing-md);
+      width: 100%;
     }
 
     &-label {
@@ -417,9 +335,17 @@ $search-bar-theme-map: (
       @include text-truncate;
     }
 
+    &-type {
+      font-size: 10px !important;
+      opacity: 0.95;
+    }
+
     &-subtitle {
       width: 100%;
+      opacity: 0.9;
+      // @include text-truncate(2);
       @include text-truncate;
+      padding-right: $spacing-sm;
     }
 
     @include mobile {
@@ -427,6 +353,12 @@ $search-bar-theme-map: (
         background-color: convert-to-rgba($primary-color, 0.1);
       }
     }
+  }
+
+  &__highlight {
+    border-radius: 2px;
+    padding: 0 2px;
+    margin: 0 -2px;
   }
 
   &__loading {
@@ -437,6 +369,87 @@ $search-bar-theme-map: (
 
     @include mobile {
       min-height: 120px;
+    }
+  }
+
+  // Theme variations
+  @each $theme, $values in $search-bar-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+
+      .search-bar__input,
+      .search-bar__button {
+        background-color: map-get($values, input-background);
+        color: map-get($values, text);
+      }
+
+      .search-bar__input {
+        &::placeholder {
+          color: map-get($values, placeholder);
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus {
+          -webkit-text-fill-color: map-get($values, text);
+          -webkit-box-shadow: 0
+            0
+            0px
+            1000px
+            map-get($values, input-background)
+            inset;
+        }
+      }
+
+      .search-bar__button {
+        background-color: map-get($values, button-background);
+        color: map-get($values, button-text);
+        border-left: 1px
+          solid
+          convert-to-rgba(map-get($values, border-color), 0.072);
+
+        &-icon {
+          color: map-get($values, button-text);
+        }
+
+        @include hover {
+          @if $theme != "custom" {
+            background-color: map-get($values, hover-background);
+          }
+        }
+      }
+
+      .search-bar__wrapper {
+        border-color: map-get($values, border-color);
+        &:focus-within {
+          border-color: rgba(map-get($values, text), 0);
+          @include elevation(1);
+        }
+      }
+
+      // Dropdown theme-specific styles
+      .search-bar__dropdown {
+        @if $theme != "custom" {
+          background: map-get($values, dropdown-background);
+          border: 1px solid map-get($values, dropdown-border);
+
+          .search-bar__option {
+            color: map-get($values, dropdown-text);
+
+            &:not(:last-child) {
+              border-bottom: 1px solid map-get($values, dropdown-border);
+            }
+
+            @include hover {
+              background-color: map-get($values, dropdown-hover);
+            }
+          }
+
+          .search-bar__highlight {
+            background-color: rgba($primary-light, 0.7);
+          }
+        }
+      }
     }
   }
 }

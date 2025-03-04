@@ -6,7 +6,11 @@ import styles from "./ClientSuitePreview.module.scss";
 
 const cx = classNames.bind(styles);
 
-export const ClientSuitePreview = () => {
+interface ClientSuitePreviewProps {
+  dictionary?: any;
+}
+
+export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
   return (
     <section className={cx("suite")}>
       <div className={cx("suite__container")}>
@@ -20,7 +24,7 @@ export const ClientSuitePreview = () => {
             className={cx("suite__title")}
             align="left"
           >
-            Acceda a nuestra Suite del Cliente
+            {dictionary?.title || "Access our Client Suite"}
           </Typography>
           <Typography
             variant="p1"
@@ -30,8 +34,8 @@ export const ClientSuitePreview = () => {
             fontFamily="usual"
             className={cx("suite__subtitle")}
           >
-            Una plataforma integral que centraliza la gestión de proyectos con
-            visibilidad en tiempo real y herramientas de seguimiento.
+            {dictionary?.subtitle ||
+              "A comprehensive platform that centralizes project management with real-time visibility and tracking tools."}
           </Typography>
         </div>
 
@@ -39,7 +43,7 @@ export const ClientSuitePreview = () => {
           <ImageSlider />
         </div>
 
-        <Benefits />
+        <Benefits benefits={dictionary?.benefits} />
       </div>
     </section>
   );

@@ -2,6 +2,8 @@ import { Language } from "@/lib/config/i18n";
 import { getPageDictionary, mainLayoutDictionary } from "@/utils/dictionary";
 import Header from "@/components/Header";
 import { headerConfig } from "@/lib/config/header.config";
+import { Footer } from "@/components/Footer";
+import { MainLayoutDictionary } from "@/types/dictionary/mainLayout.types";
 
 export default async function MainLayout({
   children,
@@ -10,7 +12,10 @@ export default async function MainLayout({
   children: React.ReactNode;
   params: { lang: Language };
 }) {
-  const dictionary = await getPageDictionary(mainLayoutDictionary, lang);
+  const dictionary = await getPageDictionary<MainLayoutDictionary>(
+    mainLayoutDictionary,
+    lang
+  );
 
   return (
     <main lang={lang as Language}>
@@ -22,6 +27,7 @@ export default async function MainLayout({
         menuPosition={headerConfig.settings.menuPosition}
       />
       {children}
+      <Footer dictionary={dictionary.footer} />
     </main>
   );
 }

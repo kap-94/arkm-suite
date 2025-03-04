@@ -51,12 +51,12 @@ export const fragmentShaderHologramGlitch = `
     if (texColor.a > 0.0) {
       // Colores holográficos
       vec3 color1 = vec3(0.0, 0.9, 1.0);
-      vec3 color2 = vec3(1.0, 0., 0.8);
+      vec3 color2 = vec3(1.0, 0.2, 0.8);
       float gradient = sin(uv.x * 5.0 + time) * 0.5 + 0.5;
 
       vec3 finalColor = mix(color1, color2, gradient);
       finalColor += vec3(scanline) * 0.1;
-      finalColor *= 0.8 + noise * .0;
+      finalColor *= 0.8 + noise * 2.0;
 
       gl_FragColor = vec4(finalColor, texColor.a * (0.8 + scanline));
     } else {
@@ -79,7 +79,7 @@ export const fragmentShaderHologramGlitch = `
 //     vec2 uv = vUv;
 
 //     // Glitch effect
-//     float glitchTime = floor(time * .0) * 0.5;
+//     float glitchTime = floor(time * 2.0) * 0.5;
 //     float noise = random(vec2(glitchTime));
 
 //     // RGB Split
@@ -131,7 +131,7 @@ export const fragmentShaderSmoothHologram = `
 
     // Distorsión suave
     float noise = random(uv + time * 0.1) * 0.01;
-    float scanline = sin(uv.y * 100.0 + time * .0) * 0.02;
+    float scanline = sin(uv.y * 100.0 + time * 2.0) * 0.02;
     vec2 distortedUv = uv + vec2(noise, scanline);
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -139,16 +139,16 @@ export const fragmentShaderSmoothHologram = `
     if (texColor.a > 0.0) {
       // Colores iridiscentes
       vec3 color1 = vec3(0.1, 0.8, 0.9);
-      vec3 color2 = vec3(0.6, 0., 0.9);
-      vec3 color3 = vec3(0., 0.9, 0.6);
+      vec3 color2 = vec3(0.6, 0.2, 0.9);
+      vec3 color3 = vec3(0.2, 0.9, 0.6);
 
-      float t1 = sin(time + uv.x * .0) * 0.5 + 0.5;
+      float t1 = sin(time + uv.x * 2.0) * 0.5 + 0.5;
       float t2 = sin(time * 1. + uv.x * 3.0) * 0.5 + 0.5;
 
       vec3 gradientColor = mix(mix(color1, color2, t1), color3, t2);
       vec3 finalColor = gradientColor + vec3(scanline * 0.3);
 
-      float brightness = 0.8 + noise * .0;
+      float brightness = 0.8 + noise * 2.0;
       gl_FragColor = vec4(finalColor * brightness, texColor.a * 0.9);
     } else {
       gl_FragColor = vec4(0.0);
@@ -170,7 +170,7 @@ export const fragmentShaderAuroraBorealis = `
     vec2 uv = vUv;
 
     // Efecto aurora suave
-    float aurora = sin(uv.x * 4.0 + time) * cos(uv.y * .0 + time * 0.5) * 0.01;
+    float aurora = sin(uv.x * 4.0 + time) * cos(uv.y * 2.0 + time * 0.5) * 0.01;
     vec2 distortedUv = uv + vec2(aurora);
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -181,7 +181,7 @@ export const fragmentShaderAuroraBorealis = `
       vec3 color2 = vec3(0.0, 0.6, 1.0);
       vec3 color3 = vec3(0.6, 0.3, 1.0);
 
-      float shift = sin(time * 0.5 + uv.y * .0) * 0.5 + 0.5;
+      float shift = sin(time * 0.5 + uv.y * 2.0) * 0.5 + 0.5;
       float shift2 = cos(time * 0.3 + uv.x * 3.0) * 0.5 + 0.5;
 
       vec3 auroraColor = mix(mix(color1, color2, shift), color3, shift2);
@@ -210,7 +210,7 @@ export const fragmentShaderAuroraBorealis = `
 //     float sliceOffset = sin(sliceY * 30.0 + time) * 0.02;
 
 //     vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - sliceProgress) * .0);
+//     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - sliceProgress) * 2.0);
 //     distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -235,12 +235,12 @@ export const fragmentShaderAuroraBorealis = `
 
 // void main() {
 //     vec2 uv = vUv;
-//     float delayedTime = max(0.0, time - .0);
+//     float delayedTime = max(0.0, time - 2.0);
 //     float totalDuration = 5.0; // Duración total del efecto después del delay
 //     float fadeOutStart = 4.0; // Cuándo comenzar a desvanecer
 
 //     // Mostrar texto estático inicial
-//     if (time < .0) {
+//     if (time < 2.0) {
 //         vec4 texColor = texture2D(textTexture, uv);
 //         gl_FragColor = vec4(vec3(0.95), texColor.a);
 //         return;
@@ -255,7 +255,7 @@ export const fragmentShaderAuroraBorealis = `
 //     float sliceOffset = sin(sliceY * 30.0 + delayedTime) * 0.02 * smoothstep(0.0, 0.5, delayedTime);
 
 //     vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - sliceProgress) * .0);
+//     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - sliceProgress) * 2.0);
 //     distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -290,7 +290,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 8.0;
@@ -305,7 +305,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             gl_FragColor = vec4(baseColor * brightness, texColor.a * 0.95);
 //             return;
 //         }
@@ -321,7 +321,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -339,7 +339,7 @@ export const fragmentShaderAuroraBorealis = `
 //         Calcula el progreso del slice sin reinicio
 //         float xProgress = fract(delayedTime * 0.);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -361,6 +361,111 @@ export const fragmentShaderAuroraBorealis = `
 //     gl_FragColor = vec4(0.0);
 // }
 // `;
+export const fragmentShaderSliceReveal = `
+uniform float time;
+uniform sampler2D textTexture;
+varying vec2 vUv;
+
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void main() {
+    vec2 uv = vUv;
+    // float totalDuration = 12.0;
+    // float initialEffectDuration = 2.0;
+    // float transitionDuration = 1.5;
+    // float slicingStart = 4.0;
+    // float slicingDuration = 6.0;
+    float totalDuration = 12.0;      // Reducido de 12.0
+    float initialEffectDuration = 2.0;  // Reducido de 2.0
+    float transitionDuration = 1.5;     // Reducido de 1.5
+    float slicingStart = 4.0;          // Reducido de 4.0
+    float slicingDuration = 6.0;       // Reducido de 6.0
+
+    // Efecto inicial mejorado (0-2s)
+    if (time < initialEffectDuration) {
+        float noise = random(uv + time * 0.08) * 0.01;
+        float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015;
+        float wave1 = sin(uv.x * 15.0 + time) * 0.01;
+        float wave2 = cos(uv.y * 12.0 + time * 0.8) * 0.01;
+        vec2 distortedUv = uv + vec2(wave1 + noise, wave2 + wave * sin(time));
+
+        vec4 redChannel = texture2D(textTexture, distortedUv + vec2(0.002 * sin(time), 0.0));
+        vec4 mainChannel = texture2D(textTexture, distortedUv);
+        vec4 blueChannel = texture2D(textTexture, distortedUv - vec2(0.002 * sin(time), 0.0));
+
+        if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
+            vec3 baseColor = vec3(0.95);
+            float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
+            vec3 finalColor = baseColor * brightness;
+            finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
+            finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
+            gl_FragColor = vec4(finalColor, mainChannel.a * 0.95);
+            return;
+        }
+    }
+    else if (time < slicingStart) {
+        float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+        float noise = random(uv + time * 0.08) * 0.01 * (1.0 - transitionProgress);
+        float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015 * (1.0 - transitionProgress);
+        vec2 distortedUv = uv + vec2(noise + wave * sin(time), wave);
+        vec4 texColor = texture2D(textTexture, distortedUv);
+
+        if (texColor.a > 0.0) {
+            vec3 color = vec3(0.95);
+            float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
+            gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
+            return;
+        }
+    }
+    else {
+        float delayedTime = time - slicingStart;
+        float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
+
+        if (slicingProgress >= 1.0) {
+            gl_FragColor = vec4(0.0);
+            return;
+        }
+
+        float slices = 24.0;
+        float baseTime = delayedTime * 0.2;
+        float sliceY = floor(uv.y * slices) / slices;
+
+        // Nueva transición pixelada
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
+        vec2 pixelated = floor(uv / pixelSize) * pixelSize;
+        float pixelNoise = random(pixelated + delayedTime) * 
+                          (1.0 - smoothstep(0.0, 0.3, slicingProgress));
+        
+        float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
+        float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
+        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) * 
+                           (1.0 - slicingProgress);
+
+        float xProgress = fract(baseTime);
+        vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
+        distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
+
+        // Aplicar pixelado a la textura
+        vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
+        vec4 texColor = texture2D(textTexture, finalUv);
+
+        if (texColor.a > 0.0) {
+            vec3 color = vec3(0.95);
+            float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
+            color *= 0.9 + slice * 0.1;
+            float fadeOut = smoothstep(0.5, 0.95, slicingProgress);
+            float alpha = texColor.a * progress * (1.0 - fadeOut);
+            gl_FragColor = vec4(color, alpha * (1.0 - slicingProgress * 0.5));
+            return;
+        }
+    }
+
+    gl_FragColor = vec4(0.0);
+}
+`;
 
 // export const fragmentShaderSliceReveal = `
 // uniform float time;
@@ -374,7 +479,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 6.0;
@@ -393,7 +498,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             vec3 finalColor = baseColor * brightness;
 //             finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
 //             finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
@@ -410,7 +515,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -429,7 +534,7 @@ export const fragmentShaderAuroraBorealis = `
 //         float sliceY = floor(uv.y * slices) / slices;
 
 //         // Nueva transición pixelada
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -441,7 +546,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         // Aplicar pixelado a la textura
@@ -475,7 +580,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 6.0;
@@ -489,7 +594,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             gl_FragColor = vec4(baseColor * brightness, texColor.a * 0.95);
 //             return;
 //         }
@@ -505,7 +610,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -528,7 +633,7 @@ export const fragmentShaderAuroraBorealis = `
 //    float xProgress = baseTime - floor(baseTime);
 
 //    vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//    float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//    float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //    distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //    vec4 texColor = texture2D(textTexture, distortedUv);
@@ -560,7 +665,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 6.0;
@@ -574,7 +679,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             gl_FragColor = vec4(baseColor * brightness, texColor.a * 0.95);
 //             return;
 //         }
@@ -590,7 +695,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -613,7 +718,7 @@ export const fragmentShaderAuroraBorealis = `
 //    float xProgress = baseTime - floor(baseTime);
 
 //    vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//    float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//    float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //    distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //    vec4 texColor = texture2D(textTexture, distortedUv);
@@ -649,7 +754,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 6.0;
@@ -668,7 +773,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             vec3 finalColor = baseColor * brightness;
 //             finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
 //             finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
@@ -685,7 +790,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -704,8 +809,8 @@ export const fragmentShaderAuroraBorealis = `
 //         float sliceY = floor(uv.y * slices) / slices;
 
 //         // Nueva transición de onda
-//         float waveTransition = (1.0 - smoothstep(0.0, 0., slicingProgress)) *
-//                               sin(uv.y * 20.0 + uv.x * 10.0 + delayedTime * .0);
+//         float waveTransition = (1.0 - smoothstep(0.0, 0.2, slicingProgress)) *
+//                               sin(uv.y * 20.0 + uv.x * 10.0 + delayedTime * 2.0);
 //         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
 //         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
 //         float sliceOffset = mix(waveTransition * 0.03, normalSliceOffset, sliceIntensity) *
@@ -713,7 +818,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -745,7 +850,7 @@ export const fragmentShaderAuroraBorealis = `
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 12.0;
-//     float initialEffectDuration = .0;
+//     float initialEffectDuration = 2.0;
 //     float transitionDuration = 1.5;
 //     float slicingStart = 4.0;
 //     float slicingDuration = 6.0;
@@ -764,7 +869,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
 //             vec3 finalColor = baseColor * brightness;
 //             finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
 //             finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
@@ -781,7 +886,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -800,7 +905,7 @@ export const fragmentShaderAuroraBorealis = `
 //         float sliceY = floor(uv.y * slices) / slices;
 
 //         // Nueva transición pixelada
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -812,7 +917,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         // Aplicar pixelado a la textura
@@ -834,7 +939,7 @@ export const fragmentShaderAuroraBorealis = `
 // }
 // `;
 
-// export const energyPulseShader = `
+// export const fragmentShaderSliceReveal = `
 // uniform float time;
 // uniform sampler2D textTexture;
 // varying vec2 vUv;
@@ -845,37 +950,43 @@ export const fragmentShaderAuroraBorealis = `
 
 // void main() {
 //     vec2 uv = vUv;
-//     float totalDuration = 8.0;
-//     float initialEffectDuration = 1.5;
-//     float transitionDuration = 1.0;
-//     float slicingStart = 3.0;
-//     float slicingDuration = 5.0;
+//     float totalDuration = 12.0;
+//     float initialEffectDuration = 2.0;
+//     float transitionDuration = 1.5;
+//     float slicingStart = 4.0;
+//     float slicingDuration = 6.0;
 
-//     Efecto inicial único y continuo
-//     if (time < slicingStart) {
-//         vec2 center = vec2(0.5);
-//         float dist = length(uv - center);
+//     // Efecto inicial (0-2s)
+//     if (time < initialEffectDuration) {
+//         float noise = random(uv + time * 0.08) * 0.01;
+//         float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015;
+//         vec2 distortedUv = uv + vec2(noise + wave * sin(time), wave);
+//         vec4 texColor = texture2D(textTexture, distortedUv);
 
-//         Un solo efecto de pulso energético
-//         float energyPulse = sin(dist * 20.0 - time * 3.0) * 0.5 +
-//                            cos(dist * 15.0 - time * .0) * 0.3;
-
-//         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
-//         float effectStrength = mix(0.02, 0.0, transitionProgress);
-
-//         vec2 distortedUv = uv + normalize(uv - center) * energyPulse * effectStrength;
-
-//         vec4 mainChannel = texture2D(textTexture, distortedUv);
-
-//         if (mainChannel.a > 0.0) {
+//         if (texColor.a > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float brightness = 1.0 + energyPulse * (1.0 - transitionProgress) * 0.1;
-//             vec3 finalColor = baseColor * brightness;
-//             gl_FragColor = vec4(finalColor, mainChannel.a);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
+//             gl_FragColor = vec4(baseColor * brightness, texColor.a * 0.95);
 //             return;
 //         }
 //     }
-//     El resto del shader permanece igual...
+
+//     // Transición suave (2-4s)
+//     else if (time < slicingStart) {
+//         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+//         float noise = random(uv + time * 0.08) * 0.01 * (1.0 - transitionProgress);
+//         float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015 * (1.0 - transitionProgress);
+//         vec2 distortedUv = uv + vec2(noise + wave * sin(time), wave);
+//         vec4 texColor = texture2D(textTexture, distortedUv);
+
+//         if (texColor.a > 0.0) {
+//             vec3 color = vec3(0.95);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
+//             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
+//             return;
+//         }
+//     }
+//     // Efecto slicing con fade out final
 //     else {
 //         float delayedTime = time - slicingStart;
 //         float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
@@ -886,32 +997,22 @@ export const fragmentShaderAuroraBorealis = `
 //         }
 
 //         float slices = 24.0;
-//         float baseTime = delayedTime * 0.;
+//         float baseTime = delayedTime * 2.0; // Increased multiplication factor
 //         float sliceY = floor(uv.y * slices) / slices;
+//         float sliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.2 * (1.0 - slicingProgress); // Increased offset magnitude
+//         float xProgress = baseTime - floor(baseTime);
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
-//         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
-//         float pixelNoise = random(pixelated + delayedTime) *
-//                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
-
-//         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
-//         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
-//         float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
-//                            (1.0 - slicingProgress);
-
-//         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 1.0); // Removed multiplication by 0
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
-//         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
-//         vec4 texColor = texture2D(textTexture, finalUv);
+//         vec4 texColor = texture2D(textTexture, distortedUv);
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
 //             float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
 //             color *= 0.9 + slice * 0.1;
-//             float fadeOut = smoothstep(0.5, 0.95, slicingProgress);
+//             float fadeOut = smoothstep(0.7, 0.95, slicingProgress); // Adjusted for later fade out
 //             float alpha = texColor.a * progress * (1.0 - fadeOut);
 //             gl_FragColor = vec4(color, alpha * (1.0 - slicingProgress * 0.5));
 //             return;
@@ -921,6 +1022,94 @@ export const fragmentShaderAuroraBorealis = `
 //     gl_FragColor = vec4(0.0);
 // }
 // `;
+
+export const energyPulseShader = `
+uniform float time;
+uniform sampler2D textTexture;
+varying vec2 vUv;
+
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+void main() {
+    vec2 uv = vUv;
+    float totalDuration = 8.0;
+    float initialEffectDuration = 1.5;
+    float transitionDuration = 1.0;
+    float slicingStart = 3.0;
+    float slicingDuration = 5.0;
+
+    Efecto inicial único y continuo
+    if (time < slicingStart) {
+        vec2 center = vec2(0.5);
+        float dist = length(uv - center);
+
+        Un solo efecto de pulso energético
+        float energyPulse = sin(dist * 20.0 - time * 3.0) * 0.5 +
+                           cos(dist * 15.0 - time * 2.0) * 0.3;
+
+        float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+        float effectStrength = mix(0.02, 0.0, transitionProgress);
+
+        vec2 distortedUv = uv + normalize(uv - center) * energyPulse * effectStrength;
+
+        vec4 mainChannel = texture2D(textTexture, distortedUv);
+
+        if (mainChannel.a > 0.0) {
+            vec3 baseColor = vec3(0.95);
+            float brightness = 1.0 + energyPulse * (1.0 - transitionProgress) * 0.1;
+            vec3 finalColor = baseColor * brightness;
+            gl_FragColor = vec4(finalColor, mainChannel.a);
+            return;
+        }
+    }
+    El resto del shader permanece igual...
+    else {
+        float delayedTime = time - slicingStart;
+        float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
+
+        if (slicingProgress >= 1.0) {
+            gl_FragColor = vec4(0.0);
+            return;
+        }
+
+        float slices = 24.0;
+        float baseTime = delayedTime * 0.;
+        float sliceY = floor(uv.y * slices) / slices;
+
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
+        vec2 pixelated = floor(uv / pixelSize) * pixelSize;
+        float pixelNoise = random(pixelated + delayedTime) *
+                          (1.0 - smoothstep(0.0, 0.3, slicingProgress));
+
+        float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
+        float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
+        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
+                           (1.0 - slicingProgress);
+
+        float xProgress = fract(baseTime);
+        vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
+        distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
+
+        vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
+        vec4 texColor = texture2D(textTexture, finalUv);
+
+        if (texColor.a > 0.0) {
+            vec3 color = vec3(0.95);
+            float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
+            color *= 0.9 + slice * 0.1;
+            float fadeOut = smoothstep(0.5, 0.95, slicingProgress);
+            float alpha = texColor.a * progress * (1.0 - fadeOut);
+            gl_FragColor = vec4(color, alpha * (1.0 - slicingProgress * 0.5));
+            return;
+        }
+    }
+
+    gl_FragColor = vec4(0.0);
+}
+`;
 
 // export const energyPulseShader = `
 // uniform float time;
@@ -946,7 +1135,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         // Un solo efecto de pulso energético
 //         float energyPulse = sin(dist * 20.0 - time * 3.0) * 0.5 +
-//                            cos(dist * 15.0 - time * .0) * 0.3;
+//                            cos(dist * 15.0 - time * 2.0) * 0.3;
 
 //         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 //         float effectStrength = mix(0.02, 0.0, transitionProgress);
@@ -977,7 +1166,7 @@ export const fragmentShaderAuroraBorealis = `
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -989,7 +1178,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1033,7 +1222,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         // Un solo efecto de pulso energético
 //         float energyPulse = sin(dist * 20.0 - time * 3.0) * 0.5 +
-//                            cos(dist * 15.0 - time * .0) * 0.3;
+//                            cos(dist * 15.0 - time * 2.0) * 0.3;
 
 //         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 //         float effectStrength = mix(0.02, 0.0, transitionProgress);
@@ -1065,7 +1254,7 @@ export const fragmentShaderAuroraBorealis = `
 //         float sliceY = floor(uv.y * slices) / slices;
 
 //         // Nueva transición pixelada
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1077,7 +1266,7 @@ export const fragmentShaderAuroraBorealis = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         // Aplicar pixelado a la textura
@@ -1099,111 +1288,111 @@ export const fragmentShaderAuroraBorealis = `
 // }
 // `;
 
-export const fragmentShaderSliceReveal = `
-uniform float time;
-uniform sampler2D textTexture;
-varying vec2 vUv;
+// export const fragmentShaderSliceReveal = `
+// uniform float time;
+// uniform sampler2D textTexture;
+// varying vec2 vUv;
 
-float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-}
+// float random(vec2 st) {
+//     return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+// }
 
-void main() {
-    vec2 uv = vUv;
-    // float totalDuration = 12.0;
-    // float initialEffectDuration = .0;
-    // float transitionDuration = 1.5;
-    // float slicingStart = 4.0;
-    // float slicingDuration = 6.0;
-    float totalDuration = 8.0;      // Reducido de 12.0
-    float initialEffectDuration = 1.5;  // Reducido de .0
-    float transitionDuration = 1.0;     // Reducido de 1.5
-    float slicingStart = 3.0;          // Reducido de 4.0
-    float slicingDuration = 4.0;       // Reducido de 6.0
+// void main() {
+//     vec2 uv = vUv;
+//     // float totalDuration = 12.0;
+//     // float initialEffectDuration = 2.0;
+//     // float transitionDuration = 1.5;
+//     // float slicingStart = 4.0;
+//     // float slicingDuration = 6.0;
+//     float totalDuration = 8.0;      // Reducido de 12.0
+//     float initialEffectDuration = 1.5;  // Reducido de 2.0
+//     float transitionDuration = 1.0;     // Reducido de 1.5
+//     float slicingStart = 3.0;          // Reducido de 4.0
+//     float slicingDuration = 4.0;       // Reducido de 6.0
 
-    // Efecto inicial mejorado (0-2s)
-    if (time < initialEffectDuration) {
-        float noise = random(uv + time * 0.08) * 0.01;
-        float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015;
-        float wave1 = sin(uv.x * 15.0 + time) * 0.01;
-        float wave2 = cos(uv.y * 12.0 + time * 0.8) * 0.01;
-        vec2 distortedUv = uv + vec2(wave1 + noise, wave2 + wave * sin(time));
+//     // Efecto inicial mejorado (0-2s)
+//     if (time < initialEffectDuration) {
+//         float noise = random(uv + time * 0.08) * 0.01;
+//         float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015;
+//         float wave1 = sin(uv.x * 15.0 + time) * 0.01;
+//         float wave2 = cos(uv.y * 12.0 + time * 0.8) * 0.01;
+//         vec2 distortedUv = uv + vec2(wave1 + noise, wave2 + wave * sin(time));
 
-        vec4 redChannel = texture2D(textTexture, distortedUv + vec2(0.002 * sin(time), 0.0));
-        vec4 mainChannel = texture2D(textTexture, distortedUv);
-        vec4 blueChannel = texture2D(textTexture, distortedUv - vec2(0.002 * sin(time), 0.0));
+//         vec4 redChannel = texture2D(textTexture, distortedUv + vec2(0.002 * sin(time), 0.0));
+//         vec4 mainChannel = texture2D(textTexture, distortedUv);
+//         vec4 blueChannel = texture2D(textTexture, distortedUv - vec2(0.002 * sin(time), 0.0));
 
-        if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
-            vec3 baseColor = vec3(0.95);
-            float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
-            vec3 finalColor = baseColor * brightness;
-            finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
-            finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
-            gl_FragColor = vec4(finalColor, mainChannel.a * 0.95);
-            return;
-        }
-    }
-    else if (time < slicingStart) {
-        float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
-        float noise = random(uv + time * 0.08) * 0.01 * (1.0 - transitionProgress);
-        float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015 * (1.0 - transitionProgress);
-        vec2 distortedUv = uv + vec2(noise + wave * sin(time), wave);
-        vec4 texColor = texture2D(textTexture, distortedUv);
+//         if (max(max(redChannel.a, mainChannel.a), blueChannel.a) > 0.0) {
+//             vec3 baseColor = vec3(0.95);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
+//             vec3 finalColor = baseColor * brightness;
+//             finalColor.r = mix(finalColor.r, redChannel.r, 0.1);
+//             finalColor.b = mix(finalColor.b, blueChannel.b, 0.1);
+//             gl_FragColor = vec4(finalColor, mainChannel.a * 0.95);
+//             return;
+//         }
+//     }
+//     else if (time < slicingStart) {
+//         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+//         float noise = random(uv + time * 0.08) * 0.01 * (1.0 - transitionProgress);
+//         float wave = sin(uv.y * 50.0 + time * 1.5) * 0.015 * (1.0 - transitionProgress);
+//         vec2 distortedUv = uv + vec2(noise + wave * sin(time), wave);
+//         vec4 texColor = texture2D(textTexture, distortedUv);
 
-        if (texColor.a > 0.0) {
-            vec3 color = vec3(0.95);
-            float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
-            gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
-            return;
-        }
-    }
-    else {
-        float delayedTime = time - slicingStart;
-        float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
+//         if (texColor.a > 0.0) {
+//             vec3 color = vec3(0.95);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
+//             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
+//             return;
+//         }
+//     }
+//     else {
+//         float delayedTime = time - slicingStart;
+//         float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
 
-        if (slicingProgress >= 1.0) {
-            gl_FragColor = vec4(0.0);
-            return;
-        }
+//         if (slicingProgress >= 1.0) {
+//             gl_FragColor = vec4(0.0);
+//             return;
+//         }
 
-        float slices = 24.0;
-        float baseTime = delayedTime * 0.;
-        float sliceY = floor(uv.y * slices) / slices;
+//         float slices = 24.0;
+//         float baseTime = delayedTime * 0.;
+//         float sliceY = floor(uv.y * slices) / slices;
 
-        // Nueva transición pixelada
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
-        vec2 pixelated = floor(uv / pixelSize) * pixelSize;
-        float pixelNoise = random(pixelated + delayedTime) * 
-                          (1.0 - smoothstep(0.0, 0.3, slicingProgress));
-        
-        float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
-        float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
-        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) * 
-                           (1.0 - slicingProgress);
+//         // Nueva transición pixelada
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
+//         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
+//         float pixelNoise = random(pixelated + delayedTime) *
+//                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
 
-        float xProgress = fract(baseTime);
-        vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
-        distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
+//         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
+//         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
+//         float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
+//                            (1.0 - slicingProgress);
 
-        // Aplicar pixelado a la textura
-        vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
-        vec4 texColor = texture2D(textTexture, finalUv);
+//         float xProgress = fract(baseTime);
+//         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
+//         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
-        if (texColor.a > 0.0) {
-            vec3 color = vec3(0.95);
-            float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
-            color *= 0.9 + slice * 0.1;
-            float fadeOut = smoothstep(0.5, 0.95, slicingProgress);
-            float alpha = texColor.a * progress * (1.0 - fadeOut);
-            gl_FragColor = vec4(color, alpha * (1.0 - slicingProgress * 0.5));
-            return;
-        }
-    }
+//         // Aplicar pixelado a la textura
+//         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
+//         vec4 texColor = texture2D(textTexture, finalUv);
 
-    gl_FragColor = vec4(0.0);
-}
-`;
+//         if (texColor.a > 0.0) {
+//             vec3 color = vec3(0.95);
+//             float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
+//             color *= 0.9 + slice * 0.1;
+//             float fadeOut = smoothstep(0.5, 0.95, slicingProgress);
+//             float alpha = texColor.a * progress * (1.0 - fadeOut);
+//             gl_FragColor = vec4(color, alpha * (1.0 - slicingProgress * 0.5));
+//             return;
+//         }
+//     }
+
+//     gl_FragColor = vec4(0.0);
+// }
+// `;
 
 export const cyberPulseShader = `
 // uniform float time;
@@ -1233,7 +1422,7 @@ export const cyberPulseShader = `
 //             pulse += sin(dist * 20.0 * i - time * speed) * scale;
 //         }
         
-//         float energyLines = sin(uv.y * 100.0 + time * .0) * 0.002;
+//         float energyLines = sin(uv.y * 100.0 + time * 2.0) * 0.002;
 //         float horizontalLines = sin(uv.x * 80.0 - time) * 0.002;
         
 //         vec2 distortedUv = uv;
@@ -1244,11 +1433,11 @@ export const cyberPulseShader = `
         
 //         if (max(mainColor.a, offsetColor.a) > 0.0) {
 //             vec3 baseColor = vec3(0.95);
-//             float edgeGlow = pow(1.0 - dist, .0) * 0.15;
+//             float edgeGlow = pow(1.0 - dist, 2.0) * 0.15;
 //             float pulseBrightness = 1.0 + pulse * 0.;
             
 //             vec3 finalColor = baseColor * pulseBrightness + vec3(edgeGlow);
-//             finalColor += vec3(0.0, 0.0, 0.1) * sin(time * .0);
+//             finalColor += vec3(0.0, 0.0, 0.1) * sin(time * 2.0);
             
 //             gl_FragColor = vec4(finalColor, mainColor.a * 0.95);
 //             return;
@@ -1263,7 +1452,7 @@ export const cyberPulseShader = `
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -1282,7 +1471,7 @@ export const cyberPulseShader = `
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) * 
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1294,7 +1483,7 @@ export const cyberPulseShader = `
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1341,12 +1530,12 @@ void main() {
         float quantum = 0.0;
         for(float i = 1.0; i <= 4.0; i++) {
             float phase = time * (1.0 + i * 0.);
-            quantum += sin(dist * 30.0 * i + phase + angle * .0) * (0.5 / i);
+            quantum += sin(dist * 30.0 * i + phase + angle * 2.0) * (0.5 / i);
         }
         
         // Efecto de superposición
         float superposition = sin(time * 3.0 + dist * 10.0) * cos(angle * 4.0 + time);
-        float waveCollapse = pow(sin(time * .0) * 0.5 + 0.5, 3.0);
+        float waveCollapse = pow(sin(time * 2.0) * 0.5 + 0.5, 3.0);
         
         vec2 distortedUv = uv + vec2(
             quantum * cos(angle) * 0.01,
@@ -1373,8 +1562,8 @@ void main() {
         float angle = atan(uv.y - 0.5, uv.x - 0.5);
         
         // Colapso de onda suave
-        float collapse = pow(transitionProgress, .0);
-        float wave = sin(dist * 20.0 - time * .0) * (1.0 - collapse) * 0.01;
+        float collapse = pow(transitionProgress, 2.0);
+        float wave = sin(dist * 20.0 - time * 2.0) * (1.0 - collapse) * 0.01;
         float spiral = (angle + time) * (1.0 - collapse) * 0.005;
         
         vec2 distortedUv = uv + vec2(
@@ -1405,7 +1594,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1417,7 +1606,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1454,7 +1643,7 @@ void main() {
 //     float b = random(i + vec2(1.0, 0.0));
 //     float c = random(i + vec2(0.0, 1.0));
 //     float d = random(i + vec2(1.0, 1.0));
-//     vec2 u = f * f * (3.0 - .0 * f);
+//     vec2 u = f * f * (3.0 - 2.0 * f);
 //     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 // }
 
@@ -1482,8 +1671,8 @@ void main() {
 //         }
 
 //         // Líneas de campo magnético
-//         float fieldLines = sin(atan(uv.y - 0.5, uv.x - 0.5) * 8.0 + time * .0);
-//         float fieldStrength = pow(1.0 - dist, .0);
+//         float fieldLines = sin(atan(uv.y - 0.5, uv.x - 0.5) * 8.0 + time * 2.0);
+//         float fieldStrength = pow(1.0 - dist, 2.0);
 
 //         // Distorsión electromagnética
 //         vec2 distortedUv = uv + vec2(
@@ -1510,7 +1699,7 @@ void main() {
 //         float dist = length(uv - center);
 
 //         // Campo disipándose
-//         float dissipation = pow(1.0 - transitionProgress, .0);
+//         float dissipation = pow(1.0 - transitionProgress, 2.0);
 //         float fieldWave = sin(dist * 30.0 - time * 3.0) * dissipation;
 //         float charge = noise(uv * 5.0 + time) * dissipation;
 
@@ -1541,7 +1730,7 @@ void main() {
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1553,7 +1742,7 @@ void main() {
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1589,7 +1778,7 @@ float noise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -1619,8 +1808,8 @@ void main() {
         }
         
         // Líneas de campo con intensidad decreciente
-        float fieldLines = sin(atan(uv.y - 0.5, uv.x - 0.5) * 8.0 + time * .0);
-        float fieldStrength = pow(1.0 - dist, .0) * (1.0 - transitionProgress);
+        float fieldLines = sin(atan(uv.y - 0.5, uv.x - 0.5) * 8.0 + time * 2.0);
+        float fieldStrength = pow(1.0 - dist, 2.0) * (1.0 - transitionProgress);
         
         // Distorsión que se reduce gradualmente
         float distortionStrength = 0.01 * (1.0 - transitionProgress);
@@ -1653,7 +1842,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1665,7 +1854,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1701,7 +1890,7 @@ float noise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -1732,12 +1921,12 @@ void main() {
             
             // Ondas digitales con interferencia
             resonance += sin(dist * frequency + speed) * 
-                        cos(angle * i * .0 + speed * 0.5) * 
+                        cos(angle * i * 2.0 + speed * 0.5) * 
                         amplitude;
         }
         
         // Patrón de pulso digital
-        float pulse = pow(sin(time * .0) * 0.5 + 0.5, .0);
+        float pulse = pow(sin(time * 2.0) * 0.5 + 0.5, 2.0);
         float digitalPattern = noise(vec2(
             uv.x * 10.0 + time,
             uv.y * 10.0 - time * 0.5
@@ -1783,7 +1972,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1795,7 +1984,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1831,7 +2020,7 @@ float noise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -1850,8 +2039,8 @@ void main() {
         float angle = atan(uv.y - center.y, uv.x - center.x);
         
         // Vortex principal
-        float vortexSpin = angle + time * .0;
-        float vortexPull = pow(1.0 - dist, .0);
+        float vortexSpin = angle + time * 2.0;
+        float vortexPull = pow(1.0 - dist, 2.0);
         
         // Capas de energía en espiral
         float energySpiral = 0.0;
@@ -1902,7 +2091,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -1914,7 +2103,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -1950,7 +2139,7 @@ float noise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -1997,7 +2186,7 @@ void main() {
         ) * effectStrength;
         
         // Efecto de brillo de los hilos
-        float threadGlow = abs(threads * .0) * flow;
+        float threadGlow = abs(threads * 2.0) * flow;
         
         vec4 mainColor = texture2D(textTexture, distortedUv);
         vec4 glowColor = texture2D(textTexture, distortedUv + vec2(threadPattern * 0.01) * effectStrength);
@@ -2025,7 +2214,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2037,7 +2226,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2073,7 +2262,7 @@ float noise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -2089,7 +2278,7 @@ void main() {
         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
         vec2 center = vec2(0.5);
         float dist = length(uv - center);
-        
+
         // Campo de plasma principal
         float plasma = 0.0;
         for(float i = 1.0; i <= 3.0; i++) {
@@ -2099,37 +2288,37 @@ void main() {
             float horizontalWave = sin(uv.x * 15.0 * i + time * (1.0 + i * 0.3));
             // Ondas verticales
             float verticalWave = cos(uv.y * 15.0 * i - time * (1.5 + i * 0.));
-            
+
             plasma += (circleWave + horizontalWave + verticalWave) * (0.3 / i);
         }
-        
+
         // Turbulencia del plasma
         float turbulence = noise(vec2(
             uv.x * 4.0 + time * 0.5,
             uv.y * 4.0 - time * 0.3
         ));
-        
+
         // Pulsos de energía
-        float pulse = pow(sin(time * .0) * 0.5 + 0.5, .0);
-        
+        float pulse = pow(sin(time * 2.0) * 0.5 + 0.5, 2.0);
+
         // Intensidad que disminuye con la transición
         float effectStrength = (1.0 - transitionProgress);
-        
+
         // Distorsión combinada
         vec2 distortedUv = uv + vec2(
             plasma * cos(turbulence * 6.28) * 0.02,
             plasma * sin(turbulence * 6.28) * 0.02
         ) * effectStrength;
-        
+
         // Efecto de brillo del plasma
         vec4 mainColor = texture2D(textTexture, distortedUv);
         vec4 plasmaColor = texture2D(textTexture, distortedUv + vec2(plasma * 0.01) * effectStrength);
-        
+
         if (max(mainColor.a, plasmaColor.a) > 0.0) {
             vec3 baseColor = vec3(0.95);
             float plasmaGlow = abs(plasma) * effectStrength * 0.;
             float energyPulse = pulse * turbulence * effectStrength * 0.1;
-            
+
             // Color final con brillo de plasma
             vec3 finalColor = baseColor + vec3(plasmaGlow + energyPulse);
             gl_FragColor = vec4(finalColor, mainColor.a);
@@ -2149,19 +2338,19 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
-        float pixelNoise = random(pixelated + delayedTime) * 
+        float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
-        
+
         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
-        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) * 
+        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
                            (1.0 - slicingProgress);
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2181,6 +2370,130 @@ void main() {
 }
 `;
 
+// export const plasmaPulseShader = `
+// uniform float time;
+// uniform sampler2D textTexture;
+// varying vec2 vUv;
+
+// float random(vec2 st) {
+//     return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+// }
+
+// float noise(vec2 st) {
+//     vec2 i = floor(st);
+//     vec2 f = fract(st);
+//     float a = random(i);
+//     float b = random(i + vec2(1.0, 0.0));
+//     float c = random(i + vec2(0.0, 1.0));
+//     float d = random(i + vec2(1.0, 1.0));
+//     vec2 u = f * f * (3.0 - .0 * f);
+//     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+// }
+
+// void main() {
+//     vec2 uv = vUv;
+//     float totalDuration = 8.0;
+//     float initialEffectDuration = 1.5;
+//     float transitionDuration = 1.0;
+//     float slicingStart = 3.0;
+//     float slicingDuration = 4.0;
+
+//     if (time < slicingStart) {
+//         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+//         vec2 center = vec2(0.5);
+//         float dist = length(uv - center);
+
+//         // Campo de plasma principal
+//         float plasma = 0.0;
+//         for(float i = 1.0; i <= 3.0; i++) {
+//             // Ondas circulares
+//             float circleWave = sin(dist * 20.0 * i - time * (.0 + i * 0.5));
+//             // Ondas horizontales
+//             float horizontalWave = sin(uv.x * 15.0 * i + time * (1.0 + i * 0.3));
+//             // Ondas verticales
+//             float verticalWave = cos(uv.y * 15.0 * i - time * (1.5 + i * 0.2));
+
+//             plasma += (circleWave + horizontalWave + verticalWave) * (0.3 / i);
+//         }
+
+//         // Turbulencia del plasma
+//         float turbulence = noise(vec2(
+//             uv.x * 4.0 + time * 0.5,
+//             uv.y * 4.0 - time * 0.3
+//         ));
+
+//         // Pulsos de energía
+//         float pulse = pow(sin(time * .0) * 0.5 + 0.5, 2.0);
+
+//         // Intensidad que disminuye con la transición
+//         float effectStrength = (1.0 - transitionProgress);
+
+//         // Distorsión combinada
+//         vec2 distortedUv = uv + vec2(
+//             plasma * cos(turbulence * 6.28) * 0.02,
+//             plasma * sin(turbulence * 6.28) * 0.02
+//         ) * effectStrength;
+
+//         // Efecto de brillo del plasma
+//         vec4 mainColor = texture2D(textTexture, distortedUv);
+//         vec4 plasmaColor = texture2D(textTexture, distortedUv + vec2(plasma * 0.01) * effectStrength);
+
+//         if (max(mainColor.a, plasmaColor.a) > 0.0) {
+//             vec3 baseColor = vec3(0.95);
+//             float plasmaGlow = abs(plasma) * effectStrength * 0.2;
+//             float energyPulse = pulse * turbulence * effectStrength * 0.1;
+
+//             // Color final con brillo de plasma
+//             vec3 finalColor = baseColor + vec3(plasmaGlow + energyPulse);
+//             gl_FragColor = vec4(finalColor, mainColor.a);
+//             return;
+//         }
+//     }
+//     else {
+//         float delayedTime = time - slicingStart;
+//         float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
+
+//         if (slicingProgress >= 1.0) {
+//             gl_FragColor = vec4(0.0);
+//             return;
+//         }
+
+//         float slices = 24.0;
+//         float baseTime = delayedTime * 0.2;
+//         float sliceY = floor(uv.y * slices) / slices;
+
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
+//         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
+//         float pixelNoise = random(pixelated + delayedTime) *
+//                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
+
+//         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
+//         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
+//         float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
+//                            (1.0 - slicingProgress);
+
+//         float xProgress = fract(baseTime);
+//         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
+
+//         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
+//         vec4 texColor = texture2D(textTexture, finalUv);
+
+//         if (texColor.a > 0.0) {
+//             vec3 color = vec3(0.95);
+//             float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
+//             color *= 0.9 + slice * 0.1;
+//             float alpha = texColor.a * progress;
+//             gl_FragColor = vec4(color, alpha);
+//             return;
+//         }
+//     }
+
+//     gl_FragColor = vec4(0.0);
+// }
+// `;
+
 export const digitalRainShader = `
 uniform float time;
 uniform sampler2D textTexture;
@@ -2197,7 +2510,7 @@ float digitalNoise(vec2 st) {
     float b = random(i + vec2(1.0, 0.0));
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
-    vec2 u = f * f * (3.0 - .0 * f);
+    vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
@@ -2211,10 +2524,10 @@ void main() {
 
     if (time < initialEffectDuration) {
         // Digital rain effect
-        float rainSpeed = time * .0;
+        float rainSpeed = time * 2.0;
         float rainColumn = floor(uv.x * 20.0) / 20.0;
-        float rainOffset = random(vec2(rainColumn, 0.0)) * .0;
-        float rainDrop = fract(uv.y * .0 - rainSpeed - rainOffset);
+        float rainOffset = random(vec2(rainColumn, 0.0)) * 2.0;
+        float rainDrop = fract(uv.y * 2.0 - rainSpeed - rainOffset);
         
         // Matriz digital
         float matrix = digitalNoise(vec2(
@@ -2253,7 +2566,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) * 
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2265,7 +2578,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2307,7 +2620,7 @@ void main() {
         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 
         // Plasma suave
-        float plasma = sin(uv.x * 10.0 + time * .0) *
+        float plasma = sin(uv.x * 10.0 + time * 2.0) *
                       cos(uv.y * 8.0 - time) +
                       sin((uv.x + uv.y) * 5.0 + time * 1.5);
 
@@ -2338,7 +2651,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2350,7 +2663,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2380,7 +2693,7 @@ void main() {
     //     float baseTime = delayedTime * 0.;
     //     float sliceY = floor(uv.y * slices) / slices;
 
-    //     float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+    //     float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
     //     vec2 pixelated = floor(uv / pixelSize) * pixelSize;
     //     float pixelNoise = random(pixelated + delayedTime) *
     //                       (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2392,7 +2705,7 @@ void main() {
 
     //     float xProgress = fract(baseTime);
     //     vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-    //     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+    //     float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
     //     distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
     //     vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2435,11 +2748,11 @@ void main() {
         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 
         // Onda base
-        float wave = sin(uv.y * 20.0 + time * .0) * cos(uv.x * 15.0 - time);
+        float wave = sin(uv.y * 20.0 + time * 2.0) * cos(uv.x * 15.0 - time);
 
         // Glitch sutil
         float glitchIntensity = step(0.97, random(vec2(floor(time * 10.0))));
-        float glitchOffset = random(vec2(floor(uv.y * 10.0), time)) * .0 - 1.0;
+        float glitchOffset = random(vec2(floor(uv.y * 10.0), time)) * 2.0 - 1.0;
 
         vec2 distortedUv = uv;
         distortedUv.x += wave * 0.01 * (1.0 - transitionProgress);
@@ -2470,7 +2783,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2482,7 +2795,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2525,11 +2838,11 @@ void main() {
 //         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 
 //         // Patrón de interferencia cuántica
-//         vec2 p = uv * .0 - 1.0;
+//         vec2 p = uv * 2.0 - 1.0;
 //         float r = length(p);
 //         float theta = atan(p.y, p.x);
 
-//         float wave1 = sin(r * 20.0 - time * .0) * 0.5 + 0.5;
+//         float wave1 = sin(r * 20.0 - time * 2.0) * 0.5 + 0.5;
 //         float wave2 = cos(theta * 5.0 + time) * 0.5 + 0.5;
 //         float interference = wave1 * wave2;
 
@@ -2562,7 +2875,7 @@ void main() {
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2574,7 +2887,7 @@ void main() {
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2647,7 +2960,7 @@ void main() {
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2659,7 +2972,7 @@ void main() {
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2701,8 +3014,8 @@ void main() {
         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 
         // Patrón de doble hélice
-        float helixA = sin(uv.y * 15.0 + time * .0) * cos(time) * 0.3;
-        float helixB = sin(uv.y * 15.0 + time * .0 + 3.14) * cos(time) * 0.3;
+        float helixA = sin(uv.y * 15.0 + time * 2.0) * cos(time) * 0.3;
+        float helixB = sin(uv.y * 15.0 + time * 2.0 + 3.14) * cos(time) * 0.3;
 
         // Conexiones entre hélices
         float connections = sin(uv.y * 30.0 + time) * 0.1;
@@ -2738,7 +3051,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2750,7 +3063,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2838,7 +3151,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2850,7 +3163,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2929,7 +3242,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -2941,7 +3254,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -2986,11 +3299,11 @@ void main() {
         float circuit2 = step(0.6, fract(uv.y * 8.0 + time * 0.5));
 
         // Flujo de datos
-        float flow = sin(uv.x * 20.0 + time * 3.0) * cos(uv.y * 15.0 - time * .0);
+        float flow = sin(uv.x * 20.0 + time * 3.0) * cos(uv.y * 15.0 - time * 2.0);
         float pulsePattern = sin(uv.y * 30.0 + flow + time * 4.0) * 0.5 + 0.5;
 
         vec2 distortedUv = uv;
-        distortedUv.x += sin(uv.y * 8.0 + time * .0) * 0.01 * circuit1;
+        distortedUv.x += sin(uv.y * 8.0 + time * 2.0) * 0.01 * circuit1;
         distortedUv.y += cos(uv.x * 6.0 - time * 1.5) * 0.01 * circuit2;
 
         vec4 mainChannel = texture2D(textTexture, distortedUv);
@@ -3014,7 +3327,7 @@ void main() {
 
         if (texColor.a > 0.0) {
             vec3 color = vec3(0.95);
-            float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+            float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
             return;
         }
@@ -3032,7 +3345,7 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+        float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
         float pixelNoise = random(pixelated + delayedTime) *
                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -3044,7 +3357,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -3077,7 +3390,7 @@ void main() {
 // void main() {
 //     vec2 uv = vUv;
 //     float totalDuration = 8.0;        // Reducido de 12.0
-//     float initialEffectDuration = 1.5; // Reducido de .0
+//     float initialEffectDuration = 1.5; // Reducido de 2.0
 //     float transitionDuration = 1.0;    // Reducido de 1.5
 //     float slicingStart = 3.0;         // Reducido de 4.0
 //     float slicingDuration = 5.0;      // Reducido de 6.0
@@ -3090,7 +3403,7 @@ void main() {
 
 //         // Múltiples anillos de energía
 //         float rings = sin(dist * 20.0 - time * 4.0) * 0.5 +
-//                      sin(dist * 10.0 - time * .0) * 0.3;
+//                      sin(dist * 10.0 - time * 2.0) * 0.3;
 
 //         // Pulso radial
 //         float pulse = exp(-dist * 4.0) * sin(time * 3.0) * 0.02;
@@ -3120,7 +3433,7 @@ void main() {
 
 //         if (texColor.a > 0.0) {
 //             vec3 color = vec3(0.95);
-//             float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1 * (1.0 - transitionProgress);
+//             float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1 * (1.0 - transitionProgress);
 //             gl_FragColor = vec4(color * (0.9 + brightness * 0.1), texColor.a);
 //             return;
 //         }
@@ -3138,7 +3451,7 @@ void main() {
 //         float baseTime = delayedTime * 0.;
 //         float sliceY = floor(uv.y * slices) / slices;
 
-//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0., slicingProgress)));
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
 //         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
 //         float pixelNoise = random(pixelated + delayedTime) *
 //                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
@@ -3150,7 +3463,7 @@ void main() {
 
 //         float xProgress = fract(baseTime);
 //         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
 //         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
 //         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
@@ -3183,7 +3496,7 @@ float random(vec2 st) {
 void main() {
     vec2 uv = vUv;
     float totalDuration = 12.0;
-    float initialEffectDuration = .0;
+    float initialEffectDuration = 2.0;
     float transitionDuration = 1.5;
     float slicingStart = 4.0;
     float slicingDuration = 6.0;
@@ -3201,7 +3514,7 @@ void main() {
         vec4 blueChannel = texture2D(textTexture, distortedUv - vec2(0.003, 0.0));
 
         if (max(max(redChannel.a, greenChannel.a), blueChannel.a) > 0.0) {
-            float holoPulse = sin(time * .0) * 0.5 + 0.5;
+            float holoPulse = sin(time * 2.0) * 0.5 + 0.5;
             vec3 holoColor = mix(
                 vec3(0.95),
                 vec3(redChannel.r * 1., greenChannel.g, blueChannel.b * 1.1),
@@ -3250,7 +3563,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0) + rainbowOffset * (1.0 - slicingProgress);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3281,7 +3594,7 @@ float random(vec2 st) {
 void main() {
     vec2 uv = vUv;
     float totalDuration = 12.0;
-    float initialEffectDuration = .0;
+    float initialEffectDuration = 2.0;
     float transitionDuration = 1.5;
     float slicingStart = 4.0;
     float slicingDuration = 6.0;
@@ -3319,7 +3632,7 @@ void main() {
 
         if (texColor.a > 0.0) {
             vec3 color = vec3(0.95);
-            float energyPulse = sin(tunnel * 20.0 + time * .0) * 0.5 + 0.5;
+            float energyPulse = sin(tunnel * 20.0 + time * 2.0) * 0.5 + 0.5;
             color *= 1.0 + energyPulse * 0.1 * (1.0 - transitionProgress);
             gl_FragColor = vec4(color, texColor.a);
             return;
@@ -3347,7 +3660,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, quantumNoise * 0.01 * (1.0 - slicingProgress));
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3379,7 +3692,7 @@ float random(vec2 st) {
 void main() {
     vec2 uv = vUv;
     float totalDuration = 12.0;
-    float initialEffectDuration = .0;
+    float initialEffectDuration = 2.0;
     float transitionDuration = 1.5;
     float slicingStart = 4.0;
     float slicingDuration = 6.0;
@@ -3442,7 +3755,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3474,14 +3787,14 @@ float random(vec2 st) {
 void main() {
     vec2 uv = vUv;
     float totalDuration = 12.0;
-    float initialEffectDuration = .0;
+    float initialEffectDuration = 2.0;
     float transitionDuration = 1.5;
     float slicingStart = 4.0;
     float slicingDuration = 6.0;
 
     // Efecto inicial (0-2s): Ondas de energía pulsante
     if (time < initialEffectDuration) {
-        float energy = sin(length(uv - vec2(0.5)) * 20.0 - time * .0);
+        float energy = sin(length(uv - vec2(0.5)) * 20.0 - time * 2.0);
         float pulse = sin(time * 3.0) * 0.5 + 0.5;
         vec2 distortedUv = uv + vec2(energy * pulse * 0.02);
 
@@ -3507,7 +3820,7 @@ void main() {
 
         if (texColor.a > 0.0) {
             vec3 color = vec3(0.95);
-            float fieldPulse = sin(field * 5.0 + time * .0) * 0.5 + 0.5;
+            float fieldPulse = sin(field * 5.0 + time * 2.0) * 0.5 + 0.5;
             color *= 1.0 + fieldPulse * 0.1 * (1.0 - transitionProgress);
             gl_FragColor = vec4(color, texColor.a);
             return;
@@ -3527,15 +3840,15 @@ void main() {
         float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
 
-        float energyTrail = sin(sliceY * 8.0 + delayedTime * .0) * 0.04;
-        float resonance = pow(sin(delayedTime + sliceY * 5.0), .0);
+        float energyTrail = sin(sliceY * 8.0 + delayedTime * 2.0) * 0.04;
+        float resonance = pow(sin(delayedTime + sliceY * 5.0), 2.0);
 
         float sliceOffset = mix(energyTrail, resonance * 0.03, slicingProgress) *
                            (1.0 - slicingProgress);
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3567,14 +3880,14 @@ float random(vec2 st) {
 void main() {
     vec2 uv = vUv;
     float totalDuration = 12.0;
-    float initialEffectDuration = .0;
+    float initialEffectDuration = 2.0;
     float transitionDuration = 1.5;
     float slicingStart = 4.0;
     float slicingDuration = 6.0;
 
     // Efecto inicial (0-2s): Scanlines y Glitch
     if (time < initialEffectDuration) {
-        float scanline = sin(uv.y * 120.0 + time * .0) * 0.02;
+        float scanline = sin(uv.y * 120.0 + time * 2.0) * 0.02;
         float glitch = step(0.98, random(vec2(floor(time * 20.0)))) * random(uv) * 0.1;
         vec2 distortedUv = uv + vec2(scanline + glitch, scanline * 0.5);
 
@@ -3583,8 +3896,8 @@ void main() {
 
         if (max(mainChannel.a, glitchChannel.a) > 0.0) {
             vec3 baseColor = vec3(0.95);
-            float brightness = 0.9 + sin(uv.y * 4.0 + time * .0) * 0.1;
-            vec3 glitchColor = vec3(0., 0.8, 1.0);
+            float brightness = 0.9 + sin(uv.y * 4.0 + time * 2.0) * 0.1;
+            vec3 glitchColor = vec3(0.2, 0.8, 1.0);
             vec3 finalColor = mix(baseColor * brightness, glitchColor, glitch * 0.5);
             gl_FragColor = vec4(finalColor, mainChannel.a * 0.95);
             return;
@@ -3594,7 +3907,7 @@ void main() {
     else if (time < slicingStart) {
         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
 
-        float hexSize = mix(0.02, 0., transitionProgress);
+        float hexSize = mix(0.02, 0.2, transitionProgress);
         vec2 hexUv = floor(uv / hexSize) * hexSize;
         float hexNoise = random(hexUv + time) * (1.0 - transitionProgress);
 
@@ -3631,7 +3944,7 @@ void main() {
 
         float xProgress = fract(baseTime);
         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
-        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * .0);
+        float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
         vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3704,8 +4017,8 @@ export const fragmentShaderQuantumField = `
 
     if (texColor.a > 0.0) {
       float q1 = quantum(uv + time * 0.1);
-      float q2 = quantum(uv * .0 - time * 0.);
-      float qField = pow(q1 * q2, .0);
+      float q2 = quantum(uv * 2.0 - time * 0.);
+      float qField = pow(q1 * q2, 2.0);
 
       float wave = sin(uv.x * 20.0 + time) * cos(uv.y * 15.0 - time);
 
@@ -3749,7 +4062,7 @@ export const fragmentShaderIridescentCrystal = `
       vec3 color1 = iridescent(angle1 * 0.1 + time * 0.1);
       vec3 color2 = iridescent(angle2 * 0. - time * 0.05);
 
-      float facet = pow(sin(angle1 * 8.0) * cos(angle2 * 10.0), .0);
+      float facet = pow(sin(angle1 * 8.0) * cos(angle2 * 10.0), 2.0);
 
       vec3 finalColor = mix(color1, color2, facet);
       finalColor += vec3(pow(facet, 5.0));
@@ -3775,7 +4088,7 @@ export const fragmentShaderMatrixRain = `
     vec2 uv = vUv;
 
     float rain = floor(uv.y * 50.0) / 50.0;
-    float dropSpeed = mod(time + rain * .0, 1.0);
+    float dropSpeed = mod(time + rain * 2.0, 1.0);
     float verticalShift = dropSpeed * 0.1;
 
     vec2 rainUv = vec2(uv.x, mod(uv.y + verticalShift, 1.0));
@@ -3813,7 +4126,7 @@ export const fragmentShaderVoidPortal = `
 
     float angle = atan(uv.y - 0.5, uv.x - 0.5);
     float dist = length(uv - 0.5);
-    float spiral = sin(dist * 20.0 - time * .0) * 0.5 + 0.5;
+    float spiral = sin(dist * 20.0 - time * 2.0) * 0.5 + 0.5;
     vec2 distortedUv = uv + vec2(cos(angle), sin(angle)) * spiral * 0.02;
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -3930,8 +4243,8 @@ export const fragmentShaderFrequencyWaves = `
       }
       freq = freq * 0.25 + 0.5;
 
-      vec3 color1 = vec3(0., 0.5, 1.0);
-      vec3 color2 = vec3(0.9, 0., 0.5);
+      vec3 color1 = vec3(0.2, 0.5, 1.0);
+      vec3 color2 = vec3(0.9, 0.2, 0.5);
       vec3 finalColor = mix(color1, color2, freq);
 
       float wave = sin(uv.y * 100.0 + time * 5.0) * 0.5 + 0.5;
@@ -3955,7 +4268,7 @@ export const fragmentShaderDNAHelix = `
 
     // Parámetros de la hélice
     float helixFreq = 4.0;
-    float helixSpeed = .0;
+    float helixSpeed = 2.0;
     float helixWidth = 0.005;
 
     // Calcular posición en la hélice
@@ -4019,7 +4332,7 @@ export const fragmentShaderMagneticParticles = `
       baseColor *= 0.9 + particles * 0.1;
 
       // Brillo en los bordes
-      float edge = 1.0 - dist * .0;
+      float edge = 1.0 - dist * 2.0;
       baseColor *= 0.9 + edge * 0.1;
 
       gl_FragColor = vec4(baseColor, texColor.a);
@@ -4039,7 +4352,7 @@ export const fragmentShaderInterference = `
     vec2 uv = vUv;
 
     // Patrones de interferencia
-    float pattern1 = sin(uv.x * 40.0 + time * .0);
+    float pattern1 = sin(uv.x * 40.0 + time * 2.0);
     float pattern2 = sin(uv.y * 40.0 - time * 1.5);
     float pattern3 = sin((uv.x + uv.y) * 30.0 + time);
 
@@ -4098,7 +4411,7 @@ export const fragmentShaderMorphGrid = `
       cos(timeScale + noise.y * 6.28) * 0.02
     );
 
-    vec2 distortedUv = uv + offset * smoothstep(0., 0.0, length(gridUv));
+    vec2 distortedUv = uv + offset * smoothstep(0.2, 0.0, length(gridUv));
     vec4 texColor = texture2D(textTexture, distortedUv);
 
     if (texColor.a > 0.0) {
@@ -4143,7 +4456,7 @@ export const fragmentShaderPrism = `
         blueChannel.b * 1.3
       );
 
-      float crystal = sin(time * .0 + uv.x * 10.0) * 0.1 + 0.9;
+      float crystal = sin(time * 2.0 + uv.x * 10.0) * 0.1 + 0.9;
       vec3 finalColor = clamp(baseColor * crystal, 0.0, 1.0);
 
       gl_FragColor = vec4(finalColor, greenChannel.a * 0.9);
@@ -4160,7 +4473,7 @@ export const hologramWhiteIndigo = `
 
   void main() {
     vec2 uv = vUv;
-    float scanline = sin(uv.y * 100.0 + time * .0) * 0.02;
+    float scanline = sin(uv.y * 100.0 + time * 2.0) * 0.02;
     vec2 distortedUv = uv + vec2(0.0, scanline);
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -4184,7 +4497,7 @@ export const hologramPulse = `
 
   void main() {
     vec2 uv = vUv;
-    float pulse = sin(time * .0) * 0.5 + 0.5;
+    float pulse = sin(time * 2.0) * 0.5 + 0.5;
     vec2 distortedUv = uv + vec2(0.0, pulse * 0.01);
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -4235,7 +4548,7 @@ export const hologramWave = `
 
   void main() {
     vec2 uv = vUv;
-    float wave = sin(uv.x * 10.0 + time * .0) * sin(uv.y * 8.0 + time) * 0.01;
+    float wave = sin(uv.x * 10.0 + time * 2.0) * sin(uv.y * 8.0 + time) * 0.01;
     vec2 distortedUv = uv + vec2(wave);
 
     vec4 texColor = texture2D(textTexture, distortedUv);
@@ -4268,7 +4581,7 @@ export const hologramRipple = `
     if (texColor.a > 0.0) {
       vec3 white = vec3(1.0);
       vec3 indigo = vec3(0.39, 0.40, 0.95);
-      float t = sin(time * .0 + dist * 5.0) * 0.5 + 0.5;
+      float t = sin(time * 2.0 + dist * 5.0) * 0.5 + 0.5;
       vec3 finalColor = mix(white, indigo, t);
       gl_FragColor = vec4(finalColor, texColor.a * 0.9);
     } else {
@@ -4284,9 +4597,9 @@ varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
-    float delayedTime = max(0.0, time - .0);
+    float delayedTime = max(0.0, time - 2.0);
 
-    if (time < .0) {
+    if (time < 2.0) {
         vec4 texColor = texture2D(textTexture, uv);
         gl_FragColor = vec4(vec3(0.95), texColor.a);
         return;
@@ -4294,7 +4607,7 @@ void main() {
 
     float slices = 15.0;
     float sliceY = floor(uv.y * slices) / slices;
-    float sliceOffset = sin(sliceY * 20.0 + delayedTime * .0) * 0.03;
+    float sliceOffset = sin(sliceY * 20.0 + delayedTime * 2.0) * 0.03;
     float delay = sliceY * 0.3;
     float animationProgress = smoothstep(0.0, 1.0, delayedTime - delay);
 
@@ -4317,9 +4630,9 @@ varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
-    float delayedTime = max(0.0, time - .0);
+    float delayedTime = max(0.0, time - 2.0);
 
-    if (time < .0) {
+    if (time < 2.0) {
         vec4 texColor = texture2D(textTexture, uv);
         gl_FragColor = vec4(vec3(0.95), texColor.a);
         return;
@@ -4333,7 +4646,7 @@ void main() {
 
     if (texColor.a > 0.0) {
         vec3 color = vec3(0.95);
-        float brightness = 0.9 + sin(uv.y * 5.0 + delayedTime * .0) * 0.1;
+        float brightness = 0.9 + sin(uv.y * 5.0 + delayedTime * 2.0) * 0.1;
         gl_FragColor = vec4(color * brightness, texColor.a);
     } else {
         gl_FragColor = vec4(0.0);
@@ -4347,9 +4660,9 @@ varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
-    float delayedTime = max(0.0, time - .0);
+    float delayedTime = max(0.0, time - 2.0);
 
-    if (time < .0) {
+    if (time < 2.0) {
         vec4 texColor = texture2D(textTexture, uv);
         gl_FragColor = vec4(vec3(0.95), texColor.a);
         return;
@@ -4357,7 +4670,7 @@ void main() {
 
     float slices = 20.0;
     float sliceY = floor(uv.y * slices) / slices;
-    float slicePhase = delayedTime * .0 + sliceY * 10.0;
+    float slicePhase = delayedTime * 2.0 + sliceY * 10.0;
     float sliceOffset = sin(slicePhase) * 0.02 * smoothstep(0.0, 0.5, delayedTime);
 
     vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
@@ -4379,9 +4692,9 @@ varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
-    float delayedTime = max(0.0, time - .0);
+    float delayedTime = max(0.0, time - 2.0);
 
-    if (time < .0) {
+    if (time < 2.0) {
         vec4 texColor = texture2D(textTexture, uv);
         gl_FragColor = vec4(vec3(0.95), texColor.a);
         return;
@@ -4397,7 +4710,7 @@ void main() {
 
     if (texColor.a > 0.0) {
         vec3 color = vec3(0.95);
-        float brightness = 0.9 + sin(sliceY * 3.14 + delayedTime * .0) * 0.1;
+        float brightness = 0.9 + sin(sliceY * 3.14 + delayedTime * 2.0) * 0.1;
         gl_FragColor = vec4(color * brightness, texColor.a);
     } else {
         gl_FragColor = vec4(0.0);
@@ -4411,9 +4724,9 @@ varying vec2 vUv;
 
 void main() {
     vec2 uv = vUv;
-    float delayedTime = max(0.0, time - .0);
+    float delayedTime = max(0.0, time - 2.0);
 
-    if (time < .0) {
+    if (time < 2.0) {
         vec4 texColor = texture2D(textTexture, uv);
         gl_FragColor = vec4(vec3(0.95), texColor.a);
         return;
@@ -4424,7 +4737,7 @@ void main() {
     float glitchStr = smoothstep(0.0, 0.5, delayedTime) * 0.03;
     float sliceOffset = sin(sliceY * 40.0 + delayedTime * 4.0) * glitchStr;
     float glitchTime = floor(delayedTime * 8.0) * 0.125;
-    sliceOffset *= step(0.95, fract(glitchTime + sliceY * .0));
+    sliceOffset *= step(0.95, fract(glitchTime + sliceY * 2.0));
 
     vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
     vec4 texColor = texture2D(textTexture, distortedUv);

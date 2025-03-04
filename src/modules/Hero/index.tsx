@@ -1,20 +1,31 @@
-// src/components/Hero/Hero.tsx
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import classNames from "classnames/bind";
+import gsap from "gsap";
+
+// Componentes locales
 import { FONTS } from "@/lib/fonts";
 import { ProjectForm } from "@/components/ProjectForm";
 import WebGLText from "@/components/WebGLText";
-import classNames from "classnames/bind";
 import Modal from "@/components/Modal";
-import gsap from "gsap";
-import { plasmaPulseShader } from "@/lib/shaders";
-import styles from "./Hero.module.scss";
 import useMousePosition from "@/hooks/useMousePosition";
-import { HeroDictionary } from "@/types/dictionary/home.types";
 import { Typography } from "@/components/Typography";
 import { Button } from "@/components/Button";
+
+// Tipado
+import { HeroDictionary } from "@/types/dictionary/home.types";
+
+// Estilos
+import styles from "./Hero.module.scss";
+
+// Import dinámico del shader 3D para performance
+import dynamic from "next/dynamic";
+import { plasmaPulseShader } from "@/lib/shaders";
+
+const WaveScene = dynamic(() => import("@/components/WaveScene"), {
+  ssr: false,
+});
 
 const cx = classNames.bind(styles);
 
@@ -23,305 +34,123 @@ interface HeroProps {
 }
 
 export const Hero = ({ dictionary }: HeroProps) => {
+  // Estados
   const [isHovered, setIsHovered] = useState(false);
   const [isShaderComplete, setIsShaderComplete] = useState(false);
   const [isShaderFadedOut, setIsShaderFadedOut] = useState(false);
+  const [isMouseMoving, setIsMouseMoving] = useState(false);
 
-  const textBehindRef = useRef(null);
-  const textFrontRef = useRef(null);
-  const textBehindBlurRef = useRef(null);
-  const glowRef = useRef<HTMLDivElement>(null);
+  // Refs
+  const textBehindRef = useRef<HTMLDivElement>(null);
+  const textFrontRef = useRef<HTMLDivElement>(null);
+  const textBehindBlurRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
 
+  // Posición del mouse
   const { x, y } = useMousePosition();
 
+  // Texto principal
   const headlineText = {
     create: dictionary.headline.create,
     scale: dictionary.headline.scale,
     transform: dictionary.headline.transform,
   };
 
+  // Handlers para el shader de WebGLText
   const handleShaderComplete = () => setIsShaderComplete(true);
   const handleShaderFadeOut = () => setIsShaderFadedOut(true);
 
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (glowRef.current) {
-  //       const rotateX = (window.scrollY / window.innerHeight) * 20;
-  //       glowRef.current.style.transform = `rotateX(${rotateX}deg)`;
-  //     }
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!maskRef.current) return;
-
-  //   const size = isHovered ? 300 : 0;
-  //   const maskX = x - size / 2;
-  //   const maskY = y - size / 2;
-
-  //   gsap.to(maskRef.current, {
-  //     webkitMaskPosition: `${maskX}px ${maskY}px`,
-  //     webkitMaskSize: `${size}px`,
-  //     ease: "power2.out",
-  //     duration: 0.3,
-  //     opacity: isHovered ? 1 : 0,
-  //   });
-
-  //   const normalizedX = (x - window.innerWidth / 2) / (window.innerWidth / 2);
-  //   const normalizedY = (y - window.innerHeight / 2) / (window.innerHeight / 2);
-  //   const acceleration = (distance: number) =>
-  //     Math.sign(distance) * Math.pow(Math.abs(distance), 1.5);
-  //   const moveX = acceleration(normalizedX) * 30;
-  //   const moveY = acceleration(normalizedY) * 30;
-
-  //   const isMoving = Math.abs(moveX) > 2 || Math.abs(moveY) > 2;
-  //   const zPosition = isMoving ? 50 : 0;
-  //   const transitionDuration = isMoving ? 0.8 : 1.5;
-
-  //   gsap.to([textBehindRef.current, maskRef.current], {
-  //     x: moveX * 0.4,
-  //     y: moveY * 0.4,
-  //     rotateY: moveX * 0.1,
-  //     rotateX: -moveY * 0.1,
-  //     z: 0,
-  //     duration: 0.8,
-  //     ease: "power2.out",
-  //   });
-
-  //   gsap.to(textBehindBlurRef.current, {
-  //     x: moveX * 2,
-  //     y: moveY * 2,
-  //     rotateY: moveX * 0.3,
-  //     rotateX: -moveY * 0.3,
-  //     z: 20,
-  //     duration: 1,
-  //     ease: "power2.out",
-  //   });
-
-  //   if (textFrontRef.current) {
-  //     const distance = Math.sqrt(
-  //       normalizedX * normalizedX + normalizedY * normalizedY
-  //     );
-  //     const offsetAmount = Math.min(distance * 10, 5);
-  //     const intensity = 0.5 + distance * 0.5;
-
-  //     gsap.to(textFrontRef.current, {
-  //       x: moveX * 2.5,
-  //       y: moveY * 2.5,
-  //       rotateY: moveX * 0.5,
-  //       rotateX: -moveY * 0.5,
-  //       z: zPosition,
-  //       scale: 1,
-  //       textShadow: `
-  //         ${-offsetAmount}px 0 rgba(255,0,0,${intensity}),
-  //         ${offsetAmount}px 0 rgba(0,255,255,${intensity})
-  //       `,
-  //       color: "rgba(255, 255, 255, 0.9)",
-  //       duration: transitionDuration,
-  //       ease: isMoving ? "power2.out" : "power3.inOut",
-  //     });
-  //   }
-  // }, [x, y, isHovered]);
-
-  // Efecto para el scroll
-
+  // Efecto para animación de mouse en los textos
   useEffect(() => {
-    const handleScroll = () => {
-      if (glowRef.current) {
-        const rotateX = (window.scrollY / window.innerHeight) * 20;
-        glowRef.current.style.transform = `rotateX(${rotateX}deg)`;
-      }
-    };
+    if (!maskRef.current) return;
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const normalizedX = (x - window.innerWidth / 2) / (window.innerWidth / 2);
+    const normalizedY = (y - window.innerHeight / 2) / (window.innerHeight / 2);
+    const acceleration = (dist: number) =>
+      Math.sign(dist) * Math.pow(Math.abs(dist), 1.5);
 
-  // Efecto principal para el movimiento de todas las capas
+    const moveX = acceleration(normalizedX) * 30;
+    const moveY = acceleration(normalizedY) * 30;
 
-  useEffect(() => {
-    if (maskRef.current) {
-      const size = isHovered ? 300 : 0;
-      const maskX = x - size / 2;
-      const maskY = y - size / 2;
+    // Determina si el mouse se está moviendo "lo suficiente"
+    const movingNow = Math.abs(moveX) > 2 || Math.abs(moveY) > 2;
+    setIsMouseMoving(movingNow);
 
-      gsap.to(maskRef.current, {
-        webkitMaskPosition: `${maskX}px ${maskY}px`,
-        webkitMaskSize: `${size}px`,
-        ease: "power2.out",
-        duration: 0.3,
-        opacity: isHovered ? 1 : 0, // Mejor control de la visibilidad del mask
-      });
+    // Animaciones GSAP para el texto detrás
+    gsap.to([textBehindRef.current, maskRef.current], {
+      x: moveX * 0.4,
+      y: moveY * 0.4,
+      rotateY: moveX * 0.1,
+      rotateX: -moveY * 0.1,
+      z: 0,
+      duration: 0.8,
+      ease: "power2.out",
+    });
 
-      const normalizedX = (x - window.innerWidth / 2) / (window.innerWidth / 2);
-      const normalizedY =
-        (y - window.innerHeight / 2) / (window.innerHeight / 2);
-      const acceleration = (distance: number) =>
-        Math.sign(distance) * Math.pow(Math.abs(distance), 1.5);
-      const moveX = acceleration(normalizedX) * 30;
-      const moveY = acceleration(normalizedY) * 30;
+    gsap.to(textBehindBlurRef.current, {
+      x: moveX * 2,
+      y: moveY * 2,
+      rotateY: moveX * 0.3,
+      rotateX: -moveY * 0.3,
+      z: 20,
+      duration: 1,
+      ease: "power2.out",
+    });
 
-      // Aumentamos el umbral de detección de movimiento
-      const isMoving = Math.abs(moveX) > 2 || Math.abs(moveY) > 2;
+    // Texto frontal: solo visible cuando se mueva el mouse y el shader haya hecho fade out
+    if (textFrontRef.current) {
+      const distance = Math.sqrt(
+        normalizedX * normalizedX + normalizedY * normalizedY
+      );
+      const offsetAmount = Math.min(distance * 10, 5);
+      const intensity = 0.5 + distance * 0.5;
 
-      // Añadimos un pequeño retraso al volver a la posición inicial
-      const zPosition = isMoving ? 50 : 0;
-      const transitionDuration = isMoving ? 0.8 : 1.5; // Más lento al volver
-
-      // Animamos las capas traseras
-      gsap.to([textBehindRef.current, maskRef.current], {
-        x: moveX * 0.4,
-        y: moveY * 0.4,
-        rotateY: moveX * 0.1,
-        rotateX: -moveY * 0.1,
-        z: 0,
-        duration: 0.8,
-        ease: "power2.out",
-      });
-
-      gsap.to(textBehindBlurRef.current, {
-        x: moveX * 2,
-        y: moveY * 2,
-        rotateY: moveX * 0.3,
-        rotateX: -moveY * 0.3,
-        z: 20,
-        duration: 1,
-        ease: "power2.out",
-      });
-
-      // Animamos la capa frontal
-      if (textFrontRef.current) {
-        const distance = Math.sqrt(
-          normalizedX * normalizedX + normalizedY * normalizedY
-        );
-        const offsetAmount = Math.min(distance * 10, 5);
-        const intensity = 0.5 + distance * 0.5;
-
+      if (movingNow && isShaderFadedOut) {
+        // Se muestra y anima
         gsap.to(textFrontRef.current, {
+          opacity: 1,
           x: moveX * 2.5,
           y: moveY * 2.5,
           rotateY: moveX * 0.5,
           rotateX: -moveY * 0.5,
-          z: zPosition,
+          z: 50,
           scale: 1,
           textShadow: `
             ${-offsetAmount}px 0 rgba(255,0,0,${intensity}),
             ${offsetAmount}px 0 rgba(0,255,255,${intensity})
           `,
-          color: "rgba(255, 255, 255, 0.9)",
-          duration: transitionDuration,
-          ease: isMoving ? "power2.out" : "power3.inOut",
-        });
-      }
-    }
-  }, [x, y, isHovered]);
-
-  useEffect(() => {
-    if (maskRef.current) {
-      const size = isHovered ? 300 : 0;
-      const maskX = x - size / 2;
-      const maskY = y - size / 2;
-
-      gsap.to(maskRef.current, {
-        webkitMaskPosition: `${maskX}px ${maskY}px`,
-        webkitMaskSize: `${size}px`,
-        ease: "power2.out",
-        duration: 0.3,
-      });
-
-      const normalizedX = (x - window.innerWidth / 2) / (window.innerWidth / 2);
-      const normalizedY =
-        (y - window.innerHeight / 2) / (window.innerHeight / 2);
-      const acceleration = (distance: number) =>
-        Math.sign(distance) * Math.pow(Math.abs(distance), 1.5);
-      const moveX = acceleration(normalizedX) * 30;
-      const moveY = acceleration(normalizedY) * 30;
-
-      if (textBehindRef.current) {
-        const angle = Math.atan2(normalizedY, normalizedX) * (180 / Math.PI);
-        const distance = Math.sqrt(
-          normalizedX * normalizedX + normalizedY * normalizedY
-        );
-
-        gsap.to(textBehindRef.current, {
-          x: moveX * 2.5,
-          y: moveY * 2.5,
-          rotateY: moveX * 0.5,
-          rotateX: -moveY * 0.5,
-          background: `
-            linear-gradient(
-              ${angle}deg,
-              rgba(99, 102, 241, ${0.7 + distance * 0.3}) 0%,
-              rgba(244, 114, 182, ${0.7 + distance * 0.3}) 50%,
-              rgba(129, 140, 248, ${0.7 + distance * 0.3}) 100%
-            )
-          `,
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
-          filter: `brightness(${1.2 + distance * 0.3}) contrast(120%)`,
-          // Añadimos una máscara que permita ver el text-stroke permanente
-          WebkitMaskImage: `linear-gradient(
-            ${angle}deg,
-            rgba(0, 0, 0, 1) 0%,
-            rgba(0, 0, 0, 0.8) 50%,
-            rgba(0, 0, 0, 0.5) 100%
-          )`,
-          WebkitMaskComposite: "destination-out",
-          duration: 1.2,
-          ease: "power2.out",
-        });
-      }
-      if (textFrontRef.current) {
-        const distance = Math.sqrt(
-          normalizedX * normalizedX + normalizedY * normalizedY
-        );
-        const intensity = 0.4 + distance * 0.3;
-
-        gsap.to(textFrontRef.current, {
-          x: moveX * 0.8,
-          y: moveY * 0.8,
-          rotateY: moveX * 0.1,
-          rotateX: -moveY * 0.1,
-
-          backgroundClip: "text",
-          WebkitBackgroundClip: "text",
-          color: "transparent",
-          textShadow: `
-            0 0 ${10 + distance * 15}px rgba(255, 255, 255, ${0.5 * intensity}),
-            0 0 ${20 + distance * 25}px rgba(99, 102, 241, ${0.3 * intensity})
-          `,
           duration: 0.8,
           ease: "power2.out",
         });
+      } else {
+        // Se oculta
+        gsap.to(textFrontRef.current, {
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        });
       }
-
-      gsap.to(textBehindBlurRef.current, {
-        x: moveX * 2,
-        y: moveY * 2,
-        rotateY: moveX * 0.3,
-        rotateX: -moveY * 0.3,
-        duration: 1,
-        ease: "power2.out",
-      });
     }
-  }, [x, y, isHovered]);
+  }, [x, y, isHovered, isShaderFadedOut]);
 
   return (
     <section id="home" className={cx("hero")}>
-      <div className={cx("hero__ambient-glow")} ref={glowRef} />
-      <div className={cx("hero__grid-background")} />
+      {/*
+        1) Eliminamos los divs de ambient glow y grid background
+        <div className={cx("hero__ambient-glow")} />
+        <div className={cx("hero__grid-background")} />
+      */}
 
+      {/* Headline principal */}
       <div className={cx("hero__headline")}>
+        {/* Capas de texto detrás */}
         <div
           ref={textBehindRef}
-          className={cx("hero__headline-text", "hero__headline-text--behind")}
+          className={cx("hero__headline-text", "hero__headline-text--behind", {
+            "hero__headline-text--visible": isShaderFadedOut,
+          })}
         >
-          {headlineText.create},
+          {headlineText.create}
           <span className={cx("hero__headline-text-indent")}>
             {headlineText.scale}
           </span>
@@ -331,59 +160,71 @@ export const Hero = ({ dictionary }: HeroProps) => {
 
         <div
           ref={textBehindBlurRef}
-          className={cx("hero__headline-text", "hero__headline-text--blur")}
-        >
-          {headlineText.create},
-          <span className={cx("hero__headline-text-indent")}>
-            {headlineText.scale}
-          </span>
-          <br />
-          {headlineText.transform}
-        </div>
-
-        <div className={cx("hero__headline-text", "hero__headline-text--main")}>
-          {headlineText.create},
-          <span className={cx("hero__headline-text-indent")}>
-            {headlineText.scale}
-          </span>
-          <br />
-          {headlineText.transform}
-        </div>
-
-        <div
-          className={cx(
-            "hero__headline-text",
-            "hero__headline-text--white-stroke"
-          )}
-        >
-          {headlineText.create},
-          <span className={cx("hero__headline-text-indent")}>
-            {headlineText.scale}
-          </span>
-          <br />
-          {headlineText.transform}
-        </div>
-
-        <div
-          className={cx(
-            "hero__headline-text",
-            "hero__headline-text--permanent-stroke"
-          )}
-        >
-          {headlineText.create},
-          <span className={cx("hero__headline-text-indent")}>
-            {headlineText.scale}
-          </span>
-          <br />
-          {headlineText.transform}
-        </div>
-
-        <div
-          ref={textFrontRef}
-          className={cx("hero__headline-text", "hero__headline-text--front", {
-            "hero__headline-text--shader-complete": isShaderFadedOut,
+          className={cx("hero__headline-text", "hero__headline-text--blur", {
+            "hero__headline-text--visible": isShaderFadedOut,
           })}
         >
+          {headlineText.create}
+          <span className={cx("hero__headline-text-indent")}>
+            {headlineText.scale}
+          </span>
+          <br />
+          {headlineText.transform}
+        </div>
+
+        <div
+          className={cx("hero__headline-text", "hero__headline-text--main", {
+            "hero__headline-text--visible": isShaderFadedOut,
+          })}
+        >
+          {headlineText.create}
+          <span className={cx("hero__headline-text-indent")}>
+            {headlineText.scale}
+          </span>
+          <br />
+          {headlineText.transform}
+        </div>
+
+        <div
+          className={cx(
+            "hero__headline-text",
+            "hero__headline-text--white-stroke",
+            {
+              "hero__headline-text--visible": isShaderFadedOut,
+            }
+          )}
+        >
+          {headlineText.create}
+          <span className={cx("hero__headline-text-indent")}>
+            {headlineText.scale}
+          </span>
+          <br />
+          {headlineText.transform}
+        </div>
+
+        <div
+          className={cx(
+            "hero__headline-text",
+            "hero__headline-text--permanent-stroke",
+            {
+              "hero__headline-text--visible": isShaderFadedOut,
+            }
+          )}
+        >
+          {headlineText.create}
+          <span className={cx("hero__headline-text-indent")}>
+            {headlineText.scale}
+          </span>
+          <br />
+          {headlineText.transform}
+        </div>
+
+        {/* Texto frontal - controlado por GSAP y su opacidad depende de isMouseMoving + isShaderFadedOut */}
+        <div
+          ref={textFrontRef}
+          className={cx("hero__headline-text", "hero__headline-text--front")}
+          style={{ opacity: 0 }} // Por defecto invisible
+        >
           {headlineText.create},
           <span className={cx("hero__headline-text-indent")}>
             {headlineText.scale}
@@ -392,7 +233,8 @@ export const Hero = ({ dictionary }: HeroProps) => {
           {headlineText.transform}
         </div>
 
-        <WebGLText
+        {/* WebGLText (el shader que tenías originalmente con plasmaPulseShader) */}
+        {/* <WebGLText
           className={cx("hero__webgl-text", {
             "hero__webgl-text--fade-out": isShaderComplete,
           })}
@@ -408,9 +250,9 @@ export const Hero = ({ dictionary }: HeroProps) => {
               style: "normal",
             },
             fontSize: {
-              min: 48,
-              max: 142,
-              preferred: 12,
+              min: 64, // Tamaño mínimo que coincide con el CSS clamp
+              max: 142, // Tamaño máximo que coincide con el CSS clamp
+              preferred: 12, // Equivalente a los preferred vw en el CSS
             },
             color: "#ffffff",
             textAlign: "center",
@@ -428,10 +270,11 @@ export const Hero = ({ dictionary }: HeroProps) => {
           }}
           onComplete={handleShaderComplete}
           onFadeComplete={handleShaderFadeOut}
-          fadeOutDuration={0.5}
+          fadeOutDuration={2}
           debug={process.env.NODE_ENV === "development"}
-        />
+        /> */}
 
+        {/* Máscara que responde al hover/mouse */}
         <div
           ref={maskRef}
           className={cx("hero__mask", "hero__mask--neon")}
@@ -448,14 +291,21 @@ export const Hero = ({ dictionary }: HeroProps) => {
             {headlineText.transform}
           </div>
         </div>
+
+        {/* 2) Nuestro WaveScene por encima de todos los textos */}
+        <div className={cx("hero__headline-shader")}>
+          <WaveScene />
+        </div>
       </div>
 
+      {/* Contenido del hero (info y botón) */}
       <div className={cx("hero__content")}>
         <div className={cx("hero__info")}>
           <Typography
             variant="p1"
             color="secondary"
-            fontWeight={400}
+            fontWeight={300}
+            fontFamily="usual"
             theme="dark"
             className={cx("hero__info-subtitle")}
           >
@@ -464,7 +314,9 @@ export const Hero = ({ dictionary }: HeroProps) => {
 
           <Typography
             variant="h4"
-            fontWeight={500}
+            color="primary"
+            fontWeight={300}
+            fontFamily="usual"
             theme="dark"
             className={cx("hero__info-description")}
           >
@@ -473,7 +325,7 @@ export const Hero = ({ dictionary }: HeroProps) => {
 
           <Modal>
             <Modal.Open opens="project-form">
-              <Button size="lg" className={cx("hero__cta-button")}>
+              <Button size="md" className={cx("hero__cta-button")}>
                 {dictionary.description.cta}
               </Button>
             </Modal.Open>

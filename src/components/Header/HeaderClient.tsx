@@ -21,6 +21,7 @@ import LanguageSelector from "../LanguageSelector";
 import { NavMenu } from "./components/NavMenu";
 
 import styles from "./styles/Header.module.scss";
+import Typography from "../Typography";
 
 const cx = classnames.bind(styles);
 
@@ -35,7 +36,8 @@ const HeaderClient: React.FC<HeaderProps> = ({
   // const { onCursor } = useUIContext();
   const { language, setLanguage } = useLanguage();
 
-  const isScrolled = useHeaderScroll(appearance?.height ?? 50);
+  // const isScrolled = useHeaderScroll(appearance?.height ?? 50);
+  const isScrolled = useHeaderScroll(0);
   const [menuState, setMenuState] = useState<HeaderState>({
     isNavOpen: false,
   });
@@ -93,7 +95,35 @@ const HeaderClient: React.FC<HeaderProps> = ({
       >
         <Header.Content>
           <Header.Nav>
-            <Brand />
+            <div className={cx("header__menu-group")}>
+              <Header.MenuToggle />
+              <div className={cx("header__divider")} />
+              <LanguageSelector
+                className={cx("header__language-selector")}
+                variant="split-line"
+                currentLanguage={language}
+                onLanguageChange={setLanguage}
+              />
+            </div>
+
+            <div className={cx("header__logo")}>
+              <Brand />
+              <Typography
+                variant="p3"
+                color="tertiary"
+                fontWeight={400}
+                fontFamily="kranto"
+                theme="dark"
+                className={cx("header__logo-subtitle")}
+              >
+                <span className={cx("header__logo-subtitle-first-letter")}>
+                  {dictionary.subtitle?.firstLetter || "E"}
+                </span>
+                {dictionary.subtitle?.text ||
+                  "studio de diseño y desarrollo web"}
+              </Typography>
+            </div>
+
             <div className={cx("header__actions-group")}>
               <Button
                 variant="secondary"
@@ -103,14 +133,6 @@ const HeaderClient: React.FC<HeaderProps> = ({
               >
                 {dictionary.clientPortal.label}
               </Button>
-              <Header.MenuToggle />
-              <div className={cx("header__divider")} />
-              <LanguageSelector
-                className={cx("header__language-selector")}
-                variant="split-line"
-                currentLanguage={language}
-                onLanguageChange={setLanguage}
-              />
             </div>
           </Header.Nav>
         </Header.Content>

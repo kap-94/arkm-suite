@@ -4,11 +4,12 @@
 
 .brand {
   .logo {
-    font-family: "kranto-normal-semicondensed", sans-serif;
-    font-size: 24px;
+    font-family: "prohibition", sans-serif;
+    font-weight: 300 !important;
+    font-size: 25px;
     color: rgba($text-primary, 0.9);
     text-decoration: none;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
     transition: all $transition-duration $transition-bezier;
     display: inline-block;
 
@@ -19,10 +20,10 @@
     }
 
     &-text {
-      font-weight: 700;
+      // font-weight: 700;
 
       &--bold {
-        font-weight: 700;
+        font-weight: 400 !important;
       }
     }
 
@@ -32,14 +33,10 @@
 
     &-separator {
       height: 24px;
-      width: 2px;
-      background: linear-gradient(
-        to bottom,
-        transparent,
-        $primary-color,
-        transparent
-      );
-      margin: 0 8px;
+      width: 1.24px;
+      background: linear-gradient(to bottom, transparent, $primary-color 75%);
+      margin-inline: 10px;
+      transform: rotate(20deg);
     }
 
     // Size variants

@@ -90,7 +90,7 @@ function DashboardUI({
   bottomNavigation,
   user,
 }: DashboardUIProps) {
-  const { theme } = useSettings();
+  const { theme, language } = useSettings();
   const { state, updateDimensions } = useDashboard();
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -139,6 +139,7 @@ function DashboardUI({
           theme={{ type: theme }}
           config={header}
           user={user}
+          lang={language}
         />
         <main className={cx("layout__content")}>{children}</main>
       </div>
