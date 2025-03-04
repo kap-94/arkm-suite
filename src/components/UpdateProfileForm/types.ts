@@ -1,6 +1,6 @@
 // types.ts
 import { ProfileDictionary } from "@/types/dictionary/profile.types";
-import { User } from "@/types/User.types";
+// import { User } from "@/types/User.types";
 
 export interface ProfileTheme {
   type: "light" | "dark" | "custom";
@@ -23,9 +23,11 @@ export interface ProfileTheme {
 //   countryFlag: string;
 // }
 export interface UpdateProfileFormProps {
-  user: User;
+  // user: User; TODO: Corregir
+  user: any;
   children?: React.ReactNode;
   theme?: ProfileTheme;
-  onSubmit?: (values: User) => Promise<void>;
+  // onSubmit?: (values: User) => Promise<void>; TODO: Corregir
+  onSubmit?: (values: any) => Promise<void>;
   dictionary: ProfileDictionary;
 }

@@ -1,5 +1,5 @@
-import { User } from "@/types/User.types";
 import { ProfileDictionary } from "@/types/dictionary/profile.types";
+import { User } from "@/types/models";
 
 export type ThemeType = "light" | "dark" | "custom";
 
@@ -20,6 +20,7 @@ export interface ProfileImageProps {
   imageUrl?: string;
   theme?: ProfileImageTheme;
   onImageChange?: (file: File) => Promise<void>;
-  user: User;
+  // user: User; // Corregir
+  user: any;
   dictionary: ProfileDictionary;
 }

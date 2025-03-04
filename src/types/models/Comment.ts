@@ -1,6 +1,5 @@
 import { BaseEntity } from "./Common";
 import { User } from "./User";
-import { File } from "./File";
 import { Deliverable } from "./Deliverable";
 
 /**

@@ -3,7 +3,7 @@ export * from "./Budget";
 export * from "./Client";
 export * from "./Comment";
 export * from "./Deliverable";
-export * from "./File";
+// export * from "./File";
 export * from "./Milestone";
 export * from "./Project";
 export * from "./Stage";

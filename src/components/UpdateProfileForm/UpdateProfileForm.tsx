@@ -8,7 +8,7 @@ import { ThemedTextField } from "@/components/TextField";
 import type { UpdateProfileFormProps } from "./types";
 import { Button } from "@/components/Button";
 import { AtSign } from "lucide-react";
-import { User } from "@/types/User.types";
+// import { User } from "@/types/User.types";
 import { ProfileDictionary } from "@/types/dictionary/profile.types";
 import styles from "./UpdateProfileForm.module.scss";
 
@@ -45,8 +45,10 @@ export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
   const validationSchema = createValidationSchema(dictionary);
 
   const handleSubmit = async (
-    values: User,
-    { setSubmitting }: FormikHelpers<User>
+    // values: User,
+    // { setSubmitting }: FormikHelpers<User>  TODO: Corregir
+    values: any,
+    { setSubmitting }: FormikHelpers<any>
   ) => {
     try {
       await onSubmit?.(values);

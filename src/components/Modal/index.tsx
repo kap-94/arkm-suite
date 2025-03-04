@@ -1,4 +1,3 @@
-// src/components/Modal/index.tsx
 "use client";
 
 import React, {
@@ -60,7 +59,6 @@ const ClientPortal: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   if (!mounted) return null;
-
   return createPortal(children, document.body);
 };
 
@@ -82,12 +80,16 @@ export const Modal: React.FC<ModalProps> & {
 
 const Open: React.FC<OpenProps> = ({ children, opens: opensWindowName }) => {
   const { open } = useModal();
-  return cloneElement(children, { onClick: () => open(opensWindowName) });
+
+  return cloneElement(children, {
+    onClick: () => open(opensWindowName),
+  });
 };
 
 const Window: React.FC<WindowProps> = ({ children, name }) => {
   const { openName, close } = useModal();
-  const ref = useOutsideClick(close);
+  // Use the hook with the correct signature - it returns a ref
+  const ref = useOutsideClick<HTMLDivElement>(close);
 
   if (name !== openName) return null;
 
