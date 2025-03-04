@@ -7,14 +7,8 @@ import {
   DevelopmentIcon,
   RocketIllustration,
 } from "@/components/SolutionCard/SolutionIcons";
-import WireframeAnimation from "@/components/animations/WireframeAnimation";
 import CodeEditorAnimation from "@/components/animations/CodeEditorAnimation";
-import LandingWireframe1 from "@/components/animations/LandingWireframe1";
-import LandingWireframe2 from "@/components/animations/LandingWireframe2";
-import LandingWireframe3 from "@/components/animations/LandingWireframe3";
-import LandingWireframe4 from "@/components/animations/LandingWireframe4";
-import LandingWireframe5 from "@/components/animations/LandingWireframe5";
-import LandingWireframe6 from "@/components/animations/LandingWireframe6";
+import LandingWireframe from "@/components/animations/LandingWireframe";
 
 const cx = classNames.bind(styles);
 
@@ -32,11 +26,11 @@ const getIconComponent = (id: string) => {
 const getAnimationComponent = (id: string) => {
   switch (id) {
     case "web-design-solution":
-      return LandingWireframe1;
+      return LandingWireframe;
     case "web-development-solution":
       return CodeEditorAnimation;
     default:
-      return WireframeAnimation;
+      return LandingWireframe;
   }
 };
 
@@ -179,7 +173,7 @@ export const SolutionsModule = ({
                 solution={solutionWithIcon}
                 // layout={itemLayout}
                 AnimationComponent={
-                  solutionWithIcon.AnimationComponent || WireframeAnimation
+                  solutionWithIcon.AnimationComponent || LandingWireframe
                 }
                 featureOffset={offset} // Pasamos el offset global a cada solución
               />
