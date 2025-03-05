@@ -1,35 +1,50 @@
 "use client";
 
 import React, { createContext, useContext, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import type { Language } from "@/config/i18n";
+import { useRouter, usePathname } from "next/navigation";
+import type { Language } from "@/lib/config/i18n";
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined
+);
 
 interface LanguageProviderProps {
   children: React.ReactNode;
   lang: Language;
 }
 
-export function LanguageProvider({
-  children,
-  lang,
-}: LanguageProviderProps) {
+export function LanguageProvider({ children, lang }: LanguageProviderProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const setLanguage = useCallback(
-    async (newLang: Language) => {
+    (newLang: Language) => {
+      // Establecer la cookie
       document.cookie = `NEXT_LOCALE=${newLang};path=/;max-age=31536000`;
-      const currentPath = window.location.pathname;
-      const newPath = currentPath.replace(/^\/[a-z]{2}/, `/${newLang}`);
+
+      // Obtener la ruta actual y construir la nueva ruta
+      const segments = pathname.split("/");
+
+      if (segments[1] === lang) {
+        // Si el primer segmento es el idioma actual, reemplazarlo
+        segments[1] = newLang;
+      } else {
+        // Si no, añadir el nuevo idioma al principio
+        segments.splice(1, 0, newLang);
+      }
+
+      // Construir la nueva ruta
+      const newPath = segments.join("/");
+
+      // Navegar a la nueva ruta
       router.push(newPath);
     },
-    [router]
+    [router, pathname, lang]
   );
 
   const value = React.useMemo(

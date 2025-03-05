@@ -1,15 +1,14 @@
 // src/components/Sidebar/Sidebar.tsx
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
 import classNames from "classnames/bind";
-import { useSidebarContext } from "./context/SidebarContext";
 import { SidebarProps } from "./types/sidebar.types";
 import { SidebarItem } from "./components/SidebarItem";
-import { Typography } from "../Typography";
 import { Hamburger } from "../Hamburger";
-import styles from "./styles/Sidebar.module.scss";
 import { Brand } from "../Header/components";
+import { useDashboard } from "@/context/DashboardContext";
+import styles from "./styles/Sidebar.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -18,13 +17,11 @@ export function Sidebar({
   bottomNavigation,
   theme = { type: "dark" },
   className,
-  onStateChange,
 }: SidebarProps) {
-  const { state, actions } = useSidebarContext();
+  const { state, toggleSidebar, collapseSidebar } = useDashboard();
   const sidebarRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Manejar tema
   useEffect(() => {
     if (!sidebarRef.current || !overlayRef.current) return;
 
@@ -55,19 +52,14 @@ export function Sidebar({
     }
   }, [theme]);
 
-  // Notificar cambios de estado
-  useEffect(() => {
-    onStateChange?.(state);
-  }, [state, onStateChange]);
-
   return (
     <>
       <div
         ref={overlayRef}
         className={cx("sidebar-overlay", {
-          "sidebar-overlay--visible": state.isExpanded,
+          "sidebar-overlay--visible": state.isSidebarExpanded,
         })}
-        onClick={actions.collapse}
+        onClick={collapseSidebar}
         role="presentation"
         data-theme={theme.type}
       />
@@ -77,27 +69,65 @@ export function Sidebar({
         className={cx(
           "sidebar",
           {
-            "sidebar--expanded": state.isExpanded,
-            "sidebar--collapsed": !state.isExpanded,
+            "sidebar--expanded": state.isSidebarExpanded,
+            "sidebar--collapsed": !state.isSidebarExpanded,
+            "sidebar--mobile": state.isMobileSidebar,
           },
           className
         )}
-        aria-expanded={state.isExpanded}
+        aria-expanded={state.isSidebarExpanded}
         role="navigation"
         data-theme={theme.type}
       >
         <div
           className={cx("sidebar__header", {
-            "sidebar__header--expanded": state.isExpanded,
-            "sidebar__header--collapsed": !state.isExpanded,
+            "sidebar__header--expanded": state.isSidebarExpanded,
+            "sidebar__header--collapsed": !state.isSidebarExpanded,
           })}
         >
-          {state.isExpanded ? (
+          {state.isSidebarExpanded ? (
             <>
               <Brand size="sm" />
+
+              {/* <div
+                style={{ width: 88, height: 24, transform: "translateX(-8px)" }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+                  <rect width="300" height="100" fill="none" />
+
+                  <path
+                    d="M50 80 L70 20 L90 80 M60 55 L80 55"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M100 20 L100 80 M100 20 L130 20 Q150 20 150 40 T130 60 L100 60 L130 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M160 20 L160 80 M160 50 L190 20 M160 50 L190 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+
+                  <path
+                    d="M200 80 L200 20 L220 50 L240 20 L240 80"
+                    fill="none"
+                    stroke="rgb(241, 228, 228)"
+                    stroke-width="5"
+                  />
+                </svg>
+              </div> */}
+
               <Hamburger
                 variant="morph"
-                onClick={actions.toggle}
+                onClick={toggleSidebar}
                 isOpen={true}
                 className={cx("sidebar__toggle")}
                 theme={{ type: theme.type }}
@@ -106,13 +136,14 @@ export function Sidebar({
           ) : (
             <Hamburger
               variant="morph"
-              onClick={actions.toggle}
+              onClick={toggleSidebar}
               isOpen={false}
               className={cx("sidebar__toggle")}
               theme={{ type: theme.type }}
             />
           )}
         </div>
+
         <nav className={cx("sidebar__nav")}>
           <ul className={cx("sidebar__list")} role="menu">
             {mainNavigation.map((item) => (

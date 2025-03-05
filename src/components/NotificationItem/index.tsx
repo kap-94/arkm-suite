@@ -1,173 +1,182 @@
 import React from "react";
-import {
-  Bell,
-  AlertCircle,
-  Users,
-  Target,
-  Activity,
-  MessageSquare,
-  File,
-  AtSign,
-} from "lucide-react";
 import classNames from "classnames/bind";
-import { formatDistanceToNow } from "date-fns";
-import styles from "./NotificationItem.module.scss";
-import type { NotificationType } from "./types";
 import Link from "next/link";
+import { ThemedTypography } from "@/components/Typography/ThemedTypography";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale";
+import { NotificationIcon, getVariantLabel, variantColors } from "./constants";
+import { getNotificationContent } from "./utils";
+import { NotificationItemProps, NotificationTheme } from "./types";
+import styles from "./NotificationItem.module.scss";
+import { useDashboard } from "@/context/DashboardContext";
 
 const cx = classNames.bind(styles);
 
-interface NotificationItemProps {
-  notification: NotificationType;
-  onClick?: (id: string) => void;
-}
-
-const NotificationIcon = {
-  status: AlertCircle,
-  progress: Activity,
-  team: Users,
-  milestone: Target,
-  comment: MessageSquare,
-  file: File,
-  mention: AtSign,
+export const defaultTheme: NotificationTheme = {
+  type: "dark",
+  colors: {
+    background: "rgba(241, 228, 228, 0.02)",
+    backgroundHover: "rgba(241, 228, 228, 0.05)",
+    border: "rgba(241, 228, 228, 0.05)",
+    iconColor: "rgb(241, 228, 228)",
+    text: "rgb(241, 228, 228)",
+    textSecondary: "rgba(241, 228, 228, 0.65)",
+    typeBackground: "rgba(241, 228, 228, 0.05)",
+  },
 };
 
-const variantLabels = {
-  status: "Status Update",
-  progress: "Progress",
-  team: "Team Update",
-  milestone: "Milestone",
-  comment: "Comment",
-  file: "File",
-  mention: "Mention",
-};
-
-const getNotificationContent = (notification: NotificationType) => {
-  switch (notification.variant) {
-    case "status":
-      return {
-        title: `Project Status Updated: ${notification.projectName}`,
-        description: `Status changed from ${notification.previousStatus} to ${
-          notification.newStatus
-        }${notification.reason ? ` - ${notification.reason}` : ""}`,
-      };
-    case "progress":
-      return {
-        title: `Progress Update: ${notification.projectName}`,
-        description: `${notification.stageName} stage progress increased from ${notification.previousProgress}% to ${notification.newProgress}%`,
-      };
-    case "team":
-      return {
-        title: `Team Update: ${notification.projectName}`,
-        description: `Team member${
-          notification.members.length > 1 ? "s" : ""
-        } ${notification.members.join(", ")} ${notification.action} ${
-          notification.role ? `as ${notification.role}` : ""
-        }`,
-      };
-    case "milestone":
-      return {
-        title: `Milestone: ${notification.projectName}`,
-        description: `${notification.stageName} completed at ${
-          notification.progress
-        }%${
-          notification.nextMilestone
-            ? `. Next milestone: ${notification.nextMilestone}`
-            : ""
-        }`,
-      };
-    case "comment":
-      return {
-        title: `New Comment: ${notification.projectName}`,
-        description: `${notification.commentBy}: "${notification.commentPreview}"`,
-      };
-    case "file":
-      return {
-        title: `File ${notification.action}: ${notification.projectName}`,
-        description: `${notification.fileName} (${notification.fileSize}) was ${notification.action}`,
-      };
-    case "mention":
-      return {
-        title: `Mentioned in ${notification.projectName}`,
-        description: `${notification.mentionedBy}: "${notification.context}"`,
-      };
-    default:
-      return {
-        title: "Notification",
-        description: "Unknown notification type",
-      };
-  }
-};
-const formatTimestamp = (date: Date) => {
-  return formatDistanceToNow(new Date(date), { addSuffix: true });
+const priorityTranslations = {
+  en: {
+    high: "high priority",
+    medium: "medium priority",
+    low: "low priority",
+  },
+  es: {
+    high: "prioridad alta",
+    medium: "prioridad media",
+    low: "prioridad baja",
+  },
 };
 
 export const NotificationItem: React.FC<NotificationItemProps> = ({
   notification,
   onClick,
+  theme = defaultTheme,
+  className,
 }) => {
+  const { language } = useDashboard();
+
   const IconComponent = NotificationIcon[notification.variant];
-  const content = getNotificationContent(notification);
-  // Inicializar con un valor por defecto calculado
+  const content = getNotificationContent(notification, language);
+  const variantLabel = getVariantLabel(notification.variant, language);
+  const priorityLabel = priorityTranslations[language][notification.priority];
+
   const [timestamp, setTimestamp] = React.useState(() =>
-    formatTimestamp(notification.timestamp)
+    formatDistanceToNow(notification.timestamp, {
+      addSuffix: true,
+      locale: language === "es" ? es : undefined,
+    })
   );
 
-  // Actualizar el timestamp cada minuto para mantenerlo fresco
   React.useEffect(() => {
     const updateTimestamp = () => {
-      setTimestamp(formatTimestamp(notification.timestamp));
+      setTimestamp(
+        formatDistanceToNow(notification.timestamp, {
+          addSuffix: true,
+          locale: language === "es" ? es : undefined,
+        })
+      );
     };
-
-    const timer = setInterval(updateTimestamp, 60000); // Actualizar cada minuto
-
+    const timer = setInterval(updateTimestamp, 60000);
     return () => clearInterval(timer);
-  }, [notification.timestamp]);
+  }, [notification.timestamp, language]);
+
+  const variantStyle = variantColors[notification.variant];
 
   const NotificationContent = () => (
-    <div className={cx("notification-item__content")}>
-      <div className={cx("notification-item__header")}>
-        <h4 className={cx("notification-item__title")}>{content.title}</h4>
-        <div className={cx("notification-item__variant-wrapper")}>
+    <div className={cx("notification__content")}>
+      <div className={cx("notification__header")}>
+        <ThemedTypography
+          variant="p2"
+          fontWeight={500}
+          color="secondary"
+          className={cx("notification__title")}
+          noWrap
+        >
+          {notification.project.name}
+        </ThemedTypography>
+        <div className={cx("notification__badge-wrapper")}>
           <span
             className={cx(
-              "notification-item__variant-label",
-              `notification-item__variant-label--${notification.variant}`
+              "notification__badge",
+              `notification__badge--${notification.variant}`
             )}
+            style={{
+              backgroundColor: variantStyle.background,
+              color: variantStyle.text,
+            }}
           >
-            <IconComponent className={cx("notification-item__variant-icon")} />
-            {variantLabels[notification.variant]}
+            <IconComponent
+              className={cx("notification__badge-icon")}
+              style={{ color: variantStyle.text }}
+            />
+            <ThemedTypography
+              variant="p3"
+              className={cx("notification__badge-text")}
+              textTransform="uppercase"
+              fontWeight={500}
+              style={{ color: variantStyle.text }}
+            >
+              {variantLabel}
+            </ThemedTypography>
           </span>
         </div>
       </div>
-      <p className={cx("notification-item__description")}>
-        {content.description}
-      </p>
-      <div className={cx("notification-item__footer")}>
-        <span className={cx("notification-item__timestamp")}>{timestamp}</span>
-        <span className={cx("notification-item__separator")}>•</span>
-        <span className={cx("notification-item__priority")}>
-          {notification.priority}
-        </span>
+      <ThemedTypography
+        variant="p3"
+        fontWeight={400}
+        color="secondary"
+        className={cx("notification__description")}
+      >
+        {content}
+      </ThemedTypography>
+      <div className={cx("notification__meta")}>
+        <ThemedTypography
+          variant="p3"
+          className={cx("notification__timestamp")}
+        >
+          {timestamp}
+        </ThemedTypography>
+        <ThemedTypography
+          variant="p3"
+          className={cx("notification__separator")}
+        >
+          •
+        </ThemedTypography>
+        <ThemedTypography
+          variant="p3"
+          className={cx(
+            "notification__priority",
+            `notification__priority--${notification.priority}`
+          )}
+        >
+          {priorityLabel}
+        </ThemedTypography>
       </div>
     </div>
   );
 
-  const commonClassNames = cx("notification-item", {
-    [`notification-item--${notification.priority}`]: true,
-    "notification-item--unread": !notification.read,
-  });
+  const commonClassNames = cx(
+    "notification",
+    className,
+    `notification--theme-${theme.type}`,
+    {
+      "notification--unread": !notification.read,
+    }
+  );
+
+  const customStyles =
+    theme.type === "custom"
+      ? ({
+          "--notification-background": theme.colors?.background,
+          "--notification-background-hover": theme.colors?.backgroundHover,
+          "--notification-border": theme.colors?.border,
+          "--notification-icon-color": theme.colors?.iconColor,
+          "--notification-text": theme.colors?.text,
+          "--notification-text-secondary": theme.colors?.textSecondary,
+          "--notification-type-background": theme.colors?.typeBackground,
+        } as React.CSSProperties)
+      : undefined;
 
   if (notification.link) {
     return (
       <Link
         href={notification.link}
-        className={cx(commonClassNames, "notification-item--link")}
+        className={cx(commonClassNames, "notification--link")}
+        style={customStyles}
         onClick={(e) => {
           e.preventDefault();
-          if (onClick) {
-            onClick(notification.id);
-          }
+          onClick?.(notification.id);
           window.location.href = notification.link as string;
         }}
       >
@@ -177,7 +186,11 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   }
 
   return (
-    <div className={commonClassNames}>
+    <div
+      className={commonClassNames}
+      style={customStyles}
+      onClick={() => onClick?.(notification.id)}
+    >
       <NotificationContent />
     </div>
   );

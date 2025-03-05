@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Iniciar Sesión",
+    "description": "Accede de forma segura a tu panel personalizado",
+    "keywords": [
+      "iniciar sesión",
+      "login",
+      "acceso al panel"
+    ]
+  },
+  "header": {
+    "title": "Iniciar Sesión",
+    "subtitle": "Accede a tu panel personalizado",
+    "aria": "Encabezado de iniciar sesión"
+  },
+  "form": {
+    "fields": {
+      "email": {
+        "label": "Correo Electrónico",
+        "placeholder": "Introduce tu correo electrónico",
+        "icon": "mail"
+      },
+      "password": {
+        "label": "Contraseña",
+        "placeholder": "Introduce tu contraseña",
+        "icon": "password"
+      }
+    },
+    "validation": {
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "Por favor introduce un correo electrónico válido",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "La contraseña debe contener al menos una letra mayúscula",
+      "passwordLowercase": "La contraseña debe contener al menos una letra minúscula",
+      "passwordNumber": "La contraseña debe contener al menos un número",
+      "passwordSpecial": "La contraseña debe contener al menos un carácter especial",
+      "passwordRequired": "La contraseña es obligatoria",
+      "invalidCredentials": "Correo electrónico o contraseña inválidos",
+      "unexpected": "Ocurrió un error inesperado"
+    },
+    "buttons": {
+      "primary": {
+        "label": "Iniciar Sesión",
+        "loading": "Iniciando sesión...",
+        "cancel": "Cancelar"
+      },
+      "google": {
+        "label": "Iniciar sesión con Google",
+        "loading": "Conectando con Google..."
+      },
+      "separator": {
+        "text": "o"
+      }
+    },
+    "note": "* Acceso proporcionado por el administrador"
+  },
+  "status": {
+    "loading": "Cargando...",
+    "success": "Sesión iniciada con éxito",
+    "error": "Ocurrió un error",
+    "invalidCredentials": "Correo electrónico o contraseña inválidos",
+    "network": "Error de red, por favor intenta nuevamente más tarde"
+  },
+  "errors": {
+    "email": "Error con el campo de correo electrónico",
+    "password": "Error con el campo de contraseña",
+    "unexpected": "Ocurrió un error inesperado"
+  },
+  "aria": {
+    "emailInput": "Campo de correo electrónico",
+    "passwordInput": "Campo de contraseña",
+    "submitButton": "Botón de iniciar sesión"
+  }
+}

@@ -6,26 +6,29 @@ $user-info-theme-map: (
   dark: (
     background: transparent,
     text: $text-primary,
-    hover-background: convert-to-rgba($white-base, 0.08),
-    border-color: convert-to-rgba($text-primary, 0.1),
+    initials-color: $white-base,
+    hover-background: rgba($white-base, 0.08),
+    border-color: rgba($text-primary, 0.1),
     dropdown-background: linear-gradient(180deg, #000000, #0a0a0a),
-    dropdown-border: convert-to-rgba($text-primary, 0.1),
+    dropdown-border: rgba($text-primary, 0.18),
     dropdown-text: $text-primary,
-    dropdown-hover: convert-to-rgba($white-base, 0.08),
+    dropdown-hover: rgba($white-base, 0.08),
   ),
   light: (
     background: transparent,
     text: $black-base,
-    hover-background: convert-to-rgba($black-base, 0.05),
-    border-color: convert-to-rgba($black-base, 0.1),
+    initials-color: $white-base,
+    hover-background: rgba($black-base, 0.05),
+    border-color: rgba($black-base, 0.1),
     dropdown-background: $white-light,
-    dropdown-border: convert-to-rgba($black-base, 0.1),
+    dropdown-border: rgba($black-base, 0.1),
     dropdown-text: $black-base,
-    dropdown-hover: convert-to-rgba($black-base, 0.05),
+    dropdown-hover: rgba($black-base, 0.05),
   ),
   custom: (
     background: var(--user-info-background),
     text: var(--user-info-text),
+    initials-color: var(--user-info-initials-color),
     hover-background: var(--user-info-hover-background),
     border-color: var(--user-info-border-color),
     dropdown-background: var(--user-info-dropdown-background),
@@ -49,6 +52,10 @@ $user-info-theme-map: (
         &:hover {
           background: map-get($values, hover-background);
         }
+      }
+
+      .user-info__initials {
+        color: map-get($values, initials-color);
       }
 
       .user-info__chevron {
@@ -119,10 +126,14 @@ $user-info-theme-map: (
     width: 224px;
     border-radius: $border-radius-md;
     padding: $spacing-sm;
-    @include elevation(2);
+    @include elevation();
     border: 1px solid;
     @include glass-effect($black-base, 0.1, 8px);
     animation: dropdownSlideIn 0.2s $transition-bezier;
+
+    @include mobile {
+      width: 200px;
+    }
   }
 
   &__dropdown-item {
@@ -134,6 +145,10 @@ $user-info-theme-map: (
     border: none;
     cursor: pointer;
     background: transparent;
+
+    @include mobile {
+      padding: $spacing-sm;
+    }
   }
 
   &__dropdown-icon {

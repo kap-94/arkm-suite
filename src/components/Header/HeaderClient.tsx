@@ -1,85 +1,85 @@
-import React from "react";
-import classnames from "classnames/bind";
-import { useHeaderScroll } from "./hooks";
-import { useLanguage } from "@/context/LanguageContext";
-import { useUIContext } from "@/context/UIContext";
-import { Header } from "./Header";
-import { HeaderContext } from "./context";
-import { Brand } from "./components";
-import { NavMenu } from "./components/NavMenu";
-import { HeaderProps, HeaderState } from "./types/header.types";
-import { DEFAULT_HEADER_CONFIG } from "./types/header.types";
-import styles from "./styles/Header.module.scss";
-import LanguageSelector from "../LanguageSelector";
-import { Button } from "../Button";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
 import { Users2 } from "lucide-react";
+import classnames from "classnames/bind";
+import {
+  DEFAULT_HEADER_CONFIG,
+  HeaderProps,
+  HeaderState,
+} from "./types/header.types";
+
+import { HeaderContext } from "./context";
+import { useLanguage } from "@/context/LanguageContext";
+
+import { useHeaderScroll } from "./hooks";
+
+import { Brand } from "./components";
+import { Button } from "../Button";
+import { Header } from "./Header";
+import LanguageSelector from "../LanguageSelector";
+import { NavMenu } from "./components/NavMenu";
+
+import styles from "./styles/Header.module.scss";
+import Typography from "../Typography";
 
 const cx = classnames.bind(styles);
 
 const HeaderClient: React.FC<HeaderProps> = ({
-  items,
+  dictionary,
   variant = DEFAULT_HEADER_CONFIG.variant,
   appearance = DEFAULT_HEADER_CONFIG.appearance,
   breakpoint = DEFAULT_HEADER_CONFIG.breakpoint,
   menuPosition = DEFAULT_HEADER_CONFIG.menuPosition,
-  languageConfig = DEFAULT_HEADER_CONFIG.languageConfig,
   className,
 }) => {
-  const { onCursor } = useUIContext();
-  const { t, language, setLanguage } = useLanguage();
-  const isScrolled = useHeaderScroll(appearance?.height ?? 50);
-  const [menuState, setMenuState] = React.useState<HeaderState>({
+  // const { onCursor } = useUIContext();
+  const { language, setLanguage } = useLanguage();
+
+  // const isScrolled = useHeaderScroll(appearance?.height ?? 50);
+  const isScrolled = useHeaderScroll(0);
+  const [menuState, setMenuState] = useState<HeaderState>({
     isNavOpen: false,
-    isMobileMenuOpen: false,
   });
+
+  const navigationItems = Object.values(dictionary.navigation);
 
   const setIsNavOpen = (isOpen: boolean) =>
     setMenuState((prev) => ({ ...prev, isNavOpen: isOpen }));
 
-  const contextValue = React.useMemo(
+  const contextValue = useMemo(
     () => ({
-      items,
+      dictionary,
       variant,
       appearance,
       breakpoint,
       menuPosition,
-      languageConfig: {
-        ...languageConfig,
-        currentLanguage: language,
-        onLanguageChange: setLanguage,
-      },
       isScrolled,
       isNavOpen: menuState.isNavOpen,
       setIsNavOpen,
-      isMobileMenuOpen: false,
-      setIsMobileMenuOpen: () => {},
-      onCursor,
-      language,
-      setLanguage,
+
+      // onCursor,
     }),
     [
-      items,
+      dictionary,
       variant,
       appearance,
       breakpoint,
       menuPosition,
-      languageConfig,
       isScrolled,
       menuState.isNavOpen,
-      onCursor,
-      language,
-      setLanguage,
+      // onCursor,
     ]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.body.style.overflow = menuState.isNavOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [menuState.isNavOpen]);
 
-  if (!items?.length) return null;
+  if (!navigationItems?.length) return null;
 
   return (
     <HeaderContext.Provider value={contextValue}>
@@ -95,37 +95,53 @@ const HeaderClient: React.FC<HeaderProps> = ({
       >
         <Header.Content>
           <Header.Nav>
-            <Brand
-            // variant="double-border"
-            />
-            <div className={cx("header__actions-group")}>
-              <Button
-                variant="secondary"
-                href="/dashboard"
-                icon={<Users2 size={16} />}
-                className={cx("header__portal-button")}
-              >
-                {t("navigation.clientSuite")}
-              </Button>
+            <div className={cx("header__menu-group")}>
               <Header.MenuToggle />
               <div className={cx("header__divider")} />
               <LanguageSelector
                 className={cx("header__language-selector")}
-                variant={languageConfig.variant || "split-line"}
-                currentLanguage={languageConfig.currentLanguage || language}
-                onLanguageChange={
-                  languageConfig.onLanguageChange || setLanguage
-                }
+                variant="split-line"
+                currentLanguage={language}
+                onLanguageChange={setLanguage}
               />
+            </div>
+
+            <div className={cx("header__logo")}>
+              <Brand />
+              <Typography
+                variant="p3"
+                color="tertiary"
+                fontWeight={400}
+                fontFamily="kranto"
+                theme="dark"
+                className={cx("header__logo-subtitle")}
+              >
+                <span className={cx("header__logo-subtitle-first-letter")}>
+                  {dictionary.subtitle?.firstLetter || "E"}
+                </span>
+                {dictionary.subtitle?.text ||
+                  "studio de diseño y desarrollo web"}
+              </Typography>
+            </div>
+
+            <div className={cx("header__actions-group")}>
+              <Button
+                variant="secondary"
+                href={dictionary.clientPortal.href}
+                icon={<Users2 size={16} />}
+                className={cx("header__portal-button")}
+              >
+                {dictionary.clientPortal.label}
+              </Button>
             </div>
           </Header.Nav>
         </Header.Content>
 
         <NavMenu
-          items={items}
+          menuItems={navigationItems}
           isOpen={menuState.isNavOpen}
           onClose={() => setIsNavOpen(false)}
-          onCursor={onCursor}
+          // // onCursor={onCursor}
         />
       </Header.Root>
     </HeaderContext.Provider>

@@ -1,0 +1,216 @@
+{
+    "meta": {
+        "title": "Dashboard | Client Portal",
+        "description": "Monitor and manage your projects in real-time with our comprehensive client dashboard",
+        "keywords": [
+            "dashboard",
+            "projects",
+            "monitoring",
+            "client portal",
+            "project management"
+        ],
+        "ogImage": "/images/dashboard-og.jpg"
+    },
+    "header": {
+        "title": "Client Portal",
+        "subtitle": "Welcome back! Here's what's happening with your projects",
+        "aria": "Dashboard main header"
+    },
+    "stats": {
+        "group": {
+            "aria": "Dashboard statistics",
+            "label": "Key metrics overview"
+        },
+        "items": {
+            "activeProjects": {
+                "label": "Active Projects",
+                "tooltip": "Number of projects currently in progress",
+                "aria": "Active projects counter",
+                "description": "Projects that are currently being worked on"
+            },
+            "completed": {
+                "label": "Completed",
+                "tooltip": "Number of completed projects",
+                "aria": "Completed projects counter",
+                "description": "Projects that have been successfully delivered"
+            },
+            "overallProgress": {
+                "label": "Overall Progress",
+                "tooltip": "Average progress across all projects",
+                "aria": "Overall progress percentage",
+                "description": "Combined progress of all active projects"
+            },
+            "notifications": {
+                "label": "Notifications",
+                "tooltip": "Number of unread notifications",
+                "aria": "Unread notifications counter",
+                "description": "Important updates and alerts"
+            }
+        }
+    },
+    "sections": {
+        "projects": {
+            "title": "Your Projects",
+            "subtitle": "Overview of all your active and completed projects",
+            "empty": "No projects found",
+            "aria": "Projects section",
+            "actions": {
+                "viewAll": "View all projects",
+                "create": "Create new project",
+                "filter": "Filter projects",
+                "sort": "Sort projects",
+                "export": "Export projects list"
+            },
+            "filters": {
+                "status": {
+                    "allStatus": "All Status",
+                    "inProgress": "In Progress",
+                    "completed": "Completed",
+                    "onHold": "On Hold"
+                },
+                "priority": {
+                    "allPriority": "All Priority",
+                    "high": "High Priority",
+                    "medium": "Medium Priority",
+                    "low": "Low Priority"
+                }
+            },
+            "sortOptions": {
+                "recent": "Most Recent",
+                "name": "Project Name",
+                "progress": "Progress",
+                "deadline": "Deadline"
+            },
+            "viewOptions": {
+                "list": "List View",
+                "grid": "Grid View"
+            },
+            "labels": {
+                "projectName": "Project Name",
+                "client": "Client",
+                "progress": "Progress",
+                "status": "Status",
+                "lastUpdated": "Last Updated",
+                "dueDate": "Due Date"
+            },
+            "links": {
+                "view": {
+                    "label": "View Project",
+                    "url": "/projects/view"
+                },
+                "edit": {
+                    "label": "Edit Project",
+                    "url": "/projects/edit"
+                },
+                "delete": {
+                    "label": "Delete Project",
+                    "url": "/projects/delete"
+                }
+            },
+            "statuses": {
+                "active": "Active",
+                "completed": "Completed",
+                "onHold": "On Hold",
+                "cancelled": "Cancelled",
+                "draft": "Draft"
+            }
+        },
+        "recentFiles": {
+            "title": "Recent Files",
+            "subtitle": "Latest uploaded and modified files",
+            "empty": "No recent files",
+            "aria": "Recent files section",
+            "actions": {
+                "upload": "Upload file",
+                "viewAll": "View all files",
+                "filter": "Filter files"
+            },
+            "filters": {
+                "all": "All Files",
+                "documents": "Documents",
+                "images": "Images",
+                "other": "Other"
+            },
+            "labels": {
+                "fileName": "File Name",
+                "size": "Size",
+                "uploadDate": "Upload Date",
+                "type": "Type",
+                "project": "Project"
+            }
+        },
+        "notifications": {
+            "title": "Recent Notifications",
+            "subtitle": "Latest updates and alerts",
+            "empty": "No new notifications",
+            "aria": "Notifications section",
+            "actions": {
+                "markAllRead": "Mark all as read",
+                "viewAll": "View all notifications",
+                "settings": "Notification settings"
+            },
+            "types": {
+                "update": "Update",
+                "alert": "Alert",
+                "reminder": "Reminder",
+                "message": "Message",
+                "mention": "Mention"
+            },
+            "filters": {
+                "all": "All Notifications",
+                "unread": "Unread",
+                "mentions": "Mentions",
+                "updates": "Updates"
+            },
+            "timeLabels": {
+                "today": "Today",
+                "yesterday": "Yesterday",
+                "thisWeek": "This Week",
+                "thisMonth": "This Month"
+            }
+        }
+    },
+    "tooltips": {
+        "refresh": "Refresh dashboard",
+        "settings": "Dashboard settings",
+        "help": "Help and documentation",
+        "profile": "View profile",
+        "notifications": "View all notifications"
+    },
+    "messages": {
+        "welcome": "Welcome back, {name}",
+        "lastLogin": "Last login: {date}",
+        "dataUpdate": "Data last updated: {date}",
+        "loading": "Loading dashboard data...",
+        "error": "Error loading dashboard",
+        "retry": "Retry loading"
+    },
+    "errors": {
+        "loadFailed": "Failed to load dashboard data",
+        "updateFailed": "Failed to update dashboard",
+        "connectionError": "Connection error",
+        "sessionExpired": "Your session has expired",
+        "permissions": "Insufficient permissions"
+    },
+    "accessibility": {
+        "loadingState": "Dashboard is loading",
+        "refreshButton": "Refresh dashboard data",
+        "settingsButton": "Open dashboard settings",
+        "navigationMenu": "Dashboard navigation menu",
+        "notificationBadge": "Number of unread notifications",
+        "projectProgress": "Project progress indicator"
+    },
+    "dialogs": {
+        "refresh": {
+            "title": "Refresh Dashboard",
+            "message": "Are you sure you want to refresh all dashboard data?",
+            "confirm": "Yes, refresh",
+            "cancel": "Cancel"
+        },
+        "settings": {
+            "title": "Dashboard Settings",
+            "save": "Save changes",
+            "cancel": "Cancel changes"
+        }
+    }
+}

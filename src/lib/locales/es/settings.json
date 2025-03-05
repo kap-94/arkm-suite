@@ -1,0 +1,68 @@
+{
+    "meta": {
+        "title": "Configuración | Aplicación",
+        "description": "Administra tus preferencias y personaliza tu experiencia",
+        "keywords": [
+            "configuración",
+            "preferencias",
+            "aplicación",
+            "personalización"
+        ]
+    },
+    "header": {
+        "title": "Configuración",
+        "subtitle": "Administra las preferencias de tu aplicación",
+        "aria": "Encabezado principal de configuración"
+    },
+    "sections": {
+        "appearance": {
+            "title": "Apariencia",
+            "description": "Selecciona el tema para la apariencia de tu aplicación",
+            "aria": "Sección de configuración de apariencia",
+            "options": {
+                "lightMode": {
+                    "label": "Claro",
+                    "description": "Cambia a una interfaz más brillante",
+                    "aria": "Opción de modo claro"
+                },
+                "darkMode": {
+                    "label": "Oscuro",
+                    "description": "Cambia a una interfaz más oscura",
+                    "aria": "Opción de modo oscuro"
+                }
+            }
+        },
+        "language": {
+            "title": "Ajustes de Idioma",
+            "description": "Configura tu idioma preferido.",
+            "aria": "Sección de configuración de idioma",
+            "options": {
+                "english": {
+                    "label": "Inglés",
+                    "aria": "Opción de idioma inglés"
+                },
+                "spanish": {
+                    "label": "Español",
+                    "aria": "Opción de idioma español"
+                }
+            }
+        }
+    },
+    "tooltips": {
+        "save": "Guardar cambios",
+        "reset": "Restablecer configuración a los valores predeterminados"
+    },
+    "messages": {
+        "success": "Configuración guardada con éxito",
+        "error": "Error al guardar la configuración",
+        "resetConfirm": "¿Estás seguro de que deseas restablecer toda la configuración a sus valores predeterminados?"
+    },
+    "dialogs": {
+        "reset": {
+            "title": "Restablecer Configuración",
+            "message": "Esto restaurará toda la configuración a sus valores predeterminados. ¿Deseas continuar?",
+            "confirm": "Sí, restablecer",
+            "cancel": "Cancelar"
+        }
+    }
+}

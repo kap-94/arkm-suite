@@ -74,10 +74,21 @@
 }
 
 // Typography mixins
-@mixin text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+@mixin text-truncate($rows: 1) {
+  @if $rows == 1 {
+    // Single line truncation
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    // Multi-line truncation
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $rows;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; // Allow text to wrap
+  }
 }
 
 @mixin text-clamp($lines: 2) {
@@ -197,12 +208,14 @@
 
 // Custom scrollbar mixin
 @mixin custom-scrollbar(
-  $width: 6px,
+  $width: 4px,
+  $height: 4px,
   $track-color: transparent,
   $thumb-color: rgba($text-primary, 0.2)
 ) {
   &::-webkit-scrollbar {
     width: $width;
+    height: $height; // Added height for horizontal scrollbar
   }
 
   &::-webkit-scrollbar-track {
@@ -218,7 +231,6 @@
     }
   }
 }
-
 // Shadow mixins
 @mixin elevation($level: 1) {
   @if $level == 1 {

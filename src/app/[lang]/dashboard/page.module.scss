@@ -1,16 +1,85 @@
+@import "@/styles/variables";
+@import "@/styles/mixins";
+
+$dashboard-theme-map: (
+  dark: (
+    background: $black-base,
+    text-primary: $text-primary,
+    text-secondary: $text-secondary,
+    card-bg: rgba(15, 15, 15, 0.6),
+    card-border: rgba(255, 255, 255, 0.15),
+    stats-active-projects: #4ade80,
+    stats-completed: #818cf8,
+    stats-progress: #facc15,
+    stats-notifications: #f472b6,
+  ),
+  light: (
+    background: $white-light,
+    text-primary: $black-base,
+    text-secondary: $text-secondary,
+    card-bg: convert-to-rgba($white-color, 0.9),
+    card-border: convert-to-rgba($white-color, 0.3),
+    stats-active-projects: blue,
+    stats-completed: blue,
+    stats-progress: blue,
+    stats-notifications: blue,
+  ),
+  custom: (
+    background: var(--page-background),
+    text-primary: var(--page-text-primary),
+    text-secondary: var(--page-text-secondary),
+    card-bg: var(--page-card-bg),
+    card-border: var(--page-card-border),
+    stats-active-projects: var(--stats-active-projects-color),
+    stats-completed: var(--stats-completed-color),
+    stats-progress: var(--stats-progress-color),
+    stats-notifications: var(--stats-notifications-color),
+  ),
+);
+
 .dashboard {
-  &__container {
-    margin-bottom: 2rem;
-    & > *:not(:last-child) {
-      margin-bottom: 2rem;
+  width: 100%;
+  position: relative;
+  height: 100%;
+
+  // Theme variations
+  @each $theme, $values in $dashboard-theme-map {
+    &--theme-#{$theme} {
+      background: transparent;
+      color: map-get($values, text-primary);
+
+      // Set CSS variables for stats colors based on theme
+      --stats-active-projects-color: #{map-get($values, stats-active-projects)};
+      --stats-completed-color: #{map-get($values, stats-completed)};
+      --stats-progress-color: #{map-get($values, stats-progress)};
+      --stats-notifications-color: #{map-get($values, stats-notifications)};
+
+      .dashboard__main-sidebar-section-title {
+        color: map-get($values, text-primary);
+        border-bottom: 1px
+          solid
+          convert-to-rgba(map-get($values, text-primary), 0.1);
+      }
+
+      .dashboard__main-sidebar-section {
+        background: map-get($values, card-bg);
+
+        @if $theme == "dark" {
+          border: 1px solid map-get($values, card-border);
+        }
+      }
     }
+  }
+
+  &__container {
   }
 
   &__stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: $spacing-md;
     position: relative;
+    padding: $spacing-lg;
 
     &::before {
       content: "";
@@ -18,24 +87,20 @@
       inset: 0;
       background: linear-gradient(
         to right,
-        rgba(#818cf8, 0.03),
-        rgba(#6366f1, 0.03)
+        rgba($primary-light, 0.03),
+        rgba($primary-color, 0.03)
       );
-      border-radius: 16px;
+      border-radius: $border-radius-lg;
       z-index: -1;
     }
 
-    @media only screen and (max-width: 1160px) {
+    @include desktop-medium {
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.1rem;
+      gap: $spacing-md;
     }
 
-    @media only screen and (max-width: 768px) {
-      gap: 1rem;
-    }
-
-    @media only screen and (max-width: 640px) {
-      gap: 0.85rem;
+    @include mobile {
+      gap: 12px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -44,74 +109,13 @@
   &__main {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: $spacing-lg;
+    margin-inline: $spacing-lg;
 
-    @media only screen and (max-width: 1024px) {
+    @include tablet {
       grid-template-columns: 1fr;
-    }
-
-    @media only screen and (max-width: 768px) {
       display: flex;
       flex-direction: column;
-      gap: 24px;
-    }
-  }
-
-  &__main-sidebar {
-    padding-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    grid-column: span 1;
-
-    @media only screen and (max-width: 1024px) {
-      grid-column: span 1;
-      // padding-top: 0;
-      flex-direction: column-reverse;
-      gap: 24px;
-      // order: -1; // Mueve el sidebar (notificaciones) al principio
-    }
-
-    .dashboard__main-sidebar-section {
-      border-radius: 0.375rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      padding: 0 0 0.2rem;
-
-      @media only screen and (max-width: 768px) {
-        &:first-child {
-          margin-bottom: 24px;
-        }
-      }
-    }
-
-    .dashboard__main-sidebar-content {
-      @media only screen and (max-width: 768px) {
-        max-height: 360px; // Altura máxima profesional para móviles
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: rgba(129, 140, 248, 0.3) transparent;
-
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: rgba(129, 140, 248, 0.3);
-          border-radius: 3px;
-        }
-      }
-    }
-
-    .dashboard__main-sidebar-section-title {
-      color: rgb(241, 228, 228);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      padding-left: 12px;
     }
   }
 
@@ -119,81 +123,57 @@
     grid-column: span 2;
     padding-right: unset;
 
-    @media only screen and (max-width: 1024px) {
+    @include tablet {
       grid-column: span 1;
-      padding-right: 8px;
-    }
-
-    &-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 1rem;
-
-      @media only screen and (max-width: 768px) {
-        gap: 16px;
-      }
-    }
-
-    &-title {
-      color: rgb(241, 228, 228);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-left: 4px;
-    }
-
-    &-list {
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-
-      &--grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-
-        @media only screen and (max-width: 1200px) {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        @media only screen and (max-width: 768px) {
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }
-      }
     }
   }
 
-  &__view-toggle-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    color: #818cf8;
-    padding: 0.225rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border: 1.5px solid #818cf8;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    opacity: 0.95;
+  &__main-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    grid-column: span 1;
 
-    &:hover {
-      filter: brightness(1.1);
+    @include tablet {
+      grid-column: span 1;
+      flex-direction: column-reverse;
     }
 
-    & > svg {
-      width: 1.25rem;
-      height: 1.25rem;
+    .dashboard__main-sidebar-section {
+      padding-bottom: $spacing-lg;
+      border-radius: $border-radius-sm;
+      overflow: hidden;
+
+      @include tablet {
+        &:first-child {
+          margin-bottom: $spacing-lg;
+        }
+      }
     }
 
-    @media only screen and (max-width: 768px) {
-      padding: 0.215rem;
+    .dashboard__main-sidebar-content {
+      border-radius: $border-radius-md;
 
-      & > svg {
-        width: 1.15rem;
-        height: 1.15rem;
+      @include tablet {
+        max-height: 360px;
+        overflow-y: auto;
+        @include custom-scrollbar(
+          6px,
+          6px,
+          transparent,
+          rgba($black-light, 0.3)
+        );
+      }
+    }
+
+    .dashboard__main-sidebar-section-title {
+      @include flex(row, flex-start, center);
+      min-height: 67px;
+      padding: $spacing-md;
+
+      @include tablet {
+        min-height: unset;
+        padding: $spacing-md;
       }
     }
   }

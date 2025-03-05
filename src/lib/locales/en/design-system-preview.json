@@ -1,0 +1,53 @@
+{
+    "sections": {
+      "colors": {
+        "title": "Color System",
+        "copiedText": "Copied!"
+      },
+      "typography": {
+        "title": "Typography",
+        "sampleText": "The quick brown fox jumps over the lazy dog"
+      },
+      "spacing": {
+        "title": "Spacing Values",
+        "unitsLabel": "px"
+      },
+      "components": {
+        "title": "Components",
+        "buttons": {
+          "title": "Buttons",
+          "variants": {
+            "primary": "Primary Variant",
+            "secondary": "Secondary Variant"
+          },
+          "sizes": {
+            "large": "Large",
+            "default": "Default",
+            "small": "Small"
+          },
+          "states": {
+            "withIcon": "With Icon",
+            "loading": "Loading",
+            "disabled": "Disabled"
+          }
+        },
+        "formControls": {
+          "title": "Form Controls",
+          "labels": {
+            "default": "Default Input",
+            "withIcon": "With Icon",
+            "floating": "Floating Label",
+            "error": "Error State",
+            "disabled": "Disabled State"
+          },
+          "placeholders": {
+            "default": "Type something..."
+          },
+          "errorMessage": "This field has an error"
+        }
+      }
+    },
+    "themeLabels": {
+      "custom": "Theme: Custom"
+    }
+  }

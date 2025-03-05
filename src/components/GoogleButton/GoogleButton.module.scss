@@ -15,8 +15,8 @@
   border: none;
 
   &__icon {
-    width: 20px;
-    height: 20px;
+    width: clamp(20px, 5vw, 28px);
+    height: clamp(20px, 5vw, 28px);
     flex-shrink: 0;
   }
 

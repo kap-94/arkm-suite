@@ -1,8 +1,9 @@
 // src/components/AuthModule/AuthModule.tsx
 import { FC } from "react";
-import { AuthLayout } from "@/components/layouts/AuthLayout";
+import AuthLayout from "@/components/layouts/AuthLayout";
 import { SigninForm } from "./components";
 import { AuthScreenType, AuthScreenProps } from "./types/auth.types";
+import { authLayoutDictionary, getPageDictionary } from "@/utils/dictionary";
 
 // Definir el mapeo fuera del componente
 const ComponentMapping: { [key: string]: FC<any> } = {
@@ -15,6 +16,7 @@ const ComponentMapping: { [key: string]: FC<any> } = {
 const AuthModule: FC<AuthScreenProps> = ({
   screen = AuthScreenType.SIGN_IN,
   nameFormat,
+  dictionary,
   lang,
 }) => {
   const FormView = ComponentMapping[screen] || null;
@@ -22,8 +24,8 @@ const AuthModule: FC<AuthScreenProps> = ({
   return (
     <>
       {FormView && (
-        <AuthLayout lang={lang}>
-          <FormView nameFormat={nameFormat} />
+        <AuthLayout params={{ lang }}>
+          <FormView nameFormat={nameFormat} dictionary={dictionary} />
         </AuthLayout>
       )}
     </>

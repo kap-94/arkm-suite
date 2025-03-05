@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import { auth } from "./config/auth";
+import { auth } from "./lib/config/auth";
+import { VIEW_PREFERENCES } from "./lib/constants/viewPreferences";
 
 const LOCALES = ["es", "en"] as const;
 type ValidLocale = (typeof LOCALES)[number];
@@ -77,6 +78,54 @@ function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
   return newUrl;
 }
 
+function preserveTabState(
+  request: NextRequest,
+  response: NextResponse
+): NextResponse | void {
+  const pathname = request.nextUrl.pathname;
+  const searchParams = request.nextUrl.searchParams;
+
+  if (pathname.includes("/dashboard/project/")) {
+    const currentTab = searchParams.get("tab");
+
+    if (currentTab !== null) {
+      response.cookies.set("lastProjectTab", currentTab, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 365, // 1 año
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      });
+      return;
+    } else {
+      const lastTab = request.cookies.get("lastProjectTab")?.value;
+      if (lastTab) {
+        const url = new URL(request.url);
+        url.searchParams.set("tab", lastTab);
+        return NextResponse.redirect(url);
+      }
+    }
+  }
+}
+
+function setDefaultViewPreference(
+  request: NextRequest,
+  response: NextResponse
+): void {
+  if (!request.cookies.has(VIEW_PREFERENCES.COOKIE_NAME)) {
+    response.cookies.set(
+      VIEW_PREFERENCES.COOKIE_NAME,
+      VIEW_PREFERENCES.DEFAULT_VIEW,
+      {
+        httpOnly: false,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: VIEW_PREFERENCES.MAX_AGE,
+      }
+    );
+  }
+}
+
 export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -85,7 +134,7 @@ export default auth(async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2. Ignora otras rutas que no necesitan procesamiento
+  // 2. Ignorar rutas que no necesitan procesamiento
   if (isIgnoredPath(pathname)) {
     return NextResponse.next();
   }
@@ -104,27 +153,52 @@ export default auth(async function middleware(request: NextRequest) {
     }
   }
 
-  // 4. Si la ruta ya tiene un locale válido, continuar
+  // 4. Si la ruta ya tiene un locale válido
   if (hasValidLocale(pathname)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+
+    // 5. Gestionar el estado de las tabs y obtener posible redirección
+    const tabRedirect = preserveTabState(request, response);
+    if (tabRedirect) {
+      return tabRedirect;
+    }
+
+    // 6. Verificar y establecer preferencia de vista para rutas del dashboard
+    if (pathname.includes("/dashboard")) {
+      setDefaultViewPreference(request, response);
+    }
+
+    return response;
   }
 
-  // 5. Para rutas sin locale, redirigir a la versión localizada
+  // 7. Para rutas sin locale, redirigir a la versión localizada
   const locale = getPreferredLocale(request);
   const localizedUrl = buildLocalizedUrl(request, locale);
   const response = NextResponse.redirect(localizedUrl);
 
+  // 8. Establecer cookie de locale
   response.cookies.set("NEXT_LOCALE", locale, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
+
+  // 9. Gestionar el estado de las tabs
+  const tabRedirect = preserveTabState(request, response);
+  if (tabRedirect) {
+    return tabRedirect;
+  }
+
+  // 10. Establecer preferencia de vista si es necesario
+  if (pathname.includes("/dashboard")) {
+    setDefaultViewPreference(request, response);
+  }
 
   return response;
 });
 
 export const config = {
   matcher: [
-    // Excluye ciertos paths pero incluye /api/auth para poder proteger rutas
+    // Skip archivos estáticos pero incluir /api/auth para protección de rutas
     "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
     "/",
   ],

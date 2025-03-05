@@ -1,49 +1,65 @@
 @import "@/styles/variables";
 @import "@/styles/mixins";
 
-// Theme configuration map
+// Theme configuration map remains unchanged
 $header-theme-map: (
   dark: (
     background: $black-base,
-    border: rgba($white-base, 0.3),
+    border: rgba($white-base, 0.16),
     glow: $primary-color,
     icon: $text-primary,
   ),
   light: (
-    background: $white-light,
+    background: $white-color,
     border: rgba($black-base, 0.1),
     glow: rgba($primary-color, 0.5),
     icon: $black-base,
   ),
   custom: (
-    background: var(--custom-background, rgba($black-base, 0.2)),
+    background: var(--custom-background, rgba($black-base, 0)),
     border: var(--custom-border, rgba($primary-color, 0.3)),
     glow: var(--custom-glow, rgba($primary-color, 0.5)),
     icon: var(--custom-icon, $text-primary),
   ),
 );
 
-// Mixin para el efecto neón sutil
 @mixin subtle-header-glow($color, $intensity: 0.3) {
   box-shadow: 0 1px 3px rgba($color, $intensity);
 }
 
+.page-header-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .page-header {
-  position: fixed;
-  top: 72px;
-  right: 0;
-  left: 80px;
   padding: 12px 0;
-  z-index: calc($z-index-header - 1);
+  left: 80px;
+  right: 0;
   background-color: var(
     --header-background,
     map-get(map-get($header-theme-map, dark), background)
   );
   border-bottom: 1px solid
     var(--header-border, map-get(map-get($header-theme-map, dark), border));
+
+  &--original {
+    position: fixed;
+    top: 72px;
+    z-index: calc($z-index-header - 1);
+  }
+
+  &--clone {
+    visibility: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
   @include transition(left, background-color, border-color);
 
-  // Theme variations
+  // Theme variations remain unchanged
   @each $theme in (light, dark, custom) {
     &--theme-#{$theme} {
       @each $property, $value in map-get($header-theme-map, $theme) {
@@ -58,17 +74,15 @@ $header-theme-map: (
 
   @include mobile {
     left: 0;
-    height: auto;
-    min-height: 52px;
   }
 
+  // Rest of the existing styles remain unchanged
   &__container {
     margin: 0 auto;
     width: 100%;
     max-width: $content-max-width;
     padding: 0 $spacing-lg;
     @include flex(row, space-between, center, $spacing-md);
-    height: 100%;
 
     @include mobile {
       padding: 0 $spacing-md;

@@ -1,35 +1,43 @@
 // types/header.types.ts
 import { ReactNode } from "react";
-import {
-  Language,
-  LanguageSelectorVariant,
-} from "@/components/LanguageSelector";
-import { ButtonVariant } from "@/components/Button";
-import { CursorStyle } from "@/context/UIContext";
 import type { Variants } from "framer-motion";
+import { HeaderDictionary } from "@/types/dictionary/mainLayout.types";
+import { CursorStyle } from "@/context/UIContext";
+import { ButtonVariant } from "@/components/Button";
 
 // Variantes y Posiciones
 export type HeaderVariant = "solid" | "transparent" | "glass";
 export type HeaderPosition = "left" | "right" | "center";
 
+export type PublicPaths =
+  | "/"
+  | "/features"
+  | "/pricing"
+  | "/about"
+  | "/careers"
+  | "/blog"
+  | "/legal";
 // Items de Navegación
-export interface NavItem {
+export interface HeaderNavItem {
+  label: string;
   href: string;
-  text: string;
-  icon?: ReactNode;
-  translationKey: string;
+  aria: string;
+  icon: string;
+  meta?: {
+    description: string;
+    keywords?: string[];
+  };
 }
 
 export interface NavMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  items: NavItem[];
+  menuItems: HeaderNavItem[];
   onCursor?: (cursorType: CursorStyle) => void;
 }
 
 export interface HeaderState {
   isNavOpen: boolean;
-  isMobileMenuOpen: boolean;
 }
 
 // Configuración de Apariencia
@@ -42,62 +50,41 @@ export interface HeaderAppearance {
   };
 }
 
-// Configuración de Idiomas
-export interface HeaderLanguageConfig {
-  enabled?: boolean;
-  variant?: LanguageSelectorVariant;
-  position?: "inline" | "dropdown";
-  showLabels?: boolean;
-  accentColor?: string;
-  currentLanguage?: Language;
-  onLanguageChange?: (lang: Language) => void;
-}
-
 // Acciones del Header
 export interface HeaderAction {
   href: string;
   text?: string;
   icon?: ReactNode;
   variant?: ButtonVariant;
-  translationKey: string;
   order?: number;
 }
 
 // Configuración General
 export interface HeaderConfig {
-  navigation: Omit<NavItem, "text">[];
   appearance: HeaderAppearance;
   settings: {
     variant: HeaderVariant;
     breakpoint: number;
     menuPosition: HeaderPosition;
   };
-  language: Omit<HeaderLanguageConfig, "currentLanguage" | "onLanguageChange">;
-  actions: Omit<HeaderAction, "text">[];
 }
 
-// Props del Componente Header
+// Props
 export interface HeaderProps {
-  items: NavItem[];
+  dictionary: HeaderDictionary;
   variant?: HeaderVariant;
   appearance?: HeaderAppearance;
   breakpoint?: number;
   menuPosition?: HeaderPosition;
-  languageConfig?: HeaderLanguageConfig;
-  actions?: HeaderAction[];
   className?: string;
 }
 
 // Tipo del Contexto
 export interface HeaderContextType extends Omit<HeaderProps, "className"> {
   isScrolled: boolean;
-  isMobileMenuOpen: boolean;
-  setIsMobileMenuOpen: (value: boolean) => void;
   isNavOpen: boolean;
   setIsNavOpen: (value: boolean) => void;
   onCursor?: (state: CursorStyle) => void;
-  language: Language;
-  setLanguage: (lang: Language) => void;
 }
 
 // Props de Componentes Internos
@@ -107,22 +94,7 @@ export interface AnimatedTextProps {
 }
 
 export interface NavigationProps {
-  items: NavItem[];
-  languageConfig?: HeaderLanguageConfig;
-  actions?: HeaderAction[];
-}
-
-export interface MobileMenuProps {
-  items: NavItem[];
-  isOpen: boolean;
-  onClose: () => void;
-  position?: HeaderPosition;
-  actions?: HeaderAction[];
-  languageConfig?: HeaderLanguageConfig;
-}
-
-export interface BrandProps {
-  className?: string;
+  items: HeaderNavItem[];
 }
 
 // Tipos para Animaciones
@@ -160,15 +132,6 @@ export const DEFAULT_HEADER_CONFIG = {
       desktop: 32,
       mobile: 24,
     },
-  },
-  languageConfig: {
-    enabled: true,
-    variant: "split-line" as const,
-    position: "inline" as const,
-    showLabels: false,
-    accentColor: "#6366f1",
-    currentLanguage: "en" as Language,
-    onLanguageChange: (lang: Language) => {},
   },
 } as const;
 

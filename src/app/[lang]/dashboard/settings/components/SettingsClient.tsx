@@ -5,15 +5,17 @@ import { SettingsIcon } from "lucide-react";
 import { useSettings } from "@/context/SettingsContext";
 import { ThemedTypography } from "@/components/Typography/ThemedTypography";
 import { PageHeader } from "@/components/PageHeader";
+import { ModernPattern } from "@/components/ModernPattern";
 import { AppearanceToggle, LanguageToggle } from "./SettingsToggleGroup";
 import styles from "../page.module.scss";
-import type { SettingsDictionary } from "@/types/dictionary";
+import { PatternTheme, PatternVariant } from "@/components/ModernPattern/types";
+import { SettingsDictionary } from "@/types/dictionary/settings.types";
 
 const cx = classNames.bind(styles);
 
 interface Section {
   id: keyof typeof SECTIONS;
-  Component: React.ComponentType<{ settings: SettingsDictionary }>;
+  Component: React.ComponentType<{ dict: SettingsDictionary }>;
 }
 
 const SECTIONS = {
@@ -35,10 +37,10 @@ function SettingsSection({
   return (
     <div className={cx("settings__section")}>
       <div className={cx("settings__section-header")}>
-        <ThemedTypography variant="h4" gutterBottom>
+        <ThemedTypography variant="h4" color="primary" fontWeight={400}>
           {title}
         </ThemedTypography>
-        <ThemedTypography variant="p2" color="secondary" gutterBottom>
+        <ThemedTypography variant="p1" fontWeight={400} color="secondary">
           {description}
         </ThemedTypography>
       </div>
@@ -48,10 +50,10 @@ function SettingsSection({
 }
 
 interface SettingsClientProps {
-  settings: SettingsDictionary;
+  dictionary: SettingsDictionary;
 }
 
-export function SettingsClient({ settings }: SettingsClientProps) {
+export function SettingsClient({ dictionary }: SettingsClientProps) {
   const { theme } = useSettings();
 
   const SETTINGS_SECTIONS: Section[] = [
@@ -65,22 +67,52 @@ export function SettingsClient({ settings }: SettingsClientProps) {
     },
   ];
 
+  const patternTheme: PatternTheme = {
+    type: theme,
+    variant: "neuralNetwork",
+    colors: {
+      dark: {
+        background: "transparent",
+        primary: "rgba(255, 255, 255, 0.15)",
+        secondary: "rgba(255, 255, 255, 0.25)",
+        accent: "rgba(255, 255, 255, 0.2)",
+      },
+      light: {
+        background: "transparent",
+        primary: "rgba(0, 0, 0, 0.15)",
+        secondary: "rgba(0, 0, 0, 0.25)",
+        accent: "rgba(0, 0, 0, 0.2)",
+      },
+    },
+    opacity: {
+      lines: 0.3,
+      particles: 0.4,
+      connections: 0.3,
+      shapes: 0.35,
+    },
+  };
+
   return (
     <div className={cx("settings")}>
+      {/* Patrón de fondo */}
+      <div className={cx("settings__pattern-background")}>
+        {/* <ModernPattern theme={patternTheme} /> */}
+      </div>
+
       <PageHeader
         icon={<SettingsIcon size={22} />}
-        title={settings.title}
-        subtitle={settings.subtitle}
+        title={dictionary.header.title}
+        subtitle={dictionary.header.subtitle}
         theme={{ type: theme }}
       />
       <div className={cx("settings__content")}>
         {SETTINGS_SECTIONS.map(({ id, Component }) => (
           <SettingsSection
             key={id}
-            title={settings[id].title}
-            description={settings[id].description}
+            title={dictionary.sections[id].title}
+            description={dictionary.sections[id].description}
           >
-            <Component settings={settings} />
+            <Component dict={dictionary} />
           </SettingsSection>
         ))}
       </div>

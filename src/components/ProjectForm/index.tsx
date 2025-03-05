@@ -1,8 +1,8 @@
-// src/components/ProjectForm/index.tsx
 "use client";
 
 import React, { useState } from "react";
 import classNames from "classnames/bind";
+import { Typography } from "@/components/Typography";
 import styles from "./ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
@@ -73,15 +73,37 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
       case 1:
         return (
           <div className={cx("project-form")}>
-            <h2 className={cx("project-form__title")}>
+            <Typography
+              theme="dark"
+              fontFamily="kranto"
+              fontWeight={400}
+              variant="h3"
+              className={cx("project-form__title")}
+              // fontWeight={600}
+            >
               Let's Create Something Amazing
-            </h2>
-            <p className={cx("project-form__subtitle")}>
+            </Typography>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="p1"
+              className={cx("project-form__subtitle")}
+            >
               Tell us about your project vision
-            </p>
+            </Typography>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>Project Type</label>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
+                Project Type
+              </Typography>
               <select
                 className={cx("project-form__select")}
                 value={formData.type}
@@ -97,9 +119,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
 
             {formData.type === "other" && (
               <div className={cx("project-form__group")}>
-                <label className={cx("project-form__label")}>
+                <Typography
+                  theme="dark"
+                  fontFamily="usual"
+                  fontWeight={300}
+                  as="label"
+                  variant="label"
+                  className={cx("project-form__label")}
+                >
                   Please specify
-                </label>
+                </Typography>
                 <input
                   type="text"
                   className={cx("project-form__input")}
@@ -119,7 +148,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handleNextStep}
               >
-                Continue
+                <Typography theme="dark" variant="button">
+                  Continue
+                </Typography>
               </button>
             </div>
           </div>
@@ -128,13 +159,36 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
       case 2:
         return (
           <div className={cx("project-form")}>
-            <h2 className={cx("project-form__title")}>Project Scope</h2>
-            <p className={cx("project-form__subtitle")}>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="h3"
+              className={cx("project-form__title")}
+            >
+              Project Scope
+            </Typography>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="p1"
+              className={cx("project-form__subtitle")}
+            >
               Help us understand your needs
-            </p>
+            </Typography>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>Budget Range</label>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
+                Budget Range
+              </Typography>
               <select
                 className={cx("project-form__select")}
                 value={formData.budget}
@@ -149,7 +203,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
             </div>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>Timeline</label>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
+                Timeline
+              </Typography>
               <select
                 className={cx("project-form__select")}
                 value={formData.timeline}
@@ -170,7 +233,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handlePrevStep}
               >
-                Back
+                <Typography theme="dark" variant="button">
+                  Back
+                </Typography>
               </button>
               <button
                 className={cx(
@@ -179,7 +244,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handleNextStep}
               >
-                Continue
+                <Typography theme="dark" variant="button">
+                  Continue
+                </Typography>
               </button>
             </div>
           </div>
@@ -188,11 +255,36 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
       case 3:
         return (
           <div className={cx("project-form")}>
-            <h2 className={cx("project-form__title")}>Contact Information</h2>
-            <p className={cx("project-form__subtitle")}>Let's stay in touch</p>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="h3"
+              className={cx("project-form__title")}
+            >
+              Contact Information
+            </Typography>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="p1"
+              className={cx("project-form__subtitle")}
+            >
+              Let's stay in touch
+            </Typography>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>Company Name</label>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
+                Company Name
+              </Typography>
               <input
                 type="text"
                 className={cx("project-form__input")}
@@ -205,7 +297,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
             </div>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>Email</label>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
+                Email
+              </Typography>
               <input
                 type="email"
                 className={cx("project-form__input")}
@@ -216,9 +317,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
             </div>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
                 Phone (optional)
-              </label>
+              </Typography>
               <input
                 type="tel"
                 className={cx("project-form__input")}
@@ -229,9 +337,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
             </div>
 
             <div className={cx("project-form__group")}>
-              <label className={cx("project-form__label")}>
+              <Typography
+                theme="dark"
+                fontFamily="usual"
+                fontWeight={300}
+                as="label"
+                variant="label"
+                className={cx("project-form__label")}
+              >
                 Preferred Contact Method
-              </label>
+              </Typography>
               <select
                 className={cx("project-form__select")}
                 value={formData.preferredContact}
@@ -253,7 +368,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handlePrevStep}
               >
-                Back
+                <Typography theme="dark" variant="button">
+                  Back
+                </Typography>
               </button>
               <button
                 className={cx(
@@ -262,7 +379,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handleNextStep}
               >
-                Continue
+                <Typography theme="dark" variant="button">
+                  Continue
+                </Typography>
               </button>
             </div>
           </div>
@@ -271,64 +390,126 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
       case 4:
         return (
           <div className={cx("project-form")}>
-            <h2 className={cx("project-form__title")}>Almost There!</h2>
-            <p className={cx("project-form__subtitle")}>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="h3"
+              className={cx("project-form__title")}
+            >
+              Almost There!
+            </Typography>
+            <Typography
+              theme="dark"
+              fontFamily="usual"
+              fontWeight={300}
+              variant="p1"
+              className={cx("project-form__subtitle")}
+            >
               Review your project details
-            </p>
+            </Typography>
 
             <div className={cx("project-form__summary")}>
               <div className={cx("project-form__summary-section")}>
-                <h3 className={cx("project-form__summary-title")}>
+                <Typography
+                  theme="dark"
+                  fontFamily="usual"
+                  fontWeight={300}
+                  variant="h4"
+                  className={cx("project-form__summary-title")}
+                >
                   Project Details
-                </h3>
+                </Typography>
                 <dl className={cx("project-form__summary-list")}>
-                  <dt className={cx("project-form__summary-term")}>Type:</dt>
-                  <dd className={cx("project-form__summary-description")}>
-                    {formData.type === "other"
-                      ? formData.customType
-                      : formData.type}
-                  </dd>
-                  <dt className={cx("project-form__summary-term")}>Budget:</dt>
-                  <dd className={cx("project-form__summary-description")}>
-                    {formData.budget}
-                  </dd>
                   <dt className={cx("project-form__summary-term")}>
-                    Timeline:
+                    <Typography theme="dark" variant="label">
+                      Type:
+                    </Typography>
                   </dt>
                   <dd className={cx("project-form__summary-description")}>
-                    {formData.timeline}
+                    <Typography theme="dark" variant="p1">
+                      {formData.type === "other"
+                        ? formData.customType
+                        : formData.type}
+                    </Typography>
+                  </dd>
+                  <dt className={cx("project-form__summary-term")}>
+                    <Typography theme="dark" variant="label">
+                      Budget:
+                    </Typography>
+                  </dt>
+                  <dd className={cx("project-form__summary-description")}>
+                    <Typography theme="dark" variant="p1">
+                      {formData.budget}
+                    </Typography>
+                  </dd>
+                  <dt className={cx("project-form__summary-term")}>
+                    <Typography theme="dark" variant="label">
+                      Timeline:
+                    </Typography>
+                  </dt>
+                  <dd className={cx("project-form__summary-description")}>
+                    <Typography theme="dark" variant="p1">
+                      {formData.timeline}
+                    </Typography>
                   </dd>
                 </dl>
               </div>
 
               <div className={cx("project-form__summary-section")}>
-                <h3 className={cx("project-form__summary-title")}>
+                <Typography
+                  theme="dark"
+                  fontFamily="usual"
+                  fontWeight={300}
+                  variant="h4"
+                  className={cx("project-form__summary-title")}
+                >
                   Contact Information
-                </h3>
+                </Typography>
                 <dl className={cx("project-form__summary-list")}>
-                  <dt className={cx("project-form__summary-term")}>Company:</dt>
+                  <dt className={cx("project-form__summary-term")}>
+                    <Typography theme="dark" variant="label">
+                      Company:
+                    </Typography>
+                  </dt>
                   <dd className={cx("project-form__summary-description")}>
-                    {formData.companyName}
+                    <Typography theme="dark" variant="p1">
+                      {formData.companyName}
+                    </Typography>
                   </dd>
-                  <dt className={cx("project-form__summary-term")}>Email:</dt>
+                  <dt className={cx("project-form__summary-term")}>
+                    <Typography theme="dark" variant="label">
+                      Email:
+                    </Typography>
+                  </dt>
                   <dd className={cx("project-form__summary-description")}>
-                    {formData.email}
+                    <Typography theme="dark" variant="p1">
+                      {formData.email}
+                    </Typography>
                   </dd>
                   {formData.phone && (
                     <>
                       <dt className={cx("project-form__summary-term")}>
-                        Phone:
+                        <Typography theme="dark" variant="label">
+                          Phone:
+                        </Typography>
                       </dt>
                       <dd className={cx("project-form__summary-description")}>
-                        {formData.phone}
+                        <Typography theme="dark" variant="p1">
+                          {formData.phone}
+                        </Typography>
                       </dd>
                     </>
                   )}
                   <dt className={cx("project-form__summary-term")}>
-                    Preferred Contact:
+                    <Typography theme="dark" variant="label">
+                      Preferred Contact:
+                    </Typography>
                   </dt>
                   <dd className={cx("project-form__summary-description")}>
-                    {formData.preferredContact}
+                    <Typography theme="dark" variant="p1">
+                      {formData.preferredContact}
+                    </Typography>
                   </dd>
                 </dl>
               </div>
@@ -342,7 +523,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handlePrevStep}
               >
-                Back
+                <Typography theme="dark" variant="button">
+                  Back
+                </Typography>
               </button>
               <button
                 className={cx(
@@ -351,7 +534,9 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 )}
                 onClick={handleSubmit}
               >
-                Complete
+                <Typography theme="dark" variant="button">
+                  Complete
+                </Typography>
               </button>
             </div>
           </div>

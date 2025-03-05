@@ -1,11 +1,10 @@
 // src/components/AuthModule/components/SigninForm/styles.module.scss
-@import "../../styles/_variables";
+@import "@/styles/variables";
+@import "@/styles/mixins";
 
 .signin-form {
+  @include flex(column);
   width: 100%;
-  max-width: 360px;
-  display: flex;
-  flex-direction: column;
   padding-top: 60px;
 
   @media only screen and (max-width: 1024px) {
@@ -14,37 +13,38 @@
 
   &__title {
     font-family: "kranto-normal-semicondensed", sans-serif;
-    font-size: 2rem;
-    color: $text-primary;
-    font-weight: 400;
-    text-align: center;
     margin-bottom: 8px;
   }
 
-  &__description {
-    color: rgba($text-primary, 0.65);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    text-align: center;
+  &__subtitle {
     margin-bottom: $spacing-xl;
+
+    @include mobile-small {
+      margin-bottom: $spacing-lg;
+    }
   }
 
   &__container {
-    display: flex;
-    flex-direction: column;
-    min-height: 360px;
+    @include flex(column);
+    min-width: 360px;
+
+    @include mobile-small {
+      min-width: unset;
+      width: 100%;
+    }
   }
 
   &__error {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
+    @include flex($gap: $spacing-sm);
     padding: $spacing-md;
     border-radius: $border-radius-md;
     background: rgba($error-color, 0.1);
     color: $error-color;
-    font-size: 0.875rem;
     margin-bottom: $spacing-lg;
+
+    svg {
+      color: $error-color;
+    }
   }
 
   &__text-field {
@@ -56,30 +56,8 @@
   }
 
   &__submit {
-    width: 100%;
-    padding: $spacing-md;
-    background: linear-gradient(45deg, $primary-color, $primary-light);
-    border: none;
-    border-radius: $border-radius-md;
-    color: $text-primary;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all $transition-duration-fast $transition-bezier;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: $spacing-md;
     margin-bottom: $spacing-lg;
-
-    &:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: $shadow-md;
-    }
-
-    &:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
+    margin-top: $spacing-md;
   }
 
   &__spinner {
@@ -87,18 +65,16 @@
   }
 
   &__separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: $text-secondary;
-    font-size: 0.875rem;
+    @include flex-center;
     margin-bottom: $spacing-lg;
+    width: 100%;
 
     &::before,
     &::after {
       content: "";
+      height: 1px;
       flex: 1;
-      border-bottom: 1px solid rgba($text-primary, 0.1);
+      background-color: rgba($text-secondary, 0.15);
     }
 
     span {
@@ -111,9 +87,6 @@
   }
 
   &__note {
-    color: rgba($text-primary, 0.8);
-    font-size: 0.8rem;
-    text-align: center;
     font-style: italic;
   }
 }

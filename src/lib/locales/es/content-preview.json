@@ -1,0 +1,48 @@
+{
+    "meta": {
+        "title": "Vista Previa de Contenido | Portal de Cliente",
+        "description": "Previsualiza y descarga contenido y entregables del proyecto",
+        "keywords": [
+            "vista previa",
+            "entregables",
+            "descargas",
+            "previsualización de archivos",
+            "previsualización de componentes"
+        ]
+    },
+    "header": {
+        "download": {
+            "label": "Descargar",
+            "loading": "Descargando...",
+            "ariaLabel": "Descargar contenido"
+        },
+        "metadata": {
+            "createdBy": "Creado por:",
+            "updated": "Actualizado:",
+            "project": "Proyecto:",
+            "size": "MB",
+            "separator": "-"
+        }
+    },
+    "preview": {
+        "errors": {
+            "downloadError": "Error al descargar el archivo",
+            "pdfGenerationError": "Error al generar el PDF",
+            "previewError": "Vista previa no disponible para este tipo de componente."
+        },
+        "components": {
+            "designSystem": {
+                "title": "Vista Previa del Sistema de Diseño"
+            },
+            "marketResearch": {
+                "title": "Vista Previa de Investigación de Mercado"
+            },
+            "userPersonas": {
+                "title": "Vista Previa de Personas de Usuario"
+            },
+            "unavailable": {
+                "message": "Vista previa no disponible para este tipo de componente."
+            }
+        }
+    }
+}

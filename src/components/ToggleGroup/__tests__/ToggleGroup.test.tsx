@@ -6,7 +6,7 @@ import { ToggleGroup } from "../ToggleGroup";
 describe("ToggleGroup", () => {
   const mockOptions = [
     { value: "option1", label: "Option 1", ariaLabel: "Select Option 1" },
-    { value: "option2", label: "Option 2", ariaLabel: "Select Option 2" },
+    { value: "option2", label: "Option ", ariaLabel: "Select Option " },
   ];
 
   it("renders all options", () => {
@@ -14,7 +14,7 @@ describe("ToggleGroup", () => {
       <ToggleGroup value="option1" onChange={() => {}} options={mockOptions} />
     );
     expect(screen.getByText("Option 1")).toBeDefined();
-    expect(screen.getByText("Option 2")).toBeDefined();
+    expect(screen.getByText("Option ")).toBeDefined();
   });
 
   it("applies custom theme values", () => {

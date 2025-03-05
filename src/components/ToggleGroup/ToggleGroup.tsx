@@ -41,23 +41,25 @@ export const ToggleGroup = <T extends string, E extends ElementType = "div">({
       }
       {...rest}
     >
-      {options.map((option) => (
-        <button
-          key={option.value}
-          className={cx("toggle-button", {
-            active: value === option.value,
-          })}
-          onClick={() => !disabled && onChange(option.value)}
-          aria-label={option.ariaLabel}
-          disabled={disabled}
-          type="button"
-        >
-          {option.icon && (
-            <span className={cx("toggle-button__icon")}>{option.icon}</span>
-          )}
-          <span className={cx("toggle-button__label")}>{option.label}</span>
-        </button>
-      ))}
+      {options.map((option) => {
+        return (
+          <button
+            key={option.value}
+            className={cx("toggle-button", {
+              active: value === option.value,
+            })}
+            onClick={() => !disabled && onChange(option.value)}
+            aria-label={option.ariaLabel}
+            disabled={disabled}
+            type="button"
+          >
+            {option.icon && (
+              <span className={cx("toggle-button__icon")}>{option.icon}</span>
+            )}
+            <span className={cx("toggle-button__label")}>{option.label}</span>
+          </button>
+        );
+      })}
     </Component>
   );
 };

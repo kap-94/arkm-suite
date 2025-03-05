@@ -1,3 +1,7 @@
+// src/components/NotificationItem/types.ts
+import { ProjectReference } from "@/types/models/Common";
+import type { LucideIcon } from "lucide-react";
+
 export type NotificationVariant =
   | "status"
   | "progress"
@@ -7,25 +11,39 @@ export type NotificationVariant =
   | "file"
   | "mention";
 
+export type ThemeType = "light" | "dark" | "custom";
+
+export interface NotificationTheme {
+  type: ThemeType;
+  colors?: {
+    background?: string;
+    backgroundHover?: string;
+    border?: string;
+    iconColor?: string;
+    text?: string;
+    textSecondary?: string;
+    typeBackground?: string;
+  };
+}
+
 export interface BaseNotification {
   id: string;
   variant: NotificationVariant;
-  projectId: string;
-  projectName: string;
+  project: ProjectReference;
   priority: "low" | "medium" | "high";
   read: boolean;
   timestamp: Date;
   link?: string;
 }
 
-interface StatusNotification extends BaseNotification {
+export interface StatusNotification extends BaseNotification {
   variant: "status";
   previousStatus: string;
   newStatus: string;
   reason?: string;
 }
 
-interface ProgressNotification extends BaseNotification {
+export interface ProgressNotification extends BaseNotification {
   variant: "progress";
   previousProgress: number;
   newProgress: number;
@@ -33,14 +51,14 @@ interface ProgressNotification extends BaseNotification {
   status: "success" | "warning" | "info" | "error";
 }
 
-interface TeamNotification extends BaseNotification {
+export interface TeamNotification extends BaseNotification {
   variant: "team";
   action: string;
   members: string[];
   role?: string;
 }
 
-interface MilestoneNotification extends BaseNotification {
+export interface MilestoneNotification extends BaseNotification {
   variant: "milestone";
   stageName: string;
   progress: number;
@@ -48,14 +66,14 @@ interface MilestoneNotification extends BaseNotification {
   nextMilestone?: string;
 }
 
-interface CommentNotification extends BaseNotification {
+export interface CommentNotification extends BaseNotification {
   variant: "comment";
   commentBy: string;
   commentPreview: string;
   threadId: string;
 }
 
-interface FileNotification extends BaseNotification {
+export interface FileNotification extends BaseNotification {
   variant: "file";
   fileName: string;
   fileType: string;
@@ -63,7 +81,7 @@ interface FileNotification extends BaseNotification {
   action: "created" | "updated" | "shared" | "deleted";
 }
 
-interface MentionNotification extends BaseNotification {
+export interface MentionNotification extends BaseNotification {
   variant: "mention";
   mentionedBy: string;
   context: string;
@@ -78,3 +96,10 @@ export type NotificationType =
   | CommentNotification
   | FileNotification
   | MentionNotification;
+
+export interface NotificationItemProps {
+  notification: NotificationType;
+  onClick?: (id: string) => void;
+  theme?: NotificationTheme;
+  className?: string;
+}

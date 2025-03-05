@@ -70,15 +70,15 @@ Text animations are handled by Framer Motion and can be customized in the `Anima
 
 ## Browser Support
 
-- Chrome (last 2 versions)
-- Firefox (last 2 versions)
-- Safari (last 2 versions)
-- Edge (last 2 versions)
+- Chrome (last versions)
+- Firefox (last versions)
+- Safari (last versions)
+- Edge (last versions)
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
+   . Create your feature branch
+2. Commit your changes
+3. Push to the branch
+4. Create a new Pull Request

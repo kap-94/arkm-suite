@@ -1,27 +1,33 @@
+// src/components/DashboardHeader/DashboardHeader.tsx
 "use client";
 
-import React, { useCallback } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
-import {
-  FolderIcon,
-  FileIcon,
-  ListTodoIcon,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react";
-import type { SearchDictionary, UserInfoDictionary } from "@/types/dictionary";
+import { FileIcon, ListTodoIcon, Layout, BookOpen } from "lucide-react";
 import { UserInfo } from "../UserInfo";
 import { SearchBar, SearchBarOption } from "../SearchBar";
-import { useSidebarContext } from "../Sidebar/context/SidebarContext";
 import { Hamburger } from "../Hamburger";
-import { DropdownOption } from "../UserInfo/types";
-import { Brand } from "../Header/components";
+import { useDashboard } from "@/context/DashboardContext";
 import styles from "./DashboardHeader.module.scss";
+import type {
+  HeaderSection,
+  UserMenuItem,
+} from "@/types/dictionary/dashboardLayout.types";
+import { getIconComponent } from "@/utils/iconUtils";
+import { SearchableEntity, searchService } from "@/services/searchService";
+import { UserProfile } from "@/app/[lang]/dashboard/account/profile/ProfileClient";
+import { Language } from "@/lib/config/i18n";
 
 const cx = classNames.bind(styles);
 
-export interface Theme {
+interface DashboardHeaderTheme {
   type: "light" | "dark" | "custom";
   customValues?: {
     background?: string;
@@ -33,176 +39,193 @@ export interface Theme {
 
 interface DashboardHeaderProps {
   className?: string;
-  theme?: Theme;
-  search: SearchDictionary;
-  userInfo: UserInfoDictionary;
+  theme?: DashboardHeaderTheme;
+  config: HeaderSection;
   onSignOut?: () => void;
+  user: UserProfile;
+  lang: Language;
 }
 
-// Mapa de iconos que corresponden a las claves de las opciones
-const OPTION_ICONS: Record<string, React.ElementType> = {
-  viewProfile: User,
-  // settings: Settings,
-  signOut: LogOut,
+const CATEGORY_ICONS = {
+  project: <Layout size={16} strokeWidth={1.9} />,
+  task: <ListTodoIcon size={16} strokeWidth={1.9} />,
+  file: <FileIcon size={16} strokeWidth={1.9} />,
+  documentation: <BookOpen size={16} strokeWidth={1.9} />,
 };
 
-const getDropdownOptions = (
-  dictionary: UserInfoDictionary,
-  callbacks?: Record<string, () => void>
-): DropdownOption[] => {
-  return Object.entries(dictionary.options).reduce<DropdownOption[]>(
-    (acc, [key, value]) => {
-      // Si es un divisor
-      if (value === "divider") {
-        acc.push({
-          id: `divider-${acc.length}`,
-          divider: true,
-        });
-        return acc;
-      }
+const DEBOUNCE_MS = 300; // Ajusta este valor según necesites
 
-      // Para las opciones regulares
-      const option: DropdownOption = {
-        id: key,
-        label: value.label,
-        ...(OPTION_ICONS[key] && {
-          icon: React.createElement(OPTION_ICONS[key], { size: 16 }),
-        }),
-        ...(value.href && { href: value.href }),
-        ...(callbacks?.[key] && { onClick: callbacks[key] }),
+const transformSearchEntityToOption = (
+  entity: SearchableEntity
+): SearchBarOption => ({
+  ...searchService.toSearchBarOption(entity),
+  icon: CATEGORY_ICONS[entity.type as keyof typeof CATEGORY_ICONS],
+});
+
+const transformUserMenuOptions = (options: UserMenuItem[]) => {
+  return options.map((option) => {
+    if (!option.icon) return option;
+
+    const IconComponent = getIconComponent(option.icon);
+    return {
+      ...option,
+      icon: IconComponent,
+    };
+  });
+};
+
+export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
+  ({ className, theme = { type: "light" }, config, user, lang }, ref) => {
+    const router = useRouter();
+    const { state, toggleSidebar } = useDashboard();
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchResults, setSearchResults] = useState<SearchBarOption[]>([]);
+    const searchTimeoutRef = useRef<NodeJS.Timeout>();
+    const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
+
+    const performSearch = useCallback(
+      async (searchTerm: string) => {
+        if (searchTerm.length >= config.search.config.minSearchLength) {
+          setIsSearching(true);
+          try {
+            const results = await searchService.search(searchTerm, lang);
+            setSearchResults(results.map(transformSearchEntityToOption));
+          } catch (error) {
+            console.error("Search error:", error);
+            setSearchResults([]);
+          } finally {
+            setIsSearching(false);
+          }
+        } else {
+          setSearchResults([]);
+        }
+      },
+      [config.search.config.minSearchLength, lang]
+    );
+
+    const handleSearch = useCallback(
+      (searchTerm: string) => {
+        // Clear any existing timeout
+        if (searchTimeoutRef.current) {
+          clearTimeout(searchTimeoutRef.current);
+        }
+
+        // If empty search term, clear results immediately
+        if (
+          !searchTerm ||
+          searchTerm.length < config.search.config.minSearchLength
+        ) {
+          setSearchResults([]);
+          setIsSearching(false);
+          return;
+        }
+
+        // Set loading state immediately
+        setIsSearching(true);
+
+        // Set new timeout for search
+        searchTimeoutRef.current = setTimeout(() => {
+          performSearch(searchTerm);
+        }, DEBOUNCE_MS);
+      },
+      [config.search.config.minSearchLength, performSearch]
+    );
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+      return () => {
+        if (searchTimeoutRef.current) {
+          clearTimeout(searchTimeoutRef.current);
+        }
       };
+    }, []);
 
-      acc.push(option);
-      return acc;
-    },
-    []
-  );
-};
+    const handleOptionSelect = useCallback(
+      (option: SearchBarOption) => {
+        if (option.href) {
+          router.push(option.href);
+        }
+      },
+      [router]
+    );
 
-const getSearchOptions = (
-  translations: SearchDictionary
-): SearchBarOption[] => [
-  {
-    id: "project-a",
-    label: "Project Alpha",
-    value: "project-alpha",
-    type: "project",
-    icon: <FolderIcon size={16} />,
-    subtitle: translations.types.project,
-  },
-  {
-    id: "project-b",
-    label: "Project Beta",
-    value: "project-beta",
-    type: "project",
-    icon: <FolderIcon size={16} />,
-    subtitle: translations.types.project,
-  },
-  {
-    id: "task-1",
-    label: "Complete Documentation",
-    value: "task-docs",
-    type: "task",
-    icon: <ListTodoIcon size={16} />,
-    subtitle: translations.types.task,
-  },
-  {
-    id: "file-1",
-    label: "Technical Specs",
-    value: "tech-specs",
-    type: "file",
-    icon: <FileIcon size={16} />,
-    subtitle: translations.types.file,
-  },
-];
+    // Función handleSubmit que se pasa al SearchBar
+    const handleSubmit = useCallback(
+      (searchTerm: string) => {
+        if (searchTerm.trim()) {
+          // Redirigir a la página de resultados de búsqueda
+          router.push(
+            `/dashboard/search?query=${encodeURIComponent(searchTerm.trim())}`
+          );
+        }
+      },
+      [router]
+    );
 
-export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  className,
-  theme = { type: "dark" },
-  search,
-  userInfo,
-  onSignOut,
-}) => {
-  const { state, actions } = useSidebarContext();
-  const searchOptions = getSearchOptions(search);
+    return (
+      <header
+        ref={ref}
+        className={cx(
+          "dashboard-header",
+          `dashboard-header--theme-${theme.type}`,
+          className
+        )}
+        style={
+          theme.customValues
+            ? ({
+                "--custom-background": theme.customValues.background,
+                "--custom-border": theme.customValues.border,
+                "--custom-glow": theme.customValues.glow,
+                "--custom-icon": theme.customValues.icon,
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
+        <div className={cx("dashboard-header__container")}>
+          <div className={cx("dashboard-header__left")}>
+            <div className={cx("dashboard-header__mobile-menu")}>
+              <Hamburger
+                variant="morph"
+                onClick={toggleSidebar}
+                isOpen={state.isSidebarExpanded}
+                className={cx("header__menu-trigger")}
+                theme={theme}
+              />
+            </div>
 
-  const handleSearch = useCallback((searchTerm: string) => {
-    console.log("Searching for:", searchTerm);
-  }, []);
-
-  const handleOptionSelect = useCallback((option: SearchBarOption) => {
-    console.log("Selected option:", option);
-    if (option.href) {
-      window.location.href = option.href;
-    }
-  }, []);
-
-  const callbacks = React.useMemo(() => {
-    const cb: Record<string, () => void> = {};
-
-    if (onSignOut) {
-      cb.signOut = onSignOut;
-    }
-
-    return cb;
-  }, [onSignOut]);
-
-  const dropdownOptions = getDropdownOptions(userInfo, callbacks);
-
-  return (
-    <header
-      className={cx(
-        "dashboard-header",
-        `dashboard-header--theme-${theme.type}`,
-        className
-      )}
-      style={
-        theme.customValues
-          ? ({
-              "--custom-background": theme.customValues.background,
-              "--custom-border": theme.customValues.border,
-              "--custom-glow": theme.customValues.glow,
-              "--custom-icon": theme.customValues.icon,
-            } as React.CSSProperties)
-          : undefined
-      }
-    >
-      <div className={cx("dashboard-header__container")}>
-        <div className={cx("dashboard-header__left")}>
-          <div className={cx("dashboard-header__mobile-menu")}>
-            <Hamburger
-              variant="morph"
-              onClick={actions.toggle}
-              isOpen={state.isExpanded}
-              className={cx("header__menu-trigger")}
+            <SearchBar
+              buttonText={config.search.config.buttonText}
+              closeOnScroll
+              label={config.search.config.label}
+              onOptionSelect={handleOptionSelect}
+              onSearch={handleSearch}
+              onSubmit={handleSubmit} // Pasamos handleSubmit como prop
+              options={searchResults}
+              placeholder={config.search.config.placeholder}
+              showButton={true}
+              showLabel={false}
               theme={theme}
+              loading={isSearching}
             />
           </div>
 
-          <SearchBar
-            options={searchOptions}
-            theme={theme}
-            placeholder={search.placeholder}
-            showButton={true}
-            buttonText={search.button}
-            showLabel={false}
-            label={search.label}
-            onSearch={handleSearch}
-            onOptionSelect={handleOptionSelect}
-          />
+          <div className={cx("dashboard-header__actions")}>
+            <UserInfo
+              closeOnScroll
+              userName={user.fullName}
+              userRole={
+                config.user.roles.types[config.user.roles.productOwner].label
+              }
+              options={userMenuOptions}
+              theme={theme}
+            />
+          </div>
         </div>
+      </header>
+    );
+  }
+);
 
-        <div className={cx("dashboard-header__actions")}>
-          <UserInfo
-            userName="Marc Vega"
-            userRole={userInfo.roles.productOwner}
-            options={dropdownOptions}
-            theme={theme}
-          />
-        </div>
-      </div>
-    </header>
-  );
-};
+DashboardHeader.displayName = "DashboardHeader";
 
 export default DashboardHeader;

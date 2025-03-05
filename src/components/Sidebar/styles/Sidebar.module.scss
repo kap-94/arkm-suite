@@ -11,7 +11,7 @@
   @include transition(all);
   z-index: $sidebar-z-index;
   @include flex(column, $align: none);
-  overflow: hidden;
+  // overflow: hidden;
   will-change: transform, width;
 
   &[data-theme="dark"] {

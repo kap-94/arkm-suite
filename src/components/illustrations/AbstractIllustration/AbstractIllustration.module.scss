@@ -1,0 +1,36 @@
+$primary-color: #6366f1;
+$primary-light: #818cf8;
+$primary-dark: #4f46e5;
+$indigo-light: #9698fd;
+$white-color: #ffffff;
+$white-dark: #e0e0e0;
+
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+.abstract-illustration {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  &__svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Animación flotante (opcional).
+// Aplica a las figuras si deseas que todas floten ligeramente:
+//
+// @keyframes floatShapes {
+//   0% {
+//     transform: translateY(0);
+//   }
+//   100% {
+//     transform: translateY(-10px);
+//   }
+// }
+//
+// .abstract-illustration__shape {
+//   animation: floatShapes 10s infinite alternate ease-in-out;
+// }

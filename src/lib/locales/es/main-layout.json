@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-22",
+    "description": "Configuración principal del diseño para rutas públicas",
+    "maintainer": "Equipo de Desarrollo"
+  },
+  "header": {
+    "aria": "Navegación principal del sitio",
+    "subtitle": {
+      "firstLetter": "E",
+      "text": "studio de diseño y desarrollo web"
+    },
+    "navigation": {
+      "home": {
+        "label": "Inicio",
+        "href": "/",
+        "aria": "Página de inicio",
+        "icon": "home",
+        "meta": {
+          "description": "Bienvenido a nuestra plataforma",
+          "keywords": [
+            "inicio",
+            "bienvenida",
+            "principal"
+          ]
+        }
+      },
+      "features": {
+        "label": "Características",
+        "href": "/caracteristicas",
+        "aria": "Resumen de características",
+        "icon": "features",
+        "meta": {
+          "description": "Explora las características de nuestra plataforma"
+        }
+      },
+      "pricing": {
+        "label": "Precios",
+        "href": "/precios",
+        "aria": "Planes de precios",
+        "icon": "pricing",
+        "meta": {
+          "description": "Ver nuestros planes de precios"
+        }
+      },
+      "about": {
+        "label": "Nosotros",
+        "href": "/nosotros",
+        "aria": "Acerca de nosotros",
+        "icon": "info",
+        "meta": {
+          "description": "Conoce más sobre nuestra empresa"
+        }
+      }
+    },
+    "clientPortal": {
+      "label": "Suite del Cliente",
+      "href": "/dashboard"
+    },
+    "languageOptions": {
+      "english": {
+        "label": "Inglés",
+        "aria": "Opción de idioma inglés"
+      },
+      "spanish": {
+        "label": "Español",
+        "aria": "Opción de idioma español"
+      }
+    }
+  },
+  "footer": {
+    "description": "Creando experiencias digitales que inspiran, innovan y transforman.",
+    "cta": "Conecta Con Nosotros Hoy",
+    "links": {
+      "showcase": "Showcase",
+      "solutions": "Soluciones",
+      "clientSuite": "Suite del Cliente",
+      "journey": "Trayecto"
+    },
+    "copyright": "© {year} ARKM Studio. Todos los derechos reservados.",
+    "company": {
+      "title": "Empresa",
+      "aria": "Información de la empresa"
+    },
+    "legends": {
+      "rights": "Todos los derechos reservados",
+      "privacy": {
+        "label": "Política de Privacidad",
+        "aria": "Enlace a política de privacidad",
+        "href": "/politica-de-privacidad"
+      },
+      "terms": {
+        "label": "Términos y Condiciones",
+        "aria": "Enlace a términos y condiciones",
+        "href": "/terminos-y-condiciones"
+      }
+    },
+    "navigation": {
+      "careers": {
+        "label": "Carreras",
+        "href": "/carreras",
+        "aria": "Oportunidades laborales",
+        "icon": "briefcase"
+      },
+      "blog": {
+        "label": "Blog",
+        "href": "/blog",
+        "aria": "Blog de la empresa",
+        "icon": "book"
+      },
+      "legal": {
+        "label": "Legal",
+        "href": "/legal",
+        "aria": "Información legal",
+        "icon": "shield"
+      }
+    }
+  },
+  "accessibility": {
+    "skipLinks": {
+      "main": "Saltar al contenido principal",
+      "navigation": "Saltar a la navegación"
+    },
+    "aria": {
+      "mainNav": "Navegación principal",
+      "footerNav": "Navegación del pie de página"
+    }
+  },
+  "messages": {
+    "errors": {
+      "notFound": "Página no encontrada",
+      "unauthorized": "Acceso no autorizado",
+      "forbidden": "Acceso prohibido"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-declare module "@/locales/*" {
+declare module "@/lib/locales/*" {
   const content: {
     [key: string]: string;
   };

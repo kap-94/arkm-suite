@@ -1,0 +1,112 @@
+{
+    "meta": {
+      "title": "ARKM Studio - Diseño y Desarrollo Web",
+      "description": "Estudio de diseño y desarrollo especializado en crear experiencias digitales excepcionales. Transformamos ideas en soluciones web innovadoras y elegantes.",
+      "keywords": [
+        "diseño web",
+        "desarrollo web",
+        "agencia digital",
+        "diseño UI/UX",
+        "desarrollo frontend",
+        "desarrollo backend",
+        "diseño responsive",
+        "branding digital",
+        "experiencia de usuario",
+        "ARKM Studio"
+      ],
+      "authors": [
+        {
+          "name": "ARKM Studio"
+        }
+      ],
+      "creator": "ARKM Studio",
+      "publisher": "ARKM Studio"
+    },
+    "hero": {
+      "headline": {
+        "create": "Transforma",
+        "scale": "Tu",
+        "transform": "Negocio"
+      },
+      "description": {
+        "subtitle": "Un sitio web profesional es algo complejo",
+        "description": "Transformamos visiones en experiencias digitales excepcionales",
+        "cta": "Cuéntanos del proyecto"
+      },
+      "scroll": "Explora desplazándote"
+    },
+    "solutions": {
+      "title": "Soluciones que generan impacto",
+      "subtitle": "Cada proyecto es una oportunidad de crear impacto duradero",
+      "solutions": [
+        {
+          "id": "web-design-solution",
+          "title": "Diseño Web",
+          "description": "Para nosotros el diseño no se trata solo de pantallas eficaces, eficientes y visualmente agradables, sino también de diseño de movimiento con sus animaciones en vivo e ilustraciones atractivas.",
+          "features": [
+            {
+              "title": "Diseño UX/UI Avanzado",
+              "description": "Diseño centrado en el usuario, refinado mediante investigación, wireframing y prototipos para lograr una forma y función perfectas."
+            },
+            {
+              "title": "Sistemas de Diseño",
+              "description": "Marcos consistentes con componentes reutilizables y guías de estilo que garantizan la escalabilidad en todos los puntos de contacto."
+            },
+            {
+              "title": "Animaciones Personalizadas",
+              "description": "Diseño de movimiento intencional que mejora las interacciones y da vida a las interfaces mientras mejora la usabilidad."
+            }
+          ]
+        },
+        {
+          "id": "web-development-solution",
+          "title": "Desarrollo Web",
+          "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y mejores prácticas.",
+          "features": [
+            {
+              "title": "Arquitectura Moderna",
+              "description": "Soluciones a prueba de futuro que utilizan microservicios y tecnología nativa en la nube para máxima escalabilidad y mantenibilidad."
+            },
+            {
+              "title": "Código Limpio",
+              "description": "Código limpio y documentado con pruebas automatizadas y CI que garantiza calidad a largo plazo."
+            },
+            {
+              "title": "Rendimiento Optimizado",
+              "description": "Experiencias web ultrarrápidas mediante division de código, almacenamiento en caché y monitoreo de rendimiento."
+            }
+          ]
+        }
+      ]
+    },
+    "clientSuite": {
+      "title": "Acceda a nuestra Suite del Cliente",
+      "subtitle": "Una plataforma integral que centraliza la gestión de proyectos con visibilidad en tiempo real y herramientas de seguimiento.",
+      "benefits": [
+        {
+          "title": "Colaboración efectiva",
+          "description": "Comunícate directamente con nuestro equipo y evalua cada fase."
+        },
+        {
+          "title": "Seguimiento en tiempo real",
+          "description": "Monitorea el progreso de tu proyecto con métricas en tiempo real."
+        },
+        {
+          "title": "Gestión de los documentos",
+          "description": "Accede a toda la documentación, recursos y entregables del proyecto."
+        },
+        {
+          "title": "Métricas y reportes",
+          "description": "Analiza el rendimiento y avance con reportes y métricas detalladas."
+        },
+        {
+          "title": "Planificación clara",
+          "description": "Visualiza hitos, fechas clave y cronogramas detallados del proyecto."
+        },
+        {
+          "title": "Comunicación directa",
+          "description": "Canal de comunicación dedicado con seguimiento de conversaciones."
+        }
+      ]
+    }
+  }

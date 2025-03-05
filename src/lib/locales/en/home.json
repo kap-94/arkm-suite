@@ -1,0 +1,110 @@
+{
+    "meta": {
+      "title": "ARKM Studio - Web Design and Development",
+      "description": "Design and development studio specializing in creating exceptional digital experiences. We transform ideas into innovative and elegant web solutions.",
+      "keywords": [
+        "web design",
+        "web development",
+        "digital agency",
+        "ui/ux design",
+        "frontend development",
+        "backend development",
+        "responsive design",
+        "digital branding",
+        "user experience",
+        "ARKM Studio"
+      ],
+      "authors": [
+        { "name": "ARKM Studio" }
+      ],
+      "creator": "ARKM Studio",
+      "publisher": "ARKM Studio"
+    },
+    "hero": {
+      "headline": {
+        "create": "Accelerate",
+        "scale": "Your",
+        "transform": "Business"
+      },
+      "description": {
+        "subtitle": "A professional website is a complex thing to build",
+        "description": "We transform visions into exceptional digital experiences",
+        "cta": "Your Project Details"
+      },
+      "scroll": "Scroll to Explore"
+    },
+    "solutions": {
+      "title": "Solutions that drive impact",
+      "subtitle": "Each project is an opportunity to create lasting impact",
+      "solutions": [
+        {
+          "id": "web-design-solution",
+          "title": "Web Design",
+          "description": "Design to us is not only effective, efficient and visually pleasing screens, but motion design with its live animations as well as entertaining illustrations.",
+          "features": [
+            {
+              "title": "Advanced UX/UI Design",
+              "description": "User-focused design, refined via research, wireframing, and prototyping to achieve seamless form and function."
+            },
+            {
+              "title": "Design Systems",
+              "description": "Consistent frameworks with reusable components and style guides ensuring scalability across all touchpoints."
+            },
+            {
+              "title": "Custom Animations",
+              "description": "Purposeful motion design that enhances interactions and brings interfaces to life while improving usability."
+            }
+          ]
+        },
+        {
+          "id": "web-development-solution",
+          "title": "Web Development",
+          "description": "We build robust and scalable web solutions using cutting-edge technologies and best practices.",
+          "features": [
+            {
+              "title": "Modern Architecture",
+              "description": "Future-proof solutions using microservices and cloud-native tech for maximum scalability and maintainability."
+            },
+            {
+              "title": "Clean Code",
+              "description": "Clean, documented code with automated tests and CI ensures long-term quality."
+            },
+            {
+              "title": "Optimized Performance",
+              "description": "Lightning-fast web experiences via code splitting, caching, and performance monitoring."
+            }
+          ]
+        }
+      ]
+    },
+    "clientSuite": {
+      "title": "Access our Client Suite",
+      "subtitle": "A comprehensive platform that centralizes project management with real-time visibility and tracking tools.",
+      "benefits": [
+        {
+          "title": "Effective Collaboration",
+          "description": "Communicate directly with our team and evaluate each phase."
+        },
+        {
+          "title": "Real-Time Tracking",
+          "description": "Monitor your project's progress with real-time metrics."
+        },
+        {
+          "title": "Document Management",
+          "description": "Access all project documentation, resources, and deliverables."
+        },
+        {
+          "title": "Metrics and Reports",
+          "description": "Analyze performance and progress with detailed reports and metrics."
+        },
+        {
+          "title": "Clear Planning",
+          "description": "Visualize milestones, key dates, and detailed project timelines."
+        },
+        {
+          "title": "Direct Communication",
+          "description": "Dedicated communication channel with conversation tracking."
+        }
+      ]
+    }
+  }

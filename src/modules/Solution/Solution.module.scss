@@ -1,0 +1,135 @@
+@import "@/styles/variables.scss";
+@import "@/styles/mixins.scss";
+
+.solution {
+  --card-width: 380px;
+  --background-width: 500px;
+  --background-height: 532px;
+  --aspect-ratio: 1.2;
+
+  height: calc(100vw / var(--aspect-ratio));
+  max-height: 600px;
+  width: 100%;
+  max-width: 1024px;
+  position: relative;
+  // overflow: hidden;
+  margin: 0 auto;
+
+  @include tablet {
+    --aspect-ratio: 1.1;
+  }
+
+  @include mobile {
+    --aspect-ratio: 1;
+    height: 700px;
+  }
+
+  @include mobile-small {
+    height: 575px;
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  &__card-wrapper {
+    position: absolute;
+    width: var(--card-width);
+    top: 25%;
+    z-index: 3;
+    border-radius: $border-radius-md;
+    // box-shadow: $shadow-lg;
+    transition: transform 0.3s ease;
+
+    @include mobile {
+      width: 90%;
+      max-width: 400px;
+      top: 1%;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+
+    @include mobile-small {
+      width: 92%;
+      top: 0.8%;
+      outline: 4px solid $black-dark;
+      outline-offset: 16px;
+    }
+  }
+
+  &__background {
+    position: absolute;
+    width: var(--background-width);
+    aspect-ratio: 1/1.064; // 500/532
+    top: 10%;
+
+    z-index: 1;
+    transition: transform 0.3s ease;
+
+    @include mobile {
+      width: 90%;
+      max-width: 424px;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+
+    @include mobile-small {
+      width: 95%;
+      top: 0;
+    }
+  }
+
+  &__wireframe-wrapper {
+    position: absolute;
+    width: 90%;
+    max-width: 400px;
+    aspect-ratio: 1/1.141; // 424/484
+    top: 25%;
+    z-index: 2;
+    border-radius: $border-radius-md;
+    box-shadow: 0px 2px 120px rgba($primary-color, 0.18);
+    transition: transform 0.3s ease;
+
+    @include mobile {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      outline: 5px solid $black-dark;
+    }
+
+    @include mobile-small {
+      display: none;
+    }
+  }
+
+  // Layout variations
+  &--card-left {
+    .solution__card-wrapper {
+      left: 0;
+    }
+
+    .solution__background {
+      left: 60px;
+    }
+
+    .solution__wireframe-wrapper {
+      right: 0;
+    }
+  }
+
+  &--card-right {
+    .solution__card-wrapper {
+      right: 0;
+    }
+
+    .solution__background {
+      right: 60px;
+    }
+
+    .solution__wireframe-wrapper {
+      left: 0;
+    }
+  }
+}

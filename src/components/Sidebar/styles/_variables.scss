@@ -26,7 +26,7 @@ $sidebar-transition-timing: $transition-bezier;
 // Theme Maps
 $sidebar-dark: (
   "bg": $black-base,
-  "border": $text-tertiary-20,
+  "border": rgba($white-base, 0.25),
   "active": $text-primary,
   "hover": $text-primary,
   "icon": $text-primary,
@@ -34,7 +34,7 @@ $sidebar-dark: (
   "overlay-bg": $black-base,
   "overlay-opacity": 0.5,
   "overlay-blur": 4px,
-  "overlay-mobile-opacity": 0.2,
+  "overlay-mobile-opacity": 0,
   "overlay-mobile-blur": 2px,
 );
 
@@ -48,6 +48,6 @@ $sidebar-light: (
   "overlay-bg": $black-light,
   "overlay-opacity": 0.8,
   "overlay-blur": 4px,
-  "overlay-mobile-opacity": 0.2,
+  "overlay-mobile-opacity": 0,
   "overlay-mobile-blur": 2px,
 );

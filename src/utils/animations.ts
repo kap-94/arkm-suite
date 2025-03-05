@@ -8,7 +8,7 @@ export const fadeInUp = (element: HTMLElement, options?: any) => {
     element,
     { autoAlpha: 0, y: 30 },
     {
-      duration: 1.2,
+      duration: 1,
       autoAlpha: 1,
       y: 0,
       ease: "power2.out",

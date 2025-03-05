@@ -11,7 +11,7 @@ export interface ToggleGroupTheme {
 
 export interface ToggleOption<T> {
   value: T;
-  label: string;
+  label?: string;
   ariaLabel: string;
   icon?: ReactNode;
 }

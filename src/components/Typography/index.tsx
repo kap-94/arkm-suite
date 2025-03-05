@@ -1,8 +1,12 @@
-// src/components/Typography/Typography.tsx
 import React, { CSSProperties, ElementType } from "react";
 import classNames from "classnames/bind";
 import styles from "./Typography.module.scss";
-import type { TypographyProps, TypographyVariant, ThemeType } from "./types";
+import type {
+  TypographyProps,
+  TypographyVariant,
+  ThemeType,
+  TypographyFontFamily,
+} from "./types";
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +24,12 @@ const ELEMENT_MAPPING: Record<TypographyVariant, keyof JSX.IntrinsicElements> =
     label: "span",
   } as const;
 
+const FONT_FAMILY_MAPPING: Record<TypographyFontFamily, string> = {
+  default: "",
+  usual: "'usual', sans-serif",
+  kranto: "'kranto-normal-semicondensed', sans-serif",
+};
+
 export const Typography = <T extends ElementType = "span">({
   as,
   align = "inherit",
@@ -27,13 +37,15 @@ export const Typography = <T extends ElementType = "span">({
   className = "",
   color,
   fontWeight,
+  fontFamily = "default",
   gutterBottom = false,
   noWrap = false,
   paragraph = false,
   style,
   textTransform = "none",
   variant = "p1",
-  theme = "dark",
+  theme = "light",
+  htmlFor,
   ...rest
 }: TypographyProps<T>) => {
   const Component = as || ELEMENT_MAPPING[variant];
@@ -56,6 +68,9 @@ export const Typography = <T extends ElementType = "span">({
     ...(align !== "inherit" && { textAlign: align }),
     ...(textTransform !== "none" && { textTransform }),
     ...(fontWeight && { fontWeight }),
+    ...(fontFamily !== "default" && {
+      fontFamily: FONT_FAMILY_MAPPING[fontFamily],
+    }),
     ...(typeof theme !== "string" &&
       theme.type === "custom" &&
       theme.customValues && {
@@ -65,7 +80,12 @@ export const Typography = <T extends ElementType = "span">({
   };
 
   return (
-    <Component className={rootClassName} style={combinedStyles} {...rest}>
+    <Component
+      className={rootClassName}
+      style={combinedStyles}
+      htmlFor={htmlFor}
+      {...rest}
+    >
       {children}
     </Component>
   );

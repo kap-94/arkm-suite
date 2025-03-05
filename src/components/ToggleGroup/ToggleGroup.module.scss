@@ -34,7 +34,7 @@ $toggle-theme-map: (
     glow: rgba($primary-color, 0.5),
   ),
   custom: (
-    background: var(--custom-background, rgba($black-base, 0.2)),
+    background: var(--custom-background, rgba($black-base, 0)),
     border: var(--custom-border, rgba($primary-color, 0.3)),
     text: var(--custom-text, rgba($text-primary, 0.7)),
     text-active: var(--custom-text-active, $text-primary),
@@ -92,7 +92,7 @@ $toggle-theme-map: (
     opacity: 0.1;
     @include subtle-neon(
       var(--toggle-glow, map-get(map-get($toggle-theme-map, dark), glow)),
-      0.2
+      0
     );
   }
 
@@ -161,7 +161,7 @@ $toggle-theme-map: (
     color: var(--toggle-text-active);
     @include subtle-neon(
       var(--toggle-glow, map-get(map-get($toggle-theme-map, dark), glow)),
-      0.2
+      0
     );
 
     .toggle-button__icon {

@@ -1,51 +1,89 @@
+@use "sass:map";
 @import "@/styles/variables";
+@import "@/styles/mixins";
 
-.form-control {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
+$themes: (
+  light: (
+    text-primary: $black-base,
+    text-secondary: rgba($black-base, 0.7),
+    background: $white-light,
+    border: rgba($black-base, 0),
+    label: $text-secondary,
+    error: $error-color,
+    placeholder: rgba($black-base, 0.5),
+    focus: rgba($black-light, 0.7),
+    autofill-bg: rgba($black-base, 0.3),
+    disabled: rgba($black-base, 0.4),
+    disabled-bg: rgba($white-dark, 0.5),
+  ),
+  dark: (
+    text-primary: $text-primary,
+    text-secondary: $text-secondary,
+    background: $black-dark,
+    border: rgba($text-primary, 0.1),
+    label: $text-secondary,
+    error: $error-color,
+    placeholder: $text-tertiary,
+    focus: rgba($primary-color, 0.7),
+    autofill-bg: $black-dark,
+    disabled: $text-disabled,
+    disabled-bg: rgba($black-base, 0.15),
+  ),
+  custom: (
+    text-primary: var(--textfield-text, $text-primary),
+    text-secondary: var(--textfield-secondary, $text-secondary),
+    background: var(--textfield-background, $black-light),
+    border: var(--textfield-border, rgba($text-primary, 0)),
+    label: var(--textfield-label, $text-secondary),
+    error: var(--textfield-error, $error-color),
+    placeholder: var(--textfield-placeholder, $text-tertiary),
+    focus: var(--textfield-focus, $primary-color),
+    autofill-bg: var(--textfield-autofill-bg, rgba($black-base, 0.3)),
+    disabled: var(--textfield-disabled, $text-disabled),
+    disabled-bg: var(--textfield-disabled-bg, rgba($black-base, 0.15)),
+  ),
+);
+
+.textfield {
+  @include flex(column, flex-start, stretch, $spacing-sm);
   width: 100%;
-  min-height: 78px; // Ajusta este valor según tus necesidades
-  margin-bottom: $spacing-sm;
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
   &__input-container {
+    position: relative;
+    width: 100%;
+    @include flex(column, flex-start, stretch, $spacing-md);
+  }
+
+  &__input-wrapper {
     position: relative;
     width: 100%;
   }
 
   &__input {
     width: 100%;
-    padding: $spacing-md $spacing-xl $spacing-md $spacing-md;
     border-radius: $border-radius-md;
-    border: 1px solid rgba($text-primary, 0.1);
-    background: rgba(255, 255, 255, 0.05);
-    color: $text-primary;
-    position: relative;
-    z-index: 0;
-    font-size: 0.95rem;
-    transition: all $transition-duration-fast $transition-bezier;
-    outline: none; // Elimina el outline por defecto
+    padding: $spacing-sm $spacing-md;
+    @include transition(all);
+    min-height: 52px;
+    font-size: 14.5px;
 
-    // Eliminar estilos por defecto del navegador
+    @include mobile {
+      min-height: 48px;
+      font-size: 13px;
+    }
+
     &:focus {
       outline: none;
-      border: 1px solid rgba($text-primary, 0.2);
-      box-shadow: none;
-      -webkit-appearance: none;
-    }
-
-    // Eliminar el anillo de focus en Safari
-    &:focus-visible {
-      outline: none;
-    }
-
-    &::placeholder {
-      color: rgba($text-primary, 0.4);
-    }
-
-    .form-control--with-icon & {
-      padding-right: $spacing-xl * 1.5;
     }
   }
 
@@ -54,120 +92,154 @@
     right: $spacing-md;
     top: 50%;
     transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba($text-primary, 0.6);
-    transition: color $transition-duration-fast;
-    z-index: 2; // Asegura que el icono esté sobre todo
+    @include flex-center;
+    @include transition(all);
+    width: 20px;
+    height: 20px;
 
-    &-svg {
-      transition: all $transition-duration-fast;
-
-      &--error {
-        color: $error-color;
-      }
+    &--clickable {
+      cursor: pointer;
     }
   }
 
   &__error {
-    position: absolute; // Hacerlo absoluto para no afectar el layout
-    bottom: -16px; // Posicionarlo debajo del input
-    left: 0;
-    font-size: 0.75rem;
-    color: $error-color;
+    @include flex(row, flex-start, center, $spacing-xs);
     margin-top: $spacing-xs;
-    transition: opacity $transition-duration-fast ease;
   }
 
-  &__label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: $text-primary;
-    margin-bottom: $spacing-sm;
-    transition: all $transition-duration-fast;
-  }
-
-  &--focused {
-    .form-control__input {
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .form-control__icon {
-      color: #ffffff;
-    }
-  }
-
-  &--error {
-    .form-control__input {
-      border-color: $error-color;
-      background: $error-bg;
-    }
-
-    .form-control__icon {
-      color: $error-color;
-    }
-  }
-
-  // Variantes
+  // Variants
   &--primary {
-    .form-control__label {
-      opacity: 0.9;
+    .textfield__label {
+      position: static;
+      transform: none;
+      pointer-events: none;
     }
   }
 
   &--secondary {
-    min-height: 56px; // Un poco más alto para el label flotante
-
-    .form-control__input-container {
-      margin-top: 0;
+    .textfield__input-container {
+      gap: 0;
     }
 
-    .form-control__label {
-      color: rgba($text-primary, 0.6);
+    .textfield__label {
       position: absolute;
       left: $spacing-md;
       top: 50%;
       transform: translateY(-50%);
-      margin: 0;
       pointer-events: none;
-      padding: 0 $spacing-xs;
-      transition: all $transition-duration-fast;
       z-index: 1;
-
-      // Pseudo-elemento para crear el "corte" en el borde
-      &::before {
-        content: "";
-        position: absolute;
-        left: -2px; // Extiende ligeramente para cubrir el borde
-        right: -2px;
-        top: 50%;
-        height: 3px; // Un poco más alto para asegurar que cubra el borde
-        background-color: rgba(30, 30, 30, 0.3);
-        transform: translateY(-50%);
-        z-index: -1;
-        transition: all $transition-duration-fast;
-      }
+      padding: 0 $spacing-xs;
+      @include transition(all);
 
       &--focused {
-        top: 0;
         font-size: 0.75rem;
-        color: rgba($text-primary, 0.9);
-        padding: 0 $spacing-xs;
+        top: 0;
+        transform: translateY(-50%);
+        background-color: inherit;
 
         &::before {
-          height: calc(
-            100% + 2px
-          ); // Un poco más alto para cubrir completamente
+          content: "";
+          position: absolute;
+          height: 8px;
+          width: calc(100% + 6px);
           top: 50%;
+          left: -3px;
+          background-color: inherit;
+          z-index: -1;
         }
       }
     }
+  }
 
-    &.form-control--focused {
-      .form-control__label::before {
-        background-color: rgba(30, 30, 30, 0.3);
+  // Theme variations
+  @each $theme, $colors in $themes {
+    &--theme-#{$theme} {
+      color: map.get($colors, text-primary);
+
+      .textfield__input {
+        background-color: convert-to-rgba(map.get($colors, background), 0.325);
+        border: 1.3px solid map.get($colors, border);
+        color: map.get($colors, text-primary);
+
+        &::placeholder {
+          color: map.get($colors, placeholder);
+        }
+
+        &:focus {
+          border: 1.82px solid map.get($colors, focus);
+        }
+
+        // &:-webkit-autofill,
+        // &:-webkit-autofill:hover,
+        // &:-webkit-autofill:focus {
+        //   -webkit-box-shadow: 0
+        //     0
+        //     0px
+        //     1000px
+        //     map.get($colors, autofill-bg)
+        //     inset;
+        // }
       }
+
+      .textfield__icon {
+        color: map.get($colors, text-primary);
+
+        &--error {
+          color: map.get($colors, error);
+        }
+      }
+
+      .textfield__error {
+        color: map.get($colors, error);
+      }
+
+      &.textfield--disabled {
+        cursor: not-allowed;
+
+        .textfield__label {
+          color: map.get($colors, disabled);
+        }
+
+        .textfield__input {
+          background-color: map.get($colors, disabled-bg);
+          color: map.get($colors, disabled);
+          border-color: transparent;
+          cursor: not-allowed;
+
+          &::placeholder {
+            color: map.get($colors, disabled);
+          }
+        }
+
+        .textfield__icon {
+          color: map.get($colors, disabled) !important;
+        }
+      }
+
+      &.textfield--error {
+        .textfield__input {
+          border-color: map.get($colors, error);
+          background-color: convert-to-rgba(map.get($colors, error), 0.05);
+        }
+
+        .textfield__label {
+          color: map.get($colors, error);
+          background-color: map.get($colors, background);
+        }
+
+        .textfield__icon {
+          color: map.get($colors, error);
+        }
+      }
+    }
+  }
+
+  @include reduced-motion {
+    &,
+    &__input,
+    &__label,
+    &__icon {
+      transition: none;
     }
   }
 }

@@ -1,25 +1,20 @@
+"use client";
+
 import { useState, useRef } from "react";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import Link from "next/link";
 import classNames from "classnames/bind";
 import { ArrowRight, Users2 } from "lucide-react";
 import { VideoBackground } from "./VideoBackground";
-import { NavMenuProps, NavItem } from "../types/header.types";
+import { NavMenuProps } from "../types/header.types";
 import { useHeaderContext } from "../context";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/Button";
-import LanguageSelector, {
-  Language,
-  LanguageSelectorVariant,
-} from "@/components/LanguageSelector";
+import LanguageSelector, { Language } from "@/components/LanguageSelector";
 import styles from "../styles/NavMenu.module.scss";
 
 const cx = classNames.bind(styles);
-
-// interface VideoItem extends NavItem {
-//   videoSrc?: string;
-// }
 
 const DEFAULT_VIDEO =
   "https://cdn.pixabay.com/video/2024/10/18/236893_large.mp4";
@@ -63,16 +58,16 @@ const itemVariants: Variants = {
 export const NavMenu = ({
   isOpen,
   onClose,
-  items = [],
+  menuItems,
   onCursor,
 }: NavMenuProps) => {
-  const { breakpoint, languageConfig } = useHeaderContext();
-  const { t, language, setLanguage } = useLanguage();
+  const { language, setLanguage } = useLanguage();
+  const { breakpoint, dictionary } = useHeaderContext();
   const isMobile = useMediaQuery(`(max-width: ${breakpoint}px)`);
   const [activeItem, setActiveItem] = useState<string>("");
 
   const enrichedItems = useRef(
-    items.map((item) => ({
+    menuItems.map((item) => ({
       ...item,
       videoSrc: DEFAULT_VIDEO,
     }))
@@ -95,27 +90,21 @@ export const NavMenu = ({
       >
         <Button
           variant="secondary"
-          href="/dashboard"
+          href={dictionary.clientPortal.href}
           icon={<Users2 size={16} />}
           className={cx("nav-menu__mobile-portal-button")}
         >
-          {t("navigation.clientSuite")}
+          {dictionary.clientPortal.label}
         </Button>
 
         <div className={cx("nav-menu__mobile-divider")} />
 
         <div className={cx("nav-menu__mobile-language")}>
           <LanguageSelector
-            variant={
-              (languageConfig?.variant as LanguageSelectorVariant) || "minimal"
-            }
-            currentLanguage={language as Language}
+            variant={"split-line"}
+            currentLanguage={language}
             onLanguageChange={(newLang: Language) => {
-              if (languageConfig?.onLanguageChange) {
-                languageConfig.onLanguageChange(newLang);
-              } else {
-                setLanguage(newLang);
-              }
+              setLanguage(newLang);
             }}
           />
         </div>
@@ -178,7 +167,7 @@ export const NavMenu = ({
                         </span>
                       )}
                       <span className={cx("nav-menu__link-text")}>
-                        {item.text}
+                        {item.label}
                       </span>
                     </Link>
                   </motion.li>

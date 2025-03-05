@@ -14,6 +14,7 @@ export interface ButtonProps {
   href?: string;
   isLoading?: boolean;
   disabled?: boolean;
+  fullWidth?: boolean;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
 }

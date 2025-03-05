@@ -1,32 +1,46 @@
 "use client";
 
-// src/components/AuthModule/components/SigninForm/index.tsx
 import { Formik, Form } from "formik";
 import classNames from "classnames/bind";
 import { Loader, AlertCircle } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
-import { TextField } from "@/components/TextField";
+import { TextField } from "@/components/TextField/TextField";
 import { Button } from "@/components/Button";
 import { GoogleButton } from "@/components/GoogleButton";
 import { useSignInForm } from "../../hooks/useSignInForm";
+import { SignInDictionary } from "@/types/dictionary/signin.types";
+import { getIconComponent } from "@/utils/iconUtils";
+import Typography from "@/components/Typography";
 import styles from "./SigninForm.module.scss";
 
 const cx = classNames.bind(styles);
 
 interface SigninFormProps {
   className?: string;
+  dictionary: SignInDictionary;
 }
 
-export function SigninForm({ className }: SigninFormProps) {
-  const { t } = useLanguage();
-  const { isLoading, error, validationSchema, handleSubmit } = useSignInForm();
+export function SigninForm({ className, dictionary }: SigninFormProps) {
+  const { isLoading, error, validationSchema, handleSubmit } = useSignInForm(
+    dictionary.form.validation
+  );
 
   return (
     <div className={cx("signin-form", className)}>
-      <h2 className={cx("signin-form__title")}>{t("auth.signin.title")}</h2>
-      <p className={cx("signin-form__description")}>
-        {t("auth.signin.enterDashboard")}
-      </p>
+      <Typography
+        variant="h2"
+        theme={{ type: "dark" }}
+        className={cx("signin-form__title")}
+      >
+        {dictionary.header.title}
+      </Typography>
+      <Typography
+        variant="p1"
+        fontWeight={400}
+        theme={{ type: "dark" }}
+        className={cx("signin-form__subtitle")}
+      >
+        {dictionary.header.subtitle}
+      </Typography>
 
       <Formik
         initialValues={{
@@ -44,27 +58,33 @@ export function SigninForm({ className }: SigninFormProps) {
             {error && (
               <div className={cx("signin-form__error")}>
                 <AlertCircle size={16} />
-                <span>{error}</span>
+                <Typography as="span" color="error" variant="p2">
+                  {error}
+                </Typography>
               </div>
             )}
 
             <TextField
               name="email"
-              label={t("auth.signin.form.email.label")}
+              theme={{ type: "dark" }}
+              label={dictionary.form.fields.email.label}
               type="email"
-              icon="email"
-              placeholder={t("auth.signin.form.email.placeholder")}
+              icon={getIconComponent(dictionary.form.fields.email.icon)}
+              placeholder={dictionary.form.fields.email.placeholder}
               variant="secondary"
               className={cx("signin-form__text-field")}
+              showError
             />
 
             <TextField
               name="password"
-              label={t("auth.signin.form.password.label")}
+              theme={{ type: "dark" }}
+              label={dictionary.form.fields.password.label}
               type="password"
-              placeholder={t("auth.signin.form.password.placeholder")}
+              placeholder={dictionary.form.fields.password.placeholder}
               variant="secondary"
               className={cx("signin-form__password-field")}
+              showError
             />
 
             <Button
@@ -72,18 +92,21 @@ export function SigninForm({ className }: SigninFormProps) {
               variant="primary"
               size="lg"
               radius="md"
+              fullWidth
               disabled={isLoading || !isValid || isSubmitting}
               className={cx("signin-form__submit")}
             >
               {isLoading ? (
                 <Loader className={cx("signin-form__spinner")} size={20} />
               ) : (
-                t("auth.signin.form.buttons.access")
+                dictionary.form.buttons.primary.label
               )}
             </Button>
 
             <div className={cx("signin-form__separator")}>
-              <span>{t("auth.signin.form.buttons.or")}</span>
+              <Typography as="span" color="secondary" theme={{ type: "dark" }}>
+                {dictionary.form.buttons.separator.text}
+              </Typography>
             </div>
 
             <GoogleButton
@@ -92,12 +115,18 @@ export function SigninForm({ className }: SigninFormProps) {
               radius="md"
               className={cx("signin-form__google-button")}
             >
-              {t("auth.signin.form.buttons.google")}
+              <Typography variant="p1" theme={{ type: "dark" }}>
+                {dictionary.form.buttons.google.label}
+              </Typography>
             </GoogleButton>
 
-            <small className={cx("signin-form__note")}>
-              {t("auth.signin.adminNote")}
-            </small>
+            <Typography
+              variant="p3"
+              theme={{ type: "dark" }}
+              className={cx("signin-form__note")}
+            >
+              {dictionary.form.note}
+            </Typography>
           </Form>
         )}
       </Formik>
