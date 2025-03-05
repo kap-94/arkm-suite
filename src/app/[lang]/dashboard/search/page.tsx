@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { searchService } from "@/services/searchService";
 import { Language } from "@/lib/config/i18n";
