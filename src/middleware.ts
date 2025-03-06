@@ -197,8 +197,9 @@ export default auth(async function middleware(request: NextRequest) {
 });
 
 export const config = {
+  runtime: "edge", // Usar Edge Runtime
   matcher: [
-    // Skip archivos estáticos pero incluir /api/auth para protección de rutas
+    // Ignorar archivos estáticos pero incluir /api/auth para protección de rutas
     "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
     "/",
   ],
