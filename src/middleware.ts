@@ -81,7 +81,7 @@ function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
 function preserveTabState(
   request: NextRequest,
   response: NextResponse
-): NextResponse | void {
+): NextResponse | undefined {
   const pathname = request.nextUrl.pathname;
   const searchParams = request.nextUrl.searchParams;
 
@@ -95,7 +95,7 @@ function preserveTabState(
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
       });
-      return;
+      return undefined;
     } else {
       const lastTab = request.cookies.get("lastProjectTab")?.value;
       if (lastTab) {
@@ -105,6 +105,7 @@ function preserveTabState(
       }
     }
   }
+  return undefined;
 }
 
 function setDefaultViewPreference(
@@ -126,7 +127,8 @@ function setDefaultViewPreference(
   }
 }
 
-export default auth(async function middleware(request: NextRequest) {
+// The middleware function is now exported directly, not wrapped in auth()
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // 1. Si es una ruta de auth API, permitir sin modificaciones
@@ -141,8 +143,13 @@ export default auth(async function middleware(request: NextRequest) {
 
   // 3. Para rutas protegidas, verificar autenticación
   if (PROTECTED_PATHS.some((path) => pathname.includes(path))) {
-    const session = await auth();
-    if (!session) {
+    // We'll use a different approach for auth protection in middleware
+    // Check for authentication cookie instead of using the auth() wrapper
+    const authCookie =
+      request.cookies.get("next-auth.session-token")?.value ||
+      request.cookies.get("__Secure-next-auth.session-token")?.value;
+
+    if (!authCookie) {
       const locale = getPreferredLocale(request);
       return NextResponse.redirect(
         new URL(
@@ -194,10 +201,9 @@ export default auth(async function middleware(request: NextRequest) {
   }
 
   return response;
-});
+}
 
 export const config = {
-  runtime: "edge", // Usar Edge Runtime
   matcher: [
     // Ignorar archivos estáticos pero incluir /api/auth para protección de rutas
     "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
