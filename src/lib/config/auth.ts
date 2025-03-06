@@ -45,7 +45,6 @@ export const config: NextAuthConfig = {
 
         // Aseguramos que los valores son del tipo esperado
         const user = data.user;
-        console.log({ user });
 
         // Si la autenticación es exitosa, devolver los datos del usuario
         return {

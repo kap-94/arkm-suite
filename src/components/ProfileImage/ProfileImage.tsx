@@ -24,7 +24,7 @@ const defaultTheme: ProfileImageTheme = {
     label: "#64748B",
     border: "rgba(0, 0, 0, 0.12)",
     overlayBackground: "rgba(0, 0, 0, 0.7)",
-    overlayText: "#ffffff",
+    overlayText: "#FFFFFF",
     shadow: "0 4px 24px -8px rgba(0, 0, 0, 0.1)",
     text: "#1F2937",
     secondaryText: "#6B7280",
