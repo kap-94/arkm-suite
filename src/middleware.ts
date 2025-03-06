@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import { auth } from "./src/lib/config/auth";
-import { VIEW_PREFERENCES } from "./src/lib/constants/viewPreferences";
+import { auth } from "./lib/config/auth";
+import { VIEW_PREFERENCES } from "./lib/constants/viewPreferences";
 
 const LOCALES = ["es", "en"] as const;
 type ValidLocale = (typeof LOCALES)[number];
