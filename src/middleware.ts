@@ -188,12 +188,6 @@ export default async function middleware(request: NextRequest) {
   return response;
 }
 
-// Use the Node.js runtime to ensure compatibility with Node APIs
 export const config = {
-  runtime: "nodejs",
-  matcher: [
-    // Skip static files but include all other routes
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
-    "/",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)", "/"],
 };
