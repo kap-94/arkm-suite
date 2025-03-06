@@ -1,9 +1,9 @@
 // src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
-import { auth } from "./lib/config/auth";
 import { VIEW_PREFERENCES } from "./lib/constants/viewPreferences";
 
 const LOCALES = ["es", "en"] as const;
@@ -20,7 +20,7 @@ const PUBLIC_PATHS = [
 
 const IGNORED_PATHS = [
   "/_next",
-  "/api/auth", // Importante: la ruta de auth debe ir antes que /api
+  "/api/auth", // IMPORTANT: auth paths should be processed before /api
   "/api",
   "/static",
   "/images",
@@ -44,13 +44,14 @@ function getPreferredLocale(request: NextRequest): ValidLocale {
     }
 
     const negotiatorHeaders: Record<string, string> = {};
-    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
+    request.headers.forEach((value, key) => {
+      negotiatorHeaders[key] = value;
+    });
 
     const languages = new Negotiator({
       headers: negotiatorHeaders,
     }).languages();
     const preferredLocale = matchLocale(languages, LOCALES, defaultLocale);
-
     return preferredLocale as ValidLocale;
   } catch (error) {
     console.error("Error getting preferred locale:", error);
@@ -91,7 +92,7 @@ function preserveTabState(
     if (currentTab !== null) {
       response.cookies.set("lastProjectTab", currentTab, {
         path: "/",
-        maxAge: 60 * 60 * 24 * 365, // 1 año
+        maxAge: 60 * 60 * 24 * 365, // 1 year
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
       });
@@ -126,23 +127,26 @@ function setDefaultViewPreference(
   }
 }
 
-export default auth(async function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // 1. Si es una ruta de auth API, permitir sin modificaciones
+  // 1. Skip processing for /api/auth routes
   if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
   }
 
-  // 2. Ignorar rutas que no necesitan procesamiento
+  // 2. Ignore paths that don't require processing
   if (isIgnoredPath(pathname)) {
     return NextResponse.next();
   }
 
-  // 3. Para rutas protegidas, verificar autenticación
+  // 3. For protected paths, verify authentication using getToken and pass the secret
   if (PROTECTED_PATHS.some((path) => pathname.includes(path))) {
-    const session = await auth();
-    if (!session) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.AUTH_SECRET,
+    });
+    if (!token) {
       const locale = getPreferredLocale(request);
       return NextResponse.redirect(
         new URL(
@@ -153,52 +157,42 @@ export default auth(async function middleware(request: NextRequest) {
     }
   }
 
-  // 4. Si la ruta ya tiene un locale válido
+  // 4. If the path already contains a valid locale, process custom logic
   if (hasValidLocale(pathname)) {
     const response = NextResponse.next();
-
-    // 5. Gestionar el estado de las tabs y obtener posible redirección
     const tabRedirect = preserveTabState(request, response);
     if (tabRedirect) {
       return tabRedirect;
     }
-
-    // 6. Verificar y establecer preferencia de vista para rutas del dashboard
     if (pathname.includes("/dashboard")) {
       setDefaultViewPreference(request, response);
     }
-
     return response;
   }
 
-  // 7. Para rutas sin locale, redirigir a la versión localizada
+  // 5. For paths without a locale, build the localized URL and set the cookie
   const locale = getPreferredLocale(request);
   const localizedUrl = buildLocalizedUrl(request, locale);
   const response = NextResponse.redirect(localizedUrl);
-
-  // 8. Establecer cookie de locale
   response.cookies.set("NEXT_LOCALE", locale, {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
-
-  // 9. Gestionar el estado de las tabs
   const tabRedirect = preserveTabState(request, response);
   if (tabRedirect) {
     return tabRedirect;
   }
-
-  // 10. Establecer preferencia de vista si es necesario
   if (pathname.includes("/dashboard")) {
     setDefaultViewPreference(request, response);
   }
-
   return response;
-});
+}
 
+// Use the Node.js runtime to ensure compatibility with Node APIs
 export const config = {
+  runtime: "nodejs",
   matcher: [
-    // Skip archivos estáticos pero incluir /api/auth para protección de rutas
+    // Skip static files but include all other routes
     "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
     "/",
   ],
