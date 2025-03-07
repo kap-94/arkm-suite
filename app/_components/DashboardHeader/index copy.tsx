@@ -13,8 +13,8 @@ import type {
   HeaderSection,
   SearchSection,
   UserMenuItem,
-} from "../../_types/dictionary/dashboardLayout.types";
-import { getIconComponent } from "../../_utils/iconUtils";
+} from "@/app/_types/dictionary/dashboardLayout.types";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import { UserProfile } from "../../[lang]/dashboard/account/profile/ProfileClient";
 
 const cx = classNames.bind(styles);

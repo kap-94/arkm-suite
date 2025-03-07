@@ -5,13 +5,13 @@ import classNames from "classnames/bind";
 import gsap from "gsap";
 
 // Componentes locales
-import { FONTS } from "../../_lib/fonts";
-import { ProjectForm } from "../../_components/ProjectForm";
-import WebGLText from "../../_components/WebGLText";
-import Modal from "../../_components/Modal";
-import useMousePosition from "../../_hooks/useMousePosition";
-import { Typography } from "../../_components/Typography";
-import { Button } from "../../_components/Button";
+import { FONTS } from "@/app/_lib/fonts";
+import { ProjectForm } from "@/app/_components/ProjectForm";
+import WebGLText from "@/app/_components/WebGLText";
+import Modal from "@/app/_components/Modal";
+import useMousePosition from "@/app/_hooks/useMousePosition";
+import { Typography } from "@/app/_components/Typography";
+import { Button } from "@/app/_components/Button";
 
 // Tipado
 import { HeroDictionary } from "@/app/_types/dictionary/home.types";
@@ -21,9 +21,9 @@ import styles from "./Hero.module.scss";
 
 // Import dinámico del shader 3D para performance
 import dynamic from "next/dynamic";
-import { plasmaPulseShader } from "../../_lib/shaders";
+import { plasmaPulseShader } from "@/app/_lib/shaders";
 
-const WaveScene = dynamic(() => import("../../_components/WaveScene"), {
+const WaveScene = dynamic(() => import("@/app/_components/WaveScene"), {
   ssr: false,
 });
 

@@ -1,15 +1,15 @@
 import Link from "next/link";
 import classNames from "classnames/bind";
 import { ArrowLeft, HelpCircle } from "lucide-react";
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
 import {
   authLayoutDictionary,
   getPageDictionary,
-} from "../../_utils/dictionary";
+} from "@/app/_utils/dictionary";
 import { UIProvider } from "../../_context/UIContext";
 import { Brand } from "../Header/components";
 import { FeatureCard } from "../FeatureCard";
-import { getIconComponent } from "../../_utils/iconUtils";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import Typography from "../Typography";
 import styles from "./AuthLayout.module.scss";
 

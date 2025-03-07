@@ -1,4 +1,4 @@
-import { DesignSystemDictionary } from "../../_types/dictionary/designSystemPreview.types";
+import { DesignSystemDictionary } from "@/app/_types/dictionary/designSystemPreview.types";
 
 export interface ThemeConfig {
   type: "light" | "dark" | "custom";

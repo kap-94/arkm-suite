@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
-import { Typography } from "../../_components/Typography";
-import { Benefits } from "../../_components/Benefits";
-import { ImageSlider } from "../../_components/ImageSlider";
+import { Typography } from "@/app/_components/Typography";
+import { Benefits } from "@/app/_components/Benefits";
+import { ImageSlider } from "@/app/_components/ImageSlider";
 import styles from "./ClientSuitePreview.module.scss";
 
 const cx = classNames.bind(styles);

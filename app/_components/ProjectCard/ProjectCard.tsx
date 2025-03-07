@@ -7,7 +7,7 @@ import StageProgress from "../StageProgress";
 import Badge from "../Badge";
 
 import styles from "./ProjectCard.module.scss";
-import { buildLocalizedPath } from "../../_utils/path";
+import { buildLocalizedPath } from "@/app/_utils/path";
 
 const cx = classNames.bind(styles);
 

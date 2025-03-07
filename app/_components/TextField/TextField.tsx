@@ -6,7 +6,7 @@ import { useField } from "formik";
 import type { TextFieldProps } from "./types";
 import { Typography } from "../Typography";
 import styles from "./TextField.module.scss";
-import { getIconComponent } from "../../_utils/iconUtils";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 
 const cx = classNames.bind(styles);
 

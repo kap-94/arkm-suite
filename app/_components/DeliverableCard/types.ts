@@ -1,5 +1,5 @@
 import { DeliverableResponse } from "../../_repositories/types";
-import { DeliverableCardDictionary } from "../../_types/dictionary/projectDetails.types";
+import { DeliverableCardDictionary } from "@/app/_types/dictionary/projectDetails.types";
 export type ThemeType = "light" | "dark" | "custom";
 
 export interface DeliverableCardTheme {

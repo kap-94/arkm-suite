@@ -6,7 +6,7 @@ import { TypographySection } from "./components/TypographySection/TypographySect
 import { SpacingSection } from "./components/SpacingSection/SpacingSection";
 import { ComponentsSection } from "./components/ComponentsSection/ComponentsSection";
 import { ThemeConfig } from "./types";
-import { DesignSystemContent } from "../../_types/models/ComponentContent";
+import { DesignSystemContent } from "@/app/_types/models/ComponentContent";
 import styles from "./DesignSystemPreview.module.scss";
 
 const cx = classNames.bind(styles);

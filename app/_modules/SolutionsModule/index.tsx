@@ -1,14 +1,14 @@
 import classNames from "classnames/bind";
 import Solution, { SolutionLayout } from "../Solution";
 import styles from "./SolutionsModule.module.scss";
-import Typography from "../../_components/Typography";
+import Typography from "@/app/_components/Typography";
 import {
   DesignIcon,
   DevelopmentIcon,
   RocketIllustration,
-} from "../../_components/SolutionCard/SolutionIcons";
-import CodeEditorAnimation from "../../_components/animations/CodeEditorAnimation";
-import LandingWireframe from "../../_components/animations/LandingWireframe";
+} from "@/app/_components/SolutionCard/SolutionIcons";
+import CodeEditorAnimation from "@/app/_components/animations/CodeEditorAnimation";
+import LandingWireframe from "@/app/_components/animations/LandingWireframe";
 
 const cx = classNames.bind(styles);
 

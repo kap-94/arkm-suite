@@ -1,4 +1,4 @@
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
 import moment from "moment";
 
 interface BarPosition {

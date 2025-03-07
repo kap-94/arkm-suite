@@ -7,14 +7,14 @@ import { useSettings } from "../../_context/SettingsContext";
 import { ProjectPlanningLayout } from "../layouts/ProjectPlanningLayout";
 import ProjectHeader from "../ProjectHeader";
 import Tabs from "../Tabs";
-import { ProjectDetailsDictionary } from "../../_types/dictionary/projectDetails.types";
+import { ProjectDetailsDictionary } from "@/app/_types/dictionary/projectDetails.types";
 import { DeliverablesView } from "../DeliverablesView";
 import { GanttView } from "../GanttView";
-import { TaskStatus } from "../../_types/models/Common";
-import { formatDateRangeSafe } from "../../_utils/date-utils";
+import { TaskStatus } from "@/app/_types/models/Common";
+import { formatDateRangeSafe } from "@/app/_utils/date-utils";
 import { ProjectResponse } from "../../_repositories/types";
 import styles from "./ProjectDetails.module.scss";
-import { buildLocalizedPath } from "../../_utils/path";
+import { buildLocalizedPath } from "@/app/_utils/path";
 
 const cx = classNames.bind(styles);
 

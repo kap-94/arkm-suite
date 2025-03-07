@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import * as THREE from "three";
 import { WebGLTextRenderer } from "./WebGLTextRenderer";
-import { WebGLTextProps, WebGLComponents } from "../../_types/webgl";
+import { WebGLTextProps, WebGLComponents } from "@/app/_types/webgl";
 import styles from "./WebGLText.module.scss";
 
 const cx = classNames.bind(styles);

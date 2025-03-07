@@ -10,13 +10,13 @@ import { StageBar } from "./components/StageBar";
 import { useGantt } from "./hooks/useGantt";
 import { GanttProvider } from "./GanttContext";
 import { calculateCurrentDayPosition } from "./gantt-date-calculations";
-import { formatCustomDateUTC } from "../../_utils/date-utils";
+import { formatCustomDateUTC } from "@/app/_utils/date-utils";
 import { useDashboard } from "../../_context/DashboardContext";
 import styles from "./GanttView.module.scss";
 import {
   GanttViewOption,
   ProjectStatus,
-} from "../../_types/dictionary/projectDetails.types";
+} from "@/app/_types/dictionary/projectDetails.types";
 
 const cx = classNames.bind(styles);
 

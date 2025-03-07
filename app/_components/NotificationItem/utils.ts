@@ -1,5 +1,5 @@
 import { NotificationType } from "./types";
-import type { Language } from "../../_lib/config/i18n";
+import type { Language } from "@/app/_lib/config/i18n";
 
 const translations = {
   en: {

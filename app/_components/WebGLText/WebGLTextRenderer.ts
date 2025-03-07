@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { WebGLTextOptions, DEFAULT_TEXT_OPTIONS } from "../../_types/webgl";
+import { WebGLTextOptions, DEFAULT_TEXT_OPTIONS } from "@/app/_types/webgl";
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];

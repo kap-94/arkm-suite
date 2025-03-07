@@ -8,7 +8,7 @@ import {
   ChatIcon,
   DataIcon,
   CalendarIcon,
-} from "../../_modules/ClientSuitePreview/ClientSuiteIcons";
+} from "@/app/_modules/ClientSuitePreview/ClientSuiteIcons";
 import styles from "./Benefits.module.scss";
 
 const cx = classNames.bind(styles);

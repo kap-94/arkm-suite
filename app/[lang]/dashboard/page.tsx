@@ -1,10 +1,10 @@
 // page.tsx
-import type { Language } from "../../_lib/config/i18n";
+import type { Language } from "@/app/_lib/config/i18n";
 import { DashboardClient } from "./_components/DashboardClient";
 import {
   dashboardDictionary,
   getPageDictionary,
-} from "../../_utils/dictionary";
+} from "@/app/_utils/dictionary";
 import {
   getDashboardNotifications,
   getDashboardStats,

@@ -1,6 +1,6 @@
-import { GanttViewDictionary } from "../../_types/dictionary/projectDetails.types";
-import { Stage } from "../../_types/models";
-import { Priority, TaskStatus } from "../../_types/models/Common";
+import { GanttViewDictionary } from "@/app/_types/dictionary/projectDetails.types";
+import { Stage } from "@/app/_types/models";
+import { Priority, TaskStatus } from "@/app/_types/models/Common";
 
 // components/GanttView/types.ts
 export type ThemeType = "light" | "dark" | "custom";

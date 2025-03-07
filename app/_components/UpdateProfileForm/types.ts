@@ -1,5 +1,5 @@
 // types.ts
-import { ProfileDictionary } from "../../_types/dictionary/profile.types";
+import { ProfileDictionary } from "@/app/_types/dictionary/profile.types";
 // import { User } from "@/types/User.types";
 
 export interface ProfileTheme {

@@ -1,4 +1,4 @@
-import { HeaderConfig } from "../../_components/Header";
+import { HeaderConfig } from "@/app/_components/Header";
 
 export const headerConfig: HeaderConfig = {
   appearance: {

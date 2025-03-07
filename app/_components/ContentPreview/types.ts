@@ -1,5 +1,5 @@
-import { ContentPreviewDictionary } from "../../_types/dictionary/contentPreview.types";
-import { Content } from "../../_types/models/Content";
+import { ContentPreviewDictionary } from "@/app/_types/dictionary/contentPreview.types";
+import { Content } from "@/app/_types/models/Content";
 
 export interface ContentPreviewProps {
   dictionary: ContentPreviewDictionary;

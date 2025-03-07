@@ -9,7 +9,7 @@ import {
   AtSign,
 } from "lucide-react";
 import type { NotificationType } from "./types";
-import type { Language } from "../../_lib/config/i18n";
+import type { Language } from "@/app/_lib/config/i18n";
 
 export const NotificationIcon: Record<
   NotificationType["variant"],

@@ -1,5 +1,5 @@
 // types.ts
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
 import { SearchResult } from "../SearchCard/types";
 import { Option } from "../Dropdown";
 

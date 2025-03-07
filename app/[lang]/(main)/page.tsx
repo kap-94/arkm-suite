@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import { Language } from "../../_lib/config/i18n";
-import { Hero } from "../../_modules/Hero";
-import { getPageDictionary, homeDictionary } from "../../_utils/dictionary";
-import ClientSuitePreview from "../../_modules/ClientSuitePreview";
-import SolutionsModule from "../../_modules/SolutionsModule";
-import SharedBackgroundLayout from "../../_modules/SharedBackgroundLayout";
-import { HomeDictionary } from "../../_types/dictionary/home.types";
+import { Language } from "@/app/_lib/config/i18n";
+import { Hero } from "@/app/_modules/Hero";
+import { getPageDictionary, homeDictionary } from "@/app/_utils/dictionary";
+import ClientSuitePreview from "@/app/_modules/ClientSuitePreview";
+import SolutionsModule from "@/app/_modules/SolutionsModule";
+import SharedBackgroundLayout from "@/app/_modules/SharedBackgroundLayout";
+import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 
 export async function generateMetadata({
   params: { lang },

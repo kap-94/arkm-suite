@@ -11,7 +11,7 @@ import { useProjectFilters } from "./hooks/useProjectFilters";
 import { DashboardProjectsProps, ViewMode } from "./types";
 import styles from "./DashboardProjects.module.scss";
 import { useDashboard } from "../../_context/DashboardContext";
-import { VIEW_PREFERENCES } from "../../_lib/constants/viewPreferences";
+import { VIEW_PREFERENCES } from "@/app/_lib/constants/viewPreferences";
 
 const cx = classNames.bind(styles);
 

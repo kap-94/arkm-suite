@@ -6,11 +6,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SolutionCard, {
   SolutionCardProps,
-} from "../../_components/SolutionCard";
-import IllustrationSVG from "../../_components/IllustrationSVG";
+} from "@/app/_components/SolutionCard";
+import IllustrationSVG from "@/app/_components/IllustrationSVG";
 import styles from "./Solution.module.scss";
-import AbstractIllustration from "../../_components/illustrations/AbstractIllustration";
-import SolutionCardExpandable from "../../_components/SolutionCard/SolutionCardExpandable";
+import AbstractIllustration from "@/app/_components/illustrations/AbstractIllustration";
+import SolutionCardExpandable from "@/app/_components/SolutionCard/SolutionCardExpandable";
 
 gsap.registerPlugin(ScrollTrigger);
 
