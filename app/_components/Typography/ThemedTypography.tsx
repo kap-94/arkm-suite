@@ -4,7 +4,7 @@ import { Typography } from ".";
 import { useSettings } from "../../_context/SettingsContext";
 import type { TypographyProps, TypographyTheme, ThemeType } from "./types";
 import classNames from "classnames/bind";
-import styles from "@/components/Typography/Typography.module.scss";
+import styles from "@/app/_components/Typography/Typography.module.scss";
 
 const cx = classNames.bind(styles);
 

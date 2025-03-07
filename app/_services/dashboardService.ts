@@ -3,11 +3,15 @@ import { Language } from "../_lib/config/i18n";
 import { NotificationType } from "../_components/NotificationItem/types";
 import { MockNotificationRepository } from "../_repositories/mockNotificationRepository";
 import { MockProjectRepository } from "../_repositories/mockProjectRepository";
-import { Project, ProjectMetrics } from "../types/models";
-import { LabeledEnum, ProjectStatus, TaskStatus } from "../types/models/Common";
+import { Project, ProjectMetrics } from "@/app/_types/models";
+import {
+  LabeledEnum,
+  ProjectStatus,
+  TaskStatus,
+} from "@/app/_types/models/Common";
 import { ProjectCardItem } from "../_components/ProjectCard/types";
 import { notificationTranslations } from "./notification-constants";
-import { Content } from "../types/models/Content";
+import { Content } from "@/app/_types/models/Content";
 
 export interface ProjectRepository {
   getProjects(lang: Language): Promise<Project[]>;

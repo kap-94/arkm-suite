@@ -6,7 +6,7 @@ import Link from "next/link";
 import classNames from "classnames/bind";
 import { ArrowRight, Users2 } from "lucide-react";
 import { VideoBackground } from "./VideoBackground";
-import { NavMenuProps } from "../types/header.types";
+import { AnimatedTextProps, NavMenuProps } from "../types/header.types";
 import { useHeaderContext } from "../context";
 import { useMediaQuery } from "../../../_hooks/useMediaQuery";
 import { useLanguage } from "../../../_context/LanguageContext";

@@ -1,7 +1,7 @@
 // src/app/[lang]/dashboard/dashboard.module.scss
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
-@import "@/components/Sidebar/styles/variables";
+@import "@/app/_components/Sidebar/styles/variables";
 
 .layout {
   min-height: 100vh;

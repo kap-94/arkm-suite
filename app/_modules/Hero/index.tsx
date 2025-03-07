@@ -14,7 +14,7 @@ import { Typography } from "../../_components/Typography";
 import { Button } from "../../_components/Button";
 
 // Tipado
-import { HeroDictionary } from "../../types/dictionary/home.types";
+import { HeroDictionary } from "@/app/_types/dictionary/home.types";
 
 // Estilos
 import styles from "./Hero.module.scss";
