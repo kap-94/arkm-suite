@@ -1,20 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
+// Este es el middleware más básico posible
 export function middleware(request: NextRequest) {
-  // Create a response object
-  const response = NextResponse.next();
-
-  // You can add headers or other modifications here if needed
-  // response.headers.set('x-custom-header', 'custom-value');
-
-  return response;
+  return NextResponse.next();
 }
 
+// Configuración mínima
 export const config = {
-  matcher: [
-    // Apply middleware only to these paths
-    "/",
-    "/dashboard",
-    // Add other paths as needed
-  ],
+  matcher: ["/"],
 };
