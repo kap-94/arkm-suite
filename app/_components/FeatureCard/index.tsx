@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { LucideIcon } from "lucide-react";
 import Typography from "../Typography";
-import styles from "./featureCard.module.scss";
+import styles from "./FeatureCard.module.scss";
 
 const cx = classNames.bind(styles);
 
