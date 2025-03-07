@@ -1,0 +1,86 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.feature-card {
+  @include flex(row, flex-start, center, $spacing-md);
+  padding: $spacing-xl $spacing-lg;
+  background: linear-gradient(
+    to right,
+    rgba($primary-color, 0.05),
+    rgba($primary-color, 0.01)
+  );
+  border-left: 2px solid rgba($primary-color, 0);
+  border-radius: $border-radius-lg;
+  position: relative;
+  @include transition(all 0.4s cubic-bezier(0.16, 1, 0.3, 1));
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, $primary-color-80, transparent);
+    opacity: 0;
+    @include transition(opacity 0.4s ease);
+  }
+
+  &:hover {
+    border-top-left-radius: 0;
+
+    &::before {
+      opacity: 1;
+    }
+
+    .feature-card__icon {
+      transform: rotate(-10deg);
+      background: rgba($primary-color, 0.15);
+    }
+  }
+
+  &__icon {
+    padding: 12px;
+    background: rgba($primary-color, 0.1);
+    border-radius: $border-radius-lg;
+    color: $primary-color;
+    @include flex-center;
+    @include transition(all 0.4s cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  &__title {
+    margin-bottom: $spacing-xs;
+  }
+}
+
+.feature-card-mobile {
+  @include flex(column, center, center, 10px);
+  padding: 12px;
+  background: rgba($primary-color, 0.03);
+  border: 1px solid rgba($primary-color, 0.1);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 120px;
+  @include transition(all 0.3s ease);
+
+  &__icon {
+    @include flex-center;
+    padding: 10px;
+    background: rgba($primary-color, 0.1);
+    border-radius: 10px;
+    color: $primary-color;
+
+    svg {
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &__title {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    @include text-clamp(2);
+  }
+}

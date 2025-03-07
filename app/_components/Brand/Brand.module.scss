@@ -1,0 +1,300 @@
+// Brand.module.scss
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.brand {
+  .logo {
+    font-family: "prohibition", sans-serif;
+    font-weight: 300 !important;
+    font-size: 25px;
+    color: rgba($text-primary, 0.9);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: all $transition-duration $transition-bezier;
+    display: inline-block;
+
+    &-container {
+      position: relative;
+      display: flex;
+      align-items: baseline;
+    }
+
+    &-text {
+      // font-weight: 700;
+
+      &--bold {
+        font-weight: 400 !important;
+      }
+    }
+
+    &-dot {
+      color: $primary-color;
+    }
+
+    &-separator {
+      height: 24px;
+      width: 1.24px;
+      background: linear-gradient(to bottom, transparent, $primary-color 75%);
+      margin-inline: 10px;
+      transform: rotate(20deg);
+    }
+
+    // Size variants
+    &--xs {
+      font-size: 16px;
+
+      .logo-separator {
+        height: 16px;
+        width: 1px;
+        margin: 0 6px;
+      }
+
+      .logo-container {
+        padding: 6px 0;
+      }
+    }
+
+    &--sm {
+      font-size: 20px;
+
+      .logo-separator {
+        height: 20px;
+        width: 1.5px;
+        margin: 0 8px;
+      }
+
+      .logo-container {
+        padding: 8px 0;
+      }
+    }
+
+    &--md {
+      // Default size - no changes needed
+    }
+
+    &--lg {
+      font-size: 32px;
+
+      .logo-separator {
+        height: 32px;
+        width: 0.5px;
+        margin: 0 12px;
+      }
+
+      .logo-container {
+        padding: 12px 0;
+      }
+    }
+
+    &--xl {
+      font-size: 40px;
+
+      .logo-separator {
+        height: 40px;
+        width: 3px;
+        margin: 0 16px;
+      }
+
+      .logo-container {
+        padding: 16px 0;
+      }
+    }
+
+    // Default variant mobile styles
+    &--default {
+      @include mobile {
+        font-size: 18px; // Tamaño más pequeño en mobile
+
+        .logo-separator,
+        .logo-text:not(.logo-text--bold) {
+          display: none;
+        }
+
+        .logo-container {
+          padding: 6px 0;
+        }
+      }
+    }
+
+    // Double Border Variant
+    &--double-border {
+      .logo-container {
+        padding: 10px 4px;
+
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 1.5px;
+          background-color: rgba($text-primary, 0.9);
+        }
+
+        &::before {
+          top: 0;
+
+          &::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 0;
+            width: 75%;
+            height: 2px;
+            background-color: $primary-color;
+          }
+        }
+
+        &::after {
+          bottom: 0;
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            right: 0;
+            width: 75%;
+            height: 1px;
+            background-color: $primary-color;
+          }
+        }
+      }
+    }
+
+    // Asymmetric Variant
+    &--asymmetric {
+      .logo-container {
+        padding: 12px 0;
+
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          height: 1px;
+          width: 66%;
+        }
+
+        &::before {
+          top: 0;
+          left: 0;
+          background-color: $text-primary;
+        }
+
+        &::after {
+          bottom: 0;
+          right: 0;
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    // Wide Separator Variant
+    &--wide-separator {
+      .logo-separator {
+        width: 48px;
+        height: 2px;
+        margin: 0 16px;
+        background: linear-gradient(
+          to right,
+          rgba($text-primary, 0.4),
+          $primary-color
+        );
+      }
+    }
+
+    // Framed Variant
+    &--framed {
+      .logo-container {
+        border-top: 2px solid $text-primary;
+        border-bottom: 2px solid $text-primary;
+        padding: 8px 0;
+
+        .logo-text--bold {
+          border-left: 2px solid $text-primary;
+          padding-left: 16px;
+        }
+
+        .logo-text:not(.logo-text--bold) {
+          border-right: 2px solid $text-primary;
+          padding-right: 16px;
+        }
+
+        .logo-separator {
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    // Scale variant elements based on size
+    &--xs,
+    &--sm {
+      &.logo--double-border .logo-container {
+        &::before,
+        &::after {
+          height: 1px;
+        }
+      }
+
+      &.logo--framed .logo-container {
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+
+        .logo-text--bold {
+          border-left-width: 1px;
+          padding-left: 12px;
+        }
+
+        .logo-text:not(.logo-text--bold) {
+          border-right-width: 1px;
+          padding-right: 12px;
+        }
+      }
+
+      &.logo--wide-separator .logo-separator {
+        width: 32px;
+        margin: 0 12px;
+      }
+    }
+
+    &--lg,
+    &--xl {
+      &.logo--double-border .logo-container {
+        &::before,
+        &::after {
+          height: 3px;
+        }
+      }
+
+      &.logo--framed .logo-container {
+        border-top-width: 3px;
+        border-bottom-width: 3px;
+
+        .logo-text--bold {
+          border-left-width: 3px;
+          padding-left: 20px;
+        }
+
+        .logo-text:not(.logo-text--bold) {
+          border-right-width: 3px;
+          padding-right: 20px;
+        }
+      }
+
+      &.logo--wide-separator .logo-separator {
+        width: 64px;
+        margin: 0 20px;
+      }
+    }
+
+    @include mobile {
+      &:not(&--xs):not(&--sm):not(&--default) {
+        font-size: 20px;
+
+        .logo-separator {
+          height: 20px;
+          margin: 0 8px;
+        }
+      }
+    }
+  }
+}

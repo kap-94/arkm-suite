@@ -1,0 +1,71 @@
+@import "../_styles/variables.scss";
+
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 38px);
+  flex-direction: column;
+  text-align: center;
+
+  .title,
+  .title-blur {
+    position: absolute;
+    pointer-events: auto;
+    text-align: center;
+    font-size: clamp(24px, 20vw, 200px);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 10px;
+    line-height: 0.9;
+
+    @media only screen and (max-width: 1080px) {
+      font-size: clamp(24px, 16vw, 200px);
+    }
+
+    @media only screen and (max-width: 600px) {
+      font-size: clamp(24px, 14vw, 200px);
+    }
+  }
+
+  .title {
+    // color: $primary-color;
+    z-index: 2;
+  }
+
+  .title-blur {
+    // color: $primary-color;
+    filter: blur(7.5px);
+    -webkit-filter: blur(7.5px);
+    z-index: 1;
+  }
+
+  .subtitle {
+    margin-block: 356px 30px;
+    padding-inline: 16px;
+    color: #ffffff;
+    text-transform: uppercase !important;
+    font-size: clamp(12px, 2vw, 18px);
+    opacity: 0.8;
+
+    @media only screen and (max-width: 1313px) {
+      margin-block: 480px 30px;
+    }
+
+    @media only screen and (max-width: 980px) {
+      margin-block: 48vw 30px;
+    }
+
+    @media only screen and (max-width: 728px) {
+      margin-block: 56vw 30px;
+    }
+
+    @media only screen and (max-width: 478px) {
+      margin-block: 62vw 30px;
+    }
+
+    @media only screen and (max-width: 400px) {
+      margin-block: 76vw 30px;
+    }
+  }
+}
