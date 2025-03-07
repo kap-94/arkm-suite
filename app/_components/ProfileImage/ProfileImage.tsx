@@ -6,6 +6,7 @@ import classNames from "classnames/bind";
 import { Camera } from "lucide-react";
 import { ProfileImageTheme, ProfileImageProps } from "./types";
 import { ThemedTypography } from "../Typography/ThemedTypography";
+
 import styles from "./ProfileImage.module.scss";
 
 const cx = classNames.bind(styles);
