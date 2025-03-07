@@ -1,0 +1,208 @@
+// HamburgerButton.module.scss
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+// Theme configuration map
+$hamburger-theme-map: (
+  light: (
+    primary: $black-base,
+    secondary: convert-to-rgba($black-base, 0.7),
+    background: transparent,
+    hover: convert-to-rgba($black-base, 0.1),
+    gradient-primary: $primary-light,
+    gradient-secondary: $primary-light,
+  ),
+  dark: (
+    primary: $white-base,
+    secondary: convert-to-rgba($white-base, 0.7),
+    background: transparent,
+    hover: convert-to-rgba($white-base, 0.1),
+    gradient-primary: convert-to-rgba($primary-color, 0.7),
+    gradient-secondary: $primary-color,
+  ),
+  custom: (
+    primary: var(--hamburger-primary),
+    secondary: var(--hamburger-secondary),
+    background: var(--hamburger-background),
+    hover: var(--hamburger-hover),
+    gradient-primary: var(--hamburger-gradient-start, var(--hamburger-primary)),
+    gradient-secondary:
+      var(--hamburger-gradient-end, var(--hamburger-secondary)),
+  ),
+);
+
+.hamburger {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  @include transition(all);
+
+  &__lines-wrapper {
+    @include flex(column, center, center, 8px);
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__line {
+    position: relative;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  // Theme variations
+  @each $theme, $values in $hamburger-theme-map {
+    &--theme-#{$theme} {
+      background: map-get($values, background);
+
+      .hamburger__line {
+        background: map-get($values, primary);
+
+        &::after,
+        &::before {
+          background: map-get($values, secondary);
+        }
+      }
+
+      // Morph variant gradient
+      &.hamburger--morph .hamburger__line {
+        background: linear-gradient(
+          45deg,
+          map-get($values, gradient-primary),
+          map-get($values, gradient-secondary)
+        );
+      }
+
+      // SlideFade variant gradient
+      &.hamburger--slideFade .hamburger__line {
+        background: linear-gradient(
+          90deg,
+          map-get($values, primary),
+          map-get($values, gradient-secondary)
+        );
+      }
+    }
+  }
+
+  // Slide variant
+  &--slide {
+    .hamburger__line {
+      height: 3px;
+      border-radius: 4px;
+
+      &--1 {
+        width: 28px;
+      }
+
+      &--2 {
+        width: 24px;
+        margin-left: auto;
+      }
+      &--3 {
+        width: 32px;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        opacity: 0.3;
+        transform: translateX(-62%);
+        @include transition(all);
+
+        @include mobile {
+          transform: translateX(-52%);
+        }
+      }
+    }
+
+    &.hamburger--open {
+      .hamburger__line::after {
+        width: 10px;
+        height: 24px;
+        transform: translateX(0) rotate(90deg);
+        top: -10px;
+        left: 45%;
+        opacity: 0.3;
+        @include transition(all);
+      }
+
+      @include hover {
+        .hamburger__line::after {
+          height: 28px;
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+
+  // Morph variant
+  &--morph {
+    .hamburger__line {
+      height: 2.8px;
+      width: 24px;
+      margin-inline: auto;
+      border-radius: 8px;
+    }
+  }
+
+  // SlideFade variant
+  &--slideFade {
+    .hamburger__line {
+      height: 0.5px;
+      border-radius: 6px;
+
+      &--1 {
+        width: 32px;
+      }
+
+      &--2 {
+        width: 24px;
+        margin-left: 4px;
+      }
+      &--3 {
+        width: 28px;
+        margin-left: 8px;
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        opacity: 0.3;
+        transform: translateX(-100%);
+        @include transition(transform);
+      }
+    }
+
+    @include hover {
+      .hamburger__line::before {
+        transform: translateX(100%);
+      }
+    }
+  }
+
+  &--open {
+    .hamburger__line {
+      width: 32px;
+    }
+  }
+
+  @include focus-visible {
+    outline-color: map-get(map-get($hamburger-theme-map, light), primary);
+    .hamburger--theme-dark & {
+      outline-color: map-get(map-get($hamburger-theme-map, dark), primary);
+    }
+  }
+}

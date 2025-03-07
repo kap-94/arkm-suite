@@ -1,0 +1,10 @@
+// DesignSystemPDF.module.scss
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.default-pdf {
+  &__container {
+    padding: $spacing-xl;
+    background: $white-color;
+  }
+}

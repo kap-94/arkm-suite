@@ -1,0 +1,144 @@
+// GoogleButton.module.scss
+@import "@/app/_styles/variables";
+
+.google-button {
+  $self: &;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+  width: 100%;
+  transition: all $transition-duration-fast $transition-bezier;
+  cursor: pointer;
+  outline: none;
+  border: none;
+
+  &__icon {
+    width: clamp(20px, 5vw, 28px);
+    height: clamp(20px, 5vw, 28px);
+    flex-shrink: 0;
+  }
+
+  &__spinner {
+    animation: spin 1s linear infinite;
+  }
+
+  // Variante Default (Elevada con sombra)
+  &--default {
+    background: #ffffff;
+    color: #3c4043;
+    box-shadow: $shadow-sm;
+
+    &:hover:not(:disabled) {
+      background: #f8f9fa;
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      background: #f1f3f4;
+      transform: translateY(0);
+    }
+  }
+
+  // Variante Outline (Borde suave)
+  &--outline {
+    background: transparent;
+    border: 1px solid rgba($text-primary, 0.1);
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background: rgba($text-primary, 0.05);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      background: rgba($text-primary, 0.1);
+      transform: translateY(0);
+    }
+  }
+
+  // Variante Flat (Minimalista)
+  &--flat {
+    background: rgba($text-primary, 0.05);
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background: rgba($text-primary, 0.1);
+    }
+
+    &:active:not(:disabled) {
+      background: rgba($text-primary, 0.15);
+    }
+  }
+
+  // Tamaños
+  &--sm {
+    padding: $spacing-sm $spacing-lg;
+
+    #{$self}__icon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &--md {
+    padding: $spacing-md $spacing-xl;
+  }
+
+  &--lg {
+    padding: $spacing-lg $spacing-xl;
+
+    #{$self}__icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Border radius
+  &--radius-sm {
+    border-radius: $border-radius-sm;
+  }
+
+  &--radius-md {
+    border-radius: $border-radius-md;
+  }
+
+  &--radius-lg {
+    border-radius: $border-radius-lg;
+  }
+
+  &--radius-full {
+    border-radius: $border-radius-full;
+  }
+
+  // Estados
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &--loading {
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid;
+      border-radius: 50%;
+      border-color: currentColor transparent transparent;
+      animation: spin 0.6s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,78 @@
+// src/modules/SolutionsModule/SolutionsModule.module.scss
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xxxl;
+  padding-block: 120px 172px; // Reduced top padding to connect better with the Hero
+  position: relative;
+  text-align: center;
+  width: 100%;
+  background: transparent; // Transparent background to show the shared background
+
+  @include desktop {
+    gap: unset;
+  }
+
+  @include mobile {
+    gap: $spacing-xxxl;
+  }
+
+  @include mobile-small {
+    padding-block: $spacing-xxxl $spacing-lg;
+  }
+}
+
+.solutions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: $spacing-xl;
+  width: 100%;
+  position: relative;
+  z-index: 5; // Ensure content appears above shared background elements
+
+  &__header {
+    margin-bottom: 64px;
+    position: relative;
+    z-index: 5;
+  }
+
+  &__title {
+    margin-bottom: $spacing-lg;
+    text-align: center; // Changed to center for better alignment with the Hero
+    text-shadow: 0 0 20px rgba($primary-color, 0.3); // Add glow effect like in Hero
+  }
+
+  &__subtitle {
+    max-width: 600px;
+    margin: 0 auto;
+    letter-spacing: 0.03em !important;
+    text-shadow: 0 0 10px rgba($primary-color, 0.2); // Subtle glow
+  }
+
+  &__item {
+    list-style: none;
+    margin-bottom: $spacing-xxxl;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 6;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include mobile-small {
+      width: inherit;
+    }
+  }
+
+  @include mobile-small {
+    padding-inline: 5%;
+  }
+}
