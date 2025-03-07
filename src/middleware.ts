@@ -11,5 +11,10 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|fonts|icons|images|favicon.ico|robots.txt).*)"],
+  matcher: [
+    // Apply middleware only to these paths
+    "/",
+    "/dashboard",
+    // Add other paths as needed
+  ],
 };
