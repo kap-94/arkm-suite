@@ -1,205 +1,24 @@
 // src/middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { match as matchLocale } from "@formatjs/intl-localematcher";
-import Negotiator from "negotiator";
-import { auth } from "./lib/config/auth";
-import { VIEW_PREFERENCES } from "./lib/constants/viewPreferences";
+import { NextRequest, NextResponse } from "next/server";
 
-const LOCALES = ["es", "en"] as const;
-type ValidLocale = (typeof LOCALES)[number];
-const defaultLocale: ValidLocale = "en";
-
-const PUBLIC_PATHS = [
-  "/favicon.ico",
-  "/robots.txt",
-  "/sitemap.xml",
-  "/manifest.json",
-  "/assets",
-] as const;
-
-const IGNORED_PATHS = [
-  "/_next",
-  "/api/auth", // Importante: la ruta de auth debe ir antes que /api
-  "/api",
-  "/static",
-  "/images",
-  "/fonts",
-] as const;
-
-const PROTECTED_PATHS = ["/dashboard", "/profile"] as const;
-
-function isIgnoredPath(pathname: string): boolean {
-  if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) return true;
-  if (IGNORED_PATHS.some((path) => pathname.startsWith(path))) return true;
-  if (pathname.includes(".")) return true;
-  return false;
+// Usa la sintaxis export default necesaria para edge middleware
+export default function middleware(request: NextRequest) {
+  // Función mínima que solo deja pasar la solicitud
+  return NextResponse.next();
 }
 
-function getPreferredLocale(request: NextRequest): ValidLocale {
-  try {
-    const cookieLocale = request.cookies.get("NEXT_LOCALE")?.value;
-    if (cookieLocale && LOCALES.includes(cookieLocale as ValidLocale)) {
-      return cookieLocale as ValidLocale;
-    }
-
-    const negotiatorHeaders: Record<string, string> = {};
-    request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
-
-    const languages = new Negotiator({
-      headers: negotiatorHeaders,
-    }).languages();
-    const preferredLocale = matchLocale(languages, LOCALES, defaultLocale);
-
-    return preferredLocale as ValidLocale;
-  } catch (error) {
-    console.error("Error getting preferred locale:", error);
-    return defaultLocale;
-  }
-}
-
-function hasValidLocale(pathname: string): boolean {
-  return LOCALES.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
-}
-
-function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
-  const pathname = request.nextUrl.pathname;
-  const newUrl = new URL(request.url);
-
-  if (pathname === "/") {
-    newUrl.pathname = `/${locale}`;
-  } else {
-    newUrl.pathname = `/${locale}${pathname}`;
-  }
-
-  newUrl.search = request.nextUrl.search;
-  return newUrl;
-}
-
-function preserveTabState(
-  request: NextRequest,
-  response: NextResponse
-): NextResponse | void {
-  const pathname = request.nextUrl.pathname;
-  const searchParams = request.nextUrl.searchParams;
-
-  if (pathname.includes("/dashboard/project/")) {
-    const currentTab = searchParams.get("tab");
-
-    if (currentTab !== null) {
-      response.cookies.set("lastProjectTab", currentTab, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 365, // 1 año
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-      });
-      return;
-    } else {
-      const lastTab = request.cookies.get("lastProjectTab")?.value;
-      if (lastTab) {
-        const url = new URL(request.url);
-        url.searchParams.set("tab", lastTab);
-        return NextResponse.redirect(url);
-      }
-    }
-  }
-}
-
-function setDefaultViewPreference(
-  request: NextRequest,
-  response: NextResponse
-): void {
-  if (!request.cookies.has(VIEW_PREFERENCES.COOKIE_NAME)) {
-    response.cookies.set(
-      VIEW_PREFERENCES.COOKIE_NAME,
-      VIEW_PREFERENCES.DEFAULT_VIEW,
-      {
-        httpOnly: false,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: VIEW_PREFERENCES.MAX_AGE,
-      }
-    );
-  }
-}
-
-export default auth(async function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-
-  // 1. Si es una ruta de auth API, permitir sin modificaciones
-  if (pathname.startsWith("/api/auth")) {
-    return NextResponse.next();
-  }
-
-  // 2. Ignorar rutas que no necesitan procesamiento
-  if (isIgnoredPath(pathname)) {
-    return NextResponse.next();
-  }
-
-  // 3. Para rutas protegidas, verificar autenticación
-  if (PROTECTED_PATHS.some((path) => pathname.includes(path))) {
-    const session = await auth();
-    if (!session) {
-      const locale = getPreferredLocale(request);
-      return NextResponse.redirect(
-        new URL(
-          `/${locale}/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`,
-          request.url
-        )
-      );
-    }
-  }
-
-  // 4. Si la ruta ya tiene un locale válido
-  if (hasValidLocale(pathname)) {
-    const response = NextResponse.next();
-
-    // 5. Gestionar el estado de las tabs y obtener posible redirección
-    const tabRedirect = preserveTabState(request, response);
-    if (tabRedirect) {
-      return tabRedirect;
-    }
-
-    // 6. Verificar y establecer preferencia de vista para rutas del dashboard
-    if (pathname.includes("/dashboard")) {
-      setDefaultViewPreference(request, response);
-    }
-
-    return response;
-  }
-
-  // 7. Para rutas sin locale, redirigir a la versión localizada
-  const locale = getPreferredLocale(request);
-  const localizedUrl = buildLocalizedUrl(request, locale);
-  const response = NextResponse.redirect(localizedUrl);
-
-  // 8. Establecer cookie de locale
-  response.cookies.set("NEXT_LOCALE", locale, {
-    path: "/",
-    maxAge: 60 * 60 * 24 * 365,
-  });
-
-  // 9. Gestionar el estado de las tabs
-  const tabRedirect = preserveTabState(request, response);
-  if (tabRedirect) {
-    return tabRedirect;
-  }
-
-  // 10. Establecer preferencia de vista si es necesario
-  if (pathname.includes("/dashboard")) {
-    setDefaultViewPreference(request, response);
-  }
-
-  return response;
-});
-
+// Configuración básica de matcher
 export const config = {
   matcher: [
-    // Skip archivos estáticos pero incluir /api/auth para protección de rutas
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.[^/]*$).*)",
-    "/",
+    /*
+     * Coincide con todas las rutas de solicitud excepto:
+     * 1. /api/* (rutas API)
+     * 2. /_next/* (archivos Next.js internos)
+     * 3. /fonts/* (si sirves fuentes estáticas)
+     * 4. /icons/* (si sirves iconos estáticos)
+     * 5. /images/* (si sirves imágenes estáticas)
+     * 6. /favicon.ico, /robots.txt, etc.
+     */
+    "/((?!api|_next|fonts|icons|images|favicon.ico|robots.txt).*)",
   ],
 };
