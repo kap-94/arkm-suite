@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Proper middleware implementation for Next.js 14+
 export function middleware(request: NextRequest) {
-  // Your middleware logic here
-  return NextResponse.next();
+  // Create a response object
+  const response = NextResponse.next();
+
+  // You can add headers or other modifications here if needed
+  // response.headers.set('x-custom-header', 'custom-value');
+
+  return response;
 }
 
-// Keep your matcher configuration
 export const config = {
   matcher: ["/((?!api|_next|fonts|icons|images|favicon.ico|robots.txt).*)"],
 };
