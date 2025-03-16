@@ -1,8 +1,8 @@
 import { ElementType, ComponentPropsWithoutRef, ReactNode } from "react";
 import { TypographyFontFamily } from "../Typography/types";
 
-// Definiciones de tipos más estrictas
-type ThemeType = "dark" | "light";
+// Updated ThemeType to include "custom"
+type ThemeType = "dark" | "light" | "custom";
 
 interface CustomThemeValues {
   primary?: string;
@@ -51,4 +51,17 @@ export interface TextFieldOwnProps<T extends ElementType> {
 type TextFieldProps<T extends ElementType> = TextFieldOwnProps<T> &
   Omit<ComponentPropsWithoutRef<T>, keyof TextFieldOwnProps<T>>;
 
-export type { TextFieldProps };
+// This should match with ThemeConfig in your components
+export interface ThemeConfig {
+  type: ThemeType;
+  colors?: {
+    primary?: string;
+    secondary?: string;
+    background?: string;
+    border?: string;
+    text?: string;
+    // Add other color props as needed
+  };
+}
+
+export type { TextFieldProps, ThemeType };

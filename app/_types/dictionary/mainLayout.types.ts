@@ -7,10 +7,16 @@ export interface Meta {
   maintainer: string;
 }
 
-export interface NavigationItem extends MenuItem {
+export interface NavigationItem {
+  menu_item_id: number;
+  menu_item_parent: number;
   label: string;
+  title: string;
   href: string;
+  url: string;
   aria: string;
+  showDropdownIcon: boolean;
+  icon?: string;
   meta?: {
     description: string;
     keywords?: string[];
@@ -49,13 +55,6 @@ export interface FooterLegends {
 }
 
 export interface FooterDictionary {
-  company: {
-    title: string;
-    aria: string;
-  };
-  legends: FooterLegends;
-  navigation: Record<string, NavigationItem>;
-  // Additional properties for footer content
   description: string;
   cta: string;
   links: {
@@ -65,6 +64,12 @@ export interface FooterDictionary {
     journey: string;
   };
   copyright: string;
+  company: {
+    title: string;
+    aria: string;
+  };
+  legends: FooterLegends;
+  navigation: Record<string, NavigationItem>;
 }
 
 export interface Accessibility {
