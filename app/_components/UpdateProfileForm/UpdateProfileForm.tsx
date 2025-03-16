@@ -81,7 +81,7 @@ export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
             disabled
             icon={<AtSign size={18} />}
             placeholder={dictionary.form.fields.email.placeholder}
-            autoComplete="email"
+            // autoComplete="email"
             inputMode="email"
             spellCheck={false}
             aria-label={dictionary.aria.emailInput}
