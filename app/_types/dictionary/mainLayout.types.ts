@@ -1,4 +1,5 @@
-// layout.types.ts
+import { MenuItem } from "@/app/_components/MenuList";
+
 export interface Meta {
   version: string;
   lastUpdated: string;
@@ -7,10 +8,15 @@ export interface Meta {
 }
 
 export interface NavigationItem {
+  menu_item_id: number;
+  menu_item_parent: number;
   label: string;
+  title: string;
   href: string;
+  url: string;
   aria: string;
-  icon: string;
+  showDropdownIcon: boolean;
+  icon?: string;
   meta?: {
     description: string;
     keywords?: string[];
@@ -24,14 +30,9 @@ export interface LanguageOption {
 
 export interface HeaderDictionary {
   aria: string;
-  subtitle?: {
-    firstLetter: string;
-    text: string;
-  };
-  navigation: Record<string, NavigationItem>;
-  clientPortal: {
-    label: string;
-    href: string;
+  navigation: {
+    primary: Record<string, NavigationItem>;
+    secondary: Record<string, NavigationItem>;
   };
   languageOptions: {
     english: LanguageOption;
@@ -54,13 +55,6 @@ export interface FooterLegends {
 }
 
 export interface FooterDictionary {
-  company: {
-    title: string;
-    aria: string;
-  };
-  legends: FooterLegends;
-  navigation: Record<string, NavigationItem>;
-  // Additional properties for footer content
   description: string;
   cta: string;
   links: {
@@ -70,6 +64,12 @@ export interface FooterDictionary {
     journey: string;
   };
   copyright: string;
+  company: {
+    title: string;
+    aria: string;
+  };
+  legends: FooterLegends;
+  navigation: Record<string, NavigationItem>;
 }
 
 export interface Accessibility {

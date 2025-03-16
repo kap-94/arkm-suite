@@ -7,7 +7,7 @@ import classNames from "classnames/bind";
 import {
   ComponentContent,
   DesignSystemContent,
-} from "../../_types/models/ComponentContent";
+} from "@/app/_types/models/ComponentContent";
 import { ContentPreviewProps } from "./types";
 
 import { useSettings } from "../../_context/SettingsContext";
@@ -17,7 +17,7 @@ import { ThemedTypography } from "../Typography/ThemedTypography";
 import { DesignSystemPreview } from "../DesignSystemPreview";
 import { FilePreviewFactory } from "./PreviewComponents";
 
-import { formatCustomDateUTC } from "../../_utils/date-utils";
+import { formatCustomDateUTC } from "@/app/_utils/date-utils";
 import { downloadFile } from "./utils";
 
 import styles from "./ContentPreview.module.scss";

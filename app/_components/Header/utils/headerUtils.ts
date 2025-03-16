@@ -26,7 +26,7 @@ export const textAnimationVariants: AnimationVariants = {
 export const DEFAULT_HEADER_CONFIG = {
   variant: "solid" as const,
   breakpoint: 768,
-  menuPosition: "right" as const,
+  menuPosition: "left" as const,
   appearance: {
     blur: true,
     height: 80,

@@ -50,7 +50,7 @@ export type TypographyTransform =
 
 export type TypographyWeight = 300 | 400 | 500 | 600 | 700;
 
-export type TypographyFontFamily = "default" | "usual" | "kranto";
+export type TypographyFontFamily = "default" | "usual" | "sofia";
 
 export interface TypographyProps<T extends ElementType> {
   as?: T;

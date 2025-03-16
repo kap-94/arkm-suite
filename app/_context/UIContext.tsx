@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   createContext,
   useReducer,
@@ -12,42 +13,64 @@ import React, {
 
 export type CursorStyle = "pointer" | "hovered" | "locked" | "white" | "";
 
-// Define the shape of your global state
-interface UIState {
-  theme: string | null; // Allow null for initial state
-  cursorType: CursorStyle;
-  cursorStyles: string[];
+// Definimos el estado del Snackbar
+interface SnackbarState {
+  open: boolean;
+  message: string;
+  type: "success" | "error" | "";
 }
 
-// Define the types of actions you can dispatch
+// Define el shape del estado global
+interface UIState {
+  theme: string | null;
+  cursorType: CursorStyle;
+  cursorStyles: string[];
+  snackbar: SnackbarState;
+}
+
+// Acciones disponibles
 type Action =
   | { type: "SET_THEME"; theme: string }
-  | { type: "CURSOR_TYPE"; cursorType: CursorStyle };
+  | { type: "CURSOR_TYPE"; cursorType: CursorStyle }
+  | {
+      type: "SHOW_SNACKBAR";
+      message: string;
+      snackbarType: "success" | "error";
+    }
+  | { type: "HIDE_SNACKBAR" };
 
-// Define the context type
+// Define el tipo del context
 interface UIContextType {
   state: UIState;
   dispatch: React.Dispatch<Action>;
   onCursor: (cursorType: CursorStyle) => void;
   toggleTheme: () => void;
   theme: string | null;
+  showSnackbar: (message: string, type: "success" | "error") => void;
+  hideSnackbar: () => void;
 }
 
-// Create the context
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
-// Reducer function for managing state
-const uiReducer = (state: UIState, action: Action) => {
+const uiReducer = (state: UIState, action: Action): UIState => {
   switch (action.type) {
     case "SET_THEME":
-      return {
-        ...state,
-        theme: action.theme,
-      };
+      return { ...state, theme: action.theme };
     case "CURSOR_TYPE":
+      return { ...state, cursorType: action.cursorType };
+    case "SHOW_SNACKBAR":
       return {
         ...state,
-        cursorType: action.cursorType,
+        snackbar: {
+          open: true,
+          message: action.message,
+          type: action.snackbarType,
+        },
+      };
+    case "HIDE_SNACKBAR":
+      return {
+        ...state,
+        snackbar: { ...state.snackbar, open: false },
       };
     default:
       return state;
@@ -57,12 +80,13 @@ const uiReducer = (state: UIState, action: Action) => {
 interface UIProviderProps {
   children: ReactNode;
 }
-// The UIProvider FC
+
 const UIProvider: FC<UIProviderProps> = ({ children }) => {
   const initialState: UIState = {
     theme: null,
     cursorType: "",
     cursorStyles: ["pointer", "hovered", "locked", "white"],
+    snackbar: { open: false, message: "", type: "" },
   };
 
   const [state, dispatch] = useReducer(uiReducer, initialState);
@@ -83,6 +107,17 @@ const UIProvider: FC<UIProviderProps> = ({ children }) => {
     document.documentElement.classList.toggle("light", newTheme === "light");
     window.localStorage.setItem("portf-k-theme", newTheme);
   }, [state.theme]);
+
+  const showSnackbar = useCallback(
+    (message: string, type: "success" | "error") => {
+      dispatch({ type: "SHOW_SNACKBAR", message, snackbarType: type });
+    },
+    []
+  );
+
+  const hideSnackbar = useCallback(() => {
+    dispatch({ type: "HIDE_SNACKBAR" });
+  }, []);
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem("portf-k-theme");
@@ -106,12 +141,14 @@ const UIProvider: FC<UIProviderProps> = ({ children }) => {
       onCursor,
       toggleTheme,
       theme: state.theme,
+      showSnackbar,
+      hideSnackbar,
     }),
-    [state, onCursor, toggleTheme]
+    [state, onCursor, toggleTheme, showSnackbar, hideSnackbar]
   );
 
   if (state.theme === null) {
-    return null; // Or a loading spinner/component
+    return null; // O un spinner de carga
   }
 
   return (
@@ -119,7 +156,6 @@ const UIProvider: FC<UIProviderProps> = ({ children }) => {
   );
 };
 
-// Hook for accessing the global context
 const useUIContext = () => {
   const context = useContext(UIContext);
   if (context === undefined) {

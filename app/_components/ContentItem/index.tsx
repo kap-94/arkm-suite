@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import type { ContentItemProps, ContentItemType } from "./types";
 import { defaultContentItemTheme } from "./types";
-import { formatCustomDateUTC } from "../../_utils/date-utils";
+import { formatCustomDateUTC } from "@/app/_utils/date-utils";
 import { ThemedTypography } from "../Typography/ThemedTypography";
 import styles from "./ContentItem.module.scss";
 

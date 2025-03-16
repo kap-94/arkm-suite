@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import type { ProjectHeaderProps } from "./types";
 import { ThemedTypography } from "../Typography/ThemedTypography";
-import { Dropdown, type Option } from "../Dropdown";
+import { ThemedDropdown, type Option } from "../Dropdown";
 import Badge from "../Badge";
 import { renderConnectedDots } from "./canvas-elements";
 import styles from "./ProjectHeader.module.scss";
@@ -211,7 +211,7 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
               </div>
 
               <div className={cx("project-header__actions")}>
-                <Dropdown
+                <ThemedDropdown
                   options={projectOptions}
                   selected={selectedProject}
                   onSelectedChange={handleProjectChange}

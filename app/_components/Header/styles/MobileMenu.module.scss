@@ -1,6 +1,7 @@
-// styles/MobileMenu.module.scss
-@import "../styles/variables";
-@import "../styles/mixins";
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+@import "../styles/_variables";
+
 .mobile {
   position: fixed;
   inset: 0;
@@ -8,73 +9,116 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: $z-index-modal;
-  display: flex;
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+
+  @include tablet {
+    display: flex;
+  }
 
   &--left {
     .mobile__content {
       margin-right: auto;
+      animation: slideInLeft 0.3s ease-in-out;
     }
   }
 
   &--right {
     .mobile__content {
       margin-left: auto;
+      animation: slideInRight 0.3s ease-in-out;
     }
   }
 
   &--center {
     align-items: center;
     justify-content: center;
+
+    .mobile__content {
+      height: auto;
+      max-height: 90vh;
+      animation: slideInUp 0.3s ease-in-out;
+    }
   }
 
   &__content {
     padding: $spacing-xl;
     width: 100%;
-    max-width: 400px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: rgba($header-background, 0.95);
+    background: rgba($black-base, 0.95);
     position: relative;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba($black-base, 0.2);
   }
 
-  &__close {
-    position: absolute;
-    top: $spacing-xl;
-    right: $spacing-xl;
-    background: none;
-    border: none;
-    color: $text-primary;
-    cursor: pointer;
-    padding: $spacing-sm;
-    border-radius: $border-radius-sm;
-    transition: all $transition-duration-fast ease;
-
-    &:hover {
-      background: rgba($text-primary, 0.1);
-    }
-  }
-
-  &__links {
-    margin-top: calc($header-height + $spacing-xl);
+  &__main-group {
     display: flex;
     flex-direction: column;
-    gap: $spacing-lg;
+    flex-grow: 1;
+    margin-top: calc($header-height + $spacing-md);
+    padding-bottom: $spacing-lg;
   }
 
-  &__link {
-    font-size: 24px;
-    color: $text-primary;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: color $transition-duration-fast ease;
+  &__navigation {
+    // padding-bottom: $spacing-lg;
+  }
+
+  // Todos los nav-item por defecto tienen border-top
+  &__nav-item {
+    border-top: 1px solid rgba($text-primary, 0.1);
+  }
+
+  // Selector específico para el primer elemento del menú primario solamente
+  .mobile__navigation .mobile__nav-list > li:first-child {
+    border-top: none;
+  }
+
+  // Selector específico para el último elemento del menú secundario
+  .mobile__secondary .mobile__nav-list > li:last-child {
+    border-top: none;
+  }
+
+  &__nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    // gap: $spacing-sm;
+  }
+
+  &__nav-link {
     display: flex;
     align-items: center;
     gap: $spacing-sm;
+    padding: $spacing-lg $spacing-md;
+    margin: 0 (-$spacing-md);
+    position: relative;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
 
+    // Fondo sutil en hover
     &:hover {
-      color: $primary-light;
+      background-color: rgba($primary-light, 0.1);
+    }
+
+    &--active {
+      background-color: rgba($primary-color, 0.12);
+
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 50%;
+        background-color: $primary-color;
+        border-radius: 0 2px 2px 0;
+      }
     }
 
     &-icon {
@@ -83,8 +127,39 @@
     }
   }
 
+  &__nav-dropdown {
+    margin-left: auto;
+    transform: rotate(-90deg);
+    transition: transform $transition-duration-fast ease;
+  }
+
+  &__nav-icon {
+    display: flex;
+    align-items: baseline;
+    color: $white-base;
+
+    svg {
+      stroke-width: 2.5px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  &__divider {
+    height: 1px;
+    background: rgba($text-primary, 0.15);
+    margin: $spacing-md 0 $spacing-lg;
+    width: 100%;
+    display: none;
+  }
+
+  &__secondary {
+    margin-bottom: $spacing-xl;
+  }
+
   &__actions {
-    margin-top: $spacing-xl;
+    margin-top: auto;
+    padding-top: $spacing-xl;
     display: flex;
     flex-direction: column;
     gap: $spacing-md;
@@ -101,10 +176,101 @@
     }
   }
 
-  &__language {
+  // Nuevo footer para el último item
+  &__footer {
     margin-top: auto;
-    padding-top: $spacing-xl;
-    display: flex;
-    justify-content: center;
+    padding-top: $spacing-md;
+
+    &-divider {
+      height: 1px;
+      background: rgba($text-primary, 0.15);
+      margin-bottom: $spacing-md;
+      width: 100%;
+    }
+
+    &-link {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-md 0;
+      position: relative;
+      transition: all $transition-duration-fast ease;
+      text-decoration: none;
+      // Fondo sutil en hover
+      &:hover {
+        background-color: rgba($primary-light, 0.1);
+      }
+
+      //   &:hover {
+      //     &:after {
+      //       width: 4px;
+      //     }
+      //   }
+
+      //   &:after {
+      //     content: "";
+      //     position: absolute;
+      //     left: -$spacing-md;
+      //     top: 50%;
+      //     transform: translateY(-50%);
+      //     height: 60%;
+      //     width: 0;
+      //     background-color: $primary-color;
+      //     transition: width 0.2s ease-in-out;
+      //   }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .mobile {
+    &__content {
+      max-width: 100%;
+      padding: $spacing-lg $spacing-md;
+    }
+
+    &__main-group {
+      margin-top: calc($header-height);
+    }
   }
 }

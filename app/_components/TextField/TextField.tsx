@@ -1,12 +1,12 @@
 "use client";
 
-import React, { ElementType, useState } from "react";
+import React, { ElementType, useState, useEffect, useCallback } from "react";
 import classNames from "classnames/bind";
 import { useField } from "formik";
 import type { TextFieldProps } from "./types";
 import { Typography } from "../Typography";
 import styles from "./TextField.module.scss";
-import { getIconComponent } from "../../_utils/iconUtils";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 
 const cx = classNames.bind(styles);
 
@@ -18,37 +18,117 @@ export const TextField = <T extends ElementType = "div">({
   icon,
   type = "text",
   variant = "primary",
-  theme = { type: "light" },
+  theme = { type: "dark" },
   disabled = false,
   labelClassName,
   inputClassName,
   errorClassName,
-  showError,
+  showError = false,
+  required = false,
   placeholder,
+  fontFamily,
+  error,
+  value,
+  onChange,
   ...rest
 }: TextFieldProps<T>) => {
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField({
+    name,
+    ...(value !== undefined ? { value } : {}),
+    ...(onChange ? { onChange } : {}),
+  });
+
   const [focused, setFocused] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [touched, setTouched] = useState(false);
+  const [fieldTouched, setFieldTouched] = useState(false);
+  const [valueChanged, setValueChanged] = useState(false);
+  const [lastValue, setLastValue] = useState(field.value);
 
   const Component = as || "div";
   const themeType = typeof theme === "string" ? theme : theme.type;
   const customValues =
     typeof theme === "object" ? theme.customValues : undefined;
 
+  // Manejo de error con soporte para limpieza cuando el valor cambia
+  const errorMessage = valueChanged
+    ? null
+    : error || (meta.error && meta.touched ? meta.error : null);
+  const shouldDisplayError = showError && !!errorMessage;
+
+  // Handlers memorizados para evitar recreaciones innecesarias
+  const handleFocus = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(true);
+      if (rest.onFocus) {
+        rest.onFocus(e);
+      }
+    },
+    [rest]
+  );
+
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocused(false);
+      setFieldTouched(true);
+      setValueChanged(false); // Permitir que se muestren errores nuevamente al perder el foco
+      field.onBlur(e);
+      if (rest.onBlur) {
+        rest.onBlur(e);
+      }
+    },
+    [field, rest]
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      // Si ya hay un error mostrado, marcar que el valor ha cambiado
+      if (showError && (error || meta.error)) {
+        setValueChanged(true);
+      }
+      field.onChange(e);
+      if (onChange) {
+        onChange(e);
+      }
+    },
+    [field, showError, error, meta.error, onChange]
+  );
+
+  const togglePasswordVisibility = useCallback(() => {
+    setPasswordVisible((prev) => !prev);
+  }, []);
+
+  // Efecto para detectar cambios en el valor
+  useEffect(() => {
+    if (field.value !== lastValue && showError) {
+      setValueChanged(true);
+    }
+    setLastValue(field.value);
+  }, [field.value, lastValue, showError]);
+
+  // Efecto para restablecer valueChanged cuando cambia showError
+  useEffect(() => {
+    if (showError === false) {
+      setValueChanged(false);
+    }
+  }, [showError]);
+
+  // Efecto para restablecer valueChanged cuando cambia el error
+  useEffect(() => {
+    if (error || meta.error) {
+      setValueChanged(false);
+    }
+  }, [error, meta.error]);
+
   const passwordIcon = getIconComponent(
     passwordVisible ? "showPassword" : "hidePassword"
   );
-
-  const showErrorState = touched && showError && meta.error && meta.touched;
 
   const rootClassName = cx(
     "textfield",
     `textfield--${variant}`,
     {
       "textfield--disabled": disabled,
-      "textfield--error": showErrorState,
+      "textfield--error": shouldDisplayError,
       "textfield--not-empty": field.value,
       "textfield--focused": focused,
       "textfield--with-icon": icon,
@@ -74,25 +154,6 @@ export const TextField = <T extends ElementType = "div">({
       } as React.CSSProperties)
     : undefined;
 
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setFocused(true);
-    if (rest.onFocus) {
-      rest.onFocus(e);
-    }
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setFocused(false);
-    if (field.value) {
-      setTouched(true);
-    }
-    field.onBlur(e);
-  };
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((prev) => !prev);
-  };
-
   return (
     <Component className={rootClassName} style={style}>
       <div className={cx("textfield__input-container")}>
@@ -100,8 +161,10 @@ export const TextField = <T extends ElementType = "div">({
           <Typography
             theme={{ type: themeType }}
             as="label"
+            fontWeight={500}
             variant="label"
-            color={showErrorState ? "error" : undefined}
+            color={shouldDisplayError ? "error" : undefined}
+            fontFamily={fontFamily}
             className={cx("textfield__label", labelClassName, {
               "textfield__label--focused":
                 variant === "secondary" && (focused || field.value),
@@ -109,27 +172,32 @@ export const TextField = <T extends ElementType = "div">({
             htmlFor={name}
           >
             {label}
+            {required && <span className={cx("textfield__required")}> *</span>}
           </Typography>
         )}
 
         <div className={cx("textfield__input-wrapper")}>
           <input
-            {...field}
             {...rest}
             id={name}
+            name={name}
+            value={field.value}
+            onChange={handleChange}
             type={type === "password" && passwordVisible ? "text" : type}
             className={cx("textfield__input", inputClassName)}
             disabled={disabled}
             onFocus={handleFocus}
             onBlur={handleBlur}
             placeholder={variant === "primary" ? placeholder : ""}
+            aria-invalid={shouldDisplayError ? "true" : "false"}
+            aria-required={required ? "true" : "false"}
           />
 
           {(icon || type === "password") && (
             <div
               className={cx("textfield__icon", {
                 "textfield__icon--clickable": type === "password",
-                "textfield__icon--error": showErrorState,
+                "textfield__icon--error": shouldDisplayError,
               })}
               onClick={
                 type === "password" ? togglePasswordVisibility : undefined
@@ -141,14 +209,15 @@ export const TextField = <T extends ElementType = "div">({
         </div>
       </div>
 
-      {showErrorState && (
+      {shouldDisplayError && (
         <Typography
           variant="p3"
           color="error"
-          theme={{ type: "dark" }}
+          theme={{ type: themeType }}
+          fontFamily={fontFamily}
           className={cx("textfield__error", errorClassName)}
         >
-          {meta.error}
+          {errorMessage}
         </Typography>
       )}
     </Component>

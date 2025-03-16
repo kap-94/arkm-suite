@@ -122,7 +122,7 @@ export interface AnimationVariants extends Variants {
 
 // Configuración por Defecto
 export const DEFAULT_HEADER_CONFIG = {
-  variant: "solid" as const,
+  variant: "glass" as const,
   breakpoint: 768,
   menuPosition: "right" as const,
   appearance: {

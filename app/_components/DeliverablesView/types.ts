@@ -1,6 +1,6 @@
 import { DeliverableResponse } from "../../_repositories/types";
-import { DeliverablesViewDictionary } from "../../_types/dictionary/projectDetails.types";
-import { Deliverable } from "../../_types/models";
+import { DeliverablesViewDictionary } from "@/app/_types/dictionary/projectDetails.types";
+import { Deliverable } from "@/app/_types/models";
 
 // types.ts
 export type ThemeType = "light" | "dark" | "custom";

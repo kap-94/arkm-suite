@@ -1,5 +1,5 @@
-import { ProjectStatus } from "../../_types/models/Common";
-import { ProjectDetailsDictionary } from "../../_types/dictionary/projectDetails.types";
+import { ProjectStatus } from "@/app/_types/models/Common";
+import { ProjectDetailsDictionary } from "@/app/_types/dictionary/projectDetails.types";
 
 export interface AvailableProject {
   id: string;

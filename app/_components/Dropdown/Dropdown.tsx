@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import classNames from "classnames/bind";
 import type { DropdownProps, Option } from "./types";
-import { ThemedTypography } from "../Typography/ThemedTypography";
+import { Typography } from "../Typography";
 import styles from "./Dropdown.module.scss";
 
 const cx = classNames.bind(styles);
@@ -16,41 +16,34 @@ export const Dropdown: React.FC<DropdownProps> = ({
   onSelectedChange,
   className,
   closeOnScroll = false,
-  theme = { type: "light" },
+  theme = { type: "dark" },
   icon,
   maxHeight = "200px",
   disabled = false,
-  variant,
+  variant = "default",
+  fontFamily,
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onBodyClick = (event: MouseEvent) => {
-      if (ref.current?.contains(event.target as Node)) {
-        return;
-      }
+      if (ref.current?.contains(event.target as Node)) return;
       setOpen(false);
     };
 
     const onScroll = () => {
-      if (closeOnScroll) {
-        setOpen(false);
-      }
+      if (closeOnScroll) setOpen(false);
     };
 
     document.body.addEventListener("click", onBodyClick, { capture: true });
-    if (closeOnScroll) {
-      window.addEventListener("scroll", onScroll);
-    }
+    if (closeOnScroll) window.addEventListener("scroll", onScroll);
 
     return () => {
       document.body.removeEventListener("click", onBodyClick, {
         capture: true,
       });
-      if (closeOnScroll) {
-        window.removeEventListener("scroll", onScroll);
-      }
+      if (closeOnScroll) window.removeEventListener("scroll", onScroll);
     };
   }, [closeOnScroll]);
 
@@ -86,10 +79,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     : undefined;
 
   const renderedOptions = sortedOptions.map((option, i) => {
-    if (option.value === selected.value) {
-      return null;
-    }
-
+    if (option.value === selected.value) return null;
     return (
       <div
         key={i}
@@ -107,13 +97,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
       >
         <div className={cx("dropdown__item-content")}>
           {typeof option.label === "string" ? (
-            <ThemedTypography
+            <Typography
               variant="p2"
+              color="secondary"
+              theme="dark"
               fontWeight={500}
+              fontFamily={fontFamily}
               className={cx("dropdown__item-text")}
             >
               {option.label}
-            </ThemedTypography>
+            </Typography>
           ) : (
             option.label
           )}
@@ -128,17 +121,22 @@ export const Dropdown: React.FC<DropdownProps> = ({
       className={cx("dropdownWrapper", `dropdownWrapper--theme-${theme.type}`)}
       style={customStyles}
     >
-      {label && (
-        <ThemedTypography
+      {/* En la variante "placeholderInput" no se muestra el label encima */}
+      {label && variant !== "placeholderInput" && (
+        <Typography
           as="label"
+          color="secondary"
+          theme="dark"
+          fontWeight={500}
           variant="label"
+          fontFamily={fontFamily}
           className={cx("dropdown__label", {
             "dropdown__label--disabled": disabled,
           })}
           htmlFor={id}
         >
           {label}
-        </ThemedTypography>
+        </Typography>
       )}
 
       <div className={cx("field")}>
@@ -148,12 +146,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
             className={cx(
               "dropdown",
               `dropdown--theme-${theme.type}`,
-              `dropdown--variant-${variant}`,
+              `dropdown--variant-${
+                variant === "tertiary" || variant === "placeholderInput"
+                  ? "default"
+                  : variant
+              }`,
               className,
-              {
-                "dropdown--active": open,
-                "dropdown--disabled": disabled,
-              }
+              { "dropdown--active": open, "dropdown--disabled": disabled }
             )}
             id={id}
             aria-haspopup="listbox"
@@ -172,17 +171,21 @@ export const Dropdown: React.FC<DropdownProps> = ({
             <div
               className={cx("dropdown__text", {
                 "dropdown__text--disabled": disabled,
+                "dropdown__text--tertiary": variant === "tertiary",
               })}
             >
               <div className={cx("dropdown__selected")}>
                 {typeof selected.label === "string" ? (
-                  <ThemedTypography
+                  <Typography
                     variant="p2"
+                    color="secondary"
+                    theme="dark"
                     fontWeight={500}
+                    fontFamily={fontFamily}
                     className={cx("dropdown__item-text")}
                   >
                     {selected.label}
-                  </ThemedTypography>
+                  </Typography>
                 ) : (
                   selected.label
                 )}

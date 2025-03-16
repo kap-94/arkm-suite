@@ -6,7 +6,7 @@ import { User as UserIcon, ChevronDown } from "lucide-react";
 import { UpdateProfileForm } from "../../../../_components/UpdateProfileForm";
 import { PageHeader } from "../../../../_components/PageHeader";
 import { ModernPattern } from "../../../../_components/ModernPattern";
-import { Dropdown } from "../../../../_components/Dropdown";
+import { ThemedDropdown } from "../../../../_components/Dropdown";
 // import { ProfileImage } from "../../../../_components/ProfileImage";
 import { useSettings } from "../../../../_context/SettingsContext";
 import { ThemedTypography } from "../../../../_components/Typography/ThemedTypography";
@@ -155,7 +155,7 @@ export function ProfileClient({ dictionary, user }: ProfileClientProps) {
             onSubmit={handleProfileUpdate}
             dictionary={dictionary}
           >
-            <Dropdown
+            <ThemedDropdown
               label={dictionary.form.fields.nationality.label}
               id="nationality"
               options={countryOptions}

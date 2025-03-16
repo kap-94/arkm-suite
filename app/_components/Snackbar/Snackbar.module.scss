@@ -1,0 +1,41 @@
+@import "@/app/_styles/variables.scss";
+@import "@/app/_styles/mixins.scss";
+
+.snackbar {
+  @include flex-center;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: $spacing-md $spacing-lg;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  background-color: $white-light;
+  border: 1px solid $primary-color;
+  z-index: $z-index-modal;
+
+  &--top {
+    top: $spacing-lg;
+  }
+
+  &--bottom {
+    bottom: $spacing-lg;
+  }
+
+  &--success {
+    border-color: $success-bg;
+    background-color: $success-bg;
+  }
+
+  &--error {
+    border-color: $error-dark;
+    background-color: $error-dark;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    margin-left: $spacing-md;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+}

@@ -1,7 +1,7 @@
-import { ProjectLink } from "../../_types/dictionary/dashboard.types";
+import { ProjectLink } from "@/app/_types/dictionary/dashboard.types";
 import { Stage } from "../StageProgress/types";
-import { ProjectStatus, TaskStatus } from "../../_types/models/Common";
-import { Language } from "../../_lib/config/i18n";
+import { ProjectStatus, TaskStatus } from "@/app/_types/models/Common";
+import { Language } from "@/app/_lib/config/i18n";
 
 export type ThemeType = "light" | "dark" | "custom";
 export interface ProjectCardDictionary {

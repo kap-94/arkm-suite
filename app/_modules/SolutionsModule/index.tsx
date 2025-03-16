@@ -1,14 +1,14 @@
 import classNames from "classnames/bind";
 import Solution, { SolutionLayout } from "../Solution";
 import styles from "./SolutionsModule.module.scss";
-import Typography from "../../_components/Typography";
+import Typography from "@/app/_components/Typography";
 import {
   DesignIcon,
   DevelopmentIcon,
   RocketIllustration,
-} from "../../_components/SolutionCard/SolutionIcons";
-import CodeEditorAnimation from "../../_components/animations/CodeEditorAnimation";
-import LandingWireframe from "../../_components/animations/LandingWireframe";
+} from "@/app/_components/SolutionCard/SolutionIcons";
+import CodeEditorAnimation from "@/app/_components/animations/CodeEditorAnimation";
+import LandingWireframe from "@/app/_components/animations/LandingWireframe";
 
 const cx = classNames.bind(styles);
 
@@ -125,7 +125,7 @@ export const SolutionsModule = ({
       <div className={cx("solutions__header")}>
         <Typography
           variant="h2"
-          fontFamily="kranto"
+          fontFamily="sofia"
           fontWeight={400}
           color="primary"
           theme="dark"
@@ -138,7 +138,7 @@ export const SolutionsModule = ({
           color="tertiary"
           theme="dark"
           fontWeight={300}
-          fontFamily="usual"
+          fontFamily="sofia"
           className={cx("solutions__subtitle")}
         >
           {dictionary?.subtitle ||

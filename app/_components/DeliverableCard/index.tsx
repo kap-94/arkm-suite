@@ -3,14 +3,14 @@ import { useRouter } from "next/navigation";
 import classNames from "classnames/bind";
 import { ChevronDown, ChevronUp, HashIcon, Link } from "lucide-react";
 
-import { Content } from "../../_types/models/Content";
+import { Content } from "@/app/_types/models/Content";
 import { ContentItemType } from "../ContentItem/types";
 import { DeliverableCardProps } from "./types";
 
-import { Language } from "../../_lib/config/i18n";
-import { formatDayMonth } from "../../_utils/date-utils";
-import { capitalizeAndFormat } from "../../_utils/text-utils";
-import { buildLocalizedPath } from "../../_utils/path";
+import { Language } from "@/app/_lib/config/i18n";
+import { formatDayMonth } from "@/app/_utils/date-utils";
+import { capitalizeAndFormat } from "@/app/_utils/text-utils";
+import { buildLocalizedPath } from "@/app/_utils/path";
 
 import { useDashboard } from "../../_context/DashboardContext";
 

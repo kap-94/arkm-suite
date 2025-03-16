@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import classNames from "classnames/bind";
-import { useOutsideClick } from "../../_hooks/useOutsideClick";
+import { useOutsideClick } from "@/app/_hooks/useOutsideClick";
 import { ThemedTypography } from "../Typography/ThemedTypography";
 import Spinner from "../Spinner";
 import styles from "./SearchBar.module.scss";

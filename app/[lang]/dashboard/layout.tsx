@@ -1,13 +1,13 @@
 // src/app/[lang]/dashboard/layout.tsx
 import { cookies } from "next/headers";
-import type { ThemeType } from "../../_components/Sidebar/types/sidebar.types";
-import type { Language } from "../../_lib/config/i18n";
+import type { ThemeType } from "@/app/_components/Sidebar/types/sidebar.types";
+import type { Language } from "@/app/_lib/config/i18n";
 import {
   dashboardLayoutDictionary,
   getPageDictionary,
-} from "../../_utils/dictionary";
+} from "@/app/_utils/dictionary";
 import { getServerNavigation } from "../../_services/navigationService";
-import { DashboardLayoutClient } from "../../_components/layouts/DashboardLayout/DashboardLayoutClient";
+import { DashboardLayoutClient } from "@/app/_components/layouts/DashboardLayout/DashboardLayoutClient";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

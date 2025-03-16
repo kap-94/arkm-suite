@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import { DeliverableCard } from "../DeliverableCard";
 import { ThemedTypography } from "../Typography/ThemedTypography";
-import { Dropdown } from "../Dropdown";
+import { ThemedDropdown } from "../Dropdown";
 import { ChevronDown } from "lucide-react";
 import styles from "./DeliverablesView.module.scss";
 import { DeliverablesViewProps } from "./types";
@@ -119,7 +119,7 @@ export const DeliverablesView: React.FC<DeliverablesViewProps> = ({
 
         {/* Mobile/Tablet Navigation */}
         <div className={cx("deliverables__mobile-nav")}>
-          <Dropdown
+          <ThemedDropdown
             className={cx("deliverables__dropdown")}
             options={stageOptions}
             selected={selectedStageOption}

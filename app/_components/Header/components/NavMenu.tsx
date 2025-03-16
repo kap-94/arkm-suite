@@ -88,15 +88,6 @@ export const NavMenu = ({
         className={cx("nav-menu__mobile-actions")}
         variants={itemVariants}
       >
-        <Button
-          variant="secondary"
-          href={dictionary.clientPortal.href}
-          icon={<Users2 size={16} />}
-          className={cx("nav-menu__mobile-portal-button")}
-        >
-          {dictionary.clientPortal.label}
-        </Button>
-
         <div className={cx("nav-menu__mobile-divider")} />
 
         <div className={cx("nav-menu__mobile-language")}>

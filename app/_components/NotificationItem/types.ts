@@ -1,5 +1,5 @@
 // src/components/NotificationItem/types.ts
-import { ProjectReference } from "../../_types/models/Common";
+import { ProjectReference } from "@/app/_types/models/Common";
 import type { LucideIcon } from "lucide-react";
 
 export type NotificationVariant =

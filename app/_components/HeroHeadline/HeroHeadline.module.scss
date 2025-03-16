@@ -1,43 +1,38 @@
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
 
-.hero {
-  $self: &;
-  @include flex(column);
+.hero-headline {
   position: relative;
-  height: 100vh;
+  @include flex(row, center, center);
+  pointer-events: auto;
+  perspective: 1000px;
+  transform-style: preserve-3d;
   width: 100%;
-  overflow: hidden;
-  padding-bottom: 24px;
-  background: transparent;
+  height: 100%;
+  max-height: 30vh;
 
-  &__headline {
-    position: relative;
-    @include flex(row, center, center);
-    flex: 1;
-    pointer-events: auto;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    margin-top: 114px;
-  }
-
-  &__headline-text {
+  &__text {
     position: absolute;
-    font-family: "kranto-normal-semicondensed", sans-serif;
+    font-family: "sofia", sans-serif;
     font-style: normal;
     text-align: center;
-    font-size: clamp(48px, 12vw, 142px);
+    font-size: clamp(42px, 6vw, 120px);
     font-weight: 300;
-    text-transform: uppercase;
+    // text-transform: uppercase;
     letter-spacing: 0.01em;
     line-height: 0.92;
     pointer-events: none;
+    margin-top: 0;
     @include transition(transform);
-    opacity: 0; /* Inicialmente invisible */
+    opacity: 1;
     transition: opacity 0.5s ease;
-
+    font-family: sans-serif;
+    font-family: "agenda", sans-serif;
+    font-family: "sofia-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
     &--visible {
-      opacity: 1; /* Visible cuando tiene esta clase */
+      opacity: 1; /* Se hace visible con esta clase */
     }
 
     &--behind {
@@ -50,7 +45,7 @@
         inset: -20%;
         background: radial-gradient(
           circle at var(--x) var(--y),
-          rgba($error-light, 0.1),
+          rgba($primary-light, 0.1),
           transparent 70%
         );
         filter: blur(15px);
@@ -63,9 +58,9 @@
       z-index: 0;
       background: conic-gradient(
         from 0deg at 50% 50%,
-        rgba($error-light, 0.2),
-        rgba($error-light, 0.2),
-        rgba($error-light, 0.2)
+        rgba($primary-light, 0.2),
+        rgba($primary-light, 0.2),
+        rgba($primary-light, 0.2)
       );
       transform: translateZ(-35px) scale(1.2);
     }
@@ -73,15 +68,15 @@
     &--main {
       background: linear-gradient(
         120deg,
-        rgba($error-color, 1) 0%,
-        rgba($error-light, 0.9) 50%,
-        rgba($error-color, 1) 100%
+        rgba($primary-color, 1) 0%,
+        rgba($primary-light, 0.9) 50%,
+        rgba($primary-color, 1) 100%
       );
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       filter: contrast(100%) brightness(100%);
-      text-shadow: 0 0 20px rgba($error-color, 0.5);
+      text-shadow: 0 0 20px rgba($primary-color, 0.5);
 
       &::before {
         content: "";
@@ -89,7 +84,7 @@
         inset: 0;
         background: radial-gradient(
           circle at var(--x) var(--y),
-          rgba($error-color, 0.2) 0%,
+          rgba($primary-color, 0.2) 0%,
           transparent 70%
         );
         mix-blend-mode: screen;
@@ -100,11 +95,11 @@
       color: transparent;
       text-shadow: 0 0 10px rgba($primary-color, 0.8),
         0 0 20px rgba($primary-color, 0.4), 0 0 30px rgba($primary-color, 0.2);
-      -webkit-text-stroke: 1px rgba($white-color, 0.9);
+      -webkit-text-stroke: 1px rgba($primary-dark, 0.9);
       background: radial-gradient(
         circle at center,
         rgba($primary-color, 1) 0%,
-        rgba($primary-light, 0.8) 30%,
+        rgba($primary-color, 0.8) 30%,
         rgba($primary-color, 0.4) 70%,
         transparent 100%
       );
@@ -122,6 +117,8 @@
     }
 
     &--front {
+      display: none;
+
       z-index: 4;
       /* Siempre invisible inicialmente */
       opacity: 0;
@@ -141,7 +138,9 @@
   }
 
   &__webgl-text {
-    font-size: clamp(64px, 12vw, 142px);
+    display: none;
+
+    font-size: clamp(42px, 5vw, 120px);
     text-transform: uppercase;
     letter-spacing: 0.01em;
     line-height: 0.92;
@@ -149,11 +148,11 @@
     opacity: 1;
     @include transition(opacity);
     position: absolute;
-    margin-top: $spacing-lg;
-    margin-right: $spacing-md;
+    margin-top: 0;
+    margin-right: 0;
     top: 0;
     bottom: 0;
-    z-index: 100; /* Mayor z-index para asegurar que está por encima */
+    z-index: 100;
 
     &--fade-out {
       opacity: 0;
@@ -169,6 +168,7 @@
   }
 
   &__mask {
+    display: none;
     position: absolute;
     inset: 0;
     background: linear-gradient(45deg, #6366f1, #818cf8);
@@ -189,7 +189,7 @@
       left: 50%;
       width: 100%;
       transform: translate(-50%, -50%);
-      font-family: "kranto-normal-semicondensed", sans-serif;
+      font-family: "sofia", sans-serif;
       font-style: normal;
       font-size: clamp(48px, 12vw, 142px);
       font-weight: 300;
@@ -202,7 +202,9 @@
       pointer-events: none;
       display: block;
       white-space: pre-line;
-
+      font-family: "agenda", sans-serif;
+      font-weight: 500;
+      font-style: normal;
       &-accent {
         display: inline;
         color: transparent;
@@ -223,171 +225,15 @@
       }
     }
   }
-
-  &__content {
-    position: relative;
-    @include flex(column, flex-end, center);
-    gap: clamp($spacing-xxl, 4vh, $spacing-xxxl * 1.5);
-    padding: $spacing-lg;
-    z-index: 2;
-    margin-top: auto;
-    flex: 1;
-
-    @media screen and (max-height: 800px) {
-      gap: $spacing-md;
-      padding-bottom: $spacing-md;
-    }
-
-    @media screen and (max-height: 600px) {
-      gap: $spacing-sm;
-      padding-bottom: $spacing-sm;
-    }
-  }
-
-  &__info {
-    text-align: center;
-    opacity: 0;
-    animation: fadeInUp $transition-duration $transition-bezier forwards;
-    animation-delay: 0.5s;
-
-    &-subtitle {
-      margin-bottom: $spacing-md;
-      letter-spacing: 0.03em;
-      opacity: 0.9;
-    }
-
-    &-description {
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.5 !important;
-      margin-bottom: $spacing-xxxl;
-      letter-spacing: 0.03em;
-
-      @include mobile {
-        max-width: 20rem;
-      }
-
-      @media screen and (max-height: 600px) {
-        max-width: 18rem;
-      }
-    }
-  }
-
-  &__cta-button {
-    font-family: "usual", sans-serif !important;
-    letter-spacing: 0.02em !important;
-    font-weight: 500 !important;
-  }
-
-  &__scroll {
-    text-align: center;
-    margin-block: $spacing-sm $spacing-md;
-    opacity: 0;
-    animation: fadeIn $transition-duration ease forwards;
-    animation-delay: 1s;
-
-    @media screen and (max-height: 600px) {
-      display: none;
-    }
-
-    &-text {
-      margin-bottom: $spacing-xs;
-    }
-
-    &-indicator {
-      position: relative;
-      width: 1.2px;
-      height: 24px;
-      margin: 0 auto;
-      margin-top: $spacing-sm;
-      overflow: visible;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          180deg,
-          $primary-light 0%,
-          rgba($primary-color, 0.1) 100%
-        );
-      }
-
-      &::before {
-        animation: scrollFadeLeft 2s $transition-bezier infinite;
-      }
-
-      &::after {
-        animation: scrollFadeRight 2s $transition-bezier infinite;
-      }
-
-      @media screen and (max-height: 800px) {
-        height: 20px;
-      }
-    }
-  }
 }
 
-@keyframes scrollFadeLeft {
-  0%,
-  100% {
-    transform: translateX(0) scaleY(0);
-    opacity: 0;
-  }
-  50% {
-    transform: translateX(-1px) scaleY(1);
-    opacity: 0.5;
-  }
-}
-
-@keyframes scrollFadeRight {
-  0%,
-  100% {
-    transform: translateX(0) scaleY(0);
-    opacity: 0;
-  }
-  50% {
-    transform: translateX(1px) scaleY(1);
-    opacity: 0.5;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
+/* Keyframes para el hero headline */
 @keyframes glowPulse {
   0% {
     text-shadow: 0 0 20px rgba($primary-color, 0.4);
   }
   100% {
     text-shadow: 0 0 30px rgba($primary-color, 0.6);
-  }
-}
-
-@keyframes floatingGrid {
-  0% {
-    background-position: 0 0, 0 0;
-  }
-  100% {
-    background-position: 60px 60px, 40px 40px;
   }
 }
 

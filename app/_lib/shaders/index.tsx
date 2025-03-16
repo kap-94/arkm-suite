@@ -2246,13 +2246,139 @@ void main() {
 }
 `;
 
+// export const plasmaPulseShader = `
+// uniform float time;
+// uniform sampler2D textTexture;
+// varying vec2 vUv;
+
+// float random(vec2 st) {
+//     return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+// }
+
+// float noise(vec2 st) {
+//     vec2 i = floor(st);
+//     vec2 f = fract(st);
+//     float a = random(i);
+//     float b = random(i + vec2(1.0, 0.0));
+//     float c = random(i + vec2(0.0, 1.0));
+//     float d = random(i + vec2(1.0, 1.0));
+//     vec2 u = f * f * (3.0 - 2.0 * f);
+//     return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+// }
+
+// void main() {
+//     vec2 uv = vUv;
+//     float totalDuration = 8.0;
+//     float initialEffectDuration = 1.5;
+//     float transitionDuration = 1.0;
+//     float slicingStart = 3.0;
+//     float slicingDuration = 4.0;
+
+//     if (time < slicingStart) {
+//         float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+//         vec2 center = vec2(0.5);
+//         float dist = length(uv - center);
+
+//         // Campo de plasma principal
+//         float plasma = 0.0;
+//         for(float i = 1.0; i <= 3.0; i++) {
+//             // Ondas circulares
+//             float circleWave = sin(dist * 20.0 * i - time * (.0 + i * 0.5));
+//             // Ondas horizontales
+//             float horizontalWave = sin(uv.x * 15.0 * i + time * (1.0 + i * 0.3));
+//             // Ondas verticales
+//             float verticalWave = cos(uv.y * 15.0 * i - time * (1.5 + i * 0.));
+
+//             plasma += (circleWave + horizontalWave + verticalWave) * (0.3 / i);
+//         }
+
+//         // Turbulencia del plasma
+//         float turbulence = noise(vec2(
+//             uv.x * 4.0 + time * 0.5,
+//             uv.y * 4.0 - time * 0.3
+//         ));
+
+//         // Pulsos de energía
+//         float pulse = pow(sin(time * 2.0) * 0.5 + 0.5, 2.0);
+
+//         // Intensidad que disminuye con la transición
+//         float effectStrength = (1.0 - transitionProgress);
+
+//         // Distorsión combinada
+//         vec2 distortedUv = uv + vec2(
+//             plasma * cos(turbulence * 6.28) * 0.02,
+//             plasma * sin(turbulence * 6.28) * 0.02
+//         ) * effectStrength;
+
+//         // Efecto de brillo del plasma
+//         vec4 mainColor = texture2D(textTexture, distortedUv);
+//         vec4 plasmaColor = texture2D(textTexture, distortedUv + vec2(plasma * 0.01) * effectStrength);
+
+//         if (max(mainColor.a, plasmaColor.a) > 0.0) {
+//             vec3 baseColor = vec3(0.95);
+//             float plasmaGlow = abs(plasma) * effectStrength * 0.;
+//             float energyPulse = pulse * turbulence * effectStrength * 0.1;
+
+//             // Color final con brillo de plasma
+//             vec3 finalColor = baseColor + vec3(plasmaGlow + energyPulse);
+//             gl_FragColor = vec4(finalColor, mainColor.a);
+//             return;
+//         }
+//     }
+//     else {
+//         float delayedTime = time - slicingStart;
+//         float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
+
+//         if (slicingProgress >= 1.0) {
+//             gl_FragColor = vec4(0.0);
+//             return;
+//         }
+
+//         float slices = 24.0;
+//         float baseTime = delayedTime * 0.;
+//         float sliceY = floor(uv.y * slices) / slices;
+
+//         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
+//         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
+//         float pixelNoise = random(pixelated + delayedTime) *
+//                           (1.0 - smoothstep(0.0, 0.3, slicingProgress));
+
+//         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
+//         float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
+//         float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
+//                            (1.0 - slicingProgress);
+
+//         float xProgress = fract(baseTime);
+//         vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+//         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
+//         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
+
+//         vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
+//         vec4 texColor = texture2D(textTexture, finalUv);
+
+//         if (texColor.a > 0.0) {
+//             vec3 color = vec3(0.95);
+//             float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
+//             color *= 0.9 + slice * 0.1;
+//             float alpha = texColor.a * progress;
+//             gl_FragColor = vec4(color, alpha);
+//             return;
+//         }
+//     }
+
+//     gl_FragColor = vec4(0.0);
+// }
+// `;
+// plasmaPulseShader.js
 export const plasmaPulseShader = `
+// Un solo texto con todas las transiciones (plasma, slice, y que siempre permanezca visible).
+
 uniform float time;
 uniform sampler2D textTexture;
 varying vec2 vUv;
 
 float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 float noise(vec2 st) {
@@ -2263,110 +2389,111 @@ float noise(vec2 st) {
     float c = random(i + vec2(0.0, 1.0));
     float d = random(i + vec2(1.0, 1.0));
     vec2 u = f * f * (3.0 - 2.0 * f);
-    return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
 void main() {
-    vec2 uv = vUv;
-    float totalDuration = 8.0;
-    float initialEffectDuration = 1.5;
-    float transitionDuration = 1.0;
+    float t = time;
     float slicingStart = 3.0;
     float slicingDuration = 4.0;
+    float slicingEnd = slicingStart + slicingDuration;
 
-    if (time < slicingStart) {
-        float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, time);
+    float initialEffectDuration = 1.5;
+    float transitionDuration = 1.0;
+
+    vec2 uv = vUv;
+    vec2 distortedUv = uv;
+
+    //=====================
+    // 1) Efecto Plasma (0..3)
+    //=====================
+    if (t < slicingStart) {
+        // Progreso de atenuación del plasma (entre 1.5 y 2.5)
+        float transitionProgress = smoothstep(initialEffectDuration, initialEffectDuration + transitionDuration, t);
+        float effectStrength = 1.0 - transitionProgress;
+
+        // Cálculo del "plasma"
         vec2 center = vec2(0.5);
         float dist = length(uv - center);
-
-        // Campo de plasma principal
         float plasma = 0.0;
-        for(float i = 1.0; i <= 3.0; i++) {
-            // Ondas circulares
-            float circleWave = sin(dist * 20.0 * i - time * (.0 + i * 0.5));
-            // Ondas horizontales
-            float horizontalWave = sin(uv.x * 15.0 * i + time * (1.0 + i * 0.3));
-            // Ondas verticales
-            float verticalWave = cos(uv.y * 15.0 * i - time * (1.5 + i * 0.));
-
+        for (float i = 1.0; i <= 3.0; i++) {
+            float circleWave = sin(dist * 20.0 * i - t * (0.0 + i * 0.5));
+            float horizontalWave = sin(uv.x * 15.0 * i + t * (1.0 + i * 0.3));
+            float verticalWave = cos(uv.y * 15.0 * i - t * (1.5 + i * 0.0));
             plasma += (circleWave + horizontalWave + verticalWave) * (0.3 / i);
         }
 
-        // Turbulencia del plasma
         float turbulence = noise(vec2(
-            uv.x * 4.0 + time * 0.5,
-            uv.y * 4.0 - time * 0.3
+            uv.x * 4.0 + t * 0.5,
+            uv.y * 4.0 - t * 0.3
         ));
+        float pulse = pow(sin(t * 2.0) * 0.5 + 0.5, 2.0);
 
-        // Pulsos de energía
-        float pulse = pow(sin(time * 2.0) * 0.5 + 0.5, 2.0);
-
-        // Intensidad que disminuye con la transición
-        float effectStrength = (1.0 - transitionProgress);
-
-        // Distorsión combinada
-        vec2 distortedUv = uv + vec2(
+        distortedUv += vec2(
             plasma * cos(turbulence * 6.28) * 0.02,
             plasma * sin(turbulence * 6.28) * 0.02
         ) * effectStrength;
 
-        // Efecto de brillo del plasma
-        vec4 mainColor = texture2D(textTexture, distortedUv);
-        vec4 plasmaColor = texture2D(textTexture, distortedUv + vec2(plasma * 0.01) * effectStrength);
+        // Tomamos la muestra de la textura
+        vec4 texColor = texture2D(textTexture, distortedUv);
 
-        if (max(mainColor.a, plasmaColor.a) > 0.0) {
-            vec3 baseColor = vec3(0.95);
-            float plasmaGlow = abs(plasma) * effectStrength * 0.;
-            float energyPulse = pulse * turbulence * effectStrength * 0.1;
+        // Ajuste de color
+        vec3 baseColor = vec3(0.95);
+        float plasmaGlow = abs(plasma) * effectStrength * 0.1;
+        float energyPulse = pulse * turbulence * effectStrength * 0.1;
+        vec3 finalColor = baseColor + vec3(plasmaGlow + energyPulse);
 
-            // Color final con brillo de plasma
-            vec3 finalColor = baseColor + vec3(plasmaGlow + energyPulse);
-            gl_FragColor = vec4(finalColor, mainColor.a);
-            return;
-        }
+        // Siempre visible
+        gl_FragColor = vec4(finalColor, texColor.a);
+        return;
     }
-    else {
-        float delayedTime = time - slicingStart;
+    //=====================
+    // 2) Efecto Slicing (3..7)
+    //=====================
+    else if (t < slicingEnd) {
+        float delayedTime = t - slicingStart;
         float slicingProgress = clamp(delayedTime / slicingDuration, 0.0, 1.0);
 
-        if (slicingProgress >= 1.0) {
-            gl_FragColor = vec4(0.0);
-            return;
-        }
-
         float slices = 24.0;
-        float baseTime = delayedTime * 0.;
         float sliceY = floor(uv.y * slices) / slices;
-
         float pixelSize = mix(0.0, 0.05, (1.0 - smoothstep(0.0, 0.2, slicingProgress)));
         vec2 pixelated = floor(uv / pixelSize) * pixelSize;
-        float pixelNoise = random(pixelated + delayedTime) *
-                          (1.0 - smoothstep(0.0, 0.3, slicingProgress));
 
+        float pixelNoise = random(pixelated + delayedTime) * (1.0 - smoothstep(0.0, 0.3, slicingProgress));
         float sliceIntensity = smoothstep(0.0, 0.3, slicingProgress);
-        float normalSliceOffset = sin(sliceY * 30.0 + baseTime * 6.28) * 0.02;
-        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) *
-                           (1.0 - slicingProgress);
+        float normalSliceOffset = sin(sliceY * 30.0 + delayedTime * 6.28) * 0.02;
+        float sliceOffset = mix(pixelNoise * 0.02, normalSliceOffset, sliceIntensity) * (1.0 - slicingProgress);
 
-        float xProgress = fract(baseTime);
-        vec2 distortedUv = uv + vec2(sliceOffset, 0.0);
+        float xProgress = fract(delayedTime);
+        distortedUv = uv + vec2(sliceOffset, 0.0);
         float progress = smoothstep(0.0, 1.0, (uv.x + sliceY - xProgress) * 2.0);
         distortedUv.x = mix(uv.x - 0.1, distortedUv.x, progress);
 
-        vec2 finalUv = mix(pixelated, distortedUv, sliceIntensity);
-        vec4 texColor = texture2D(textTexture, finalUv);
+        // Mezclamos pixelado y distort
+        distortedUv = mix(pixelated, distortedUv, sliceIntensity);
 
-        if (texColor.a > 0.0) {
-            vec3 color = vec3(0.95);
-            float slice = sin(sliceY * 6.28 + baseTime * 4.0) * 0.5 + 0.5;
-            color *= 0.9 + slice * 0.1;
-            float alpha = texColor.a * progress;
-            gl_FragColor = vec4(color, alpha);
-            return;
-        }
+        vec4 texColor = texture2D(textTexture, distortedUv);
+
+        // Mantenemos visible
+        // (quitamos la multiplicación con 'progress' para que no desaparezca)
+        vec3 color = vec3(0.95);
+        float slice = sin(sliceY * 6.28 + delayedTime * 4.0) * 0.5 + 0.5;
+        color *= 0.9 + slice * 0.1;
+
+        float alpha = texColor.a;
+        gl_FragColor = vec4(color, alpha);
+        return;
     }
-
-    gl_FragColor = vec4(0.0);
+    //=====================
+    // 3) Fase final (>=7)
+    //=====================
+    else {
+        // Al final, dejamos el texto completamente visible.
+        // Si la textura es transparente, forzamos alpha=1 para que no desaparezca.
+        vec4 texColor = texture2D(textTexture, uv);
+        gl_FragColor = vec4(texColor.rgb, 1.0);
+        return;
+    }
 }
 `;
 

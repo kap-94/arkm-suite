@@ -1,4 +1,4 @@
-import { Visibility } from "../../_types/models/Common";
+import { Visibility } from "@/app/_types/models/Common";
 import * as yup from "yup";
 
 // Reusable schemas

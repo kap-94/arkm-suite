@@ -2,7 +2,7 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import classNames from "classnames/bind";
 import moment from "moment";
 import { ThemedTypography } from "../Typography/ThemedTypography";
-import { Dropdown } from "../Dropdown/Dropdown";
+import { ThemedDropdown } from "../Dropdown/ThemedDropdown";
 import { GanttViewProps, GanttStage } from "./types";
 import StickyWrapper from "../StickyWrapper";
 import { StageCard } from "./components/StageCard";
@@ -10,13 +10,13 @@ import { StageBar } from "./components/StageBar";
 import { useGantt } from "./hooks/useGantt";
 import { GanttProvider } from "./GanttContext";
 import { calculateCurrentDayPosition } from "./gantt-date-calculations";
-import { formatCustomDateUTC } from "../../_utils/date-utils";
+import { formatCustomDateUTC } from "@/app/_utils/date-utils";
 import { useDashboard } from "../../_context/DashboardContext";
 import styles from "./GanttView.module.scss";
 import {
   GanttViewOption,
   ProjectStatus,
-} from "../../_types/dictionary/projectDetails.types";
+} from "@/app/_types/dictionary/projectDetails.types";
 
 const cx = classNames.bind(styles);
 
@@ -148,7 +148,7 @@ const GanttContent = ({
             </div>
 
             <div className={cx("gantt__view-controls")}>
-              <Dropdown
+              <ThemedDropdown
                 options={dictionary.controls.viewOptions}
                 selected={{
                   value: view,

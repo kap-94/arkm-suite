@@ -39,7 +39,7 @@ export const Hamburger = ({
 
   const renderLines = () => {
     const lineVariants = getLineVariants(variant);
-    const lineCount = variant === "slide" ? 3 : 2;
+    const lineCount = variant === "morph" ? 2 : 3;
 
     return [...Array(lineCount)].map((_, i) => (
       <motion.span

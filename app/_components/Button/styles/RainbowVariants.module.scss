@@ -1,0 +1,454 @@
+// src/components/Button/styles/RainbowVariants.module.scss
+// Rainbow button variants
+
+.button {
+  // Rainbow Gradient
+  &--rainbow-gradient {
+    position: relative;
+    // border: calc(0.08 * 1rem) solid transparent;
+    color: #f3f3f3 !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+    clip-path: polygon(
+      15% 0%,
+      // top left corner
+      85% 0%,
+      // top right corner
+      100% 15%,
+      // right top corner
+      100% 85%,
+      // right bottom corner
+      85% 100%,
+      // bottom right corner
+      15% 100%,
+      // bottom left corner
+      0% 85%,
+      // left bottom corner
+      0% 15% // left top corner
+    );
+
+    // Gradient background and border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      // padding: 1px; // Border thickness
+      // background: linear-gradient(
+      //   90deg,
+      //   rgba($primary-color, 0.1),
+      //   rgba($primary-light, 0.1),
+      //   // $primary-color,
+      //   // $primary-dark,
+      //   // $primary-dark-90,
+      //   // $primary-color-90,
+      //   rgba($primary-color, 0.1)
+      // );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: rainbow-animate 2s infinite linear;
+      z-index: -1;
+    }
+
+    // Black interior background
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      // background: rgba(#4158d0, 0.15);
+      // background: rgba($white-base, 0.05);
+      backdrop-filter: blur(5px);
+      z-index: 0;
+    }
+
+    // Bottom glow
+    .button__rainbow-glow {
+      content: "";
+      position: absolute;
+      height: 30%;
+      width: 60%;
+      bottom: -20%;
+      border-radius: 50%;
+      background: linear-gradient(
+        90deg,
+        rgba($primary-color, 0.8),
+        rgba($primary-light, 0.9),
+        $primary-color-80,
+        $primary-dark-80,
+        $primary-dark-80,
+        $primary-color-80,
+        rgba($primary-color, 0.7)
+      );
+      filter: blur(calc(0.8 * 1rem));
+      background-size: 200%;
+      animation: rainbow-animate 2s infinite linear;
+      z-index: -1;
+    }
+
+    &:hover {
+      .button__rainbow-glow,
+      &::before {
+        animation: rainbow-animate 0.5s infinite linear;
+      }
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  // Rainbow Cosmic
+  &--rainbow-cosmic {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: $white-base !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+
+    // Space-themed gradient border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba($primary-color, 0.9),
+        rgba($primary-light, 0.8),
+        $primary-color,
+        $primary-dark,
+        $primary-dark-90,
+        $primary-color-90,
+        rgba($primary-color, 0.9)
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: cosmic-animate 4s infinite linear;
+      z-index: -1;
+    }
+
+    // Interior: image with semi-transparent layer
+    &::after {
+      content: "";
+      position: absolute;
+      // height: 168px;
+      // width: 180%;
+      height: 100%;
+      width: 100%;
+      inset: 1px;
+      // top: -4px;
+      // left: -116px;
+      border-radius: inherit;
+      background: linear-gradient(
+          rgba(79, 70, 229, 0.2),
+          rgba(79, 70, 229, 0.2)
+        ),
+        // url(/images/blue-gradient.png) center / cover no-repeat;
+        // url(https://images.unsplash.com/photo-1655694774151-9a556bec2bdf?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        // url(https://images.unsplash.com/photo-1592492159418-39f319320569?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        // url(https://images.unsplash.com/photo-1663076125875-b8454612ed9b?q=80&w=3628&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        // url(https://images.unsplash.com/photo-1663076123757-d8b3f1c7f1a1?q=80&w=3628&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        // url(https://images.unsplash.com/photo-1670434846352-23e8f0e28c16?q=80&w=3628&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        // url(https://images.unsplash.com/photo-1663720409027-5f7b019b0990?q=80&w=3628&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+        url(https://images.unsplash.com/photo-1679189789073-a1374f2d3f3e?q=80&w=3628&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+          center / cover no-repeat;
+      // opacity: 0.7;
+      z-index: 0;
+    }
+
+    // Nebula effect
+    .button__cosmic-nebula {
+      position: absolute;
+      height: 120%;
+      width: 120%;
+      top: -10%;
+      left: -10%;
+      background: radial-gradient(
+          ellipse at 30% 40%,
+          rgba(138, 43, 226, 0.3) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 70% 60%,
+          rgba(75, 0, 130, 0.3) 0%,
+          transparent 50%
+        );
+      filter: blur(12px);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: 1;
+    }
+
+    // Shooting star effect
+    .button__cosmic-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: white;
+      border-radius: 50%;
+      top: 40%;
+      left: -5%;
+      opacity: 0;
+      filter: blur(1px);
+      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+      z-index: 1;
+    }
+
+    // Hover: shows the nebula
+    &:hover {
+      .button__cosmic-nebula {
+        opacity: 1;
+        animation: 1.2s cubic-bezier(0.65, 0, 0.35, 1) 1 forwards;
+      }
+    }
+
+    // Text style
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 8px rgba($primary-color, 0.5);
+    }
+  }
+
+  // Rainbow Hologram - Futuristic holographic effect
+  &--rainbow-hologram {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #f3f3f3 !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+
+    // Holographic border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.7),
+        rgba(255, 165, 0, 0.7),
+        rgba(255, 255, 0, 0.7),
+        rgba(0, 128, 0, 0.7),
+        rgba(0, 0, 255, 0.7),
+        rgba(75, 0, 130, 0.7),
+        rgba(238, 130, 238, 0.7)
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.85;
+      background-size: 400%;
+      animation: hologram-shift 8s linear infinite;
+      z-index: -1;
+    }
+
+    // Dark background with glass effect
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: rgba($primary-dark, 0.15);
+      backdrop-filter: blur(5px);
+      box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05),
+        inset 0 0 5px rgba(255, 255, 255, 0.1);
+      z-index: 0;
+    }
+
+    // Holographic flare
+    .button__hologram-flare {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      background-size: 200%;
+      transform: translateX(-100%);
+      animation: hologram-scan 4s cubic-bezier(0.36, 0, 0.66, 1) infinite;
+      z-index: 1;
+    }
+
+    // Holographic noise
+    .button__hologram-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      z-index: 1;
+      mix-blend-mode: overlay;
+    }
+
+    // Holographic glitch effect
+    .button__hologram-glitch {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      &::before {
+        animation: hologram-shift 4s linear infinite;
+        opacity: 1;
+      }
+
+      .button__hologram-glitch {
+        opacity: 1;
+        animation: hologram-glitch 3s infinite;
+      }
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      mix-blend-mode: difference;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  // Rainbow Neon - Vibrant neon glow effect
+  &--rainbow-neon {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #f3f3f3 !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+
+    // Neon border glow
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        #ff1493,
+        #ff00ff,
+        #ff1493,
+        #00ffff,
+        #00bfff,
+        #00ffff
+      );
+      background-size: 300%;
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: neon-shift 3s infinite linear;
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.5),
+        0 0 20px rgba(255, 20, 147, 0.3), 0 0 30px rgba(255, 20, 147, 0.1);
+      z-index: -1;
+    }
+
+    // Dark background
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba(20, 20, 40, 0.8) 0%,
+        rgba(40, 40, 80, 0.8) 100%
+      );
+      z-index: 0;
+    }
+
+    // Neon reflection
+    .button__neon-reflection {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      );
+      z-index: 1;
+    }
+
+    // Neon glow
+    .button__neon-glow {
+      position: absolute;
+      inset: -3px;
+      border-radius: inherit;
+      background: transparent;
+      filter: blur(8px);
+      z-index: -2;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    // Neon flicker effect
+    .button__neon-flicker {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: transparent;
+      z-index: 3;
+      mix-blend-mode: overlay;
+      opacity: 0;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+
+      .button__neon-glow {
+        opacity: 1;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 20, 147, 0.7),
+          rgba(255, 0, 255, 0.7),
+          rgba(0, 191, 255, 0.7)
+        );
+        background-size: 300%;
+        animation: neon-shift 3s infinite linear;
+      }
+
+      .button__neon-flicker {
+        opacity: 1;
+        animation: neon-flicker 2s infinite;
+      }
+
+      &::before {
+        filter: brightness(1.2);
+      }
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 20, 147, 0.8), 0 0 15px rgba(255, 20, 147, 0.5);
+    }
+  }
+}

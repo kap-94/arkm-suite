@@ -59,7 +59,7 @@ export interface WebGLComponents {
 
 export const DEFAULT_TEXT_OPTIONS = {
   font: {
-    family: "kranto-normal-semicondensed",
+    family: "sofia",
     weight: 300,
     style: "normal",
   },

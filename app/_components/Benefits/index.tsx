@@ -8,7 +8,7 @@ import {
   ChatIcon,
   DataIcon,
   CalendarIcon,
-} from "../../_modules/ClientSuitePreview/ClientSuiteIcons";
+} from "@/app/_modules/ClientSuitePreview/ClientSuiteIcons";
 import styles from "./Benefits.module.scss";
 
 const cx = classNames.bind(styles);
@@ -75,7 +75,7 @@ const BenefitItem = ({
         <Typography
           variant="h3"
           color="primary"
-          fontFamily="usual"
+          fontFamily="sofia"
           theme="dark"
           fontWeight={400}
           className={cx("benefit__title")}
@@ -90,7 +90,7 @@ const BenefitItem = ({
         color="tertiary"
         theme="dark"
         fontWeight={300}
-        fontFamily="usual"
+        fontFamily="sofia"
         className={cx("benefit__description")}
       >
         {description}

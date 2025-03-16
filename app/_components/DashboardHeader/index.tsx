@@ -19,11 +19,11 @@ import styles from "./DashboardHeader.module.scss";
 import type {
   HeaderSection,
   UserMenuItem,
-} from "../../_types/dictionary/dashboardLayout.types";
-import { getIconComponent } from "../../_utils/iconUtils";
+} from "@/app/_types/dictionary/dashboardLayout.types";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import { SearchableEntity, searchService } from "../../_services/searchService";
 import { UserProfile } from "../../[lang]/dashboard/account/profile/ProfileClient";
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
 
 const cx = classNames.bind(styles);
 

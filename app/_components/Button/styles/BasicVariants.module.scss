@@ -1,0 +1,1171 @@
+// Variables de color
+$primary-indigo: #283593;
+$primary-indigo: #4158d0;
+$primary-indigo: #6366f1;
+$primary-indigo-light: #283593;
+$primary-indigo-light: #818cf8;
+$primary-indigo-light: #4158d0;
+
+$primary-blue-dark: #4158d0;
+$primary-blue-medium: #1976d2;
+$primary-blue-light: #29b6f6;
+$primary-purple: #c850c0;
+$primary-yellow: #ffcc70;
+$primary-purple-dark: #5e35b1;
+$primary-purple-medium: #8e24aa;
+$primary-indigo-dark: #283593;
+$primary-green: #6eeb83;
+$primary-red: #ff6b6b;
+$primary-red-dark: #c9184a;
+
+// src/components/Button/_styles/_basic-variants.scss
+// Basic button variants: primary, secondary, gradient
+
+.button {
+  // Primary Variant
+  &--primary {
+    background: linear-gradient(
+      45deg,
+      rgba($primary-indigo, 0.9),
+      rgba($primary-indigo-light, 0.9)
+    );
+    border: none;
+    border-radius: 9999px;
+    color: $white-light !important;
+    box-shadow: 0 0 20px rgba($primary-indigo, 0.3);
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        45deg,
+        $primary-indigo-light,
+        $primary-indigo
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba($primary-indigo, 0.4);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Secondary Variant
+  &--secondary {
+    background: transparent;
+    padding: 12px 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $primary-indigo-light;
+    backdrop-filter: blur(4px);
+    -webkit-font-smoothing: antialiased;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background: linear-gradient(45deg, $primary-indigo, transparent)
+        border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      transition: background 0.6s cubic-bezier(0.4, 0, 0, 1);
+      border-radius: inherit;
+    }
+
+    &:hover::before {
+      background: linear-gradient(
+          to right,
+          transparent,
+          $primary-indigo,
+          transparent
+        )
+        border-box;
+      background-size: 100% 100%;
+      animation: gradientFlow 1.2s cubic-bezier(0.4, 0, 0, 1) forwards;
+    }
+  }
+
+  // &--gradient {
+  //   border: none;
+  //   color: $white-color !important;
+  //   position: relative;
+  //   overflow: hidden;
+  //   z-index: 1;
+  //   box-shadow: 0px -3px 15px 0px $primary-blue-dark inset;
+  //   box-shadow: 0px -3px 15px 0px rgba($white-color, 0.3) inset;
+
+  //   // El botón base es transparente para permitir ver las capas
+  //   background: transparent;
+
+  //   // Capa de efecto glassy/vidrio (capa base)
+  //   &::before {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: rgba($primary-blue-dark, 0.1);
+  //     backdrop-filter: blur(12px);
+  //     -webkit-backdrop-filter: blur(12px);
+  //     border-radius: inherit;
+  //     z-index: -3;
+
+  //     // Textura sutil para mejorar el efecto glassy
+  //     background-image: repeating-linear-gradient(
+  //       45deg,
+  //       rgba(255, 255, 255, 0.02) 0,
+  //       rgba(255, 255, 255, 0.01) 1px,
+  //       transparent 1px,
+  //       transparent 4px
+  //     );
+  //     background-blend-mode: overlay;
+  //     transition: background-color 0.4s ease;
+  //   }
+
+  //   // Elemento adicional con gradiente encima del glassy
+  //   &::after {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: linear-gradient(
+  //       43deg,
+  //       rgba($primary-blue-dark, 0.5) 0%,
+  //       transparent 46%,
+  //       rgba($primary-blue-medium, 0.5) 100%
+  //     );
+  //     // background: transparent;
+  //     border-radius: inherit;
+  //     z-index: -1;
+  //     opacity: 0.85; // Ajusta la opacidad para controlar cuánto efecto glassy se ve
+  //     transition: opacity 0.4s ease;
+  //   }
+
+  //   // Efecto de reflejo en el vidrio
+  //   .glass-shine {
+  //     position: absolute;
+  //     inset: 0;
+  //     background: linear-gradient(
+  //       135deg,
+  //       rgba(255, 255, 255, 0.15),
+  //       rgba(255, 255, 255, 0.05) 70%,
+  //       rgba(255, 255, 255, 0.01)
+  //     );
+  //     border-radius: inherit;
+  //     z-index: -2;
+  //     opacity: 0.5;
+  //     pointer-events: none; // Asegura que no interfiera con los eventos del botón
+  //   }
+
+  //   // Light effect on hover
+  //   .button__glow {
+  //     position: absolute;
+  //     width: 100%;
+  //     height: 100%;
+  //     top: 0;
+  //     left: -100%;
+  //     background: linear-gradient(
+  //       90deg,
+  //       transparent,
+  //       rgba(255, 255, 255, 0.2),
+  //       transparent
+  //     );
+  //     z-index: 0;
+  //     pointer-events: none; // Asegura que no interfiera con los eventos del botón
+  //     transition: left 0s ease;
+  //   }
+
+  //   &:hover {
+  //     transform: translateY(-1px);
+  //     box-shadow: 0 5px 15px rgba($primary-dark, 0.2);
+
+  //     &::before {
+  //       background-color: rgba(255, 255, 255, 0.1);
+  //     }
+
+  //     &::after {
+  //       opacity: 0.95;
+  //     }
+
+  //     .button__glow {
+  //       left: 100%;
+  //       transition: left 0.8s ease;
+  //     }
+  //   }
+
+  //   // Color variant: purple
+  //   &--purple {
+  //     &::after {
+  //       background: linear-gradient(
+  //         43deg,
+  //         rgba($primary-purple-dark, 0.8) 0%,
+  //         transparent 46%,
+  //         rgba($primary-indigo, 0.8) 100%
+  //       );
+  //     }
+
+  //     &::before {
+  //       background-color: rgba($primary-purple-dark, 0.05);
+  //     }
+  //   }
+
+  //   // Color variant: red
+  //   &--red {
+  //     &::after {
+  //       background: linear-gradient(
+  //         43deg,
+  //         rgba($primary-red, 0.8) 0%,
+  //         transparent 46%,
+  //         rgba($primary-red-dark, 0.8) 100%
+  //       );
+  //     }
+
+  //     &::before {
+  //       background-color: rgba($primary-red, 0.05);
+  //     }
+  //   }
+  // }
+  // Variables de animación para efectos tipo shader
+  @property --shadow-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @property --shadow-intensity {
+    syntax: "<number>";
+    initial-value: 0.3;
+    inherits: false;
+  }
+
+  // Keyframes para la rotación del gradiente de la sombra
+  @keyframes rotateShadowGradient {
+    0% {
+      --shadow-angle: 0deg;
+      --shadow-intensity: 0.25;
+    }
+    25% {
+      --shadow-intensity: 0.35;
+    }
+    50% {
+      --shadow-angle: 180deg;
+      --shadow-intensity: 0.3;
+    }
+    75% {
+      --shadow-intensity: 0.25;
+    }
+    100% {
+      --shadow-angle: 360deg;
+      --shadow-intensity: 0.25;
+    }
+  }
+
+  // Keyframes para efecto de brillo interno
+  @keyframes innerGlow {
+    0% {
+      filter: drop-shadow(0px -3px 10px rgba(255, 255, 255, 0.2)) brightness(1);
+    }
+    50% {
+      filter: drop-shadow(0px -3px 15px rgba(255, 255, 255, 0.35))
+        brightness(1.05);
+    }
+    100% {
+      filter: drop-shadow(0px -3px 10px rgba(255, 255, 255, 0.2)) brightness(1);
+    }
+  }
+
+  &--gradient {
+    border: none;
+    color: $white-color !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    // Reemplazamos la sombra estática con una combinación de efectos
+    // Efecto shader basado en variables CSS
+    background: linear-gradient(
+      var(--shadow-angle),
+      rgba($white-color, calc(var(--shadow-intensity) - 0.1)) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba($white-color, calc(var(--shadow-intensity) - 0.1)) 100%
+    );
+    animation: rotateShadowGradient 8s infinite ease-in-out,
+      innerGlow 4s infinite alternate ease-in-out;
+
+    // El resto del fondo es transparente para permitir capas
+    backdrop-filter: contrast(1.1) saturate(1.1);
+
+    // Capa de efecto glassy/vidrio (capa base)
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba($primary-blue-dark, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: inherit;
+      z-index: -3;
+      box-shadow: 0px -3px 15px 0px rgba($white-color, var(--shadow-intensity)) inset;
+      transition: all 0.4s ease;
+
+      // Textura sutil para mejorar el efecto glassy
+      background-image: repeating-linear-gradient(
+        calc(var(--shadow-angle) + 45deg),
+        rgba(255, 255, 255, 0.02) 0,
+        rgba(255, 255, 255, 0.01) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      background-blend-mode: overlay;
+    }
+
+    // Elemento adicional con gradiente encima del glassy
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        calc(var(--shadow-angle) + 43deg),
+        rgba($primary-blue-dark, 0.5) 0%,
+        transparent 46%,
+        rgba($primary-blue-medium, 0.5) 100%
+      );
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0.85;
+      transition: opacity 0.4s ease;
+      filter: hue-rotate(calc(var(--shadow-angle) * 0.05));
+    }
+
+    // Efecto de reflejo en el vidrio
+    .glass-shine {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        calc(135deg + var(--shadow-angle) * 0.1),
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.05) 70%,
+        rgba(255, 255, 255, 0.01)
+      );
+      border-radius: inherit;
+      z-index: -2;
+      opacity: 0.5;
+      pointer-events: none;
+      animation: rotateShadowGradient 10s infinite reverse ease-in-out;
+    }
+
+    // Light effect on hover
+    .button__glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: -100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      z-index: 0;
+      pointer-events: none;
+      transition: left 0s ease;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      animation-duration: 6s, 3s; // Aceleramos la animación en hover
+
+      &::before {
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0px -3px 20px 0px rgba(
+            $white-color,
+            calc(var(--shadow-intensity) + 0.1)
+          ) inset;
+      }
+
+      &::after {
+        opacity: 0.95;
+      }
+
+      .button__glow {
+        left: 100%;
+        transition: left 0.8s ease;
+      }
+
+      .glass-shine {
+        opacity: 0.7;
+      }
+    }
+
+    // Color variant: purple
+    &--purple {
+      @property --purple-hue {
+        syntax: "<angle>";
+        initial-value: 290deg;
+        inherits: false;
+      }
+
+      @keyframes purpleHueShift {
+        0% {
+          --purple-hue: 290deg;
+        }
+        50% {
+          --purple-hue: 310deg;
+        }
+        100% {
+          --purple-hue: 290deg;
+        }
+      }
+
+      animation: rotateShadowGradient 8s infinite ease-in-out,
+        innerGlow 4s infinite alternate ease-in-out,
+        purpleHueShift 6s infinite ease-in-out;
+
+      &::after {
+        background: linear-gradient(
+          calc(var(--shadow-angle) + 43deg),
+          hsl(var(--purple-hue), 70%, 25%, 0.8) 0%,
+          transparent 46%,
+          rgba($primary-indigo, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba($primary-purple-dark, 0.05);
+        box-shadow: 0px -3px 15px 0px rgba(
+            hsl(var(--purple-hue), 90%, 80%),
+            var(--shadow-intensity)
+          ) inset;
+      }
+
+      &:hover {
+        animation-duration: 6s, 3s, 4s; // Aceleramos todas las animaciones
+      }
+    }
+
+    // Color variant: red
+    &--red {
+      @property --red-saturation {
+        syntax: "<percentage>";
+        initial-value: 80%;
+        inherits: false;
+      }
+
+      @keyframes redSaturationShift {
+        0% {
+          --red-saturation: 80%;
+        }
+        50% {
+          --red-saturation: 90%;
+        }
+        100% {
+          --red-saturation: 80%;
+        }
+      }
+
+      animation: rotateShadowGradient 8s infinite ease-in-out,
+        innerGlow 4s infinite alternate ease-in-out,
+        redSaturationShift 5s infinite ease-in-out;
+
+      &::after {
+        background: linear-gradient(
+          calc(var(--shadow-angle) + 43deg),
+          hsl(0, var(--red-saturation), 50%, 0.8) 0%,
+          transparent 46%,
+          rgba($primary-red-dark, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba($primary-red, 0.05);
+        box-shadow: 0px -3px 15px 0px rgba(
+            hsl(0, var(--red-saturation), 80%),
+            var(--shadow-intensity)
+          ) inset;
+      }
+
+      &:hover {
+        animation-duration: 6s, 3s, 3.5s; // Aceleramos todas las animaciones
+      }
+    }
+  }
+}
+
+// Variables de animación para efectos tipo shader
+@property --shadow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --shadow-intensity {
+  syntax: "<number>";
+  initial-value: 0.3;
+  inherits: false;
+}
+
+@property --shadow-size {
+  syntax: "<length>";
+  initial-value: 15px;
+  inherits: false;
+}
+
+@property --glow-opacity {
+  syntax: "<number>";
+  initial-value: 0.5;
+  inherits: false;
+}
+
+// Keyframes base para rotación del gradiente de sombra
+@keyframes rotateShadowGradient {
+  0% {
+    --shadow-angle: 0deg;
+    --shadow-intensity: 0.25;
+    --shadow-size: 15px;
+  }
+  25% {
+    --shadow-intensity: 0.35;
+    --shadow-size: 17px;
+  }
+  50% {
+    --shadow-angle: 180deg;
+    --shadow-intensity: 0.3;
+    --shadow-size: 16px;
+  }
+  75% {
+    --shadow-intensity: 0.25;
+    --shadow-size: 14px;
+  }
+  100% {
+    --shadow-angle: 360deg;
+    --shadow-intensity: 0.25;
+    --shadow-size: 15px;
+  }
+}
+
+// Keyframes para efecto de brillo interno
+@keyframes innerGlow {
+  0% {
+    filter: drop-shadow(0px -3px 10px rgba(255, 255, 255, 0.2)) brightness(1);
+    --glow-opacity: 0.5;
+  }
+  50% {
+    filter: drop-shadow(0px -3px 15px rgba(255, 255, 255, 0.35))
+      brightness(1.05);
+    --glow-opacity: 0.65;
+  }
+  100% {
+    filter: drop-shadow(0px -3px 10px rgba(255, 255, 255, 0.2)) brightness(1);
+    --glow-opacity: 0.5;
+  }
+}
+
+.button {
+  // Base Button code...
+
+  &--gradient {
+    border: none;
+    color: $white-color !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    // Efecto shader básico
+    background: linear-gradient(
+      var(--shadow-angle),
+      rgba($white-color, calc(var(--shadow-intensity) - 0.1)) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba($white-color, calc(var(--shadow-intensity) - 0.1)) 100%
+    );
+    animation: rotateShadowGradient 8s infinite ease-in-out,
+      innerGlow 4s infinite alternate ease-in-out;
+
+    backdrop-filter: contrast(1.1) saturate(1.1);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba($primary-blue-dark, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: inherit;
+      z-index: -3;
+      box-shadow: 0px -3px var(--shadow-size) 0px rgba(
+          $white-color,
+          var(--shadow-intensity)
+        ) inset;
+      transition: all 0.4s ease;
+
+      background-image: repeating-linear-gradient(
+        calc(var(--shadow-angle) + 45deg),
+        rgba(255, 255, 255, 0.02) 0,
+        rgba(255, 255, 255, 0.01) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      background-blend-mode: overlay;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        calc(var(--shadow-angle) + 43deg),
+        rgba($primary-blue-dark, 0.5) 0%,
+        transparent 46%,
+        rgba($primary-blue-medium, 0.5) 100%
+      );
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0.85;
+      transition: opacity 0.4s ease;
+      filter: hue-rotate(calc(var(--shadow-angle) * 0.05));
+    }
+
+    .glass-shine {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        calc(135deg + var(--shadow-angle) * 0.1),
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.05) 70%,
+        rgba(255, 255, 255, 0.01)
+      );
+      border-radius: inherit;
+      z-index: -2;
+      opacity: var(--glow-opacity);
+      pointer-events: none;
+      animation: rotateShadowGradient 10s infinite reverse ease-in-out;
+    }
+
+    .button__glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: -100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      z-index: 0;
+      pointer-events: none;
+      transition: left 0s ease;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+      animation-duration: 6s, 3s;
+
+      &::before {
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0px -3px calc(var(--shadow-size) + 5px) 0px rgba(
+            $white-color,
+            calc(var(--shadow-intensity) + 0.1)
+          ) inset;
+      }
+
+      &::after {
+        opacity: 0.95;
+      }
+
+      .button__glow {
+        left: 100%;
+        transition: left 0.8s ease;
+      }
+
+      .glass-shine {
+        opacity: calc(var(--glow-opacity) + 0.2);
+      }
+    }
+
+    /* VARIANTE 1: NEÓN */
+    &--neon {
+      @property --neon-hue {
+        syntax: "<angle>";
+        initial-value: 180deg;
+        inherits: false;
+      }
+
+      @property --neon-spread {
+        syntax: "<length>";
+        initial-value: 4px;
+        inherits: false;
+      }
+
+      @keyframes neonPulse {
+        0% {
+          --neon-hue: 180deg;
+          --neon-spread: 4px;
+        }
+        33% {
+          --neon-hue: 190deg;
+          --neon-spread: 5px;
+        }
+        66% {
+          --neon-hue: 170deg;
+          --neon-spread: 6px;
+        }
+        100% {
+          --neon-hue: 180deg;
+          --neon-spread: 4px;
+        }
+      }
+
+      animation: neonPulse 4s infinite ease-in-out;
+
+      &::before {
+        background-color: rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px var(--neon-spread) 0px
+            hsl(var(--neon-hue), 100%, 50%, 0.8) inset,
+          0px 0px calc(var(--neon-spread) * 2) 0px
+            hsl(var(--neon-hue), 100%, 70%, 0.5) inset;
+      }
+
+      &::after {
+        background: radial-gradient(
+          circle at center,
+          hsl(var(--neon-hue), 100%, 70%, 0.3) 0%,
+          transparent 70%
+        );
+        filter: blur(8px);
+        mix-blend-mode: overlay;
+      }
+
+      &:hover {
+        &::before {
+          --neon-spread: calc(var(--neon-spread) + 2px);
+          box-shadow: 0px 0px var(--neon-spread) 0px
+              hsl(var(--neon-hue), 100%, 50%, 0.9) inset,
+            0px 0px calc(var(--neon-spread) * 3) 0px
+              hsl(var(--neon-hue), 100%, 70%, 0.7) inset;
+        }
+      }
+    }
+
+    /* VARIANTE 2: AURORA */
+    &--aurora {
+      @property --aurora-offset1 {
+        syntax: "<percentage>";
+        initial-value: 0%;
+        inherits: false;
+      }
+
+      @property --aurora-offset2 {
+        syntax: "<percentage>";
+        initial-value: 33%;
+        inherits: false;
+      }
+
+      @property --aurora-offset3 {
+        syntax: "<percentage>";
+        initial-value: 67%;
+        inherits: false;
+      }
+
+      @keyframes auroraFlow {
+        0% {
+          --aurora-offset1: 0%;
+          --aurora-offset2: 33%;
+          --aurora-offset3: 67%;
+        }
+        100% {
+          --aurora-offset1: 100%;
+          --aurora-offset2: 133%;
+          --aurora-offset3: 167%;
+        }
+      }
+
+      &::before {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(120, 200, 255, 0.2) 10%,
+          rgba(50, 180, 255, 0.3) 20%,
+          rgba(100, 140, 255, 0.2) 30%,
+          transparent 50%
+        );
+        background-size: 200% 100%;
+        background-position-x: calc(var(--aurora-offset1) * -1);
+        animation: auroraFlow 8s infinite linear;
+        box-shadow: none;
+      }
+
+      &::after {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(180, 120, 255, 0.2) 10%,
+          rgba(120, 100, 255, 0.3) 20%,
+          rgba(140, 180, 255, 0.2) 30%,
+          transparent 50%
+        );
+        background-size: 200% 100%;
+        background-position-x: calc(var(--aurora-offset2) * -1);
+        animation: auroraFlow 12s infinite linear;
+        opacity: 0.7;
+      }
+
+      .glass-shine {
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(200, 255, 220, 0.2) 10%,
+          rgba(150, 255, 200, 0.3) 20%,
+          rgba(180, 220, 255, 0.2) 30%,
+          transparent 50%
+        );
+        background-size: 200% 100%;
+        background-position-x: calc(var(--aurora-offset3) * -1);
+        animation: auroraFlow 10s infinite linear;
+        opacity: 0.5;
+      }
+
+      &:hover {
+        &::before,
+        &::after,
+        .glass-shine {
+          animation-duration: 6s, 8s, 7s;
+        }
+      }
+    }
+
+    /* VARIANTE 3: CYBER */
+    &--cyber {
+      @property --glitch-skew {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+
+      @property --glitch-shift {
+        syntax: "<length>";
+        initial-value: 0px;
+        inherits: false;
+      }
+
+      @keyframes cyberGlitch {
+        0%,
+        91%,
+        94%,
+        100% {
+          --glitch-skew: 0deg;
+          --glitch-shift: 0px;
+        }
+        92% {
+          --glitch-skew: -2deg;
+          --glitch-shift: -2px;
+        }
+        93% {
+          --glitch-skew: 2deg;
+          --glitch-shift: 2px;
+        }
+        95% {
+          --glitch-skew: -1deg;
+          --glitch-shift: -1px;
+        }
+        96% {
+          --glitch-skew: 1deg;
+          --glitch-shift: 1px;
+        }
+      }
+
+      &::before {
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.2) 0px,
+          rgba(0, 0, 0, 0.2) 1px,
+          rgba(0, 0, 0, 0) 1px,
+          rgba(0, 0, 0, 0) 2px
+        );
+        box-shadow: 0px -1px 0px 0px rgba(0, 255, 255, 0.5) inset,
+          0px 1px 0px 0px rgba(255, 0, 255, 0.5) inset;
+        transform: skew(var(--glitch-skew));
+        animation: cyberGlitch 4s infinite ease-in-out;
+      }
+
+      &::after {
+        background: linear-gradient(
+          90deg,
+          rgba(255, 0, 128, 0.3),
+          rgba(0, 255, 255, 0.3)
+        );
+        opacity: 0.4;
+        transform: translateX(var(--glitch-shift));
+        animation: cyberGlitch 4s infinite ease-in-out;
+        mix-blend-mode: exclusion;
+      }
+
+      .glass-shine {
+        background: linear-gradient(
+          -90deg,
+          transparent 0%,
+          rgba(0, 255, 255, 0.2) 40%,
+          rgba(255, 0, 255, 0.2) 60%,
+          transparent 100%
+        );
+        opacity: 0.3;
+        mix-blend-mode: screen;
+      }
+
+      &:hover {
+        &::before,
+        &::after {
+          animation-duration: 2s;
+        }
+      }
+    }
+
+    /* VARIANTE 4: HOLOGRÁFICO */
+    &--holographic {
+      @property --holo-hue {
+        syntax: "<number>";
+        initial-value: 0;
+        inherits: false;
+      }
+
+      @keyframes holographicShift {
+        0% {
+          --holo-hue: 0;
+        }
+        100% {
+          --holo-hue: 360;
+        }
+      }
+
+      &::before {
+        background: linear-gradient(
+          135deg,
+          hsla(calc(var(--holo-hue) + 0), 100%, 70%, 0.2),
+          hsla(calc(var(--holo-hue) + 60), 100%, 60%, 0.2) 25%,
+          hsla(calc(var(--holo-hue) + 120), 100%, 70%, 0.2) 50%,
+          hsla(calc(var(--holo-hue) + 180), 100%, 60%, 0.2) 75%,
+          hsla(calc(var(--holo-hue) + 240), 100%, 70%, 0.2)
+        );
+        animation: holographicShift 8s linear infinite;
+        background-size: 200% 200%;
+        box-shadow: none;
+      }
+
+      &::after {
+        background: linear-gradient(
+          45deg,
+          hsla(calc(var(--holo-hue) + 270), 100%, 70%, 0.3),
+          hsla(calc(var(--holo-hue) + 330), 100%, 60%, 0.3) 25%,
+          hsla(calc(var(--holo-hue) + 30), 100%, 70%, 0.3) 50%,
+          hsla(calc(var(--holo-hue) + 90), 100%, 60%, 0.3) 75%,
+          hsla(calc(var(--holo-hue) + 150), 100%, 70%, 0.3)
+        );
+        animation: holographicShift 12s linear infinite reverse;
+        background-size: 200% 200%;
+        opacity: 0.5;
+      }
+
+      .glass-shine {
+        background: radial-gradient(
+          ellipse at center,
+          rgba(255, 255, 255, 0.3) 0%,
+          rgba(255, 255, 255, 0) 60%
+        );
+        opacity: 0.6;
+        mix-blend-mode: overlay;
+      }
+
+      &:hover {
+        &::before,
+        &::after {
+          animation-duration: 4s, 6s;
+        }
+
+        .glass-shine {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    /* VARIANTE 5: CRISTAL */
+    &--crystal {
+      @property --crystal-angle {
+        syntax: "<angle>";
+        initial-value: 45deg;
+        inherits: false;
+      }
+
+      @property --crystal-intensity {
+        syntax: "<number>";
+        initial-value: 0.15;
+        inherits: false;
+      }
+
+      @keyframes crystalRefract {
+        0% {
+          --crystal-angle: 45deg;
+          --crystal-intensity: 0.15;
+        }
+        50% {
+          --crystal-angle: 135deg;
+          --crystal-intensity: 0.25;
+        }
+        100% {
+          --crystal-angle: 405deg;
+          --crystal-intensity: 0.15;
+        }
+      }
+
+      &::before {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, var(--crystal-intensity));
+        background-image: linear-gradient(
+            var(--crystal-angle),
+            rgba(255, 255, 255, 0) 20%,
+            rgba(255, 255, 255, 0.3) 30%,
+            rgba(255, 255, 255, 0.2) 40%,
+            rgba(255, 255, 255, 0) 80%
+          ),
+          linear-gradient(
+            calc(var(--crystal-angle) + 90deg),
+            rgba(255, 255, 255, 0) 20%,
+            rgba(255, 255, 255, 0.3) 30%,
+            rgba(255, 255, 255, 0.2) 40%,
+            rgba(255, 255, 255, 0) 80%
+          );
+        animation: crystalRefract 10s infinite ease-in-out;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2) inset,
+          0 0 10px rgba(255, 255, 255, 0.1);
+      }
+
+      &::after {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: saturate(180%) blur(10px);
+        -webkit-backdrop-filter: saturate(180%) blur(10px);
+      }
+
+      .glass-shine {
+        background: radial-gradient(
+            circle at 30% 30%,
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0) 40%
+          ),
+          radial-gradient(
+            circle at 70% 70%,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0) 30%
+          );
+      }
+
+      &:hover {
+        &::before {
+          --crystal-intensity: 0.3;
+        }
+      }
+    }
+
+    // Color variant: purple (compatible con todas las variantes)
+    &--purple {
+      @property --purple-hue {
+        syntax: "<angle>";
+        initial-value: 290deg;
+        inherits: false;
+      }
+
+      @keyframes purpleHueShift {
+        0% {
+          --purple-hue: 290deg;
+        }
+        50% {
+          --purple-hue: 310deg;
+        }
+        100% {
+          --purple-hue: 290deg;
+        }
+      }
+
+      animation: rotateShadowGradient 8s infinite ease-in-out,
+        innerGlow 4s infinite alternate ease-in-out,
+        purpleHueShift 6s infinite ease-in-out;
+
+      &::after {
+        background: linear-gradient(
+          calc(var(--shadow-angle) + 43deg),
+          hsl(var(--purple-hue), 70%, 25%, 0.8) 0%,
+          transparent 46%,
+          rgba($primary-indigo, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba($primary-purple-dark, 0.05);
+        box-shadow: 0px -3px 15px 0px rgba(
+            hsl(var(--purple-hue), 90%, 80%),
+            var(--shadow-intensity)
+          ) inset;
+      }
+    }
+
+    // Color variant: red (compatible con todas las variantes)
+    &--red {
+      @property --red-saturation {
+        syntax: "<percentage>";
+        initial-value: 80%;
+        inherits: false;
+      }
+
+      @keyframes redSaturationShift {
+        0% {
+          --red-saturation: 80%;
+        }
+        50% {
+          --red-saturation: 90%;
+        }
+        100% {
+          --red-saturation: 80%;
+        }
+      }
+
+      animation: rotateShadowGradient 8s infinite ease-in-out,
+        innerGlow 4s infinite alternate ease-in-out,
+        redSaturationShift 5s infinite ease-in-out;
+
+      &::after {
+        background: linear-gradient(
+          calc(var(--shadow-angle) + 43deg),
+          hsl(0, var(--red-saturation), 50%, 0.8) 0%,
+          transparent 46%,
+          rgba($primary-red-dark, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba($primary-red, 0.05);
+        box-shadow: 0px -3px 15px 0px rgba(
+            hsl(0, var(--red-saturation), 80%),
+            var(--shadow-intensity)
+          ) inset;
+      }
+    }
+  }
+}

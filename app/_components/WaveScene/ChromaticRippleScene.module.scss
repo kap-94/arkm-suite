@@ -1,0 +1,40 @@
+/* ChromaticRippleScene.module.scss */
+
+.container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
+  transition: opacity 0.3s ease;
+}
+
+/* Este overlay se aplicará sobre el mesh de FloatingImage */
+.floating-image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%; /* Ajusta este valor según el efecto deseado */
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: 10;
+}
+
+/* Media queries para dispositivos móviles */
+@media screen and (max-width: 768px) {
+  .container {
+    min-height: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+}

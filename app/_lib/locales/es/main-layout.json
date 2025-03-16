@@ -1,62 +1,86 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-01-22",
+    "lastUpdated": "2025-03-12",
     "description": "Configuración principal del diseño para rutas públicas",
     "maintainer": "Equipo de Desarrollo"
   },
   "header": {
     "aria": "Navegación principal del sitio",
-    "subtitle": {
-      "firstLetter": "E",
-      "text": "studio de diseño y desarrollo web"
-    },
     "navigation": {
-      "home": {
-        "label": "Inicio",
-        "href": "/",
-        "aria": "Página de inicio",
-        "icon": "home",
-        "meta": {
-          "description": "Bienvenido a nuestra plataforma",
-          "keywords": [
-            "inicio",
-            "bienvenida",
-            "principal"
-          ]
+      "primary": {
+        "services": {
+          "menu_item_id": 1,
+          "menu_item_parent": 0,
+          "label": "Servicios",
+          "title": "Servicios",
+          "href": "/servicios",
+          "url": "/servicios",
+          "aria": "Nuestros Servicios",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Explora nuestra oferta de servicios",
+            "keywords": [
+              "servicios",
+              "ofertas",
+              "soluciones"
+            ]
+          }
+        },
+        "approach": {
+          "menu_item_id": 2,
+          "menu_item_parent": 0,
+          "label": "Metodología",
+          "title": "Metodología",
+          "href": "/metodologia",
+          "url": "/metodologia",
+          "aria": "Nuestra Metodología",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Conoce nuestra metodología y proceso"
+          }
+        },
+        "portfolio": {
+          "menu_item_id": 3,
+          "menu_item_parent": 0,
+          "label": "Portafolio",
+          "title": "Portafolio",
+          "href": "/portafolio",
+          "url": "/portafolio",
+          "aria": "Portafolio",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Explora nuestro portafolio y casos de estudio"
+          }
         }
       },
-      "features": {
-        "label": "Características",
-        "href": "/caracteristicas",
-        "aria": "Resumen de características",
-        "icon": "features",
-        "meta": {
-          "description": "Explora las características de nuestra plataforma"
-        }
-      },
-      "pricing": {
-        "label": "Precios",
-        "href": "/precios",
-        "aria": "Planes de precios",
-        "icon": "pricing",
-        "meta": {
-          "description": "Ver nuestros planes de precios"
-        }
-      },
-      "about": {
-        "label": "Nosotros",
-        "href": "/nosotros",
-        "aria": "Acerca de nosotros",
-        "icon": "info",
-        "meta": {
-          "description": "Conoce más sobre nuestra empresa"
+      "secondary": {
+        "blog": {
+          "menu_item_id": 5,
+          "menu_item_parent": 0,
+          "label": "Articulos",
+          "title": "Articulos",
+          "href": "/blog",
+          "url": "/blog",
+          "aria": "Nuestro Articulos",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Lee nuestros últimos artículos y perspectivas"
+          }
+        },"clientPortal": {
+          "menu_item_id": 4,
+          "menu_item_parent": 0,
+          "label": "Arkm Suite",
+          "title": "Arkm Suite",
+          "href": "/dashboard",
+          "url": "/dashboard",
+          "aria": "Acceso al Portal Arkm para Clientes",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Accede a tu panel de cliente"
+          }
         }
       }
-    },
-    "clientPortal": {
-      "label": "Suite del Cliente",
-      "href": "/dashboard"
     },
     "languageOptions": {
       "english": {
@@ -70,13 +94,13 @@
     }
   },
   "footer": {
-    "description": "Creando experiencias digitales que inspiran, innovan y transforman.",
-    "cta": "Conecta Con Nosotros Hoy",
+    "description": "Creando experiencias digitales que inspiran, transforman e innovan.",
+    "cta": "Conéctate con Nosotros Hoy",
     "links": {
-      "showcase": "Showcase",
+      "showcase": "Vitrina",
       "solutions": "Soluciones",
-      "clientSuite": "Suite del Cliente",
-      "journey": "Trayecto"
+      "clientSuite": "Portal Cliente",
+      "journey": "Trayectoria"
     },
     "copyright": "© {year} ARKM Studio. Todos los derechos reservados.",
     "company": {
@@ -97,30 +121,42 @@
       }
     },
     "navigation": {
-      "careers": {
-        "label": "Carreras",
-        "href": "/carreras",
-        "aria": "Oportunidades laborales",
-        "icon": "briefcase"
+      "services": {
+        "menu_item_id": 6,
+        "menu_item_parent": 0,
+        "label": "Servicios",
+        "title": "Servicios",
+        "href": "/servicios",
+        "url": "/servicios",
+        "aria": "Nuestros Servicios",
+        "showDropdownIcon": false
       },
-      "blog": {
-        "label": "Blog",
-        "href": "/blog",
-        "aria": "Blog de la empresa",
-        "icon": "book"
+      "approach": {
+        "menu_item_id": 7,
+        "menu_item_parent": 0,
+        "label": "Metodología",
+        "title": "Metodología",
+        "href": "/metodologia",
+        "url": "/metodologia",
+        "aria": "Nuestra Metodología",
+        "showDropdownIcon": false
       },
-      "legal": {
-        "label": "Legal",
-        "href": "/legal",
-        "aria": "Información legal",
-        "icon": "shield"
+      "portfolio": {
+        "menu_item_id": 8,
+        "menu_item_parent": 0,
+        "label": "Portafolio",
+        "title": "Portafolio",
+        "href": "/portafolio",
+        "url": "/portafolio",
+        "aria": "Portafolio",
+        "showDropdownIcon": false
       }
     }
   },
   "accessibility": {
     "skipLinks": {
       "main": "Saltar al contenido principal",
-      "navigation": "Saltar a la navegación"
+      "navigation": "Saltar a navegación"
     },
     "aria": {
       "mainNav": "Navegación principal",

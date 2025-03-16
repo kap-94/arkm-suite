@@ -7,8 +7,8 @@ export const inter = Inter({
 });
 
 export const FONTS = {
-  KRANTO: {
-    family: "kranto-normal-semicondensed",
+  SOFIA: {
+    family: "sofia",
     weights: {
       light: 300,
       regular: 400,

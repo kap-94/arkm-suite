@@ -1,4 +1,4 @@
-import { HeaderConfig } from "../../_components/Header";
+import { HeaderConfig } from "@/app/_components/Header";
 
 export const headerConfig: HeaderConfig = {
   appearance: {
@@ -12,7 +12,7 @@ export const headerConfig: HeaderConfig = {
   settings: {
     variant: "glass",
     breakpoint: 768,
-    menuPosition: "right",
+    menuPosition: "left",
   },
   // Adding empty actions array to satisfy type requirements
   // actions: [],

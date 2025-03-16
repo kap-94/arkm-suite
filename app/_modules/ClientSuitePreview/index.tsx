@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
-import { Typography } from "../../_components/Typography";
-import { Benefits } from "../../_components/Benefits";
-import { ImageSlider } from "../../_components/ImageSlider";
+import { Typography } from "@/app/_components/Typography";
+import { Benefits } from "@/app/_components/Benefits";
+import { ImageSlider } from "@/app/_components/ImageSlider";
 import styles from "./ClientSuitePreview.module.scss";
 
 const cx = classNames.bind(styles);
@@ -18,7 +18,7 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
           <Typography
             variant="h2"
             color="primary"
-            fontFamily="kranto"
+            fontFamily="sofia"
             fontWeight={400}
             theme="dark"
             className={cx("suite__title")}
@@ -31,7 +31,7 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
             color="tertiary"
             theme="dark"
             fontWeight={300}
-            fontFamily="usual"
+            fontFamily="sofia"
             className={cx("suite__subtitle")}
           >
             {dictionary?.subtitle ||

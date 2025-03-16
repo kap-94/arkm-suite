@@ -5,13 +5,13 @@ import classNames from "classnames/bind";
 import { Grid, List, ChevronDown } from "lucide-react";
 import ProjectCard from "../ProjectCard";
 import { ThemedTypography } from "../Typography/ThemedTypography";
-import { Dropdown } from "../Dropdown";
+import { ThemedDropdown } from "../Dropdown";
 import Spinner from "../Spinner";
 import { useProjectFilters } from "./hooks/useProjectFilters";
 import { DashboardProjectsProps, ViewMode } from "./types";
 import styles from "./DashboardProjects.module.scss";
 import { useDashboard } from "../../_context/DashboardContext";
-import { VIEW_PREFERENCES } from "../../_lib/constants/viewPreferences";
+import { VIEW_PREFERENCES } from "@/app/_lib/constants/viewPreferences";
 
 const cx = classNames.bind(styles);
 
@@ -85,7 +85,7 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
 
         <div className={cx("dashboard-projects__controls")}>
           <div className={cx("dashboard-projects__filters")}>
-            <Dropdown
+            <ThemedDropdown
               options={statusOptions}
               selected={selectedStatus}
               onSelectedChange={setSelectedStatus}
