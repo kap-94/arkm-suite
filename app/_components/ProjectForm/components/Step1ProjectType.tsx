@@ -5,7 +5,6 @@ import { Typography } from "../../Typography";
 import { Dropdown } from "../../Dropdown";
 import TextField from "../../TextField/TextField";
 import { FormStepProps } from "../types";
-import { projectTypeOptions } from "../constants";
 import styles from "../ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
@@ -17,7 +16,24 @@ export const Step1ProjectType: React.FC<FormStepProps> = ({
   handleBlur,
   setFieldValue,
   shouldShowError,
+  dictionary,
 }) => {
+  const dict = dictionary?.steps?.step1 || {
+    title: "Let's Create Something Amazing",
+    subtitle: "Tell us about your project vision",
+    projectType: "Project Type",
+    pleaseSpecify: "Please specify",
+    specifyPlaceholder: "Specify your project type",
+  };
+
+  const projectTypeOptions = dictionary?.options?.projectType || [
+    { label: "Web Design", value: "web-design" },
+    { label: "Web Development", value: "web-development" },
+    { label: "Digital Branding", value: "digital-branding" },
+    { label: "E-commerce", value: "e-commerce" },
+    { label: "Other", value: "other" },
+  ];
+
   return (
     <div className={cx("project-form")}>
       <Typography
@@ -27,7 +43,7 @@ export const Step1ProjectType: React.FC<FormStepProps> = ({
         variant="h3"
         className={cx("project-form__title")}
       >
-        Let's Create Something Amazing
+        {dict.title}
       </Typography>
       <Typography
         theme="dark"
@@ -37,13 +53,13 @@ export const Step1ProjectType: React.FC<FormStepProps> = ({
         variant="p1"
         className={cx("project-form__subtitle")}
       >
-        Tell us about your project vision
+        {dict.subtitle}
       </Typography>
       <div className={cx("project-form__group")}>
         <Dropdown
           fontFamily="sofia"
           icon={<ChevronDown />}
-          label="Project Type"
+          label={dict.projectType}
           id="project-type"
           options={projectTypeOptions}
           selected={
@@ -57,9 +73,9 @@ export const Step1ProjectType: React.FC<FormStepProps> = ({
         <div className={cx("project-form__group")}>
           <TextField
             variant="secondary"
-            label="Please specify"
+            label={dict.pleaseSpecify}
             name="customType"
-            placeholder="Specify your project type"
+            placeholder={dict.specifyPlaceholder}
             theme={{ type: "dark" }}
             icon={<Edit3 size={20} />}
             fontFamily="sofia"

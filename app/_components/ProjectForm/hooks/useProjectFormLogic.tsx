@@ -1,56 +1,36 @@
-// useProjectFormLogic.ts
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import * as Yup from "yup";
 import { FormValues } from "../types";
 import { initialValues } from "../constants";
-import { useFormSteps } from "./useFormSteps";
 import Step1ProjectType from "../components/Step1ProjectType";
 import Step2ProjectScope from "../components/Step2ProjectScope";
 import Step3ContactInfo from "../components/Step3ContactInfo";
 import Step4Summary from "../components/Step4Summary";
+import { ProjectFormDictionary } from "@/app/_types/dictionary/home.types";
+import { createValidationSchemas } from "../validators/FormSchemas";
 
-export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
-  // Se reutiliza el hook de steps
-  const { currentStep, fieldsTouched, handleNextStep, handlePrevStep } =
-    useFormSteps();
-
-  // Estados internos para errores y control de intento de avanzar
+export const useProjectFormLogic = (
+  formikRef: React.RefObject<any>,
+  dictionary?: ProjectFormDictionary
+) => {
+  // Estado para el paso actual
+  const [currentStep, setCurrentStep] = useState(1);
+  // Estados internos para errores y control
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
   const [attemptedNext, setAttemptedNext] = useState(false);
+  const [fieldsTouched, setFieldsTouched] = useState<Record<string, boolean>>(
+    {}
+  );
 
   // Ref para mantener los valores previos sin necesidad de re-renderizar
   const prevValuesRef = useRef<FormValues>(initialValues);
 
-  // Esquemas de validación para cada paso, memorizados
+  // Esquemas de validación para cada paso, memorizados y con mensajes del diccionario
   const validationSchema = useMemo(() => {
-    return {
-      1: Yup.object({
-        type: Yup.string().required("Project Type is required"),
-        customType: Yup.string().when("type", {
-          is: "other",
-          then: (schema) => schema.required("Custom Project Type is required"),
-          otherwise: (schema) => schema.optional(),
-        }),
-      }),
-      2: Yup.object({
-        budget: Yup.string().required("Budget Range is required"),
-        timeline: Yup.string().required("Timeline is required"),
-      }),
-      3: Yup.object({
-        companyName: Yup.string().required("Company Name is required"),
-        email: Yup.string()
-          .email("Invalid email address")
-          .required("Email Address is required"),
-        phone: Yup.string().optional(),
-        preferredContact: Yup.string().required(
-          "Preferred Contact Method is required"
-        ),
-      }),
-      4: Yup.object({}),
-    };
-  }, []);
+    return createValidationSchemas(dictionary);
+  }, [dictionary]);
 
   // Función para validar el paso actual usando el esquema correspondiente
   const validateCurrentStep = useCallback(
@@ -124,6 +104,32 @@ export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
     }
   }, [formikRef.current?.values, validationErrors, validateCurrentStep]);
 
+  // Handler para el botón "Siguiente/Completar"
+  const handleNextStep = useCallback(
+    (
+      submitForm: () => void,
+      values: FormValues,
+      setFormikErrors: (errors: any) => void,
+      setTouched: (touched: any) => void
+    ) => {
+      // Si es el último paso, enviar el formulario
+      if (currentStep === 4) {
+        submitForm();
+        return true;
+      }
+
+      // Avanzar al siguiente paso
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
+      return true;
+    },
+    [currentStep]
+  );
+
+  // Handler para el botón "Anterior"
+  const handlePrevStep = useCallback(() => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  }, []);
+
   // Handler para el botón "Siguiente"
   const createNextButtonHandler = useCallback(
     (
@@ -164,6 +170,13 @@ export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
       return (e: React.ChangeEvent<any>) => {
         handleFormikChange(e);
         const { name } = e.target;
+
+        // Marcar el campo como tocado
+        setFieldsTouched((prev) => ({
+          ...prev,
+          [name]: true,
+        }));
+
         if (validationErrors[name]) {
           const updatedValues = {
             ...values,
@@ -197,6 +210,7 @@ export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
     ) => {
       const combinedErrors = { ...formikErrors, ...validationErrors };
       const shouldShowError = createShouldShowError(combinedErrors);
+
       const stepProps = {
         values,
         errors: combinedErrors,
@@ -205,6 +219,7 @@ export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
         handleBlur,
         setFieldValue,
         shouldShowError,
+        dictionary,
       };
 
       switch (currentStep) {
@@ -220,7 +235,7 @@ export const useProjectFormLogic = (formikRef: React.RefObject<any>) => {
           return <div>Invalid step: {currentStep}</div>;
       }
     },
-    [currentStep, validationErrors, createShouldShowError]
+    [currentStep, validationErrors, createShouldShowError, dictionary]
   );
 
   return {

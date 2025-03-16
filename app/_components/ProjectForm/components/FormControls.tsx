@@ -2,17 +2,10 @@ import React, { memo, useCallback } from "react";
 import classNames from "classnames/bind";
 import { Typography } from "../../Typography";
 import Spinner from "../../Spinner"; // Ajusta la ruta según tu estructura de carpetas
+import { FormControlsProps } from "../types";
 import styles from "../ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
-
-interface FormControlsProps {
-  currentStep: number;
-  onPrevStep: () => void;
-  onNextStep: () => void;
-  isLastStep: boolean;
-  isSending?: boolean;
-}
 
 export const FormControls: React.FC<FormControlsProps> = ({
   currentStep,
@@ -20,6 +13,11 @@ export const FormControls: React.FC<FormControlsProps> = ({
   onNextStep,
   isLastStep,
   isSending = false,
+  dictionary = {
+    back: "Back",
+    continue: "Continue",
+    complete: "Complete",
+  },
 }) => {
   // Función para manejar el clic en el botón principal - memorizada
   const handleMainButtonClick = useCallback(
@@ -53,7 +51,7 @@ export const FormControls: React.FC<FormControlsProps> = ({
               fontWeight={500}
               variant="button"
             >
-              Back
+              {dictionary.back}
             </Typography>
           </button>
         )}
@@ -77,7 +75,7 @@ export const FormControls: React.FC<FormControlsProps> = ({
               fontWeight={500}
               variant="button"
             >
-              {isLastStep ? "Complete" : "Continue"}
+              {isLastStep ? dictionary.complete : dictionary.continue}
             </Typography>
           )}
         </button>

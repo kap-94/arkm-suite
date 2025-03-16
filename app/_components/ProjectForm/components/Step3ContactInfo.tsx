@@ -5,7 +5,6 @@ import { Typography } from "../../Typography";
 import { Dropdown } from "../../Dropdown";
 import TextField from "../../TextField/TextField";
 import { FormStepProps } from "../types";
-import { contactMethodOptions } from "../constants";
 import styles from "../ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
@@ -18,7 +17,26 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
   handleBlur,
   setFieldValue,
   shouldShowError,
+  dictionary,
 }) => {
+  const dict = dictionary?.steps?.step3 || {
+    title: "Contact Information",
+    subtitle: "Let's stay in touch",
+    companyName: "Company Name",
+    companyNamePlaceholder: "Your company name",
+    emailAddress: "Email Address",
+    emailPlaceholder: "your@email.com",
+    phone: "Phone",
+    phonePlaceholder: "+1 (555) 000-0000",
+    preferredContact: "Preferred Contact Method",
+  };
+
+  const contactMethodOptions = dictionary?.options?.contactMethod || [
+    { label: "Email", value: "email" },
+    { label: "Phone", value: "phone" },
+    { label: "Video Call", value: "video-call" },
+  ];
+
   return (
     <div className={cx("project-form")}>
       <Typography
@@ -28,7 +46,7 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
         variant="h3"
         className={cx("project-form__title")}
       >
-        Contact Information
+        {dict.title}
       </Typography>
       <Typography
         theme="dark"
@@ -37,15 +55,15 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
         variant="p1"
         className={cx("project-form__subtitle")}
       >
-        Let's stay in touch
+        {dict.subtitle}
       </Typography>
 
       <div className={cx("project-form__group")}>
         <TextField
           variant="secondary"
-          label="Company Name"
+          label={dict.companyName}
           name="companyName"
-          placeholder="Your company name"
+          placeholder={dict.companyNamePlaceholder}
           theme={{ type: "dark" }}
           fontFamily="sofia"
           error={errors.companyName}
@@ -60,10 +78,10 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
       <div className={cx("project-form__group")}>
         <TextField
           variant="secondary"
-          label="Email Address"
+          label={dict.emailAddress}
           name="email"
           type="email"
-          placeholder="your@email.com"
+          placeholder={dict.emailPlaceholder}
           theme={{ type: "dark" }}
           fontFamily="sofia"
           error={errors.email}
@@ -78,10 +96,10 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
       <div className={cx("project-form__group")}>
         <TextField
           variant="secondary"
-          label="Phone"
+          label={dict.phone}
           name="phone"
           type="tel"
-          placeholder="+1 (555) 000-0000"
+          placeholder={dict.phonePlaceholder}
           theme={{ type: "dark" }}
           fontFamily="sofia"
           error={errors.phone}
@@ -97,7 +115,7 @@ const Step3ContactInfo: React.FC<FormStepProps> = ({
         <Dropdown
           fontFamily="sofia"
           icon={<ChevronDown />}
-          label="Preferred Contact Method"
+          label={dict.preferredContact}
           id="preferred-contact"
           options={contactMethodOptions}
           selected={

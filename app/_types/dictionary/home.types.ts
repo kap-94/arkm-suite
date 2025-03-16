@@ -9,15 +9,14 @@ interface Meta {
 }
 
 export interface HeroDictionary {
-  headline: {
-    create: string;
-    scale: string;
-    transform: string;
-  };
   description: {
-    subtitle: string;
     description: string;
     cta: string;
+  };
+  title: {
+    main: string;
+    secondary: string;
+    connector: string;
   };
   scroll: string;
 }
@@ -51,9 +50,86 @@ export interface ClientSuiteDictionary {
   benefits: BenefitData[];
 }
 
+export interface DropdownOption {
+  label: string;
+  value: string;
+}
+
+export interface ProjectFormDictionary {
+  title: string;
+  subtitle: string;
+  steps: {
+    step1: {
+      title: string;
+      subtitle: string;
+      projectType: string;
+      pleaseSpecify: string;
+      specifyPlaceholder: string;
+    };
+    step2: {
+      title: string;
+      subtitle: string;
+      budgetRange: string;
+      timeline: string;
+    };
+    step3: {
+      title: string;
+      subtitle: string;
+      companyName: string;
+      companyNamePlaceholder: string;
+      emailAddress: string;
+      emailPlaceholder: string;
+      phone: string;
+      phonePlaceholder: string;
+      preferredContact: string;
+    };
+    step4: {
+      title: string;
+      subtitle: string;
+      projectDetails: string;
+      contactInformation: string;
+      terms: {
+        type: string;
+        budget: string;
+        timeline: string;
+        company: string;
+        email: string;
+        phone: string;
+        preferredContact: string;
+      };
+    };
+  };
+  controls: {
+    back: string;
+    continue: string;
+    complete: string;
+  };
+  options: {
+    projectType: DropdownOption[];
+    budget: DropdownOption[];
+    timeline: DropdownOption[];
+    contactMethod: DropdownOption[];
+  };
+  validation: {
+    projectTypeRequired: string;
+    customTypeRequired: string;
+    budgetRequired: string;
+    timelineRequired: string;
+    companyNameRequired: string;
+    emailRequired: string;
+    emailInvalid: string;
+    preferredContactRequired: string;
+  };
+  success: string;
+  error: string;
+}
+
 export interface HomeDictionary {
   meta: Meta;
   hero: HeroDictionary;
   solutions: SolutionsDictionary;
   clientSuite: ClientSuiteDictionary;
+  forms: {
+    projectForm: ProjectFormDictionary;
+  };
 }

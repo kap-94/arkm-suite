@@ -1,4 +1,6 @@
 // Tipos específicos para el formulario del proyecto
+import { ProjectFormDictionary } from "@/app/_types/dictionary/home.types";
+
 export interface FormValues {
   type: string;
   customType: string;
@@ -12,6 +14,7 @@ export interface FormValues {
 
 export interface ProjectFormProps {
   onCloseModal?: () => void;
+  dictionary?: ProjectFormDictionary;
 }
 
 export interface DropdownOption {
@@ -28,4 +31,19 @@ export interface FormStepProps {
   handleBlur: (e: React.FocusEvent<any>) => void;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
   shouldShowError: (fieldName: string) => boolean;
+  dictionary?: ProjectFormDictionary; // Diccionario específico para ProjectForm
+}
+
+// Tipo para los controles del formulario
+export interface FormControlsProps {
+  currentStep: number;
+  onPrevStep: () => void;
+  onNextStep: () => void;
+  isLastStep: boolean;
+  isSending?: boolean;
+  dictionary?: {
+    back: string;
+    continue: string;
+    complete: string;
+  };
 }

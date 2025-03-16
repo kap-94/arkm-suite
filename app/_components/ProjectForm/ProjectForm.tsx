@@ -14,7 +14,10 @@ import styles from "./ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
 
-export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
+export const ProjectForm: React.FC<ProjectFormProps> = ({
+  onCloseModal,
+  dictionary,
+}) => {
   const formikRef = useRef<any>(null);
   const [isSending, setIsSending] = useState(false);
   const { showSnackbar } = useUIContext();
@@ -26,7 +29,14 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
     renderStep,
     handlePrevStep,
     setValidationErrors,
-  } = useProjectFormLogic(formikRef);
+  } = useProjectFormLogic(formikRef, dictionary);
+
+  // Valores por defecto en caso de que no haya diccionario
+  const successMessage =
+    dictionary?.success ||
+    "Email sent successfully. Thank you for submitting your project.";
+  const errorMessage =
+    dictionary?.error || "Error sending email. Please try again.";
 
   return (
     <Formik
@@ -39,17 +49,11 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
         setIsSending(true);
         try {
           await sendProjectEmail(values);
-          showSnackbar(
-            "Correo enviado exitosamente. Gracias por enviar tu proyecto.",
-            "success"
-          );
+          showSnackbar(successMessage, "success");
           onCloseModal?.();
         } catch (error) {
           console.error("Error sending email:", error);
-          showSnackbar(
-            "Error al enviar el correo. Por favor, inténtalo de nuevo.",
-            "error"
-          );
+          showSnackbar(errorMessage, "error");
         } finally {
           setIsSending(false);
         }
@@ -98,6 +102,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onCloseModal }) => {
                 onNextStep={handleNextButtonClick}
                 isLastStep={currentStep === 4}
                 isSending={isSending}
+                dictionary={dictionary?.controls}
               />
             </div>
           </Form>

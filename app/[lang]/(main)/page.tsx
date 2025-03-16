@@ -47,11 +47,15 @@ export default async function Home({
     homeDictionary,
     lang
   );
+
   return (
     <UIProvider>
       <div className={cx("home-page")}>
         <ShaderBackground>
-          <Hero dictionary={dictionary.hero} />
+          <Hero
+            dictionary={dictionary.hero}
+            projectFormDictionary={dictionary.forms.projectForm}
+          />
           <SolutionsModule dictionary={dictionary.solutions} />
         </ShaderBackground>
         <ClientSuitePreview dictionary={dictionary.clientSuite} />

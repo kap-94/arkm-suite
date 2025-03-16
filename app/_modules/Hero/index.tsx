@@ -16,9 +16,10 @@ const cx = classNames.bind(styles);
 
 interface HeroProps {
   dictionary: HeroDictionary;
+  projectFormDictionary?: any; // Se recibe como prop separada
 }
 
-export const Hero = ({ dictionary }: HeroProps) => (
+export const Hero = ({ dictionary, projectFormDictionary }: HeroProps) => (
   <section id="home" className={cx("hero")}>
     <div className={cx("hero__content")}>
       <div className={cx("hero__spacer")} />
@@ -42,9 +43,11 @@ export const Hero = ({ dictionary }: HeroProps) => (
           theme="dark"
           className={cx("hero__info-subtitle")}
         >
-          Web Design
-          <span className={cx("hero__info-subtitle-and-character")}>&</span>
-          Development
+          {dictionary.title.main}
+          <span className={cx("hero__info-subtitle-and-character")}>
+            {dictionary.title.connector}
+          </span>
+          {dictionary.title.secondary}
         </Typography>
       </div>
 
@@ -60,7 +63,7 @@ export const Hero = ({ dictionary }: HeroProps) => (
             </Button>
           </Modal.Open>
           <Modal.Window name="project-form">
-            <ProjectForm />
+            <ProjectForm dictionary={projectFormDictionary} />
           </Modal.Window>
         </Modal>
 

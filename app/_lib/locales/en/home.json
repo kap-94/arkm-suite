@@ -1,110 +1,200 @@
 {
-    "meta": {
-      "title": "ARKM Studio - Web Design and Development",
-      "description": "Design and development studio specializing in creating exceptional digital experiences. We transform ideas into innovative and elegant web solutions.",
-      "keywords": [
-        "web design",
-        "web development",
-        "digital agency",
-        "ui/ux design",
-        "frontend development",
-        "backend development",
-        "responsive design",
-        "digital branding",
-        "user experience",
-        "ARKM Studio"
-      ],
-      "authors": [
-        { "name": "ARKM Studio" }
-      ],
-      "creator": "ARKM Studio",
-      "publisher": "ARKM Studio"
+  "meta": {
+    "title": "ARKM Studio - Web Design and Development",
+    "description": "Design and development studio specializing in creating exceptional digital experiences. We transform ideas into innovative and elegant web solutions.",
+    "keywords": [
+      "web design",
+      "web development",
+      "digital agency",
+      "ui/ux design",
+      "frontend development",
+      "backend development",
+      "responsive design",
+      "digital branding",
+      "user experience",
+      "ARKM Studio"
+    ],
+    "authors": [
+      { "name": "ARKM Studio" }
+    ],
+    "creator": "ARKM Studio",
+    "publisher": "ARKM Studio"
+  },
+  "hero": {
+    "description": {
+      "description": "We turn a company's vision into exceptional digital experiences.",
+      "cta": "Let's talk about your project"
     },
-    "hero": {
-      "headline": {
-        "create": "Accelerate",
-        "scale": "Your",
-        "transform": "Business"
+    "title": {
+      "main": "Web Design",
+      "secondary": "Development",
+      "connector": "&"
+    },
+    "scroll": "Scroll to Explore"
+  },
+  "solutions": {
+    "title": "Solutions that drive impact",
+    "subtitle": "Each project is an opportunity to create lasting impact",
+    "solutions": [
+      {
+        "id": "web-design-solution",
+        "title": "Web Design",
+        "description": "Design to us is not only effective, efficient and visually pleasing screens, but motion design with its live animations as well as entertaining illustrations.",
+        "features": [
+          {
+            "title": "Advanced UX/UI Design",
+            "description": "User-focused design, refined via research, wireframing, and prototyping to achieve seamless form and function."
+          },
+          {
+            "title": "Design Systems",
+            "description": "Consistent frameworks with reusable components and style guides ensuring scalability across all touchpoints."
+          },
+          {
+            "title": "Custom Animations",
+            "description": "Purposeful motion design that enhances interactions and brings interfaces to life while improving usability."
+          }
+        ]
       },
-      "description": {
-        "subtitle": "A professional website is a complex thing to build",
-        "description": "We turn a company’s vision into exceptional digital experiences.",
-        "cta": "Let's talk about your project"
+      {
+        "id": "web-development-solution",
+        "title": "Web Development",
+        "description": "We build robust and scalable web solutions using cutting-edge technologies and best practices.",
+        "features": [
+          {
+            "title": "Modern Architecture",
+            "description": "Future-proof solutions using microservices and cloud-native tech for maximum scalability and maintainability."
+          },
+          {
+            "title": "Clean Code",
+            "description": "Clean, documented code with automated tests and CI ensures long-term quality."
+          },
+          {
+            "title": "Optimized Performance",
+            "description": "Lightning-fast web experiences via code splitting, caching, and performance monitoring."
+          }
+        ]
+      }
+    ]
+  },
+  "clientSuite": {
+    "title": "Access our Client Suite",
+    "subtitle": "A comprehensive platform that centralizes project management with real-time visibility and tracking tools.",
+    "benefits": [
+      {
+        "title": "Effective Collaboration",
+        "description": "Communicate directly with our team and evaluate each phase."
       },
-      "scroll": "Scroll to Explore"
-    },
-    "solutions": {
-      "title": "Solutions that drive impact",
-      "subtitle": "Each project is an opportunity to create lasting impact",
-      "solutions": [
-        {
-          "id": "web-design-solution",
-          "title": "Web Design",
-          "description": "Design to us is not only effective, efficient and visually pleasing screens, but motion design with its live animations as well as entertaining illustrations.",
-          "features": [
-            {
-              "title": "Advanced UX/UI Design",
-              "description": "User-focused design, refined via research, wireframing, and prototyping to achieve seamless form and function."
-            },
-            {
-              "title": "Design Systems",
-              "description": "Consistent frameworks with reusable components and style guides ensuring scalability across all touchpoints."
-            },
-            {
-              "title": "Custom Animations",
-              "description": "Purposeful motion design that enhances interactions and brings interfaces to life while improving usability."
-            }
-          ]
+      {
+        "title": "Real-Time Tracking",
+        "description": "Monitor your project's progress with real-time metrics."
+      },
+      {
+        "title": "Document Management",
+        "description": "Access all project documentation, resources, and deliverables."
+      },
+      {
+        "title": "Metrics and Reports",
+        "description": "Analyze performance and progress with detailed reports and metrics."
+      },
+      {
+        "title": "Clear Planning",
+        "description": "Visualize milestones, key dates, and detailed project timelines."
+      },
+      {
+        "title": "Direct Communication",
+        "description": "Dedicated communication channel with conversation tracking."
+      }
+    ]
+  },
+  "forms": {
+    "projectForm": {
+      "title": "Let's Create Something Amazing",
+      "subtitle": "Tell us about your project vision",
+      "steps": {
+        "step1": {
+          "title": "Let's Create Something Amazing",
+          "subtitle": "Tell us about your project vision",
+          "projectType": "Project Type",
+          "pleaseSpecify": "Please specify",
+          "specifyPlaceholder": "Specify your project type"
         },
-        {
-          "id": "web-development-solution",
-          "title": "Web Development",
-          "description": "We build robust and scalable web solutions using cutting-edge technologies and best practices.",
-          "features": [
-            {
-              "title": "Modern Architecture",
-              "description": "Future-proof solutions using microservices and cloud-native tech for maximum scalability and maintainability."
-            },
-            {
-              "title": "Clean Code",
-              "description": "Clean, documented code with automated tests and CI ensures long-term quality."
-            },
-            {
-              "title": "Optimized Performance",
-              "description": "Lightning-fast web experiences via code splitting, caching, and performance monitoring."
-            }
-          ]
+        "step2": {
+          "title": "Project Scope",
+          "subtitle": "Help us understand your needs",
+          "budgetRange": "Budget Range",
+          "timeline": "Timeline"
+        },
+        "step3": {
+          "title": "Contact Information",
+          "subtitle": "Let's stay in touch",
+          "companyName": "Company Name",
+          "companyNamePlaceholder": "Your company name",
+          "emailAddress": "Email Address",
+          "emailPlaceholder": "your@email.com",
+          "phone": "Phone",
+          "phonePlaceholder": "+1 (555) 000-0000",
+          "preferredContact": "Preferred Contact Method"
+        },
+        "step4": {
+          "title": "Almost There!",
+          "subtitle": "Review your project details",
+          "projectDetails": "Project Details",
+          "contactInformation": "Contact Information",
+          "terms": {
+            "type": "Type:",
+            "budget": "Budget:",
+            "timeline": "Timeline:",
+            "company": "Company:",
+            "email": "Email:",
+            "phone": "Phone:",
+            "preferredContact": "Preferred Contact:"
+          }
         }
-      ]
-    },
-    "clientSuite": {
-      "title": "Access our Client Suite",
-      "subtitle": "A comprehensive platform that centralizes project management with real-time visibility and tracking tools.",
-      "benefits": [
-        {
-          "title": "Effective Collaboration",
-          "description": "Communicate directly with our team and evaluate each phase."
-        },
-        {
-          "title": "Real-Time Tracking",
-          "description": "Monitor your project's progress with real-time metrics."
-        },
-        {
-          "title": "Document Management",
-          "description": "Access all project documentation, resources, and deliverables."
-        },
-        {
-          "title": "Metrics and Reports",
-          "description": "Analyze performance and progress with detailed reports and metrics."
-        },
-        {
-          "title": "Clear Planning",
-          "description": "Visualize milestones, key dates, and detailed project timelines."
-        },
-        {
-          "title": "Direct Communication",
-          "description": "Dedicated communication channel with conversation tracking."
-        }
-      ]
+      },
+      "controls": {
+        "back": "Back",
+        "continue": "Continue",
+        "complete": "Complete"
+      },
+      "options": {
+        "projectType": [
+          { "label": "Web Design", "value": "web-design" },
+          { "label": "Web Development", "value": "web-development" },
+          { "label": "Digital Branding", "value": "digital-branding" },
+          { "label": "E-commerce", "value": "e-commerce" },
+          { "label": "Other", "value": "other" }
+        ],
+        "budget": [
+          { "label": "$0 - $5,000", "value": "0-5k" },
+          { "label": "$5,000 - $10,000", "value": "5k-10k" },
+          { "label": "$10,000 - $25,000", "value": "10k-25k" },
+          { "label": "$25,000 - $50,000", "value": "25k-50k" },
+          { "label": "$50,000+", "value": "50k+" }
+        ],
+        "timeline": [
+          { "label": "1-2 Months", "value": "1-2-months" },
+          { "label": "2-3 Months", "value": "2-3-months" },
+          { "label": "3-6 Months", "value": "3-6-months" },
+          { "label": "6+ Months", "value": "6+-months" }
+        ],
+        "contactMethod": [
+          { "label": "Email", "value": "email" },
+          { "label": "Phone", "value": "phone" },
+          { "label": "Video Call", "value": "video-call" }
+        ]
+      },
+      "validation": {
+        "projectTypeRequired": "Project Type is required",
+        "customTypeRequired": "Custom Project Type is required",
+        "budgetRequired": "Budget Range is required",
+        "timelineRequired": "Timeline is required",
+        "companyNameRequired": "Company Name is required",
+        "emailRequired": "Email Address is required",
+        "emailInvalid": "Invalid email address",
+        "preferredContactRequired": "Preferred Contact Method is required"
+      },
+      "success": "Email sent successfully. Thank you for submitting your project.",
+      "error": "Error sending email. Please try again."
     }
   }
+}

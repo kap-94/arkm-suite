@@ -1,112 +1,200 @@
 {
-    "meta": {
-      "title": "ARKM Studio - Diseño y Desarrollo Web",
-      "description": "Estudio de diseño y desarrollo especializado en crear experiencias digitales excepcionales. Transformamos ideas en soluciones web innovadoras y elegantes.",
-      "keywords": [
-        "diseño web",
-        "desarrollo web",
-        "agencia digital",
-        "diseño UI/UX",
-        "desarrollo frontend",
-        "desarrollo backend",
-        "diseño responsive",
-        "branding digital",
-        "experiencia de usuario",
-        "ARKM Studio"
-      ],
-      "authors": [
-        {
-          "name": "ARKM Studio"
-        }
-      ],
-      "creator": "ARKM Studio",
-      "publisher": "ARKM Studio"
+  "meta": {
+    "title": "ARKM Studio - Diseño y Desarrollo Web",
+    "description": "Estudio de diseño y desarrollo especializado en crear experiencias digitales excepcionales. Transformamos ideas en soluciones web innovadoras y elegantes.",
+    "keywords": [
+      "diseño web",
+      "desarrollo web",
+      "agencia digital",
+      "diseño ui/ux",
+      "desarrollo frontend",
+      "desarrollo backend",
+      "diseño responsive",
+      "branding digital",
+      "experiencia de usuario",
+      "ARKM Studio"
+    ],
+    "authors": [
+      { "name": "ARKM Studio" }
+    ],
+    "creator": "ARKM Studio",
+    "publisher": "ARKM Studio"
+  },
+  "hero": {
+    "description": {
+      "description": "Materializamos conceptos en experiencias digitales únicas.",
+      "cta": "Hablemos de tu proyecto"
     },
-    "hero": {
-      "headline": {
-        "create": "Transforma",
-        "scale": "Tu",
-        "transform": "Negocio"
+    "title": {
+      "main": "Diseño Web",
+      "secondary": "Desarrollo",
+      "connector": "y"
+    },
+    "scroll": "Desplázate para explorar"
+  },
+  "solutions": {
+    "title": "Soluciones que generan impacto",
+    "subtitle": "Cada proyecto es una oportunidad para crear un impacto duradero",
+    "solutions": [
+      {
+        "id": "web-design-solution",
+        "title": "Diseño Web",
+        "description": "Para nosotros, el diseño no solo consiste en pantallas efectivas, eficientes y visualmente agradables, sino también en diseño de movimiento con sus animaciones en vivo e ilustraciones entretenidas.",
+        "features": [
+          {
+            "title": "Diseño UX/UI Avanzado",
+            "description": "Diseño centrado en el usuario, refinado mediante investigación, wireframing y prototipado para lograr una forma y función perfectas."
+          },
+          {
+            "title": "Sistemas de Diseño",
+            "description": "Marcos coherentes con componentes reutilizables y guías de estilo que garantizan la escalabilidad en todos los puntos de contacto."
+          },
+          {
+            "title": "Animaciones Personalizadas",
+            "description": "Diseño de movimiento intencionado que mejora las interacciones y da vida a las interfaces mientras mejora la usabilidad."
+          }
+        ]
       },
-      "description": {
-        "subtitle": "Un sitio web profesional es algo complejo",
-        "description": "Materializamos visiones empresariales en experiencias digitales memorables.",
-        "cta": "Cuéntanos del proyecto"
+      {
+        "id": "web-development-solution",
+        "title": "Desarrollo Web",
+        "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y mejores prácticas.",
+        "features": [
+          {
+            "title": "Arquitectura Moderna",
+            "description": "Soluciones a prueba de futuro que utilizan microservicios y tecnología nativa en la nube para máxima escalabilidad y mantenibilidad."
+          },
+          {
+            "title": "Código Limpio",
+            "description": "Código limpio y documentado con pruebas automatizadas y CI que garantiza la calidad a largo plazo."
+          },
+          {
+            "title": "Rendimiento Optimizado",
+            "description": "Experiencias web ultrarrápidas mediante la división de código, almacenamiento en caché y monitoreo del rendimiento."
+          }
+        ]
+      }
+    ]
+  },
+  "clientSuite": {
+    "title": "Accede a nuestra Suite de Cliente",
+    "subtitle": "Una plataforma integral que centraliza la gestión de proyectos con herramientas de visibilidad y seguimiento en tiempo real.",
+    "benefits": [
+      {
+        "title": "Colaboración Efectiva",
+        "description": "Comunícate directamente con nuestro equipo y evalúa cada fase."
       },
-      "scroll": "Explora desplazándote"
-    },
-    "solutions": {
-      "title": "Soluciones que generan impacto",
-      "subtitle": "Cada proyecto es una oportunidad de crear impacto duradero",
-      "solutions": [
-        {
-          "id": "web-design-solution",
-          "title": "Diseño Web",
-          "description": "Para nosotros el diseño no se trata solo de pantallas eficaces, eficientes y visualmente agradables, sino también de diseño de movimiento con sus animaciones en vivo e ilustraciones atractivas.",
-          "features": [
-            {
-              "title": "Diseño UX/UI Avanzado",
-              "description": "Diseño centrado en el usuario, refinado mediante investigación, wireframing y prototipos para lograr una forma y función perfectas."
-            },
-            {
-              "title": "Sistemas de Diseño",
-              "description": "Marcos consistentes con componentes reutilizables y guías de estilo que garantizan la escalabilidad en todos los puntos de contacto."
-            },
-            {
-              "title": "Animaciones Personalizadas",
-              "description": "Diseño de movimiento intencional que mejora las interacciones y da vida a las interfaces mientras mejora la usabilidad."
-            }
-          ]
+      {
+        "title": "Seguimiento en Tiempo Real",
+        "description": "Monitorea el progreso de tu proyecto con métricas en tiempo real."
+      },
+      {
+        "title": "Gestión de Documentos",
+        "description": "Accede a toda la documentación, recursos y entregables del proyecto."
+      },
+      {
+        "title": "Métricas e Informes",
+        "description": "Analiza el rendimiento y el progreso con informes y métricas detallados."
+      },
+      {
+        "title": "Planificación Clara",
+        "description": "Visualiza hitos, fechas clave y cronogramas detallados del proyecto."
+      },
+      {
+        "title": "Comunicación Directa",
+        "description": "Canal de comunicación dedicado con seguimiento de conversaciones."
+      }
+    ]
+  },
+  "forms": {
+    "projectForm": {
+      "title": "Creemos Algo Increíble",
+      "subtitle": "Cuéntanos sobre la visión de tu proyecto",
+      "steps": {
+        "step1": {
+          "title": "Creemos Algo Increíble",
+          "subtitle": "Cuéntanos sobre la visión de tu proyecto",
+          "projectType": "Tipo de Proyecto",
+          "pleaseSpecify": "Por favor, especifica",
+          "specifyPlaceholder": "Especifica el tipo de tu proyecto"
         },
-        {
-          "id": "web-development-solution",
-          "title": "Desarrollo Web",
-          "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y mejores prácticas.",
-          "features": [
-            {
-              "title": "Arquitectura Moderna",
-              "description": "Soluciones a prueba de futuro que utilizan microservicios y tecnología nativa en la nube para máxima escalabilidad y mantenibilidad."
-            },
-            {
-              "title": "Código Limpio",
-              "description": "Código limpio y documentado con pruebas automatizadas y CI que garantiza calidad a largo plazo."
-            },
-            {
-              "title": "Rendimiento Optimizado",
-              "description": "Experiencias web ultrarrápidas mediante division de código, almacenamiento en caché y monitoreo de rendimiento."
-            }
-          ]
+        "step2": {
+          "title": "Alcance del Proyecto",
+          "subtitle": "Ayúdanos a entender tus necesidades",
+          "budgetRange": "Rango de Presupuesto",
+          "timeline": "Cronograma"
+        },
+        "step3": {
+          "title": "Información de Contacto",
+          "subtitle": "Mantengámonos en contacto",
+          "companyName": "Nombre de la Empresa",
+          "companyNamePlaceholder": "Nombre de tu empresa",
+          "emailAddress": "Correo Electrónico",
+          "emailPlaceholder": "tu@correo.com",
+          "phone": "Teléfono",
+          "phonePlaceholder": "+34 (555) 000-0000",
+          "preferredContact": "Método de Contacto Preferido"
+        },
+        "step4": {
+          "title": "¡Casi Listos!",
+          "subtitle": "Revisa los detalles de tu proyecto",
+          "projectDetails": "Detalles del Proyecto",
+          "contactInformation": "Información de Contacto",
+          "terms": {
+            "type": "Tipo:",
+            "budget": "Presupuesto:",
+            "timeline": "Cronograma:",
+            "company": "Empresa:",
+            "email": "Correo:",
+            "phone": "Teléfono:",
+            "preferredContact": "Contacto Preferido:"
+          }
         }
-      ]
-    },
-    "clientSuite": {
-      "title": "Acceda a nuestra Suite del Cliente",
-      "subtitle": "Una plataforma integral que centraliza la gestión de proyectos con visibilidad en tiempo real y herramientas de seguimiento.",
-      "benefits": [
-        {
-          "title": "Colaboración efectiva",
-          "description": "Comunícate directamente con nuestro equipo y evalua cada fase."
-        },
-        {
-          "title": "Seguimiento en tiempo real",
-          "description": "Monitorea el progreso de tu proyecto con métricas en tiempo real."
-        },
-        {
-          "title": "Gestión de los documentos",
-          "description": "Accede a toda la documentación, recursos y entregables del proyecto."
-        },
-        {
-          "title": "Métricas y reportes",
-          "description": "Analiza el rendimiento y avance con reportes y métricas detalladas."
-        },
-        {
-          "title": "Planificación clara",
-          "description": "Visualiza hitos, fechas clave y cronogramas detallados del proyecto."
-        },
-        {
-          "title": "Comunicación directa",
-          "description": "Canal de comunicación dedicado con seguimiento de conversaciones."
-        }
-      ]
+      },
+      "controls": {
+        "back": "Atrás",
+        "continue": "Continuar",
+        "complete": "Completar"
+      },
+      "options": {
+        "projectType": [
+          { "label": "Diseño Web", "value": "web-design" },
+          { "label": "Desarrollo Web", "value": "web-development" },
+          { "label": "Branding Digital", "value": "digital-branding" },
+          { "label": "Comercio Electrónico", "value": "e-commerce" },
+          { "label": "Otro", "value": "other" }
+        ],
+        "budget": [
+          { "label": "$0 - $5,000", "value": "0-5k" },
+          { "label": "$5,000 - $10,000", "value": "5k-10k" },
+          { "label": "$10,000 - $25,000", "value": "10k-25k" },
+          { "label": "$25,000 - $50,000", "value": "25k-50k" },
+          { "label": "$50,000+", "value": "50k+" }
+        ],
+        "timeline": [
+          { "label": "1-2 Meses", "value": "1-2-months" },
+          { "label": "2-3 Meses", "value": "2-3-months" },
+          { "label": "3-6 Meses", "value": "3-6-months" },
+          { "label": "6+ Meses", "value": "6+-months" }
+        ],
+        "contactMethod": [
+          { "label": "Correo Electrónico", "value": "email" },
+          { "label": "Teléfono", "value": "phone" },
+          { "label": "Videollamada", "value": "video-call" }
+        ]
+      },
+      "validation": {
+        "projectTypeRequired": "El tipo de proyecto es obligatorio",
+        "customTypeRequired": "Debes especificar el tipo de proyecto",
+        "budgetRequired": "El rango de presupuesto es obligatorio",
+        "timelineRequired": "El cronograma es obligatorio",
+        "companyNameRequired": "El nombre de la empresa es obligatorio",
+        "emailRequired": "El correo electrónico es obligatorio",
+        "emailInvalid": "El correo electrónico no es válido",
+        "preferredContactRequired": "El método de contacto preferido es obligatorio"
+      },
+      "success": "Correo enviado exitosamente. Gracias por enviar tu proyecto.",
+      "error": "Error al enviar el correo. Por favor, inténtalo de nuevo."
     }
   }
+}

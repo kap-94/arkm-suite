@@ -3,53 +3,49 @@ import classNames from "classnames/bind";
 import { Typography } from "../../Typography";
 import { FormStepProps } from "../types";
 import { SummarySection } from "./SummarySection";
-import {
-  projectTypeOptions,
-  budgetOptions,
-  timelineOptions,
-  contactMethodOptions,
-} from "../constants";
 import styles from "../ProjectForm.module.scss";
 
 const cx = classNames.bind(styles);
 
-const Step4Summary: React.FC<FormStepProps> = ({ values }) => {
-  // Log cuando se monta el componente
-  useEffect(() => {
-    console.log("Step4Summary montado");
-    console.log("Valores para resumen:", values);
+const Step4Summary: React.FC<FormStepProps> = ({ values, dictionary }) => {
+  const dict = dictionary?.steps?.step4 || {
+    title: "Almost There!",
+    subtitle: "Review your project details",
+    projectDetails: "Project Details",
+    contactInformation: "Contact Information",
+    terms: {
+      type: "Type:",
+      budget: "Budget:",
+      timeline: "Timeline:",
+      company: "Company:",
+      email: "Email:",
+      phone: "Phone:",
+      preferredContact: "Preferred Contact:",
+    },
+  };
 
-    // Verificar existencia de elementos DOM después del renderizado
-    setTimeout(() => {
-      const summaryElement = document.querySelector(".project-form__summary");
-      console.log(
-        "¿Se encuentra el elemento project-form__summary?",
-        !!summaryElement
-      );
-    }, 0);
-
-    return () => {
-      console.log("Step4Summary desmontado");
-    };
-  }, [values]);
+  const projectTypeOptions = dictionary?.options?.projectType || [];
+  const budgetOptions = dictionary?.options?.budget || [];
+  const timelineOptions = dictionary?.options?.timeline || [];
+  const contactMethodOptions = dictionary?.options?.contactMethod || [];
 
   // Preparar los datos para las secciones de resumen
   const projectDetailItems = [
     {
-      term: "Type:",
+      term: dict.terms.type,
       description:
         projectTypeOptions.find((option) => option.value === values.type)
           ?.label ||
         (values.type === "other" ? values.customType : values.type),
     },
     {
-      term: "Budget:",
+      term: dict.terms.budget,
       description:
         budgetOptions.find((option) => option.value === values.budget)?.label ||
         values.budget,
     },
     {
-      term: "Timeline:",
+      term: dict.terms.timeline,
       description:
         timelineOptions.find((option) => option.value === values.timeline)
           ?.label || values.timeline,
@@ -58,34 +54,29 @@ const Step4Summary: React.FC<FormStepProps> = ({ values }) => {
 
   const contactInfoItems = [
     {
-      term: "Company:",
+      term: dict.terms.company,
       description: values.companyName,
     },
     {
-      term: "Email:",
+      term: dict.terms.email,
       description: values.email,
     },
     ...(values.phone
       ? [
           {
-            term: "Phone:",
+            term: dict.terms.phone,
             description: values.phone,
           },
         ]
       : []),
     {
-      term: "Preferred Contact:",
+      term: dict.terms.preferredContact,
       description:
         contactMethodOptions.find(
           (option) => option.value === values.preferredContact
         )?.label || values.preferredContact,
     },
   ];
-
-  console.log("Renderizando Step4Summary con items:", {
-    projectDetailItems,
-    contactInfoItems,
-  });
 
   return (
     <div className={cx("project-form")}>
@@ -96,7 +87,7 @@ const Step4Summary: React.FC<FormStepProps> = ({ values }) => {
         variant="h3"
         className={cx("project-form__title")}
       >
-        Almost There!
+        {dict.title}
       </Typography>
       <Typography
         theme="dark"
@@ -105,11 +96,17 @@ const Step4Summary: React.FC<FormStepProps> = ({ values }) => {
         variant="p1"
         className={cx("project-form__subtitle")}
       >
-        Review your project details
+        {dict.subtitle}
       </Typography>
       <div className={cx("project-form__summary")}>
-        <SummarySection title="Project Details" items={projectDetailItems} />
-        <SummarySection title="Contact Information" items={contactInfoItems} />
+        <SummarySection
+          title={dict.projectDetails}
+          items={projectDetailItems}
+        />
+        <SummarySection
+          title={dict.contactInformation}
+          items={contactInfoItems}
+        />
       </div>
     </div>
   );
