@@ -72,4 +72,35 @@ export const LINE_VARIANTS = {
       },
     }),
   },
+  triple: {
+    closed: (i: number) => ({
+      x: 0,
+      rotate: 0,
+      opacity: 1,
+      pathLength: i === 1 ? 0.8 : 1, // Middle line slightly shorter in closed state
+      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+    }),
+    open: (i: number) => ({
+      x: i === 1 ? 50 : 0,
+      y: i === 1 ? 0 : i === 0 ? 8 : -8,
+      rotate: i === 1 ? 0 : i === 0 ? -45 : 45,
+      opacity: i === 1 ? 0 : 1, // Middle line disappears
+      pathLength: 1,
+      // scale: i === 1 ? 0.5 : 1,
+      transition: {
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1],
+        delay: i * 0.1,
+      },
+    }),
+
+    hover: (i: number) => ({
+      pathLength: i === 1 ? [0.8, 0.5, 0.8] : [1, 0.9, 1],
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1],
+        times: [0, 0.5, 1],
+      },
+    }),
+  },
 };

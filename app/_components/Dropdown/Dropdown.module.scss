@@ -16,8 +16,8 @@ $themes: (
   dark: (
     text-primary: $text-primary,
     text-secondary: $text-secondary,
-    background: $black-dark,
-    border: rgba($text-primary, 0),
+    background: $black-light,
+    border: rgba($text-primary, 0.1),
     hover: rgba($primary-color, 0.65),
     shadow: $shadow-md,
     disabled: $text-disabled,
@@ -149,31 +149,25 @@ $filter-theme-map: (
 
       &.dropdown--variant-filter {
         .dropdown__text {
-          // border-radius: 0;
-          border: none;
-          border-bottom: 1.3px
-            solid
-            var(
-              --dropdown-border,
-              map-get($filter-theme-map, #{$theme}, button-border-color)
-            );
-          background-color: var(
-            --dropdown-background,
-            map-get($filter-theme-map, #{$theme}, background)
-          );
+          min-height: 34px !important;
+          padding: $spacing-xs 12px;
+          border: 1px solid;
+          border-radius: 6px;
+          @include transition(all);
+
+          &:hover {
+            filter: brightness(1.1);
+          }
+
+          @include mobile {
+            min-height: 32px !important;
+          }
         }
 
         .dropdown__menu {
-          border: 1.3px
-            solid
-            var(
-              --dropdown-border,
-              map-get($filter-theme-map, #{$theme}, button-border-color)
-            );
-          background-color: var(
-            --dropdown-background,
-            map-get($filter-theme-map, #{$theme}, background)
-          );
+          margin-top: $spacing-xs;
+          border-radius: 6px;
+          @include elevation();
         }
 
         .dropdown__item {
@@ -223,6 +217,21 @@ $filter-theme-map: (
     min-height: 48px;
   }
 
+  // Nueva clase para la variante "tertiary": igual a default pero con border solo en el bottom
+  .dropdown__text--tertiary {
+    border: none;
+    border-bottom: 1.3px solid var(--dropdown-border, #ccc);
+    @include transition(all);
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    @include mobile {
+      // Se mantienen los estilos responsivos (padding, min-height, etc.) del default
+    }
+  }
+
   &__selected {
     @include flex(row, flex-start, center, $spacing-sm);
     flex: 1;
@@ -237,7 +246,6 @@ $filter-theme-map: (
     @include flex-center;
     @include transition(transform);
     margin-left: $spacing-sm;
-    // color: currentColor;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
@@ -294,34 +302,6 @@ $filter-theme-map: (
       @include text-truncate;
       flex: 1;
       min-width: 0;
-    }
-  }
-
-  &--variant-filter {
-    .dropdown__text {
-      min-height: 34px !important;
-      padding: $spacing-xs 12px;
-      border: 1px solid;
-      border-radius: 6px;
-      @include transition(all);
-
-      &:hover {
-        filter: brightness(1.1);
-      }
-
-      @include mobile {
-        min-height: 32px !important;
-      }
-    }
-
-    .dropdown__menu {
-      margin-top: $spacing-xs;
-      border-radius: 6px;
-      @include elevation();
-    }
-
-    .dropdown__item {
-      padding: $spacing-sm;
     }
   }
 

@@ -1,0 +1,92 @@
+.background-container {
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+  overflow: hidden; // Prevenir scroll horizontal cuando ocurren animaciones del shader
+  will-change: transform; // Optimización de rendimiento
+
+  .shader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; // Permitir interacción con elementos debajo
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+    &.active {
+      opacity: 1;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      will-change: transform; // Optimización de rendimiento para canvas
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 50vh; // Altura mínima para dispositivos pequeños
+    // Clase para facilitar el rendering optimizado
+    &.scroll-section {
+      will-change: transform;
+      transform: translateZ(0);
+    }
+  }
+}
+
+/* Media queries para responsividad */
+@media screen and (max-width: 768px) {
+  .background-container {
+    .shader {
+      /* Asegurar que el shader siempre sea visible en dispositivos móviles */
+      height: 100% !important;
+    }
+
+    // Ajustar rendimiento en dispositivos móviles
+    canvas {
+      image-rendering: optimizeSpeed;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .background-container {
+    .content {
+      min-height: 40vh; /* Ajuste para pantallas más pequeñas */
+    }
+  }
+}
+
+/* Keyframes para animaciones opcionales */
+@keyframes rippleEffect {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.loading-shader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #26225f 0%, #4f46e5 100%);
+  opacity: 0.5;
+}

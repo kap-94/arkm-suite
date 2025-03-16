@@ -1,0 +1,249 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.hero-headline {
+  position: relative;
+  @include flex(row, center, center);
+  pointer-events: auto;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  max-height: 30vh;
+
+  &__text {
+    position: absolute;
+    font-family: "sofia", sans-serif;
+    font-style: normal;
+    text-align: center;
+    font-size: clamp(42px, 6vw, 120px);
+    font-weight: 300;
+    // text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+    pointer-events: none;
+    margin-top: 0;
+    @include transition(transform);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    font-family: sans-serif;
+    font-family: "agenda", sans-serif;
+    font-family: "sofia-pro", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    &--visible {
+      opacity: 1; /* Se hace visible con esta clase */
+    }
+
+    &--behind {
+      color: transparent;
+      animation: glowPulse 4s infinite alternate;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(
+          circle at var(--x) var(--y),
+          rgba($primary-light, 0.1),
+          transparent 70%
+        );
+        filter: blur(15px);
+        animation: hazeGlow 6s infinite alternate;
+      }
+    }
+
+    &--blur {
+      filter: blur(45px);
+      z-index: 0;
+      background: conic-gradient(
+        from 0deg at 50% 50%,
+        rgba($primary-light, 0.2),
+        rgba($primary-light, 0.2),
+        rgba($primary-light, 0.2)
+      );
+      transform: translateZ(-35px) scale(1.2);
+    }
+
+    &--main {
+      background: linear-gradient(
+        120deg,
+        rgba($primary-color, 1) 0%,
+        rgba($primary-light, 0.9) 50%,
+        rgba($primary-color, 1) 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: contrast(100%) brightness(100%);
+      text-shadow: 0 0 20px rgba($primary-color, 0.5);
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at var(--x) var(--y),
+          rgba($primary-color, 0.2) 0%,
+          transparent 70%
+        );
+        mix-blend-mode: screen;
+      }
+    }
+
+    &--white-stroke {
+      color: transparent;
+      text-shadow: 0 0 10px rgba($primary-color, 0.8),
+        0 0 20px rgba($primary-color, 0.4), 0 0 30px rgba($primary-color, 0.2);
+      -webkit-text-stroke: 1px rgba($primary-dark, 0.9);
+      background: radial-gradient(
+        circle at center,
+        rgba($primary-color, 1) 0%,
+        rgba($primary-color, 0.8) 30%,
+        rgba($primary-color, 0.4) 70%,
+        transparent 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    &--permanent-stroke {
+      color: transparent;
+      -webkit-text-stroke: 2px rgba($primary-color, 0.8);
+      z-index: 3;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      text-shadow: 0 0 20px rgba($primary-color, 0.4);
+    }
+
+    &--front {
+      display: none;
+
+      z-index: 4;
+      /* Siempre invisible inicialmente */
+      opacity: 0;
+    }
+
+    &-indent {
+      margin-left: $spacing-lg;
+    }
+
+    @include tablet {
+      font-size: clamp(60px, 10vw, 120px);
+    }
+
+    @include mobile {
+      font-size: clamp(60px, 8vw, 80px);
+    }
+  }
+
+  &__webgl-text {
+    display: none;
+
+    font-size: clamp(42px, 5vw, 120px);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+    color: transparent;
+    opacity: 1;
+    @include transition(opacity);
+    position: absolute;
+    margin-top: 0;
+    margin-right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+
+    &--fade-out {
+      opacity: 0;
+    }
+
+    @include tablet {
+      font-size: clamp(60px, 10vw, 120px);
+    }
+
+    @include mobile {
+      font-size: clamp(60px, 8vw, 80px);
+    }
+  }
+
+  &__mask {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, #6366f1, #818cf8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    mask-image: url("/images/elipse.svg");
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 0;
+    z-index: 1000;
+    pointer-events: all;
+    cursor: none;
+
+    &-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      transform: translate(-50%, -50%);
+      font-family: "sofia", sans-serif;
+      font-style: normal;
+      font-size: clamp(48px, 12vw, 142px);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      line-height: 0.92;
+      text-align: center;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
+      pointer-events: none;
+      display: block;
+      white-space: pre-line;
+      font-family: "agenda", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      &-accent {
+        display: inline;
+        color: transparent;
+        -webkit-text-stroke: 2px rgba($primary-color, 0.8);
+      }
+
+      &-indent {
+        margin-left: $spacing-lg;
+      }
+
+      @include tablet {
+        font-size: clamp(60px, 10vw, 120px);
+      }
+
+      @include mobile {
+        font-size: clamp(60px, 8vw, 80px);
+        display: none;
+      }
+    }
+  }
+}
+
+/* Keyframes para el hero headline */
+@keyframes glowPulse {
+  0% {
+    text-shadow: 0 0 20px rgba($primary-color, 0.4);
+  }
+  100% {
+    text-shadow: 0 0 30px rgba($primary-color, 0.6);
+  }
+}
+
+@keyframes hazeGlow {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}

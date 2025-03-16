@@ -61,7 +61,7 @@ const Feature = ({ feature, globalIndex }: FeatureProps) => {
           variant="p2"
           color="secondary"
           theme="dark"
-          fontFamily="usual"
+          fontFamily="sofia"
           fontWeight={400}
         >
           {feature.title}
@@ -72,7 +72,7 @@ const Feature = ({ feature, globalIndex }: FeatureProps) => {
           variant="p2"
           color="tertiary"
           theme="dark"
-          fontFamily="usual"
+          fontFamily="sofia"
           fontWeight={300}
         >
           {feature.description}
@@ -97,7 +97,7 @@ export const SolutionCard = ({
           variant="h3"
           className={cx("solution-card__title")}
           fontWeight={300}
-          fontFamily="kranto"
+          fontFamily="sofia"
           theme="dark"
         >
           {title}
@@ -107,7 +107,7 @@ export const SolutionCard = ({
           variant="p1"
           className={cx("solution-card__description")}
           color="secondary"
-          fontFamily="usual"
+          fontFamily="sofia"
           fontWeight={300}
           theme="dark"
         >

@@ -1,3 +1,4 @@
+// WebGLTextRenderer.ts
 import * as THREE from "three";
 import { WebGLTextOptions, DEFAULT_TEXT_OPTIONS } from "@/app/_types/webgl";
 
@@ -59,19 +60,13 @@ export class WebGLTextRenderer {
     };
   }
 
-  // Agregamos el método loadFont que faltaba
+  // Método para cargar la fuente
   async loadFont(): Promise<boolean> {
     try {
-      // Esperar a que las fuentes del documento estén listas
+      // Espera a que las fuentes estén listas
       await document.fonts.ready;
-
-      // Construir el string de la fuente
       const fontString = `${this.options.font.weight} 16px "${this.options.font.family}"`;
-
-      // Intentar cargar la fuente específica
       await document.fonts.load(fontString);
-
-      // Verificar si la fuente está disponible
       return document.fonts.check(fontString);
     } catch (error) {
       console.error("Error loading font:", error);
@@ -81,28 +76,22 @@ export class WebGLTextRenderer {
 
   private calculateResponsiveFontSize(containerWidth: number): number {
     const { fontSize } = this.options;
-
-    // Calcular el tamaño preferido basado en el viewport width (vw)
     const preferredSize = (containerWidth * fontSize.preferred) / 100;
-
-    // Aplicar el clamp
     return Math.max(fontSize.min, Math.min(preferredSize, fontSize.max));
   }
 
   private setupContext(container: HTMLElement): void {
     const { font, textAlign, textBaseline, color, letterSpacing } =
       this.options;
-
     this.ctx.textRendering = "optimizeLegibility";
     this.ctx.textAlign = textAlign;
     this.ctx.textBaseline = textBaseline;
     this.ctx.fillStyle = color;
 
-    // Usar el ancho real del contenedor para el cálculo
+    // Calcula fontSize responsive
     const fontSize = this.calculateResponsiveFontSize(container.clientWidth);
-
     this.ctx.font = `${font.weight} ${fontSize}px "${font.family}"`;
-    // @ts-ignore
+    // @ts-ignore - letterSpacing no estándar
     this.ctx.letterSpacing = letterSpacing;
   }
 
@@ -112,11 +101,9 @@ export class WebGLTextRenderer {
   } {
     const width = container.clientWidth * this.options.scale;
     const height = container.clientHeight * this.options.scale;
-
     this.canvas.width = width;
     this.canvas.height = height;
     this.ctx.scale(this.options.scale, this.options.scale);
-
     return { width, height };
   }
 
@@ -128,7 +115,6 @@ export class WebGLTextRenderer {
       const { width, height } = this.setupCanvas(container);
       this.setupContext(container);
       this.renderText(text, width, height, container);
-
       const texture = new THREE.Texture(this.canvas);
       texture.needsUpdate = true;
       return texture;
@@ -145,21 +131,18 @@ export class WebGLTextRenderer {
     container: HTMLElement
   ): void {
     const lines = Array.isArray(text) ? text : [text];
-
-    // Calcular el tamaño de fuente usando el ancho real del contenedor
     const fontSize = this.calculateResponsiveFontSize(container.clientWidth);
     const lineHeight = fontSize * this.options.lineHeight;
 
     const transformedLines = lines.map((line) => {
       if (typeof line !== "string") return "";
-
       switch (this.options.textTransform) {
         case "uppercase":
           return line.toUpperCase();
         case "lowercase":
           return line.toLowerCase();
         case "capitalize":
-          return line.replace(/\b\w/g, (l) => l.toUpperCase());
+          return line.replace(/\b\\w/g, (l) => l.toUpperCase());
         default:
           return line;
       }
@@ -171,7 +154,6 @@ export class WebGLTextRenderer {
     const verticalOffset = totalHeight / 2;
 
     this.ctx.clearRect(0, 0, width, height);
-
     transformedLines.forEach((line, index) => {
       const y = startY - verticalOffset + index * lineHeight;
       this.ctx.fillText(line, width / (2 * this.options.scale), y);

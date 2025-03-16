@@ -1,40 +1,40 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { Dropdown } from '../Dropdown';
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { ThemedDropdown } from "../Dropdown";
 
-describe('Dropdown', () => {
-  it('renders correctly', () => {
-    render(<Dropdown>Content</Dropdown>);
-    expect(screen.getByText('Content')).toBeDefined();
+describe("Dropdown", () => {
+  it("renders correctly", () => {
+    render(<ThemedDropdown>Content</ThemedDropdown>);
+    expect(screen.getByText("Content")).toBeDefined();
   });
 
-  it('handles theme changes', () => {
-    render(<Dropdown theme={{ type: "dark" }}>Content</Dropdown>);
-    const element = screen.getByText('Content');
-    expect(element.className).includes('dropdown--theme-dark');
+  it("handles theme changes", () => {
+    render(<ThemedDropdown theme={{ type: "dark" }}>Content</ThemedDropdown>);
+    const element = screen.getByText("Content");
+    expect(element.className).includes("dropdown--theme-dark");
   });
 
-  it('handles custom theme values', () => {
+  it("handles custom theme values", () => {
     render(
-      <Dropdown 
-        theme={{ 
-          type: "custom", 
-          customValues: { 
-            primary: '#ff0000', 
-            secondary: '#00ff00' 
-          } 
+      <ThemedDropdown
+        theme={{
+          type: "custom",
+          customValues: {
+            primary: "#ff0000",
+            secondary: "#00ff00",
+          },
         }}
       >
         Content
-      </Dropdown>
+      </ThemedDropdown>
     );
-    const element = screen.getByText('Content');
-    expect(element.style.getPropertyValue('--custom-primary')).toBe('#ff0000');
+    const element = screen.getByText("Content");
+    expect(element.style.getPropertyValue("--custom-primary")).toBe("#ff0000");
   });
 
-  it('handles disabled state', () => {
-    render(<Dropdown disabled>Content</Dropdown>);
-    const element = screen.getByText('Content');
-    expect(element.className).includes('dropdown--disabled');
+  it("handles disabled state", () => {
+    render(<ThemedDropdown disabled>Content</ThemedDropdown>);
+    const element = screen.getByText("Content");
+    expect(element.className).includes("dropdown--disabled");
   });
 });

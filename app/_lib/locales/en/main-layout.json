@@ -1,62 +1,89 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-01-22",
+    "lastUpdated": "2025-03-12",
     "description": "Main layout configuration for public routes",
     "maintainer": "Development Team"
   },
   "header": {
     "aria": "Main site navigation",
-    "subtitle": {
-      "firstLetter": "D",
-      "text": "esign and development studio"
-    },
     "navigation": {
-      "home": {
-        "label": "Home",
-        "href": "/",
-        "aria": "Home page",
-        "icon": "home",
-        "meta": {
-          "description": "Welcome to our platform",
-          "keywords": [
-            "home",
-            "welcome",
-            "main"
-          ]
+      "primary": {
+        "services": {
+          "menu_item_id": 1,
+          "menu_item_parent": 0,
+          "label": "Services",
+          "title": "Services",
+          "href": "/services",
+          "url": "/services",
+          "aria": "Our Services",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Explore our service offerings",
+            "keywords": [
+              "services",
+              "offerings",
+              "solutions"
+            ]
+          }
+        },
+        "approach": {
+          "menu_item_id": 2,
+          "menu_item_parent": 0,
+          "label": "Approach",
+          "title": "Approach",
+          "href": "/approach",
+          "url": "/approach",
+          "aria": "Our Approach",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Learn about our methodology and process"
+          }
+        },
+        "portfolio": {
+          "menu_item_id": 3,
+          "menu_item_parent": 0,
+          "label": "Portfolio",
+          "title": "Portfolio",
+          "href": "/portfolio",
+          "url": "/portfolio",
+          "aria": "Portfolio",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Explore our portfolio and case studies"
+          }
         }
       },
-      "features": {
-        "label": "Features",
-        "href": "/features",
-        "aria": "Features overview",
-        "icon": "features",
-        "meta": {
-          "description": "Explore our platform features"
+      "secondary": {
+        "blog": {
+          "menu_item_id": 5,
+          "menu_item_parent": 0,
+          "label": "Articles",
+          "title": "Articles",
+          "href": "/blog",
+          "url": "/blog",
+          "aria": "Our Articles",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Read our latest articles and insights"
+          }
+        },
+        "clientPortal": {
+          "menu_item_id": 4,
+          "menu_item_parent": 0,
+          "label": "Arkm Suite",
+          "title": "Arkm Suite",
+          "href": "/dashboard",
+          "url": "/dashboard",
+          "aria": "Client's Arkm Suite Access",
+          "icon": "layers",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Access your client dashboard"
+          }
         }
-      },
-      "pricing": {
-        "label": "Pricing",
-        "href": "/pricing",
-        "aria": "Pricing plans",
-        "icon": "pricing",
-        "meta": {
-          "description": "View our pricing plans"
-        }
-      },
-      "about": {
-        "label": "About",
-        "href": "/about",
-        "aria": "About us",
-        "icon": "info",
-        "meta": {
-          "description": "Learn about our company"
-        }
+       
       }
-    },
-    "clientPortal": {
-      "label": "Client's Suite",
-      "href": "/dashboard"
     },
     "languageOptions": {
       "english": {
@@ -75,7 +102,7 @@
     "links": {
       "showcase": "Showcase",
       "solutions": "Solutions",
-      "clientSuite": "Client's Suite",
+      "clientSuite": "Client Portal",
       "journey": "Journey"
     },
     "copyright": "© {year} ARKM Studio. All rights reserved.",
@@ -97,23 +124,35 @@
       }
     },
     "navigation": {
-      "careers": {
-        "label": "Careers",
-        "href": "/careers",
-        "aria": "Career opportunities",
-        "icon": "briefcase"
+      "services": {
+        "menu_item_id": 6,
+        "menu_item_parent": 0,
+        "label": "Services",
+        "title": "Services",
+        "href": "/services",
+        "url": "/services",
+        "aria": "Our Services",
+        "showDropdownIcon": false
       },
-      "blog": {
-        "label": "Blog",
-        "href": "/blog",
-        "aria": "Company blog",
-        "icon": "book"
+      "approach": {
+        "menu_item_id": 7,
+        "menu_item_parent": 0,
+        "label": "Approach",
+        "title": "Approach",
+        "href": "/approach",
+        "url": "/approach",
+        "aria": "Our Approach",
+        "showDropdownIcon": false
       },
-      "legal": {
-        "label": "Legal",
-        "href": "/legal",
-        "aria": "Legal information",
-        "icon": "shield"
+      "portfolio": {
+        "menu_item_id": 8,
+        "menu_item_parent": 0,
+        "label": "Portfolio",
+        "title": "Portfolio",
+        "href": "/portfolio",
+        "url": "/portfolio",
+        "aria": "Portfolio",
+        "showDropdownIcon": false
       }
     }
   },

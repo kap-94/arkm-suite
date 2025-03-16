@@ -1,4 +1,5 @@
-// layout.types.ts
+import { MenuItem } from "@/app/_components/MenuList";
+
 export interface Meta {
   version: string;
   lastUpdated: string;
@@ -6,11 +7,10 @@ export interface Meta {
   maintainer: string;
 }
 
-export interface NavigationItem {
+export interface NavigationItem extends MenuItem {
   label: string;
   href: string;
   aria: string;
-  icon: string;
   meta?: {
     description: string;
     keywords?: string[];
@@ -24,14 +24,9 @@ export interface LanguageOption {
 
 export interface HeaderDictionary {
   aria: string;
-  subtitle?: {
-    firstLetter: string;
-    text: string;
-  };
-  navigation: Record<string, NavigationItem>;
-  clientPortal: {
-    label: string;
-    href: string;
+  navigation: {
+    primary: Record<string, NavigationItem>;
+    secondary: Record<string, NavigationItem>;
   };
   languageOptions: {
     english: LanguageOption;

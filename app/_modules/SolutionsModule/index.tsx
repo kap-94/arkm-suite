@@ -125,7 +125,7 @@ export const SolutionsModule = ({
       <div className={cx("solutions__header")}>
         <Typography
           variant="h2"
-          fontFamily="kranto"
+          fontFamily="sofia"
           fontWeight={400}
           color="primary"
           theme="dark"
@@ -138,7 +138,7 @@ export const SolutionsModule = ({
           color="tertiary"
           theme="dark"
           fontWeight={300}
-          fontFamily="usual"
+          fontFamily="sofia"
           className={cx("solutions__subtitle")}
         >
           {dictionary?.subtitle ||

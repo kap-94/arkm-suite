@@ -6,11 +6,19 @@ import { WebGLTextRenderer } from "./WebGLTextRenderer";
 import { WebGLTextProps, WebGLComponents } from "@/app/_types/webgl";
 import styles from "./WebGLText.module.scss";
 
-const cx = classNames.bind(styles);
-
+// ----------------------------------------
+// Ajusta este valor si tu animación es más larga
+// ----------------------------------------
 const FRUSTUM_SIZE = 1;
-const SHADER_DURATION = 4;
 
+// ----------------------------------------
+// SHADER_DURATION es cuánto dura tu animación
+// de plasma/slicing ANTES de considerarla "completada".
+// Subirlo si tu shader dura 7s, 8s, etc.
+// ----------------------------------------
+const SHADER_DURATION = 8;
+
+// Vertex Shader base
 const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -19,11 +27,11 @@ const vertexShader = `
   }
 `;
 
+// Fragment Shader base, por si no pasas el custom
 const defaultFragmentShader = `
   varying vec2 vUv;
   uniform sampler2D textTexture;
   uniform float time;
-
   void main() {
     vec4 textColor = texture2D(textTexture, vUv);
     gl_FragColor = textColor;
@@ -35,28 +43,36 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
   fragmentShader = defaultFragmentShader,
   text,
   options = {},
+  // Callbacks
   onComplete,
   onFadeComplete,
+  // Duración del fade-out (ya NO se usa)
   fadeOutDuration = 1,
   debug = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Tiempos y animación
   const timeRef = useRef<number>(0);
-  const fadeStartTimeRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
   const animationFrameRef = useRef<number>();
+  const hasCompletedRef = useRef<boolean>(false);
+
+  // WebGL refs
   const sceneRef = useRef<THREE.Scene>();
   const cameraRef = useRef<THREE.OrthographicCamera>();
   const rendererRef = useRef<THREE.WebGLRenderer>();
-  const hasCompletedRef = useRef<boolean>(false);
-  const hasFadedRef = useRef<boolean>(false);
-  const opacityRef = useRef<number>(1);
+
+  // Shader uniforms
   const uniformsRef = useRef<{
     time: { value: number };
     textTexture: { value: THREE.Texture | null };
   }>();
 
+  // ----------------------------------------
+  // INICIALIZACIÓN
+  // ----------------------------------------
   const initializeWebGL = async (
     container: HTMLDivElement,
     canvas: HTMLCanvasElement
@@ -117,9 +133,11 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
     }
   };
 
+  // ----------------------------------------
+  // ANIMACIÓN
+  // ----------------------------------------
   const animate = (components: WebGLComponents, currentTime: number) => {
     const { renderer, scene, camera, material } = components;
-
     if (!uniformsRef.current) return;
 
     if (lastTimeRef.current === 0) {
@@ -130,6 +148,7 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
     lastTimeRef.current = currentTime;
     timeRef.current += deltaTime;
 
+    // Cuando pase el tiempo de duración del shader, invoca onComplete (solo 1 vez).
     if (
       timeRef.current >= SHADER_DURATION &&
       !hasCompletedRef.current &&
@@ -137,38 +156,34 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
     ) {
       hasCompletedRef.current = true;
       onComplete();
-      fadeStartTimeRef.current = timeRef.current;
     }
 
-    if (fadeStartTimeRef.current !== null) {
-      const fadeElapsed = timeRef.current - fadeStartTimeRef.current;
-      opacityRef.current = Math.max(0, 1 - fadeElapsed / fadeOutDuration);
+    // -------------------------------------
+    // Quitar fadeOut => Forzamos la opacidad a 1 siempre
+    // -------------------------------------
+    material.opacity = 1.0;
 
-      if (opacityRef.current === 0 && !hasFadedRef.current && onFadeComplete) {
-        hasFadedRef.current = true;
-        onFadeComplete();
-      }
-    }
-
+    // Actualiza el uniforme time para el shader
     uniformsRef.current.time.value = timeRef.current;
-    material.opacity = opacityRef.current;
 
+    // Render
     renderer.render(scene, camera);
 
-    if (opacityRef.current > 0) {
-      animationFrameRef.current = requestAnimationFrame((time) =>
-        animate(components, time)
-      );
-    }
+    // Si quieres un loop infinito, vuelve a llamar
+    animationFrameRef.current = requestAnimationFrame((time) =>
+      animate(components, time)
+    );
   };
 
+  // ----------------------------------------
+  // USE EFFECT PRINCIPAL
+  // ----------------------------------------
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
     let components: WebGLComponents | null = null;
-    let cleanup: (() => void) | undefined;
 
     const handleResize = () => {
       if (
@@ -194,7 +209,7 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
         container.clientHeight
       );
 
-      // Update geometry and recreate texture
+      // Update geometry y textura
       const textRenderer = new WebGLTextRenderer(options);
       const newTexture = textRenderer.createTextTexture(container, text);
 
@@ -226,40 +241,36 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
       animationFrameRef.current = requestAnimationFrame((time) =>
         animate(components!, time)
       );
-
-      cleanup = () => {
-        window.removeEventListener("resize", debouncedResize);
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-        if (components) {
-          const { geometry, material } = components;
-          geometry.dispose();
-          material.dispose();
-          if (uniformsRef.current?.textTexture.value) {
-            uniformsRef.current.textTexture.value.dispose();
-          }
-          renderer.dispose();
-        }
-      };
     };
 
     setup();
-    return () => cleanup?.();
-  }, [
-    fragmentShader,
-    text,
-    options,
-    onComplete,
-    onFadeComplete,
-    fadeOutDuration,
-    debug,
-  ]);
+
+    return () => {
+      // Limpieza
+      window.removeEventListener("resize", debouncedResize);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (components) {
+        const { geometry, material } = components;
+        geometry.dispose();
+        material.dispose();
+        if (uniformsRef.current?.textTexture.value) {
+          uniformsRef.current.textTexture.value.dispose();
+        }
+        rendererRef.current?.dispose();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fragmentShader, text, options, onComplete, onFadeComplete, debug]);
 
   return (
-    <div ref={containerRef} className={cx("webgl-text-container", className)}>
-      <canvas ref={canvasRef} className={cx("webgl-canvas")} />
-      <span className={cx("text")}>
+    <div
+      ref={containerRef}
+      className={classNames(styles["webgl-text-container"], className)}
+    >
+      <canvas ref={canvasRef} className={classNames(styles["webgl-canvas"])} />
+      <span className={classNames(styles["text"])}>
         {Array.isArray(text)
           ? text.map((line, index) => (
               <span key={index}>
@@ -275,7 +286,7 @@ export const WebGLText: React.FC<WebGLTextProps> = ({
 
 // Utility function for debouncing
 function debounce(func: Function, wait: number) {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout);

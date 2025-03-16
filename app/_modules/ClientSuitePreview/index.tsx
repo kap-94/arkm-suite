@@ -18,7 +18,7 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
           <Typography
             variant="h2"
             color="primary"
-            fontFamily="kranto"
+            fontFamily="sofia"
             fontWeight={400}
             theme="dark"
             className={cx("suite__title")}
@@ -31,7 +31,7 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
             color="tertiary"
             theme="dark"
             fontWeight={300}
-            fontFamily="usual"
+            fontFamily="sofia"
             className={cx("suite__subtitle")}
           >
             {dictionary?.subtitle ||

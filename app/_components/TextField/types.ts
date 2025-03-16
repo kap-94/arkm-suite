@@ -1,40 +1,54 @@
-import { ElementType, InputHTMLAttributes } from "react";
+import { ElementType, ComponentPropsWithoutRef, ReactNode } from "react";
+import { TypographyFontFamily } from "../Typography/types";
 
-export interface TextFieldTheme {
-  type: "light" | "dark" | "custom";
-  customValues?: {
-    primary?: string;
-    secondary?: string;
-    background?: string;
-    border?: string;
-    text?: string;
-    label?: string;
-    error?: string;
-    placeholder?: string;
-    focus?: string;
-    autofillBg?: string;
-    disabled?: string;
-    disabledBg?: string;
-  };
+// Definiciones de tipos más estrictas
+type ThemeType = "dark" | "light";
+
+interface CustomThemeValues {
+  primary?: string;
+  secondary?: string;
+  background?: string;
+  border?: string;
+  text?: string;
+  label?: string;
+  error?: string;
+  placeholder?: string;
+  focus?: string;
+  autofillBg?: string;
+  disabled?: string;
+  disabledBg?: string;
 }
 
-export interface TextFieldBaseProps
-  extends InputHTMLAttributes<HTMLInputElement> {
-  label: string | JSX.Element;
+type ThemeOption =
+  | ThemeType
+  | {
+      type: ThemeType;
+      customValues?: CustomThemeValues;
+    };
+
+export interface TextFieldOwnProps<T extends ElementType> {
+  as?: T;
+  className?: string;
+  label?: string;
   name: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
+  type?: string;
   variant?: "primary" | "secondary";
-  theme?: TextFieldTheme;
+  theme?: ThemeOption;
+  disabled?: boolean;
   labelClassName?: string;
   inputClassName?: string;
   errorClassName?: string;
-  error?: string;
   showError?: boolean;
+  required?: boolean;
+  placeholder?: string;
+  fontFamily?: TypographyFontFamily;
+  error?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<any>) => void;
 }
 
-export type TextFieldProps<T extends ElementType = "div"> =
-  TextFieldBaseProps & {
-    as?: T;
-    className?: string;
-    disabled?: boolean;
-  };
+type TextFieldProps<T extends ElementType> = TextFieldOwnProps<T> &
+  Omit<ComponentPropsWithoutRef<T>, keyof TextFieldOwnProps<T>>;
+
+export type { TextFieldProps };
