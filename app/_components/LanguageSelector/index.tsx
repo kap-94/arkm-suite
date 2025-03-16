@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./LanguageSelector.module.scss";
 import ReactCountryFlag from "react-country-flag";
 import { Typography } from "../Typography";
+import { LanguageOption } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 
@@ -26,31 +27,27 @@ export type LanguageSelectorVariant =
   | "rounded-card-dropdown"
   | "rounded-gradient-dropdown";
 
-interface LanguageOption {
-  code: Language;
-  label: string;
-  ariaLabel: string;
-  countryCode: string; // ISO Country code para las banderas
-}
-
+// Actualizada para recibir opciones desde el diccionario
 interface LanguageSelectorProps {
   currentLanguage: Language;
   onLanguageChange: (lang: Language) => void;
   variant?: LanguageSelectorVariant;
   className?: string;
+  options?: LanguageOption[];
 }
 
-const DEFAULT_OPTIONS: LanguageOption[] = [
+// Opciones por defecto en caso de que no se proporcionen desde el diccionario
+const DEFAULT_OPTIONS = [
   {
     code: "es",
     label: "ES",
-    ariaLabel: "Español",
+    aria: "Español",
     countryCode: "ES", // Código ISO para España
   },
   {
     code: "en",
     label: "EN",
-    ariaLabel: "English",
+    aria: "English",
     countryCode: "GB", // Código ISO para Reino Unido
   },
 ];
@@ -60,12 +57,16 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onLanguageChange,
   variant = "neon-pill",
   className,
+  options,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Usar las opciones proporcionadas o las predeterminadas
+  const languageOptions = options || DEFAULT_OPTIONS;
+
   // Get current language option
-  const currentOption = DEFAULT_OPTIONS.find(
+  const currentOption = languageOptions.find(
     (option) => option.code === currentLanguage
   );
 
@@ -118,14 +119,14 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   ) {
     return (
       <div className={cx("language-selector", `variant-${variant}`, className)}>
-        {DEFAULT_OPTIONS.map((option) => (
+        {languageOptions.map((option) => (
           <button
             key={option.code}
             className={cx("language-button", {
               active: currentLanguage === option.code,
             })}
-            onClick={() => onLanguageChange(option.code)}
-            aria-label={option.ariaLabel}
+            onClick={() => onLanguageChange(option.code as Language)}
+            aria-label={option.aria}
           >
             {variant === "icon-circle" && (
               <span className={cx("icon-wrapper")}>
@@ -202,7 +203,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             >
               {variant === "minimal-dropdown" ||
               variant === "neumorphic-dropdown"
-                ? currentOption?.ariaLabel
+                ? currentOption?.aria
                 : currentOption?.label}
             </Typography>
           )}
@@ -226,7 +227,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         {isOpen && (
           <div className={cx("dropdown-menu", `menu-${variant}`)}>
             <ul role="listbox" aria-activedescendant={currentLanguage}>
-              {DEFAULT_OPTIONS.map((option) => (
+              {languageOptions.map((option) => (
                 <li
                   key={option.code}
                   role="option"
@@ -234,7 +235,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                   className={cx("dropdown-item", {
                     active: currentLanguage === option.code,
                   })}
-                  onClick={() => handleLanguageChange(option.code)}
+                  onClick={() => handleLanguageChange(option.code as Language)}
                 >
                   {(variant === "modern-dropdown" ||
                     variant === "rounded-dropdown" ||
@@ -259,7 +260,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     variant === "rounded-dropdown-with-icon" ||
                     variant === "rounded-card-dropdown" ||
                     variant === "rounded-gradient-dropdown"
-                      ? option.ariaLabel
+                      ? option.aria
                       : option.label}
                   </Typography>
                 </li>
@@ -274,14 +275,14 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   // Return original variants
   return (
     <div className={cx("language-selector", `variant-${variant}`, className)}>
-      {DEFAULT_OPTIONS.map((option) => (
+      {languageOptions.map((option) => (
         <button
           key={option.code}
           className={cx("language-button", {
             active: currentLanguage === option.code,
           })}
-          onClick={() => onLanguageChange(option.code)}
-          aria-label={option.ariaLabel}
+          onClick={() => onLanguageChange(option.code as Language)}
+          aria-label={option.aria}
         >
           <Typography
             variant="p2"

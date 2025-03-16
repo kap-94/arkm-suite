@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-03-12",
+    "lastUpdated": "2025-03-15",
     "description": "Configuración principal del diseño para rutas públicas",
     "maintainer": "Equipo de Desarrollo"
   },
@@ -67,7 +67,8 @@
           "meta": {
             "description": "Lee nuestros últimos artículos y perspectivas"
           }
-        },"clientPortal": {
+        },
+        "clientPortal": {
           "menu_item_id": 4,
           "menu_item_parent": 0,
           "label": "Arkm Suite",
@@ -75,6 +76,7 @@
           "href": "/dashboard",
           "url": "/dashboard",
           "aria": "Acceso al Portal Arkm para Clientes",
+          "icon": "layers",
           "showDropdownIcon": false,
           "meta": {
             "description": "Accede a tu panel de cliente"
@@ -84,12 +86,16 @@
     },
     "languageOptions": {
       "english": {
-        "label": "Inglés",
-        "aria": "Opción de idioma inglés"
+        "label": "EN",
+        "aria": "Inglés",
+        "code": "en",
+        "countryCode": "GB"
       },
       "spanish": {
-        "label": "Español",
-        "aria": "Opción de idioma español"
+        "label": "ES",
+        "aria": "Español",
+        "code": "es",
+        "countryCode": "ES"
       }
     }
   },

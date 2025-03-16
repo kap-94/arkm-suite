@@ -38,6 +38,24 @@ const HeaderClient: React.FC<HeaderProps> = ({
     isNavOpen: false,
   });
 
+  // Extraer las opciones de idioma del diccionario
+  const languageOptions = useMemo(() => {
+    return [
+      {
+        code: "en",
+        label: dictionary.languageOptions.english.label,
+        aria: dictionary.languageOptions.english.aria,
+        countryCode: "GB", // Código ISO para Reino Unido
+      },
+      {
+        code: "es",
+        label: dictionary.languageOptions.spanish.label,
+        aria: dictionary.languageOptions.spanish.aria,
+        countryCode: "ES", // Código ISO para España
+      },
+    ];
+  }, [dictionary.languageOptions]);
+
   // Process primary navigation items to map icon strings to React components
   const primaryNavigationItems = useMemo(() => {
     return Object.values(dictionary.navigation.primary).map((item) => {
@@ -151,6 +169,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
                 variant="rounded-dropdown-with-icon"
                 currentLanguage={language}
                 onLanguageChange={setLanguage}
+                options={languageOptions}
               />
             </div>
 
@@ -174,6 +193,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
                 variant="rounded-dropdown-with-icon"
                 currentLanguage={language}
                 onLanguageChange={setLanguage}
+                options={languageOptions}
               />
             </div>
 

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-03-12",
+    "lastUpdated": "2025-03-15",
     "description": "Main layout configuration for public routes",
     "maintainer": "Development Team"
   },
@@ -82,17 +82,20 @@
             "description": "Access your client dashboard"
           }
         }
-       
       }
     },
     "languageOptions": {
       "english": {
-        "label": "English",
-        "aria": "English language option"
+        "label": "EN",
+        "aria": "English",
+        "code": "en",
+        "countryCode": "GB"
       },
       "spanish": {
-        "label": "Spanish",
-        "aria": "Spanish language option"
+        "label": "ES",
+        "aria": "Spanish",
+        "code": "es",
+        "countryCode": "ES"
       }
     }
   },

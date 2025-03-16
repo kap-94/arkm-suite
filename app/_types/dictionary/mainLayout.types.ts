@@ -1,5 +1,3 @@
-import { MenuItem } from "@/app/_components/MenuList";
-
 export interface Meta {
   version: string;
   lastUpdated: string;
@@ -26,6 +24,8 @@ export interface NavigationItem {
 export interface LanguageOption {
   label: string;
   aria: string;
+  code: string;
+  countryCode: string;
 }
 
 export interface HeaderDictionary {
