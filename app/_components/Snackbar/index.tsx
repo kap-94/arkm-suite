@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import classNames from "classnames/bind";
+import { X } from "lucide-react"; // Importamos el mismo ícono que usamos en el Modal
 import { useUIContext } from "@/app/_context/UIContext";
 import Typography from "../Typography";
 import styles from "./Snackbar.module.scss";
@@ -42,10 +43,12 @@ const Snackbar: React.FC<SnackbarProps> = ({
       <Typography variant="p1" theme="dark" fontFamily="sofia" fontWeight={500}>
         {snackbar.message}
       </Typography>
-      <button className={cx("snackbar__close")} onClick={hideSnackbar}>
-        <Typography variant="p1" theme="dark" fontFamily="sofia">
-          X
-        </Typography>
+      <button
+        className={cx("snackbar__close")}
+        onClick={hideSnackbar}
+        aria-label="Close notification"
+      >
+        <X size={21} />
       </button>
     </div>
   );
