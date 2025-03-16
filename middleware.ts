@@ -66,7 +66,8 @@ function hasValidLocale(pathname: string): boolean {
 
 function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
   const pathname = request.nextUrl.pathname;
-  const newUrl = new URL(request.url);
+  // IMPORTANTE: Usamos la URL actual como base para mantener el mismo dominio
+  const newUrl = new URL(pathname, request.url);
 
   if (pathname === "/") {
     newUrl.pathname = `/${locale}`;
@@ -74,6 +75,7 @@ function buildLocalizedUrl(request: NextRequest, locale: ValidLocale): URL {
     newUrl.pathname = `/${locale}${pathname}`;
   }
 
+  // Mantener los parámetros de búsqueda
   newUrl.search = request.nextUrl.search;
   return newUrl;
 }
@@ -99,7 +101,8 @@ function preserveTabState(
     } else {
       const lastTab = request.cookies.get("lastProjectTab")?.value;
       if (lastTab) {
-        const url = new URL(request.url);
+        // IMPORTANTE: Mantener el mismo dominio para redirecciones
+        const url = new URL(pathname, request.url);
         url.searchParams.set("tab", lastTab);
         return NextResponse.redirect(url);
       }
@@ -128,6 +131,9 @@ function setDefaultViewPreference(
 
 export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  // Obtener el host actual para depuración
+  const currentHost = request.headers.get("host") || "";
+  console.log(`Current host: ${currentHost}, Path: ${pathname}`);
 
   // 1. Si es una ruta de auth API, permitir sin modificaciones
   if (pathname.startsWith("/api/auth")) {
@@ -144,12 +150,10 @@ export default auth(async function middleware(request: NextRequest) {
     const session = await auth();
     if (!session) {
       const locale = getPreferredLocale(request);
-      return NextResponse.redirect(
-        new URL(
-          `/${locale}/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`,
-          request.url
-        )
-      );
+      // IMPORTANTE: Mantener el mismo host para la redirección
+      const redirectUrl = new URL(`/${locale}/auth/signin`, request.url);
+      redirectUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
