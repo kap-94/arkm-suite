@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import gsap from "gsap";
 import styles from "./LandingWireframe.module.scss";
@@ -14,6 +14,7 @@ export const LandingWireframe = () => {
   const featuresRef = useRef<HTMLDivElement | null>(null);
   const gridItemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const timeline = useRef<gsap.core.Timeline | null>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
 
   const addToGridRefs = (el: HTMLDivElement | null, index: number) => {
     if (el && !gridItemsRef.current.includes(el)) {
@@ -21,28 +22,96 @@ export const LandingWireframe = () => {
     }
   };
 
+  // Configurar la animación pero no ejecutarla todavía
+  const setupAnimation = () => {
+    if (
+      !headerRef.current ||
+      !heroRef.current ||
+      !featuresRef.current ||
+      !timeline.current
+    )
+      return;
+
+    timeline.current.clear();
+
+    // Establecer animaciones pero pausarlas inicialmente
+    // Animación del Header
+    timeline.current
+      .fromTo(
+        headerRef.current,
+        { x: "-100%", opacity: 0 },
+        { x: "0", opacity: 1 }
+      )
+      // Animación del Hero
+      .fromTo(
+        heroRef.current,
+        { y: "50", opacity: 0 },
+        { y: "0", opacity: 1, duration: 0.6 },
+        "-=0.4"
+      )
+      // Animación del Features Header
+      .fromTo(
+        featuresRef.current,
+        { y: "30", opacity: 0 },
+        { y: "0", opacity: 1, duration: 0.5 },
+        "-=0.3"
+      );
+
+    // Animación de los Items de Features con efecto "shine"
+    gridItemsRef.current.forEach((item, index) => {
+      if (!item || !timeline.current) return;
+      timeline.current.fromTo(
+        item,
+        { scale: 0.9, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.4,
+          onStart: () => {
+            item.classList.add(cx("animate-shine"));
+          },
+          onComplete: () => {
+            setTimeout(() => {
+              item.classList.remove(cx("animate-shine"));
+            }, 1000);
+          },
+        },
+        `-=${index ? 0.2 : 0.2}`
+      );
+    });
+
+    // Pausar la timeline hasta que sea visible
+    timeline.current.pause();
+  };
+
+  // Iniciar animación
+  const startAnimation = () => {
+    if (timeline.current && !hasAnimated) {
+      timeline.current.play();
+      setHasAnimated(true);
+    }
+  };
+
   useEffect(() => {
-    // Aseguramos que los elementos sean visibles inicialmente
-    setTimeout(() => {
-      if (headerRef.current) {
-        headerRef.current.style.visibility = "visible";
-        headerRef.current.style.opacity = "1";
+    // Configuración inicial - ocultar los elementos
+    if (headerRef.current) {
+      headerRef.current.style.visibility = "hidden";
+      headerRef.current.style.opacity = "0";
+    }
+    if (heroRef.current) {
+      heroRef.current.style.visibility = "hidden";
+      heroRef.current.style.opacity = "0";
+    }
+    if (featuresRef.current) {
+      featuresRef.current.style.visibility = "hidden";
+      featuresRef.current.style.opacity = "0";
+    }
+    gridItemsRef.current.forEach((item) => {
+      if (item) {
+        item.style.visibility = "hidden";
+        item.style.opacity = "0";
       }
-      if (heroRef.current) {
-        heroRef.current.style.visibility = "visible";
-        heroRef.current.style.opacity = "1";
-      }
-      if (featuresRef.current) {
-        featuresRef.current.style.visibility = "visible";
-        featuresRef.current.style.opacity = "1";
-      }
-      gridItemsRef.current.forEach((item) => {
-        if (item) {
-          item.style.visibility = "visible";
-          item.style.opacity = "1";
-        }
-      });
-    }, 100);
+    });
 
     const ctx = gsap.context(() => {
       timeline.current = gsap.timeline({
@@ -52,73 +121,57 @@ export const LandingWireframe = () => {
         },
       });
 
-      const createAnimation = () => {
-        if (
-          !headerRef.current ||
-          !heroRef.current ||
-          !featuresRef.current ||
-          !timeline.current
-        )
-          return;
+      // Preparar la animación
+      setupAnimation();
 
-        timeline.current.clear();
+      // Configurar el IntersectionObserver para detectar cuando el componente está visible
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            // Si el componente es visible aproximadamente a la mitad del viewport o un poco antes
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+              // Iniciar la animación
+              startAnimation();
 
-        // Animación del Header
-        timeline.current
-          .fromTo(
-            headerRef.current,
-            { x: "-100%", opacity: 0.8 },
-            { x: "0", opacity: 1 }
-          )
-          // Animación del Hero
-          .fromTo(
-            heroRef.current,
-            { y: "50", opacity: 0.8 },
-            { y: "0", opacity: 1, duration: 0.6 },
-            "-=0.4"
-          )
-          // Animación del Features Header
-          .fromTo(
-            featuresRef.current,
-            { y: "30", opacity: 0.8 },
-            { y: "0", opacity: 1, duration: 0.5 },
-            "-=0.3"
-          );
+              // Hacer visibles los elementos
+              if (headerRef.current) {
+                headerRef.current.style.visibility = "visible";
+              }
+              if (heroRef.current) {
+                heroRef.current.style.visibility = "visible";
+              }
+              if (featuresRef.current) {
+                featuresRef.current.style.visibility = "visible";
+              }
+              gridItemsRef.current.forEach((item) => {
+                if (item) {
+                  item.style.visibility = "visible";
+                }
+              });
 
-        // Animación de los Items de Features con efecto "shine"
-        gridItemsRef.current.forEach((item, index) => {
-          if (!item || !timeline.current) return;
-          timeline.current.fromTo(
-            item,
-            { scale: 0.9, opacity: 0.8 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.4,
-              onStart: () => {
-                item.classList.add(cx("animate-shine"));
-              },
-              onComplete: () => {
-                setTimeout(() => {
-                  item.classList.remove(cx("animate-shine"));
-                }, 1000);
-              },
-            },
-            `-=${index ? 0.2 : 0.2}`
-          );
-        });
-      };
+              // Desconectar el observer una vez que la animación ha sido iniciada
+              observer.disconnect();
+            }
+          });
+        },
+        {
+          // Configurar el umbral para que se active cuando al menos el 35% del componente esté visible
+          threshold: [0.35],
+          // Configurar rootMargin para activar la animación un poco antes (100px antes de llegar al centro)
+          rootMargin: "0px 0px -100px 0px",
+        }
+      );
 
-      // Retraso en la animación inicial
-      setTimeout(createAnimation, 300);
+      // Observar el contenedor
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
 
+      // Función para reiniciar la animación manualmente (por ejemplo, con un evento)
       const handleRestart = () => {
-        createAnimation();
-      };
-
-      // Define a custom event type
-      type CustomEvent = Event & {
-        detail?: any;
+        setHasAnimated(false);
+        setupAnimation();
+        startAnimation();
       };
 
       containerRef.current?.addEventListener(
@@ -127,6 +180,7 @@ export const LandingWireframe = () => {
       );
 
       return () => {
+        observer.disconnect();
         containerRef.current?.removeEventListener(
           "restartAnimation",
           handleRestart as EventListener
@@ -138,38 +192,27 @@ export const LandingWireframe = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className={cx("landing")}>
-      {/* Header */}
-      <header
-        ref={headerRef}
-        className={cx("landing__header")}
-        style={{ visibility: "visible", opacity: 1 }}
-      >
+    <div ref={containerRef} className={cx("landing", "wireframe")}>
+      <header ref={headerRef} className={cx("landing__header")}>
         <div className={cx("landing__header-content")}>
+          {/* Logo Minimalista */}
           <div className={cx("landing__header-logo")} />
-          <div className={cx("landing__header-text")}>
+
+          {/* Sólo dos elementos de navegación */}
+          <div className={cx("landing__header-nav")}>
             <div
               className={cx(
-                "landing__header-text-line",
-                "landing__header-text-line--short"
+                "landing__header-nav-item",
+                "landing__header-nav-item--active"
               )}
             />
-            <div
-              className={cx(
-                "landing__header-text-line",
-                "landing__header-text-line--medium"
-              )}
-            />
+            <div className={cx("landing__header-nav-item")} />
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className={cx("landing__hero")}
-        style={{ visibility: "visible", opacity: 1 }}
-      >
+      <section ref={heroRef} className={cx("landing__hero")}>
         <div className={cx("landing__hero-content")}>
           <div className={cx("landing__hero-title")} />
           <div className={cx("landing__hero-subtitle")} />
@@ -201,20 +244,164 @@ export const LandingWireframe = () => {
             >
               <defs>
                 <linearGradient
-                  id="heroGradient"
+                  id="neoGradient1A"
                   x1="0%"
                   y1="0%"
                   x2="100%"
                   y2="100%"
                 >
-                  <stop offset="0%" stopColor="#818cf8" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.8" />
+                  <stop offset="0%" stopColor="#6366f1" />
+                  <stop offset="100%" stopColor="#18181f" />
                 </linearGradient>
+                <filter id="neoShadow1A">
+                  <feDropShadow
+                    dx="5"
+                    dy="5"
+                    stdDeviation="3"
+                    floodColor="#000"
+                    floodOpacity="0.3"
+                  />
+                  <feDropShadow
+                    dx="-5"
+                    dy="-5"
+                    stdDeviation="3"
+                    floodColor="#6366f1"
+                    floodOpacity="0.1"
+                  />
+                </filter>
+                <filter id="glow1A">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
               </defs>
-              <path
-                d="M0,200 C150,100 450,300 600,200 L600,400 L0,400 Z"
-                fill="url(#heroGradient)"
-              />
+
+              {/* Grupo principal con animación de rotación */}
+              <g className={cx("rotating-group")}>
+                {/* Formas neomórficas - Dos triángulos (más grandes) */}
+                <polygon
+                  points="150,80 420,120 300,320"
+                  // fill="url(#neoGradient1A)"
+                  fill="url(#neoGradient1A)"
+                  filter="url(#neoShadow1A)"
+                />
+
+                <polygon
+                  points="180,100 400,140 280,300"
+                  fill="#1f1f2c"
+                  filter="url(#neoShadow1A)"
+                  opacity="0.7"
+                />
+
+                {/* Vértices brillantes del triángulo principal (círculos perfectos) */}
+                <circle
+                  cx="150"
+                  cy="80"
+                  r="8"
+                  fill="#6366f1"
+                  filter="url(#glow1A)"
+                />
+                <circle
+                  cx="420"
+                  cy="120"
+                  r="8"
+                  fill="#818cf8"
+                  filter="url(#glow1A)"
+                />
+                <circle
+                  cx="300"
+                  cy="320"
+                  r="8"
+                  fill="#4f46e5"
+                  filter="url(#glow1A)"
+                />
+
+                {/* Vértices brillantes del triángulo secundario (círculos perfectos) */}
+                <circle
+                  cx="180"
+                  cy="100"
+                  r="5"
+                  fill="#6366f1"
+                  filter="url(#glow1A)"
+                  opacity="0.7"
+                />
+                <circle
+                  cx="400"
+                  cy="140"
+                  r="5"
+                  fill="#818cf8"
+                  filter="url(#glow1A)"
+                  opacity="0.7"
+                />
+                <circle
+                  cx="280"
+                  cy="300"
+                  r="5"
+                  fill="#4f46e5"
+                  filter="url(#glow1A)"
+                  opacity="0.7"
+                />
+
+                {/* Líneas conectoras sutiles */}
+                <line
+                  x1="150"
+                  y1="80"
+                  x2="420"
+                  y2="120"
+                  stroke="#6366f1"
+                  strokeWidth="2"
+                  strokeOpacity="0.3"
+                />
+                <line
+                  x1="420"
+                  y1="120"
+                  x2="300"
+                  y2="320"
+                  stroke="#818cf8"
+                  strokeWidth="2"
+                  strokeOpacity="0.3"
+                />
+                <line
+                  x1="300"
+                  y1="320"
+                  x2="150"
+                  y2="80"
+                  stroke="#4f46e5"
+                  strokeWidth="2"
+                  strokeOpacity="0.3"
+                />
+
+                {/* Líneas conectoras entre los dos triángulos */}
+                <line
+                  x1="150"
+                  y1="80"
+                  x2="180"
+                  y2="100"
+                  stroke="#6366f1"
+                  strokeWidth="1.5"
+                  strokeOpacity="0.2"
+                  strokeDasharray="3,2"
+                />
+                <line
+                  x1="420"
+                  y1="120"
+                  x2="400"
+                  y2="140"
+                  stroke="#818cf8"
+                  strokeWidth="1.5"
+                  strokeOpacity="0.2"
+                  strokeDasharray="3,2"
+                />
+                <line
+                  x1="300"
+                  y1="320"
+                  x2="280"
+                  y2="300"
+                  stroke="#4f46e5"
+                  strokeWidth="1.5"
+                  strokeOpacity="0.2"
+                  strokeDasharray="3,2"
+                />
+              </g>
             </svg>
           </div>
         </div>
@@ -222,27 +409,18 @@ export const LandingWireframe = () => {
 
       {/* Features Section */}
       <section className={cx("landing__features")}>
-        <div
-          ref={featuresRef}
-          className={cx("landing__features-header")}
-          style={{ visibility: "visible", opacity: 1 }}
-        >
+        <div ref={featuresRef} className={cx("landing__features-header")}>
           <div className={cx("landing__features-title")} />
           <div className={cx("landing__features-subtitle")} />
         </div>
         <div className={cx("landing__features-grid")}>
-          {[...Array(3)].map((_, index) => (
+          {[...Array(4)].map((_, index) => (
             <div
               key={`feature-${index}`}
               ref={(el) => addToGridRefs(el as HTMLDivElement | null, index)}
               className={cx("landing__features-item")}
-              style={{ visibility: "visible", opacity: 1 }}
             >
-              <div className={cx("landing__features-item-content")}>
-                <div className={cx("landing__features-item-icon")} />
-                <div className={cx("landing__features-item-title")} />
-                <div className={cx("landing__features-item-text")} />
-              </div>
+              {/* Sin contenido, solo fondo */}
             </div>
           ))}
         </div>

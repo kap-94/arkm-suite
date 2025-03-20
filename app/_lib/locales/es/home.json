@@ -33,13 +33,13 @@
     "scroll": "Desplázate para explorar"
   },
   "solutions": {
-    "title": "Soluciones que generan impacto",
+    "title": "Soluciones web para la transformación digital",
     "subtitle": "Cada proyecto es una oportunidad para crear un impacto duradero",
     "solutions": [
       {
         "id": "web-design-solution",
         "title": "Diseño Web",
-        "description": "Para nosotros, el diseño no solo consiste en pantallas efectivas, eficientes y visualmente agradables, sino también en diseño de movimiento con sus animaciones en vivo e ilustraciones entretenidas.",
+        "description": "Para nosotros, el diseño no solo consiste en pantallas efectivas, eficientes y visualmente agradables, sino también en diseño de movimiento con sus animaciones.",
         "features": [
           {
             "title": "Diseño UX/UI Avanzado",
@@ -58,11 +58,11 @@
       {
         "id": "web-development-solution",
         "title": "Desarrollo Web",
-        "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y mejores prácticas.",
+        "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y las mejores prácticas para ofrecer resultados excepcionales.",
         "features": [
           {
-            "title": "Arquitectura Moderna",
-            "description": "Soluciones a prueba de futuro que utilizan microservicios y tecnología nativa en la nube para máxima escalabilidad y mantenibilidad."
+            "title": "Tecnologías Modernas",
+            "description": "Implementamos tecnologías modernas y flexibles, utilizando cloud computing y frameworks avanzados para asegurar soluciones escalables y eficientes."
           },
           {
             "title": "Código Limpio",
@@ -74,10 +74,11 @@
           }
         ]
       }
+      
     ]
   },
   "clientSuite": {
-    "title": "Accede a nuestra Suite de Cliente",
+    "title": "Accede a nuestra Arkm Suite",
     "subtitle": "Una plataforma integral que centraliza la gestión de proyectos con herramientas de visibilidad y seguimiento en tiempo real.",
     "benefits": [
       {

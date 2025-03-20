@@ -1,4 +1,3 @@
-// src/components/SolutionCard/SolutionCard.tsx
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -18,7 +17,7 @@ export interface SolutionCardProps {
   id: string;
   title: string;
   description: string;
-  icon?: React.ReactNode;
+  solutionNumber: number; // Nuevo prop para el número de solución
   features: FeatureDetail[];
   className?: string;
 }
@@ -34,25 +33,16 @@ const ExpandableFeature = ({
   featureIndex: number;
   handleToggle: (index: number) => void;
 }) => {
-  const [renderContent, setRenderContent] = useState(isExpanded);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>(0);
 
-  // Este efecto garantiza que el contenido se renderice antes de animarlo
+  // Medir la altura real del contenido cuando cambia
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
-    if (isExpanded) {
-      setRenderContent(true);
-    } else {
-      // Esperar a que termine la animación de desvanecimiento antes de eliminar el contenido del DOM
-      timeoutId = setTimeout(() => {
-        setRenderContent(false);
-      }, 300); // Sincronizar con la duración de la transición CSS
+    if (descriptionRef.current) {
+      const actualHeight = descriptionRef.current.scrollHeight;
+      setHeight(actualHeight);
     }
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [isExpanded]);
+  }, [feature.description, isExpanded]);
 
   return (
     <div className={cx("solution-card__feature-container")}>
@@ -80,10 +70,10 @@ const ExpandableFeature = ({
         </div>
         <Typography
           variant="p1"
-          color="secondary"
+          color="primary"
           theme="dark"
           fontFamily="sofia"
-          fontWeight={300}
+          fontWeight={400}
         >
           {feature.title}
         </Typography>
@@ -93,19 +83,22 @@ const ExpandableFeature = ({
         className={cx("solution-card__feature-description", {
           "solution-card__feature-description--expanded": isExpanded,
         })}
-        onClick={(e) => e.stopPropagation()}
+        style={{ height: isExpanded ? `${height}px` : "0px" }}
       >
-        {renderContent && (
+        <div
+          ref={descriptionRef}
+          className={cx("solution-card__feature-description-content")}
+        >
           <Typography
             variant="p2"
-            color="tertiary"
+            color="secondary"
             theme="dark"
             fontFamily="sofia"
-            fontWeight={300}
+            fontWeight={400}
           >
             {feature.description}
           </Typography>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -114,7 +107,7 @@ const ExpandableFeature = ({
 export const SolutionCard = ({
   title,
   description,
-  icon,
+  solutionNumber, // Usamos el número de solución en lugar del icono
   features,
   className,
 }: SolutionCardProps) => {
@@ -158,23 +151,30 @@ export const SolutionCard = ({
   return (
     <div className={cx("solution-card", className)}>
       <div className={cx("solution-card__content")}>
-        <Typography
-          variant="h3"
-          className={cx("solution-card__title")}
-          fontWeight={300}
-          fontFamily="sofia"
-          theme="dark"
-          data-text={title}
-        >
-          {title}
-        </Typography>
+        <div className={cx("solution-card__title-container")}>
+          <div className={cx("solution-card__number-container")}>
+            <span className={cx("solution-card__number")}>
+              {solutionNumber}
+            </span>
+          </div>
+          <Typography
+            variant="h3"
+            className={cx("solution-card__title")}
+            fontWeight={500}
+            fontFamily="sofia"
+            theme="dark"
+            data-text={title}
+          >
+            {title}
+          </Typography>
+        </div>
 
         <Typography
           variant="p1"
           className={cx("solution-card__description")}
-          color="secondary"
+          color="primary"
           fontFamily="sofia"
-          fontWeight={300}
+          fontWeight={400}
           theme="dark"
         >
           {description}

@@ -1,28 +1,17 @@
+"use client";
+import React, { useRef } from "react";
 import classNames from "classnames/bind";
 import Solution, { SolutionLayout } from "../Solution";
 import styles from "./SolutionsModule.module.scss";
 import Typography from "@/app/_components/Typography";
-import {
-  DesignIcon,
-  DevelopmentIcon,
-  RocketIllustration,
-} from "@/app/_components/SolutionCard/SolutionIcons";
+import { Box, Monitor } from "lucide-react";
 import CodeEditorAnimation from "@/app/_components/animations/CodeEditorAnimation";
 import LandingWireframe from "@/app/_components/animations/LandingWireframe";
 
 const cx = classNames.bind(styles);
 
-const getIconComponent = (id: string) => {
-  switch (id) {
-    case "web-design-solution":
-      return <DesignIcon />;
-    case "web-development-solution":
-      return <RocketIllustration />;
-    default:
-      return <DesignIcon />;
-  }
-};
-
+// No necesitamos el getIconComponent ya que ahora usamos números
+// pero mantenemos la función getAnimationComponent
 const getAnimationComponent = (id: string) => {
   switch (id) {
     case "web-design-solution":
@@ -45,7 +34,6 @@ interface SolutionData {
   title: string;
   description: string;
   features: SolutionFeature[];
-  icon?: React.ReactNode;
   AnimationComponent?: React.ComponentType<any>;
 }
 
@@ -66,6 +54,8 @@ export const SolutionsModule = ({
   solutionLayout,
   dictionary,
 }: SolutionsModuleProps) => {
+  const containerRef = useRef<HTMLElement>(null);
+
   // Use dictionary data when available, otherwise use hardcoded defaults
   const solutionsData = dictionary?.solutions || [
     {
@@ -117,32 +107,20 @@ export const SolutionsModule = ({
   ];
 
   // Calculamos el offset global para cada solución
-  // Sumamos la cantidad de features de las soluciones anteriores
   let globalFeatureOffset = 0;
 
   return (
-    <section id="showcase" className={cx("container")}>
+    <section ref={containerRef} id="showcase" className={cx("container")}>
       <div className={cx("solutions__header")}>
         <Typography
           variant="h2"
           fontFamily="sofia"
-          fontWeight={400}
+          fontWeight={500}
           color="primary"
           theme="dark"
           className={cx("solutions__title")}
         >
           {dictionary?.title || "Solutions that drive impact"}
-        </Typography>
-        <Typography
-          variant="p1"
-          color="tertiary"
-          theme="dark"
-          fontWeight={300}
-          fontFamily="sofia"
-          className={cx("solutions__subtitle")}
-        >
-          {dictionary?.subtitle ||
-            "Each project is an opportunity to create lasting impact"}
         </Typography>
       </div>
 
@@ -152,30 +130,25 @@ export const SolutionsModule = ({
           const offset = globalFeatureOffset;
           globalFeatureOffset += solution.features.length;
 
-          let itemLayout = solutionLayout;
-          if (!itemLayout && alternateLayouts) {
-            itemLayout = index % 2 === 0 ? "card-left" : "card-right";
-          } else if (!itemLayout) {
-            itemLayout = "card-left";
-          }
+          // let itemLayout = solutionLayout;
+          // if (!itemLayout && alternateLayouts) {
+          //   itemLayout = index % 2 === 0 ? "card-left" : "card-right";
+          // } else if (!itemLayout) {
+          //   itemLayout = "card-left";
+          // }
 
-          // Add the icon based on solution id
-          const solutionWithIcon: SolutionData = {
-            ...solution,
-            icon: getIconComponent(solution.id),
-            AnimationComponent: getAnimationComponent(solution.id),
-          };
+          // Obtenemos el componente de animación
+          const AnimationComponent = getAnimationComponent(solution.id);
 
           return (
             <li key={index} className={cx("solutions__item")}>
               <Solution
                 word="with gsap"
-                solution={solutionWithIcon}
+                solution={solution}
+                solutionNumber={index + 1} // Añadimos el número secuencial (empezando desde 1)
                 // layout={itemLayout}
-                AnimationComponent={
-                  solutionWithIcon.AnimationComponent || LandingWireframe
-                }
-                featureOffset={offset} // Pasamos el offset global a cada solución
+                AnimationComponent={AnimationComponent}
+                featureOffset={offset}
               />
             </li>
           );

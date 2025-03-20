@@ -2,134 +2,357 @@
 @import "@/app/_styles/mixins.scss";
 
 .solution {
-  --card-width: 380px;
+  --card-width: 500px;
+  --animation-width: 32%;
   --background-width: 500px;
   --background-height: 532px;
   --aspect-ratio: 1.2;
+  --elements-gap: 200px;
 
-  height: calc(100vw / var(--aspect-ratio));
-  max-height: 600px;
+  // Clase especial para manejo de elementos antes de estar listos
+  &:not(.solution--ready) {
+    .solution__floating-element,
+    .solution__connector,
+    .solution__ambient-light {
+      display: none !important;
+    }
+  }
+
+  height: fit-content;
+  min-height: 600px;
+  max-height: 900px;
   width: 100%;
-  max-width: 1024px;
+  max-width: 1200px;
   position: relative;
-  // overflow: hidden;
   margin: 0 auto;
+  z-index: 1;
 
   @include tablet {
     --aspect-ratio: 1.1;
+    --elements-gap: 50px;
+    --animation-width: 35%;
   }
 
   @include mobile {
     --aspect-ratio: 1;
-    height: 700px;
+    --animation-width: 85%;
+    --elements-gap: 32px;
+    height: auto; // Auto height para mejor responsive
+    min-height: 650px; // Mínima altura para garantizar visibilidad
+    max-height: none; // Sin límite en altura para evitar problemas de contenido
+    padding: 0; // Padding reducido en móviles
   }
 
   @include mobile-small {
-    height: 575px;
+  
+    --elements-gap: 24px;
+
+  }
+
+  &--mobile {
+    // Clase específica para optimizaciones en móvil
+    transform: none !important; // Evitar transformaciones 3D en móvil
+    perspective: none !important; // Evitar perspective en móvil
+    will-change: auto !important; // Evitar will-change para mejor rendimiento
+
+    .solution__card-wrapper,
+    .solution__wireframe-wrapper {
+      transform: none !important;
+      will-change: auto !important;
+      transition: opacity 0.5s ease !important; // Usar transiciones simples en lugar de GSAP
+    }
   }
 
   &__container {
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 2rem;
+    padding: 0 $spacing-md;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+    will-change: transform-style, perspective;
+
+    @include mobile {
+      padding: 0;
+      perspective: none; // Eliminar perspective en móvil
+      transform-style: flat; // Usar flat en lugar de preserve-3d en móvil
+      will-change: auto; // Evitar will-change en móvil
+    }
+  }
+
+  &__content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    gap: var(--elements-gap);
+    position: relative;
+    transform-style: preserve-3d;
+
+    @include mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--elements-gap);
+      padding: $spacing-md 0;
+      transform-style: flat; // Usar flat en lugar de preserve-3d en móvil
+      will-change: auto; // Evitar will-change en móvil
+    }
   }
 
   &__card-wrapper {
-    position: absolute;
+    position: relative;
     width: var(--card-width);
-    top: 25%;
-    z-index: 3;
-    border-radius: $border-radius-md;
-    // box-shadow: $shadow-lg;
-    transition: transform 0.3s ease;
+    z-index: 5;
+    height: auto;
+    flex: 0 0 calc(55% - (var(--elements-gap) / 2));
+    max-width: calc(55% - (var(--elements-gap) / 2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden; // Mejorar renderizado
 
     @include mobile {
-      width: 90%;
-      max-width: 400px;
-      top: 1%;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-    }
-
-    @include mobile-small {
-      width: 92%;
-      top: 0.8%;
-      outline: 4px solid $black-dark;
-      outline-offset: 16px;
-    }
-  }
-
-  &__background {
-    position: absolute;
-    width: var(--background-width);
-    aspect-ratio: 1/1.064; // 500/532
-    top: 10%;
-
-    z-index: 1;
-    transition: transform 0.3s ease;
-
-    @include mobile {
-      width: 90%;
-      max-width: 424px;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-    }
-
-    @include mobile-small {
-      width: 95%;
-      top: 0;
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 auto;
+      margin: 0 auto;
+      height: fit-content; // Auto height para contenido dinámico
+      // min-height: 45%; // Mínimo para garantizar espacio
+      align-items: flex-start;
+      justify-content: flex-start;
+      z-index: 6;
+      will-change: auto; // Desactivar will-change en móvil
+      transform-style: flat; // Flat para mobile
+      backface-visibility: visible; // Visible para mobile
     }
   }
 
   &__wireframe-wrapper {
-    position: absolute;
-    width: 90%;
-    max-width: 400px;
-    aspect-ratio: 1/1.141; // 424/484
-    top: 25%;
-    z-index: 2;
+    position: relative;
+    flex: 0 0 var(--animation-width);
+    max-width: var(--animation-width);
+    height: 85%;
+    z-index: 4;
     border-radius: $border-radius-md;
-    box-shadow: 0px 2px 120px rgba($primary-color, 0.18);
-    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden; // Mejorar renderizado
 
     @include mobile {
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      outline: 5px solid $black-dark;
-    }
+      width: 90%;
+      flex: 0 0 auto;
+      margin: 0 auto;
+      align-items: flex-start;
 
-    @include mobile-small {
-      display: none;
+      height: fit-content; // Auto height para contenido dinámico
+      // min-height: 45%; // Mínimo para garantizar espacio
+      max-width: 90%;
+      z-index: 5;
+      will-change: auto; // Desactivar will-change en móvil
+      transform-style: flat; // Flat para mobile
+      backface-visibility: visible; // Visible para mobile
     }
   }
 
   // Layout variations
   &--card-left {
-    .solution__card-wrapper {
-      left: 0;
-    }
+    .solution__content-wrapper {
+      flex-direction: row;
 
-    .solution__background {
-      left: 60px;
-    }
-
-    .solution__wireframe-wrapper {
-      right: 0;
+      @include mobile {
+        flex-direction: column;
+      }
     }
   }
 
   &--card-right {
-    .solution__card-wrapper {
-      right: 0;
+    .solution__content-wrapper {
+      flex-direction: row-reverse;
+
+      @include mobile {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__card {
+    h2,
+    h3,
+    p {
+      max-width: 100%;
     }
 
-    .solution__background {
-      right: 60px;
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+
+      @include mobile {
+        font-size: 1rem; // Reducir tamaño en móvil
+        line-height: 1.5; // Reducir interlineado
+      }
     }
 
-    .solution__wireframe-wrapper {
-      left: 0;
+    h2,
+    h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+
+      @include mobile {
+        font-size: 1.5rem; // Reducir tamaño en móvil
+        margin-bottom: 1rem; // Reducir margen
+      }
+    }
+  }
+
+  /* Elementos para el efecto de parallax avanzado */
+  &__floating-element {
+    position: absolute;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    pointer-events: none;
+    z-index: 1;
+
+    &--1 {
+      width: 150px;
+      height: 150px;
+      border-radius: 20px;
+      background: radial-gradient(
+        circle,
+        rgba($primary-color, 0.08) 0%,
+        rgba($primary-color, 0.03) 70%,
+        transparent 100%
+      );
+      filter: blur(20px);
+      top: 20%;
+      right: 5%;
+      transform: rotate(25deg) translateZ(-50px);
+    }
+
+    &--2 {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba($primary-color, 0.06) 0%,
+        rgba($primary-color, 0.02) 70%,
+        transparent 100%
+      );
+      filter: blur(15px);
+      bottom: 15%;
+      left: 10%;
+      transform: translateZ(-30px);
+    }
+
+    &--3 {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      background: radial-gradient(
+        circle,
+        rgba($white-color, 0.05) 0%,
+        rgba($white-color, 0.02) 70%,
+        transparent 100%
+      );
+      filter: blur(10px);
+      top: 30%;
+      left: 5%;
+      transform: rotate(-15deg) translateZ(-40px);
+    }
+
+    &--4 {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(
+        circle,
+        rgba($white-color, 0.04) 0%,
+        rgba($white-color, 0.01) 70%,
+        transparent 100%
+      );
+      filter: blur(12px);
+      bottom: 25%;
+      right: 15%;
+      transform: translateZ(-20px);
+    }
+
+    @include mobile {
+      display: none; // Ocultar en móvil para mejor rendimiento
+    }
+  }
+
+  /* Líneas conectoras para dar sensación de estructura 3D */
+  &__connector {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba($primary-color, 0.05) 20%,
+      rgba($primary-color, 0.1) 50%,
+      rgba($primary-color, 0.05) 80%,
+      transparent 100%
+    );
+    z-index: 3;
+    opacity: 0.7;
+    transform-origin: left center;
+    will-change: transform, opacity;
+
+    &--horizontal {
+      width: 30%;
+      top: 50%;
+      left: 10%;
+    }
+
+    &--diagonal-1 {
+      width: 25%;
+      top: 40%;
+      left: 15%;
+      transform: rotate(25deg);
+    }
+
+    &--diagonal-2 {
+      width: 20%;
+      bottom: 35%;
+      right: 15%;
+      transform: rotate(-15deg);
+    }
+
+    @include mobile {
+      display: none; // Ocultar en móvil para mejor rendimiento
+    }
+  }
+
+  /* Efecto de luz ambiental para dar profundidad */
+  &__ambient-light {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(
+      ellipse at center,
+      rgba($primary-color, 0.02) 0%,
+      rgba($primary-color, 0.01) 50%,
+      transparent 70%
+    );
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    will-change: opacity;
+
+    &--active {
+      opacity: 1;
+    }
+
+    @include mobile {
+      display: none; // Ocultar en móvil para mejor rendimiento
     }
   }
 }
