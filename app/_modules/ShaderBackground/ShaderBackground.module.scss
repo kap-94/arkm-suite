@@ -2,14 +2,14 @@
   position: relative;
   width: 100%;
   background-color: transparent;
-  overflow: hidden; // Prevenir scroll horizontal cuando ocurren animaciones del shader
-  will-change: transform; // Optimización de rendimiento
+  overflow: hidden;
+  will-change: transform;
 
   .shader {
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none; // Permitir interacción con elementos debajo
+    pointer-events: none;
     z-index: 1;
     overflow: hidden;
     opacity: 0;
@@ -25,7 +25,7 @@
       object-fit: cover;
       position: absolute;
       inset: 0;
-      will-change: transform; // Optimización de rendimiento para canvas
+      will-change: transform;
     }
   }
 
@@ -33,8 +33,8 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    min-height: 50vh; // Altura mínima para dispositivos pequeños
-    // Clase para facilitar el rendering optimizado
+    min-height: 50vh;
+
     &.scroll-section {
       will-change: transform;
       transform: translateZ(0);
@@ -42,15 +42,12 @@
   }
 }
 
-/* Media queries para responsividad */
 @media screen and (max-width: 768px) {
   .background-container {
     .shader {
-      /* Asegurar que el shader siempre sea visible en dispositivos móviles */
       height: 100% !important;
     }
 
-    // Ajustar rendimiento en dispositivos móviles
     canvas {
       image-rendering: optimizeSpeed;
     }
@@ -60,24 +57,8 @@
 @media screen and (max-width: 480px) {
   .background-container {
     .content {
-      min-height: 40vh; /* Ajuste para pantallas más pequeñas */
+      min-height: 40vh;
     }
-  }
-}
-
-/* Keyframes para animaciones opcionales */
-@keyframes rippleEffect {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
   }
 }
 

@@ -22,29 +22,32 @@ import { shaderMaterial /* OrbitControls */ } from "@react-three/drei";
 import { gsap } from "gsap";
 import classNames from "classnames/bind";
 import styles from "./ChromaticRippleScene.module.scss";
-import ScrollAnimationController from "../ScrollAnimationController/ScrollAnimationController";
+import ScrollAnimationController from "./FragmentationController"; // Asegúrate de la ruta correcta
 
 const cx = classNames.bind(styles);
 
+// Colores
 const COLORS = {
   primary: "#26225F",
   secondary: "#4f46e5",
 };
 
 // ------------------------------------------------------
-// Vertex Shader
+// Vertex Shader (con swirl + fluidFactor)
 // ------------------------------------------------------
 const vertexShader = `
   uniform float uTime;
   uniform float uFrequency;
   uniform float uAmplitude;
+  uniform float uFluidFactor;   // NUEVO uniform para efecto swirl
   uniform vec2 uMouse;
   uniform float uScrollProgress;
+
   varying vec2 vUv;
   varying float vElevation;
   varying float vDistortion;
 
-  // Ruido simplex (implementación completa)
+  // Ruido simplex
   vec3 mod289(vec3 x) { 
     return x - floor(x * (1.0 / 289.0)) * 289.0; 
   }
@@ -87,7 +90,7 @@ const vertexShader = `
     vec4 j = p - 49.0*floor(p*ns.z*ns.z);
 
     vec4 x_ = floor(j*ns.z);
-    vec4 y_ = floor(j-7.0*x_);
+    vec4 y_ = floor(j - 7.0*x_);
 
     vec4 x = x_*ns.x + ns.yyyy;
     vec4 y = y_*ns.x + ns.yyyy;
@@ -130,30 +133,48 @@ const vertexShader = `
     ));
   }
 
+  // swirl function (para un efecto fluido)
+  vec2 swirl(vec2 uv, float amount){
+    vec2 center = vec2(0.5);
+    vec2 offset = uv - center;
+    float r = length(offset);
+    float theta = atan(offset.y, offset.x);
+    // swirl con "amount" escalado por uFluidFactor
+    theta += r * amount * uFluidFactor; 
+    offset = vec2(cos(theta), sin(theta)) * r;
+    return center + offset;
+  }
+
   void main() {
     vUv = uv;
 
-    // Influencia del mouse
+    // Influencia del mouse (como antes)
     float mouseDistance = length(uMouse - vUv);
     float mouseInfluence = smoothstep(0.5, 0.0, mouseDistance);
 
-    // Efecto de scroll
     float scrollEffect = uScrollProgress * 2.0 - 1.0;
     float scrollFrequency = uFrequency * (1.0 + scrollEffect * 0.5);
 
+    // Base pos
     vec3 pos = position;
 
     // Ruido
-    float noiseValue = snoise(vec3(
-      vUv * scrollFrequency,
-      uTime * 0.5 + uScrollProgress
-    )) * uAmplitude;
+    float noiseValue = snoise(vec3(vUv * scrollFrequency, uTime * 0.5 + uScrollProgress)) * uAmplitude;
     noiseValue *= (1.0 + mouseInfluence * 2.0);
 
     // Perturbación en Z
     pos.z += noiseValue * (1.0 + abs(scrollEffect) * 0.5);
 
-    // Rotaciones sencillas
+    // swirl en X/Y => convertimos a [0,1] coords => swirl => convertimos a coords pos.x y pos.y
+    // Usamos vUv + swirl
+    vec2 swirlUV = swirl(vUv, 2.0); // "2.0" => factor base swirl. Multipl. por uFluidFactor
+    // Ajustar "pos.x,pos.y" en base a la diferencia swirl
+    // offset swirl
+    vec2 swirlOffset = swirlUV - vUv;
+    pos.x += swirlOffset.x;
+    pos.y += swirlOffset.y;
+
+    // Rotaciones
     float angleX = uScrollProgress * 0.1 * 3.14159;
     float angleY = uScrollProgress * 0.2 * 3.14159;
     float cosX = cos(angleX);
@@ -161,23 +182,23 @@ const vertexShader = `
     float cosY = cos(angleY);
     float sinY = sin(angleY);
 
-    // Rotar en X
+    // rotar en X
     float y1 = pos.y*cosX - pos.z*sinX;
     float z1 = pos.y*sinX + pos.z*cosX;
     pos.y = y1;
     pos.z = z1;
 
-    // Rotar en Y
+    // rotar en Y
     float x2 = pos.x*cosY + pos.z*sinY;
     float z2 = -pos.x*sinY + pos.z*cosY;
     pos.x = x2;
     pos.z = z2;
 
-    // Pequeño "zoom"
+    // "zoom"
     float zoom = 1.0 + uScrollProgress * 0.2;
     pos.xy *= zoom;
 
-    // Wave horizontal de ejemplo
+    // wave horizontal extra
     float storyWave = sin(vUv.y * 10.0 + uScrollProgress * 10.0) * 0.05 * uScrollProgress;
     pos.x += storyWave;
 
@@ -189,7 +210,7 @@ const vertexShader = `
 `;
 
 // ------------------------------------------------------
-// Fragment Shader
+// Fragment Shader (similar al tuyo, ajustado para fluid transitions)
 // ------------------------------------------------------
 const fragmentShader = `
   uniform vec3 uColor;
@@ -198,7 +219,7 @@ const fragmentShader = `
   uniform float uRGBShift;
   uniform vec3 uSecondaryColor;
   uniform float uScrollProgress;
-  
+
   varying vec2 vUv;
   varying float vElevation;
   varying float vDistortion;
@@ -210,7 +231,6 @@ const fragmentShader = `
   }
 
   void main() {
-    // Cantidad de "shift" en RGB
     float rgbShiftAmount = uRGBShift * (1.0 + vDistortion * 2.0);
     rgbShiftAmount *= (1.0 + uScrollProgress * 2.0);
 
@@ -219,58 +239,56 @@ const fragmentShader = `
       sin(uTime * 0.2 + uScrollProgress * 3.14159)
     );
 
-    // UV animadas
     vec2 animatedUV = vUv;
     animatedUV.x += sin(vUv.y * 10.0 + uTime * 0.5 + uScrollProgress * 3.14159) * 0.02 * uScrollProgress;
     animatedUV.y += cos(vUv.x * 10.0 + uTime * 0.5 + uScrollProgress * 3.14159) * 0.02 * uScrollProgress;
 
-    // Tomar color de la textura
+    // base color con shift
     vec3 color = rgbShift(uTexture, animatedUV, offset);
 
-    // Colores de inicio y fin
+    // Mezclar con color "start" y "end"
     vec3 startColor = uColor;
-    vec3 endColor = uSecondaryColor;
-    vec3 scrollColor = mix(startColor, endColor, uScrollProgress);
-    color = mix(color, scrollColor, 0.25 + uScrollProgress * 0.25);
+    vec3 endColor   = uSecondaryColor;
+    vec3 scrollColor= mix(startColor, endColor, uScrollProgress);
+    color= mix(color, scrollColor, 0.25 + uScrollProgress * 0.25);
 
-    // Añadir "destello" según la elevación
+    // Elevación/destello
     color += vElevation * endColor * 0.2 * (0.2 + uScrollProgress * 0.3);
 
     // Viñeta
-    vec2 center = vec2(0.5, 0.5);
-    center.y += uScrollProgress * 0.2;
-    float dist = length(vUv - center);
-    float vignette = smoothstep(
-      0.8 - uScrollProgress * 0.3,
-      0.2 + uScrollProgress * 0.3,
+    vec2 center = vec2(0.5,0.5);
+    center.y += uScrollProgress*0.2;
+    float dist= length(vUv - center);
+    float vignette= smoothstep(
+      0.8 - uScrollProgress*0.3,
+      0.2 + uScrollProgress*0.3,
       dist
     );
-    color = mix(vec3(0.0), color, vignette);
+    color= mix(vec3(0.0), color, vignette);
 
     // Pequeños flashes
-    float flashPoint1 = smoothstep(0.2, 0.3, uScrollProgress) 
-                      - smoothstep(0.3, 0.4, uScrollProgress);
-    float flashPoint2 = smoothstep(0.6, 0.7, uScrollProgress) 
-                      - smoothstep(0.7, 0.8, uScrollProgress);
-    float flashEffect = flashPoint1 + flashPoint2;
-    color += flashEffect * vec3(0.3, 0.2, 0.6);
+    float flashPoint1= smoothstep(0.2,0.3,uScrollProgress) - smoothstep(0.3,0.4,uScrollProgress);
+    float flashPoint2= smoothstep(0.6,0.7,uScrollProgress) - smoothstep(0.7,0.8,uScrollProgress);
+    float flashEffect= flashPoint1 + flashPoint2;
+    color+= flashEffect * vec3(0.3,0.2,0.6);
 
     // Pequeño halo
-    float sceneTransition = smoothstep(0.45, 0.55, uScrollProgress);
-    float haloEffect = sin(uScrollProgress * 6.283185) * 0.5 + 0.5;
-    color += haloEffect * vDistortion * vec3(0.1, 0.2, 0.4) * sceneTransition;
+    float sceneTransition= smoothstep(0.45,0.55,uScrollProgress);
+    float haloEffect= sin(uScrollProgress*6.283185)*0.5+0.5;
+    color+= haloEffect * vDistortion * vec3(0.1,0.2,0.4) * sceneTransition;
 
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor= vec4(color,1.0);
   }
 `;
 
 // ------------------------------------------------------
-// Definición de Tipo para nuestro Material
+// Definición del Material con un uniform extra: uFluidFactor
 // ------------------------------------------------------
 export type ChromaticRippleMaterialImpl = THREE.ShaderMaterial & {
   uTime: number;
   uFrequency: number;
   uAmplitude: number;
+  uFluidFactor: number; // NUEVO
   uColor: THREE.Color;
   uSecondaryColor: THREE.Color;
   uTexture: THREE.Texture;
@@ -279,14 +297,12 @@ export type ChromaticRippleMaterialImpl = THREE.ShaderMaterial & {
   uScrollProgress: number;
 };
 
-// ------------------------------------------------------
-// Crear el material con shaderMaterial (drei)
-// ------------------------------------------------------
 const ChromaticRippleMaterial = shaderMaterial(
   {
     uTime: 0,
     uFrequency: 3.0,
     uAmplitude: 0.2,
+    uFluidFactor: 0.0, // Iniciamos en 0
     uColor: new THREE.Color(COLORS.primary),
     uSecondaryColor: new THREE.Color(COLORS.secondary),
     uTexture: new THREE.Texture(),
@@ -298,12 +314,9 @@ const ChromaticRippleMaterial = shaderMaterial(
   fragmentShader
 );
 
-// Extender React Three Fiber para reconocer la etiqueta <chromaticRippleMaterial />
 extend({ ChromaticRippleMaterial });
 
-// ------------------------------------------------------
-// Declaración global para TS (evita el error ts(2339))
-// ------------------------------------------------------
+// Para evitar TS error
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -323,7 +336,7 @@ function MeshWithOverlay({ children }: { children: ReactNode }) {
 }
 
 // ------------------------------------------------------
-// FloatingImage: El plano con el material
+// FloatingImage con swirl + fluid transitions
 // ------------------------------------------------------
 function FloatingImage() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -331,7 +344,6 @@ function FloatingImage() {
   const { mouse, viewport, size } = useThree();
 
   useEffect(() => {
-    // Guardar posición inicial en userData
     if (meshRef.current) {
       meshRef.current.userData.initialY = meshRef.current.position.y;
     }
@@ -340,14 +352,15 @@ function FloatingImage() {
   useEffect(() => {
     if (!materialRef.current) return;
 
-    // Pequeña animación inicial para amplitude
+    // Suave animación inicial
     gsap.from(materialRef.current, {
       uAmplitude: 0,
+      uFluidFactor: 0,
       duration: 2,
       ease: "power3.out",
     });
 
-    // Iniciar controlador de scroll
+    // Iniciar scroll controller
     ScrollAnimationController.init(meshRef, materialRef);
 
     return () => {
@@ -356,22 +369,19 @@ function FloatingImage() {
   }, []);
 
   useFrame(({ clock }) => {
-    // Actualizar uniforms en cada frame
     if (materialRef.current) {
       materialRef.current.uTime = clock.getElapsedTime();
+      // mouse.x -> [-1..1],  lo reducimos a [0..1], etc:
       materialRef.current.uMouse.set(mouse.x * 0.5 + 0.5, -mouse.y * 0.5 + 0.5);
     }
   });
 
-  // Reducir segmentos para mejorar performance
   const geometry = useMemo(() => new THREE.PlaneGeometry(3, 2, 16, 16), []);
   const baseScale = 0.4;
   const responsiveScale = Math.min(1, size.width / 1200) * baseScale;
-
-  // Centrar verticalmente
   const yOffset = viewport.height / 2 - (2 * responsiveScale) / 2;
 
-  // Cargar textura
+  // Textura
   const [texture] = useLoader(THREE.TextureLoader, [
     "https://images.unsplash.com/photo-1673526759317-be71a1243e3d?q=80&w=3432&auto=format&fit=crop",
   ]);
@@ -396,10 +406,10 @@ function FloatingImage() {
 }
 
 // ------------------------------------------------------
-// Componente principal de la escena
+// Escena principal
 // ------------------------------------------------------
 interface ChromaticRippleSceneProps {
-  scrollProgress?: number; // si quieres pasarlo manualmente
+  scrollProgress?: number;
 }
 
 function ChromaticRippleScene({
@@ -408,7 +418,6 @@ function ChromaticRippleScene({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detectar mobile
   useEffect(() => {
     if (typeof window === "undefined") return;
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -417,7 +426,7 @@ function ChromaticRippleScene({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Animación de fade-in al montar
+  // Fade-in
   useEffect(() => {
     if (!containerRef.current) return;
     gsap.fromTo(
@@ -437,7 +446,7 @@ function ChromaticRippleScene({
           preserveDrawingBuffer: false,
           powerPreference: "high-performance",
         }}
-        dpr={[1, 1.5]} // Limitamos el DPR para no saturar GPUs móviles
+        dpr={[1, 1.5]}
         camera={{
           position: [0, 0, isMobile ? 3 : 2.5],
           fov: isMobile ? 35 : 30,
@@ -451,19 +460,7 @@ function ChromaticRippleScene({
           <FloatingImage />
         </Suspense>
 
-        {/*
-          Si necesitas que el usuario pueda rotar la cámara manualmente,
-          descomenta OrbitControls. De lo contrario, puedes dejarlo comentado
-          para mejor perf:
-
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            rotateSpeed={0.5}
-            maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 2}
-          />
-        */}
+        {/* OrbitControls si lo requieres */}
       </Canvas>
     </div>
   );
