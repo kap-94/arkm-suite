@@ -26,7 +26,7 @@ export const Hero = ({ dictionary, projectFormDictionary }: HeroProps) => (
 
       <div className={cx("hero__info")}>
         <Typography
-          variant="h2"
+          variant="h1"
           color="primary"
           fontWeight={600}
           fontFamily="sofia"
