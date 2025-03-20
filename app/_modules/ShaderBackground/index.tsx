@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import styles from "./ShaderBackground.module.scss";
 import ParallaxDepthScene from "@/app/_components/WaveScene/ParallaxDepthScene";
 // import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene copy 2";
-import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene copy";
+// import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene copy";
 import PrismaticGlass from "@/app/_components/WaveScene/PrismaticGlass";
 import DeepSpaceShader from "@/app/_components/WaveScene/DeepSpaceShader";
 import MinimalNoirShader from "@/app/_components/WaveScene/MinimalNoirShader";
