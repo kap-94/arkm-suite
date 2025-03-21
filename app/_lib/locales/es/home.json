@@ -32,6 +32,35 @@
     },
     "scroll": "Desplázate para explorar"
   },
+  "methodology": {
+    "title": "Un proceso paso a paso que explica el resultado.",
+    "steps": {
+      "research": {
+        "title": "Investigación",
+        "description": "Analizamos la esencia de tu marca y su posición en el mercado mediante diálogos específicos para crear una base sólida, identificando oportunidades que diferencian tu marca."
+      },
+      "visualDirection": {
+        "title": "Dirección Visual",
+        "description": "Nuestro equipo crea una identidad visual excepcional explorando colores, gráficos y patrones de UI que conectan con tu audiencia y expresan los valores de tu marca."
+      },
+      "uiDesign": {
+        "title": "Diseño UI",
+        "description": "Creamos un sistema de diseño robusto y refinamos cada página hasta que la interfaz sea visualmente armoniosa y utilizable, asegurando que cada elemento funcione de manera efectiva."
+      },
+      "development": {
+        "title": "Desarrollo",
+        "description": "Utilizando el ecosistema React, entregamos un sitio web pixel-perfect que funciona perfectamente en todos los dispositivos, con código completamente optimizado para velocidad y SEO."
+      },
+      "launch": {
+        "title": "Lanzamiento",
+        "description": "ARKM te guía a través del despliegue con soporte en alojamiento, pipelines CI/CD y migración de contenido, implementando pruebas para asegurar un rendimiento óptimo."
+      },
+      "maintenance": {
+        "title": "Mantenimiento",
+        "description": "Nuestra asociación continúa con soporte técnico, actualizaciones y mejoras para mantener tu sitio a la vanguardia, proporcionando análisis para evolucionar tu presencia digital."
+      }
+    }
+  },
   "solutions": {
     "title": "Soluciones web para la transformación digital",
     "subtitle": "Cada proyecto es una oportunidad para crear un impacto duradero",
@@ -74,7 +103,6 @@
           }
         ]
       }
-      
     ]
   },
   "clientSuite": {

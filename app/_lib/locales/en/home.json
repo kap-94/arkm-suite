@@ -30,6 +30,35 @@
     },
     "scroll": "Scroll to Explore"
   },
+  "methodology": {
+    "title": "A step-by-step look at the process behind the result.",
+    "steps": {
+      "research": {
+        "title": "Research",
+        "description": "We analyze your brand essence and market position via targeted dialogues to create a strong foundation, identifying opportunities that set your brand apart."
+      },
+      "visualDirection": {
+        "title": "Visual Direction",
+        "description": "Our team crafts an exceptional visual identity by exploring colors, graphics, and UI patterns that resonate with your audience and express your brand values."
+      },
+      "uiDesign": {
+        "title": "UI Design",
+        "description": "We create a robust design system and refine each page until the interface is visually harmonious and usable, ensuring every element functions effectively."
+      },
+      "development": {
+        "title": "Development",
+        "description": "Using the React ecosystem, we deliver an exceptionally pixel-perfect website that works flawlessly on all devices, with code fully optimized for speed and SEO."
+      },
+      "launch": {
+        "title": "Launch",
+        "description": "ARKM guides you through deployment with support on hosting, CI/CD pipelines, and content migration, implementing testing to ensure peak performance."
+      },
+      "maintenance": {
+        "title": "Maintenance",
+        "description": "Our partnership continues with technical support, updates, and improvements to keep your site cutting-edge, providing analytics to evolve your digital presence."
+      }
+    }
+  },
   "solutions": {
     "title": "Our solutions for digital transformation",
     "subtitle": "Each project is an opportunity to create a lasting impact",

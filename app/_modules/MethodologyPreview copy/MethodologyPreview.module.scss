@@ -1,0 +1,715 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.methodology {
+  @include flex($justify: center);
+  position: relative;
+  padding: 140px 0;
+  background: $black-base;
+  overflow: hidden;
+  width: 100%;
+
+  @include desktop {
+    padding: 120px 64px;
+  }
+
+  @include tablet {
+    padding: 100px 48px;
+  }
+
+  @include mobile {
+    padding: 80px 32px;
+  }
+
+  @include mobile-medium {
+    padding: 64px 24px;
+  }
+
+  @include mobile-small {
+    padding: 48px 20px;
+  }
+
+  // Background effect with grid lines
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.07;
+  }
+
+  &__grid-line {
+    position: absolute;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $primary-color,
+      transparent
+    );
+
+    &--horizontal {
+      height: 1px;
+      width: 100%;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    &--vertical {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      background: linear-gradient(
+        0deg,
+        transparent,
+        $primary-color,
+        transparent
+      );
+    }
+  }
+
+  // Radial gradient overlay
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at center,
+      rgba($primary-color, 0.15),
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &__container {
+    @include flex(column, center, center, 80px);
+    max-width: 1280px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+
+    @include desktop {
+      gap: 72px;
+    }
+
+    @include tablet {
+      gap: 64px;
+    }
+
+    @include mobile {
+      gap: 56px;
+    }
+
+    @include mobile-small {
+      gap: 48px;
+    }
+  }
+
+  &__header {
+    @include flex(column, center, center);
+    gap: $spacing-lg;
+    width: 100%;
+    text-align: center;
+
+    @include mobile {
+      gap: $spacing-md;
+    }
+  }
+
+  &__title {
+    max-width: 600px;
+    margin-bottom: $spacing-sm;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        $primary-color,
+        transparent
+      );
+    }
+
+    @include mobile {
+      max-width: 320px;
+    }
+  }
+
+  &__subtitle {
+    max-width: 700px;
+    opacity: 0.9;
+  }
+
+  &__process {
+    @include flex(column, center, center, 60px);
+    width: 100%;
+    position: relative;
+
+    @include tablet {
+      gap: 80px;
+    }
+
+    @include mobile {
+      gap: 100px;
+    }
+  }
+
+  &__row {
+    @include flex(row, space-between, flex-start);
+    width: 100%;
+    position: relative;
+
+    @include tablet {
+      @include flex(column, center, center, 60px);
+    }
+
+    &--reverse {
+      flex-direction: row-reverse;
+
+      @include tablet {
+        flex-direction: column;
+      }
+    }
+  }
+
+  &__vertical-connector {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 60px;
+    z-index: 3;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &__connector-wrapper {
+    width: 60px;
+    @include flex-center;
+    position: relative;
+
+    @include tablet {
+      display: none;
+    }
+
+    &--reverse {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__step {
+    flex: 1;
+    max-width: 30%;
+    position: relative;
+    z-index: 2;
+
+    @include tablet {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  &__step-content {
+    @include flex(column, flex-start, center, 16px);
+    text-align: center;
+    background: rgba($black-light, 0.4);
+    backdrop-filter: blur(10px);
+    border-radius: $border-radius-lg;
+    padding: 48px 24px 32px;
+    height: 100%;
+    position: relative;
+    border: 1px solid;
+    border-image: linear-gradient(
+        135deg,
+        rgba($primary-color, 0.5),
+        rgba($primary-color, 0.05)
+      )
+      1;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: transform $transition-duration-fast $transition-bezier,
+      box-shadow $transition-duration-fast $transition-bezier;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: calc(#{$border-radius-lg} - 1px);
+      background: linear-gradient(
+        135deg,
+        rgba($primary-color, 0.05),
+        transparent
+      );
+      z-index: -1;
+    }
+
+    @include hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba($primary-color, 0.1);
+
+      .methodology__step-number {
+        background: rgba($primary-color, 0.25);
+        transform: scale(1.1);
+      }
+
+      .icon {
+        transform: scale(1.05);
+      }
+    }
+
+    @include tablet {
+      padding: 48px 32px 32px;
+    }
+
+    @include mobile {
+      padding: 48px 24px 32px;
+    }
+  }
+
+  &__step-number {
+    position: absolute;
+    top: -20px;
+    width: 40px;
+    height: 40px;
+    background: rgba($primary-dark, 0.15);
+    border-radius: $border-radius-full;
+    @include flex-center;
+    transition: background $transition-duration-fast $transition-bezier,
+      transform $transition-duration-fast $transition-bezier;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba($primary-color, 0.3);
+
+    span {
+      color: $primary-light;
+      font-weight: 600;
+      font-size: 18px;
+      text-shadow: 0 0 10px rgba($primary-color, 0.5);
+    }
+  }
+
+  &__step-icon {
+    @include flex-center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 8px;
+    border-radius: $border-radius-full;
+    background: rgba($black-dark, 0.4);
+    padding: 12px;
+    border: 1px solid rgba($primary-color, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &__step-title {
+    margin-bottom: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, $primary-light, $primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  &__step-description {
+    line-height: 1.6;
+    font-weight: 300;
+    color: rgba($text-tertiary, 0.9);
+  }
+}
+
+// Connector animations
+.connector {
+  position: relative;
+
+  &__arrow {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: drawConnector 1.5s ease forwards 0.5s;
+  }
+
+  &--vertical {
+    .connector__arrow {
+      animation-delay: 2s;
+    }
+  }
+}
+
+// Icon animations
+.icon {
+  width: 100%;
+  height: 100%;
+  transition: transform $transition-duration-fast $transition-bezier;
+
+  // Research icon animations
+  &--research {
+    .icon__circle {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: drawCircle 2s ease forwards 0.3s;
+    }
+
+    .icon__handle {
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawLine 1s ease forwards 1.5s;
+    }
+
+    .icon__crosshair {
+      stroke-dasharray: 30;
+      stroke-dashoffset: 30;
+      animation: drawLine 1s ease forwards 0.8s;
+    }
+  }
+
+  // Visual Direction icon animations
+  &--visual {
+    .icon__shape {
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+
+      &--1 {
+        animation-delay: 0.3s;
+      }
+
+      &--2 {
+        animation-delay: 0.6s;
+      }
+    }
+
+    .icon__line {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+      animation: drawLine 1s ease forwards;
+
+      &:nth-of-type(1) {
+        animation-delay: 0.9s;
+      }
+
+      &:nth-of-type(2) {
+        animation-delay: 1.2s;
+      }
+
+      &:nth-of-type(3) {
+        animation-delay: 1.5s;
+      }
+    }
+  }
+
+  // UI Design icon animations
+  &--ui {
+    .icon__frame {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: drawRectangle 2s ease forwards 0.3s;
+    }
+
+    .icon__header {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawLine 1s ease forwards 1.5s;
+    }
+
+    .icon__element {
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+
+      &--1 {
+        animation-delay: 1.8s;
+      }
+
+      &--2 {
+        animation-delay: 2.1s;
+      }
+
+      &--3 {
+        animation-delay: 2.4s;
+      }
+    }
+  }
+
+  // Development icon animations
+  &--development {
+    .icon__bracket {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawLine 1.5s ease forwards;
+
+      &--left {
+        animation-delay: 0.3s;
+      }
+
+      &--right {
+        animation-delay: 0.9s;
+      }
+    }
+
+    .icon__slash {
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawLine 1s ease forwards 1.5s;
+    }
+  }
+
+  // Launch icon animations
+  &--launch {
+    .icon__rocket {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: drawRectangle 2s ease forwards 0.3s;
+    }
+
+    .icon__flame {
+      stroke-dasharray: 20;
+      stroke-dashoffset: 20;
+      animation: drawLine 0.5s ease forwards;
+
+      &--left {
+        animation-delay: 1.5s;
+      }
+
+      &--middle {
+        animation-delay: 1.7s;
+      }
+
+      &--right {
+        animation-delay: 1.9s;
+      }
+    }
+
+    .icon__window {
+      stroke-dasharray: 15;
+      stroke-dashoffset: 15;
+      animation: drawLine 0.5s ease forwards;
+
+      &:nth-of-type(1) {
+        animation-delay: 2.1s;
+      }
+
+      &:nth-of-type(2) {
+        animation-delay: 2.3s;
+      }
+    }
+  }
+
+  // Maintenance icon animations
+  &--maintenance {
+    .icon__gear {
+      stroke-dasharray: 150;
+      stroke-dashoffset: 150;
+      animation: drawCircle 2s ease forwards 0.3s;
+
+      &--outer {
+        animation-delay: 0s;
+      }
+
+      &--inner {
+        animation-delay: 1s;
+      }
+    }
+
+    .icon__teeth {
+      stroke-dasharray: 10;
+      stroke-dashoffset: 10;
+      animation: drawLine 0.5s ease forwards 1.5s;
+    }
+  }
+}
+
+// Animation Keyframes
+@keyframes drawCircle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawRectangle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawConnector {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Entrance animations for steps
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Apply entrance animations to steps
+.methodology__step-content {
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0;
+
+  // Stagger animations for each step
+  @for $i from 1 through 6 {
+    .methodology__row:first-child &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.15}s;
+    }
+
+    .methodology__row--reverse &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.15 + 0.45}s;
+    }
+  }
+}
+
+// Responsive design adjustments
+@include tablet {
+  .methodology {
+    &__process {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    &__step {
+      position: relative;
+
+      // Add custom connector lines for tablet/mobile view
+      &:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        height: 30px;
+        width: 1px;
+        background: linear-gradient(to bottom, $primary-color, transparent);
+        transform: translateX(-50%);
+        z-index: 1;
+      }
+    }
+
+    &__step-content {
+      max-width: none;
+    }
+  }
+}
+
+@include mobile {
+  .methodology {
+    &__process {
+      max-width: 100%;
+    }
+
+    &__step {
+      &:not(:last-child)::after {
+        height: 40px;
+        bottom: -40px;
+      }
+    }
+
+    &__step-content {
+      padding: 40px 20px 28px;
+    }
+
+    &__step-icon {
+      width: 60px;
+      height: 60px;
+    }
+
+    &__step-number {
+      width: 36px;
+      height: 36px;
+      top: -18px;
+
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Accessibility - reduced motion preferences
+@include reduced-motion {
+  .methodology__step-content {
+    animation: none;
+    opacity: 1;
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .methodology__step-number {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .icon {
+    * {
+      animation: none !important;
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .connector__arrow {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+// Print styles for better documentation
+@media print {
+  .methodology {
+    background: white;
+    color: black;
+    padding: 20px;
+
+    &::before,
+    &__backdrop {
+      display: none;
+    }
+
+    &__step-content {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: white;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+
+    &__row {
+      page-break-inside: avoid;
+    }
+  }
+}

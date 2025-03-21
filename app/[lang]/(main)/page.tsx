@@ -10,6 +10,7 @@ import styles from "./page.module.scss";
 import classNames from "classnames/bind";
 import { UIProvider } from "@/app/_context/UIContext";
 import Snackbar from "@/app/_components/Snackbar";
+import MethodologyPreview from "@/app/_modules/MethodologyPreview";
 
 const cx = classNames.bind(styles);
 
@@ -51,13 +52,14 @@ export default async function Home({
   return (
     <UIProvider>
       <div className={cx("home-page")}>
-        <ShaderBackground>
-          <Hero
-            dictionary={dictionary.hero}
-            projectFormDictionary={dictionary.forms.projectForm}
-          />
-          <SolutionsModule dictionary={dictionary.solutions} />
-        </ShaderBackground>
+        {/* <ShaderBackground> */}
+        <Hero
+          dictionary={dictionary.hero}
+          projectFormDictionary={dictionary.forms.projectForm}
+        />
+        <SolutionsModule dictionary={dictionary.solutions} />
+        {/* </ShaderBackground> */}
+        <MethodologyPreview dictionary={dictionary.methodology} />
         <ClientSuitePreview dictionary={dictionary.clientSuite} />
       </div>
       <Snackbar duration={6000} position="top" />

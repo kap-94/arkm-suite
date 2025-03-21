@@ -1,4 +1,3 @@
-// home.types.ts
 interface Meta {
   title: string;
   description: string;
@@ -48,6 +47,36 @@ export interface ClientSuiteDictionary {
   title: string;
   subtitle: string;
   benefits: BenefitData[];
+}
+
+export interface MethodologyDictionary {
+  title: string;
+  steps: {
+    research: {
+      title: string;
+      description: string;
+    };
+    visualDirection: {
+      title: string;
+      description: string;
+    };
+    uiDesign: {
+      title: string;
+      description: string;
+    };
+    development: {
+      title: string;
+      description: string;
+    };
+    launch: {
+      title: string;
+      description: string;
+    };
+    maintenance: {
+      title: string;
+      description: string;
+    };
+  };
 }
 
 export interface DropdownOption {
@@ -129,6 +158,7 @@ export interface HomeDictionary {
   hero: HeroDictionary;
   solutions: SolutionsDictionary;
   clientSuite: ClientSuiteDictionary;
+  methodology: MethodologyDictionary;
   forms: {
     projectForm: ProjectFormDictionary;
   };
