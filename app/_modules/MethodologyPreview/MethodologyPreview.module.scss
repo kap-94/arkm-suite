@@ -1,25 +1,20 @@
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
+@import "@/app/_components/Typography/Typography.module.scss";
 
 .methodology {
   @include flex($justify: center);
   position: relative;
-  padding: 140px 0;
+  padding: 0;
   background: $black-base;
   overflow: hidden;
   width: 100%;
-
-  @include desktop {
-    padding: 120px 64px;
-  }
-
-  @include tablet {
-    padding: 100px 48px;
-  }
-
-  @include mobile {
-    padding: 80px 32px;
-  }
+  contain: content;
+  will-change: opacity;
+  // Forzar aceleración por hardware para toda la sección
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 
   // Fondo grid minimalista
   &__backdrop {
@@ -27,6 +22,7 @@
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    contain: strict;
   }
 
   &__grid {
@@ -38,21 +34,29 @@
       ),
       linear-gradient(90deg, rgba($primary-color, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
-    opacity: 0.4;
-  }
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 0, 0) scale(1.05);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
 
-  // Overlay radial
-  // &::after {
-  //   content: "";
-  //   position: absolute;
-  //   inset: 0;
-  //   background: radial-gradient(
-  //     circle at top right,
-  //     rgba($primary-color, 0.15),
-  //     transparent 70%
-  //   );
-  //   pointer-events: none;
-  // }
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 0.35 !important;
+      transform: translate3d(0, 0, 0) scale(1) !important;
+      visibility: visible !important;
+      // Quitamos propiedades que pueden causar problemas
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
+  }
 
   &__container {
     @include flex(column, center, center, 88px);
@@ -60,6 +64,7 @@
     width: 100%;
     position: relative;
     z-index: 2;
+    contain: layout style;
 
     @include desktop {
       gap: 72px;
@@ -70,7 +75,8 @@
     }
 
     @include mobile {
-      gap: 56px;
+      align-items: flex-start;
+      gap: 48px;
     }
   }
 
@@ -79,6 +85,28 @@
     gap: $spacing-lg;
     width: 100%;
     text-align: center;
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 25px, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    contain: layout style;
+
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 1 !important;
+      transform: translate3d(0, 0, 0) !important;
+      visibility: visible !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
 
     @include tablet {
       align-items: flex-start;
@@ -90,48 +118,42 @@
     max-width: 680px;
     margin-bottom: $spacing-md;
     position: relative;
+    transform: translate3d(0, 0, 0);
 
     @include tablet {
       text-align: left !important;
-      max-width: 0px;
       max-width: 540px;
     }
 
     @include mobile {
+      margin-bottom: $spacing-lg;
       max-width: 460px;
     }
   }
 
-  &__rows-container {
-    @include flex(column, center, center, 64px);
+  &__steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
     width: 100%;
-    position: relative;
+    contain: layout style;
+
+    @include desktop {
+      gap: 32px;
+    }
 
     @include tablet {
-      align-items: flex-start;
+      grid-template-columns: repeat(2, 1fr);
       gap: 40px;
-    }
-  }
-
-  &__row {
-    @include flex(row, space-between, stretch, 48px);
-    width: 100%;
-
-    &--reverse {
-      flex-direction: row-reverse;
-    }
-
-    @include tablet {
-      @include flex(column, center, stretch, 40px);
-      max-width: 600px;
-
-      &--reverse {
-        flex-direction: column;
-      }
     }
 
     @include mobile {
-      // gap: 32px;
+      gap: 44px;
+      grid-template-columns: 1fr;
+    }
+
+    @include mobile-small {
+      gap: 40px;
     }
   }
 
@@ -140,13 +162,34 @@
     position: relative;
     flex: 1;
     max-width: none;
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 30px, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    contain: layout style;
+
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 1 !important;
+      transform: translate3d(0, 0, 0) !important;
+      visibility: visible !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
 
     @include tablet {
       width: 100%;
     }
   }
 
-  // Contenedor de icono, ahora más grande
   &__step-icon-container {
     position: absolute;
     top: -24px;
@@ -154,16 +197,36 @@
     width: 44px;
     height: 44px;
     background: rgba($primary-dark, 0.35);
-    // border: 1px solid rgba($primary-color, 0.3);
     border-radius: $border-radius-full;
     @include flex-center;
     @include glass-effect($primary-color, 0.15);
     z-index: 2;
-    transition: all 0.3s $transition-bezier;
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 0, 0) scale(0.6);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    contain: layout style;
+    // Aumentar el tamaño para evitar recorte de iconos
+    overflow: visible; // Permitir que el contenido exceda el límite
+
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 1 !important;
+      transform: translate3d(0, 0, 0) scale(1) !important;
+      visibility: visible !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
 
     @include mobile {
-      // width: 40px;
-      // height: 40px;
       top: -32px;
       left: 0px;
     }
@@ -173,22 +236,46 @@
     @include flex(column, flex-start, stretch, 16px);
     background: rgba($black-light, 0.2);
     backdrop-filter: blur(8px);
-    // border: 1px solid rgba($primary-color, 0.15);
     border-radius: $border-radius-md;
     padding: 24px;
     height: 100%;
-    margin-top: 10px; // Añadido espacio adicional para los iconos más grandes
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    contain: content;
 
     @include tablet {
-      padding: 20px 0;
+      padding: 20px;
     }
 
     @include mobile {
       max-width: 480px;
-      // padding: 20px 0;
       gap: 12px;
       margin-top: 8px;
     }
+  }
+
+  &__step-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba($primary-color, 0.03),
+      rgba($primary-color, 0.09),
+      rgba($primary-color, 0.03)
+    );
+    pointer-events: none;
+    will-change: transform, opacity;
+    opacity: 0; // Inicialmente invisible
+    transform: translate3d(-100%, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+    contain: strict;
   }
 
   &__step-header {
@@ -199,20 +286,68 @@
     }
   }
 
-  // Icono más grande con menos padding
   &__step-icon {
     @include flex-center;
     width: 36px;
     height: 36px;
     border-radius: $border-radius-full;
     padding: 5px;
+    // Dar más espacio a los iconos para evitar recortes
+    svg {
+      width: 100%;
+      height: 100%;
+      will-change: opacity, transform;
+      // Inicialmente oculto usando CSS estándar
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, 0, 0) scale(0.8) rotate(-5deg);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      perspective: 1000;
+      -webkit-perspective: 1000;
+      // Corrección para evitar recorte de iconos
+      transform-origin: center center; // Asegurar que rota desde el centro
+
+      // Clase que se añade al finalizar la animación para fijar la posición
+      &.animation-completed {
+        opacity: 1 !important;
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg) !important;
+        visibility: visible !important;
+        will-change: auto !important;
+        backface-visibility: visible !important;
+        -webkit-backface-visibility: visible !important;
+        perspective: none !important;
+        -webkit-perspective: none !important;
+      }
+    }
   }
 
   &__step-title {
     color: $primary-light;
+    font-size: fluid-type(18, 28);
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 10px, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 1 !important;
+      transform: translate3d(0, 0, 0) !important;
+      visibility: visible !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
   }
 
-  // Estilo para el número que ahora va inline con el título
   &__step-number-inline {
     display: inline-block;
     margin-right: 4px;
@@ -220,13 +355,34 @@
   }
 
   &__step-description {
+    will-change: opacity, transform;
+    // Inicialmente oculto usando CSS estándar
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 10px, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+
+    // Clase que se añade al finalizar la animación para fijar la posición
+    &.animation-completed {
+      opacity: 1 !important;
+      transform: translate3d(0, 0, 0) !important;
+      visibility: visible !important;
+      will-change: auto !important;
+      backface-visibility: visible !important;
+      -webkit-backface-visibility: visible !important;
+      perspective: none !important;
+      -webkit-perspective: none !important;
+    }
   }
 }
 
-// SVG Icons styling
 .icon {
   width: 100%;
   height: 100%;
+  overflow: visible; // Permitir que los iconos se extiendan más allá de sus límites
 
   &__circle,
   &__frame,
@@ -245,35 +401,21 @@
   }
 }
 
-// Animaciones de entrada
-.methodology__step {
-  opacity: 0;
-  animation: fadeStepIn 0.8s $transition-bezier forwards;
-}
-
-.methodology__row:first-child {
-  @for $i from 1 through 3 {
-    .methodology__step:nth-child(#{$i}) {
-      animation-delay: #{0.2 + ($i * 0.1)}s;
+// Para usuarios con preferencia de reducción de movimiento
+@media (prefers-reduced-motion: reduce) {
+  .methodology {
+    &__grid,
+    &__header,
+    &__step,
+    &__step-icon-container,
+    &__step-icon svg,
+    &__step-title,
+    &__step-description {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto;
     }
-  }
-}
-
-.methodology__row:last-child {
-  @for $i from 1 through 3 {
-    .methodology__step:nth-child(#{$i}) {
-      animation-delay: #{0.6 + ($i * 0.1)}s;
-    }
-  }
-}
-
-@keyframes fadeStepIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
