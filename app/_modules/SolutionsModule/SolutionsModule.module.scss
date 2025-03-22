@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   gap: $spacing-xxl; // Reducido de $spacing-xxxl * 1.5 para un mejor balance
-  padding-block: 160px; // Reducido para mejor equilibrio
+  padding-block: 0; // Reducido para mejor equilibrio
   position: relative;
   text-align: center;
   width: 100%;
@@ -18,11 +18,6 @@
 
   @include mobile {
     gap: $spacing-xl;
-    padding-block: 100px;
-  }
-
-  @include mobile-small {
-    padding-block: $spacing-xl $spacing-lg;
   }
 }
 
@@ -30,7 +25,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-inline: $spacing-xl;
   width: 100%;
   position: relative;
   z-index: 5;
@@ -39,16 +33,13 @@
     margin-bottom: 100px; // Reducido de 100px para mejor balance
     position: relative;
     z-index: 5;
-    max-width: 800px;
+    max-width: 600px;
     display: flex;
 
     @include mobile {
-      // max-width: 480px;
-      // align-items: flex-start;
-      padding-inline: $spacing-xl;
       margin-right: auto;
       margin-bottom: 4px;
-      max-width: 400px;
+      max-width: 480px;
     }
   }
 
@@ -75,7 +66,7 @@
 
   &__item {
     list-style: none;
-    margin-bottom: 0px; // Reducido de 200px para un espaciado más balanceado
+    margin-bottom: 88px; // Reducido de 200px para un espaciado más balanceado
     width: 100%;
     display: flex;
     justify-content: center;
@@ -84,20 +75,20 @@
     perspective: 1000px;
 
     &:last-child {
-      margin-bottom: 0;
+      margin-bottom: 48px;
     }
 
     @include mobile {
-      margin-bottom: 40px; // Reducido de 100px para móviles
+      margin-bottom: 48px;
+
+      &:last-child {
+        margin-bottom: 24px;
+      }
     }
 
     @include mobile-small {
-      margin-bottom: 32px; // Reducido de 100px para móviles
+      margin-bottom: 32px;
       width: inherit;
     }
-  }
-
-  @include mobile-small {
-    padding-inline: 5%;
   }
 }

@@ -10,23 +10,23 @@
   --elements-gap: 200px;
 
   height: fit-content;
-  // min-height: 600px;
+  min-height: 600px;
   max-height: 900px;
   width: 100%;
   max-width: 1200px;
   position: relative;
   margin: 0 auto;
   z-index: 1;
-  /* Forzar aceleración hardware */
-  transform: translateZ(0);
-  contain: layout style; // Mejora el rendimiento aislando los cambios visuales
+  contain: content; // La opción más agresiva para contener cambios
+
+  // Forzar compositing layer para evitar repaints
+  transform: translate3d(0, 0, 0);
 
   @include tablet {
     --aspect-ratio: 1.1;
     --elements-gap: 50px;
     --animation-width: 35%;
   }
-
 
   @include mobile {
     --aspect-ratio: 1;
@@ -36,46 +36,46 @@
     min-height: 650px;
     max-height: none;
     padding: 0;
-    contain: content; // Más agresivo en móvil
   }
 
   @include mobile-small {
     --elements-gap: 24px;
   }
 
-  // Optimización para elementos al cargar
+  // Ocultar elementos durante carga inicial
   &:not(.solution--ready) {
-    .solution__floating-element,
-    .solution__connector,
-    .solution__ambient-light {
-      display: none !important;
+    .solution__decorative-elements,
+    .solution__card-wrapper,
+    .solution__wireframe-wrapper {
+      opacity: 0;
     }
   }
 
-  // Mejora para elementos principales
+  // Forzar aceleración hardware para animaciones fluidas
   &__card-wrapper,
   &__wireframe-wrapper {
-    transform: translateZ(0); // Forzar aceleración GPU
+    transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
-    perspective: 1000px; // Optimizar renderizado 3D
+    perspective: 1000px;
+    contain: layout style paint; // Contener todo para mejor rendimiento
+
+    // Transiciones controladas por GSAP, no usar transition aquí
+    // ya que puede causar conflicto con las animaciones GSAP
     will-change: transform, opacity;
   }
 
-  // Optimizaciones para móvil
+  // Optimizaciones específicas para móvil
   &--mobile {
     .solution__card-wrapper,
     .solution__wireframe-wrapper {
-      transform: none !important;
-      will-change: auto;
-      transition: opacity 0.3s ease !important;
+      contain: content; // Contenido más agresivo
+      will-change: auto; // Desactivar will-change
     }
 
-    .solution__container {
-      perspective: none !important;
-      transform-style: flat !important;
-    }
-
+    .solution__container,
     .solution__content-wrapper {
+      transform: none !important;
+      perspective: none !important;
       transform-style: flat !important;
     }
   }
@@ -84,16 +84,15 @@
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 0;
-    perspective: 1000px;
+    padding: 0 $spacing-md;
+    perspective: 1000px; // Valor óptimo para rendimiento
     transform-style: preserve-3d;
-    /* Reducir will-change a lo esencial */
-    will-change: transform-style;
+    // No usar will-change aquí para evitar crear demasiadas capas de compositing
 
     @include mobile {
+      padding: 0;
       perspective: none;
       transform-style: flat;
-      will-change: auto;
     }
   }
 
@@ -101,7 +100,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    justify-content: space-between;
     height: 100%;
     width: 100%;
     gap: var(--elements-gap);
@@ -114,7 +112,6 @@
       gap: var(--elements-gap);
       padding: $spacing-md 0;
       transform-style: flat;
-      will-change: auto;
     }
   }
 
@@ -128,10 +125,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    will-change: transform, opacity;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    contain: layout paint; // Contener los cambios
 
     @include mobile {
       width: 100%;
@@ -142,10 +135,9 @@
       align-items: flex-start;
       justify-content: flex-start;
       z-index: 6;
-      will-change: auto;
+      transform: none !important;
       transform-style: flat;
       backface-visibility: visible;
-      contain: content; // Más agresivo en móvil
     }
   }
 
@@ -159,10 +151,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    will-change: transform, opacity;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    contain: layout paint; // Contener los cambios
 
     @include mobile {
       width: 90%;
@@ -172,14 +160,13 @@
       height: fit-content;
       max-width: 90%;
       z-index: 5;
-      will-change: auto;
+      transform: none !important;
       transform-style: flat;
       backface-visibility: visible;
-      contain: content; // Más agresivo en móvil
     }
   }
 
-  // Layout variations (sin cambios)
+  // Layout variations
   &--card-left {
     .solution__content-wrapper {
       flex-direction: row;
@@ -229,25 +216,41 @@
     }
   }
 
-  /* Elementos para el efecto de parallax - optimizados */
-  &__floating-element {
+  // Contenedor para elementos decorativos con rendimiento optimizado
+  &__decorative-elements {
     position: absolute;
-    transform-style: flat; // Cambiado de preserve-3d
-    will-change: transform, opacity;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 1;
-    /* Reducir costo de rendering */
-    contain: paint style;
+    opacity: 0;
+    // No usar transition aquí, GSAP se encargará de la animación
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0); // Forzar layer de compositing
+    contain: paint style; // Contener cambios visuales
 
+    @include mobile {
+      display: none; // Ocultar en móvil
+    }
+  }
+
+  /* Elementos para efectos decorativos optimizados */
+  &__floating-element {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    // Reducir el costo de renderizado con filtros simples
+    // y radial-gradients optimizados
     &--1 {
       width: 150px;
       height: 150px;
       border-radius: 20px;
-      /* Gradiente simplificado para mejor rendimiento */
       background: radial-gradient(
         circle,
         rgba($primary-color, 0.08) 0%,
-        rgba($primary-color, 0.03) 50%,
+        rgba($primary-color, 0.03) 70%,
         transparent 100%
       );
       filter: blur(20px);
@@ -263,7 +266,7 @@
       background: radial-gradient(
         circle,
         rgba($primary-color, 0.06) 0%,
-        rgba($primary-color, 0.02) 50%,
+        rgba($primary-color, 0.02) 70%,
         transparent 100%
       );
       filter: blur(15px);
@@ -278,7 +281,7 @@
       background: radial-gradient(
         circle,
         rgba($white-color, 0.05) 0%,
-        rgba($white-color, 0.02) 50%,
+        rgba($white-color, 0.02) 70%,
         transparent 100%
       );
       filter: blur(10px);
@@ -293,24 +296,20 @@
       background: radial-gradient(
         circle,
         rgba($white-color, 0.04) 0%,
-        rgba($white-color, 0.01) 50%,
+        rgba($white-color, 0.01) 70%,
         transparent 100%
       );
       filter: blur(12px);
       bottom: 25%;
       right: 15%;
     }
-
-    @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
-    }
   }
 
-  /* Líneas conectoras optimizadas */
+  /* Líneas conectoras optimizadas con gradientes simples */
   &__connector {
     position: absolute;
     height: 1px;
-    /* Gradientes simplificados */
+    // Simplificar gradientes para mejor rendimiento
     background: linear-gradient(
       90deg,
       transparent 0%,
@@ -320,8 +319,6 @@
     z-index: 3;
     opacity: 0.7;
     transform-origin: left center;
-    will-change: transform, opacity;
-    contain: paint style;
 
     &--horizontal {
       width: 30%;
@@ -342,20 +339,15 @@
       right: 15%;
       transform: rotate(-15deg);
     }
-
-    @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
-    }
   }
 
-  /* Efecto de luz ambiental */
+  /* Luz ambiental extremadamente simplificada */
   &__ambient-light {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    /* Gradiente simplificado */
     background: radial-gradient(
       ellipse at center,
       rgba($primary-color, 0.02) 0%,
@@ -364,19 +356,13 @@
     z-index: 2;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s ease-out;
-    contain: paint style;
 
     &--active {
       opacity: 1;
     }
-
-    @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
-    }
   }
 
-  // Optimizaciones para preferencias de usuario
+  // Respetar las preferencias del usuario para movimiento reducido
   @media (prefers-reduced-motion: reduce) {
     * {
       transition: none !important;
@@ -386,12 +372,16 @@
   }
 }
 
-// Hover optimizado para no conflictuar con animaciones
+// Las transiciones de hover pueden afectar el rendimiento en scroll
+// así que las hacemos muy simples
 @media (hover: hover) and (pointer: fine) {
   .solution:hover {
-    .solution__card-wrapper,
-    .solution__wireframe-wrapper {
+    .solution__card-wrapper {
       filter: brightness(1.05);
+    }
+
+    .solution__wireframe-wrapper {
+      filter: brightness(1.08);
     }
   }
 }

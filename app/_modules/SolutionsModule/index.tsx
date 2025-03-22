@@ -127,15 +127,8 @@ export const SolutionsModule = ({
       <ul className={cx("solutions")}>
         {solutionsData.map((solution, index) => {
           // Calculamos el offset sumando las features de las soluciones anteriores
-          const offset = globalFeatureOffset;
-          globalFeatureOffset += solution.features.length;
-
-          // let itemLayout = solutionLayout;
-          // if (!itemLayout && alternateLayouts) {
-          //   itemLayout = index % 2 === 0 ? "card-left" : "card-right";
-          // } else if (!itemLayout) {
-          //   itemLayout = "card-left";
-          // }
+          // const offset = globalFeatureOffset;
+          // globalFeatureOffset += solution.features.length;
 
           // Obtenemos el componente de animación
           const AnimationComponent = getAnimationComponent(solution.id);
@@ -146,9 +139,8 @@ export const SolutionsModule = ({
                 word="with gsap"
                 solution={solution}
                 solutionNumber={index + 1} // Añadimos el número secuencial (empezando desde 1)
-                // layout={itemLayout}
                 AnimationComponent={AnimationComponent}
-                featureOffset={offset}
+                // featureOffset={offset}
               />
             </li>
           );

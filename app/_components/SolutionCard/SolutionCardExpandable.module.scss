@@ -54,8 +54,6 @@ $font: "sofia-pro", sans-serif !important;
 
   &__title {
     position: relative;
-    font-size: 40px;
-    letter-spacing: 0.013em;
     margin: 0 !important;
     color: transparent;
 
@@ -66,7 +64,7 @@ $font: "sofia-pro", sans-serif !important;
       left: 0;
       top: 0;
       width: 100%;
-      background: linear-gradient(120deg, $white-color, $white-color);
+      background: linear-gradient(120deg, $white-base, $white-base);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -94,10 +92,8 @@ $font: "sofia-pro", sans-serif !important;
   }
 
   &__description {
-    letter-spacing: 0.03em !important;
     text-align: left;
     margin-bottom: $spacing-lg;
-    color: $white-color;
     max-width: 500px !important;
   }
 
@@ -132,7 +128,7 @@ $font: "sofia-pro", sans-serif !important;
     }
 
     p {
-      color: $white-color;
+      color: $white-base;
     }
   }
 
@@ -146,7 +142,7 @@ $font: "sofia-pro", sans-serif !important;
   }
 
   &__feature-icon {
-    color: $white-color;
+    color: $white-base;
     transition: transform 0.15s ease-out;
     stroke-width: 3.5px;
   }
@@ -163,7 +159,6 @@ $font: "sofia-pro", sans-serif !important;
     text-align: left;
 
     p {
-      color: $white-color;
       margin: 0;
       padding: 0;
     }

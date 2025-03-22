@@ -152,13 +152,13 @@ export const SolutionCard = ({
     <div className={cx("solution-card", className)}>
       <div className={cx("solution-card__content")}>
         <div className={cx("solution-card__title-container")}>
-          <div className={cx("solution-card__number-container")}>
+          {/* <div className={cx("solution-card__number-container")}>
             <span className={cx("solution-card__number")}>
               {solutionNumber}
             </span>
-          </div>
+          </div> */}
           <Typography
-            variant="h3"
+            variant="h4"
             className={cx("solution-card__title")}
             fontWeight={500}
             fontFamily="sofia"
