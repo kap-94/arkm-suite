@@ -145,6 +145,8 @@ export const CodeEditorAnimation = () => {
   const [activeTab, setActiveTab] = useState("proyecto");
   const [initialAnimationDone, setInitialAnimationDone] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  // Keep track of which tabs have been animated
+  const [animatedTabs, setAnimatedTabs] = useState<Record<string, boolean>>({});
   const containerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 
@@ -158,11 +160,16 @@ export const CodeEditorAnimation = () => {
     setActiveTab(tab);
   };
 
-  // Efecto para animar el código cuando cambia la tab (después de la animación inicial)
+  // Efecto para animar el código cuando cambia la tab (solo si esa tab no ha sido animada antes)
   useEffect(() => {
     if (!initialAnimationDone) return;
 
-    // Solo animar el código, no los tabs
+    // Check if this tab needs animation
+    if (animatedTabs[activeTab]) {
+      return; // Skip animation if this tab has already been animated
+    }
+
+    // Animate the code for this tab
     const animateCodeLines = () => {
       const ctx = gsap.context(() => {
         // Líneas de código
@@ -194,11 +201,14 @@ export const CodeEditorAnimation = () => {
         });
       }, containerRef);
 
+      // Mark this tab as animated
+      setAnimatedTabs((prev) => ({ ...prev, [activeTab]: true }));
+
       return () => ctx.revert();
     };
 
     animateCodeLines();
-  }, [activeTab, initialAnimationDone, cx]);
+  }, [activeTab, initialAnimationDone, cx, animatedTabs]);
 
   // Detectar cuando el componente está visible
   useEffect(() => {
@@ -234,7 +244,11 @@ export const CodeEditorAnimation = () => {
       // Timeline principal
       const mainTimeline = gsap.timeline({
         defaults: { ease: "power3.out", duration: 0.8 },
-        onComplete: () => setInitialAnimationDone(true),
+        onComplete: () => {
+          setInitialAnimationDone(true);
+          // Mark the initial tab as animated
+          setAnimatedTabs((prev) => ({ ...prev, [activeTab]: true }));
+        },
       });
 
       // Animación de los elementos principales (solo una vez)
@@ -289,7 +303,7 @@ export const CodeEditorAnimation = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [shouldAnimate, cx]);
+  }, [shouldAnimate, cx, activeTab]);
 
   // Para sincronizar el scroll entre números de línea y el código
   useEffect(() => {
