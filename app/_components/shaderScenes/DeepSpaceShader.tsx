@@ -20,175 +20,166 @@ import {
 } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import classNames from "classnames/bind";
-import styles from "./ChromaticRippleScene.module.scss";
+import styles from "./DeepSpace.module.scss";
 
-// Import custom controller
-import DeepSpaceController from "./DeepSpaceController";
+// Registrar GSAP plugin (solo en cliente)
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const cx = classNames.bind(styles);
 
+// Paleta de colores profesional
 const COLORS = {
-  primary: "#0F172A", // Dark blue
-  secondary: "#334155", // Slate gray
+  primary: "#111827", // Azul muy oscuro
+  secondary: "#1F2937", // Gris azulado oscuro
+  accent: "#3B82F6", // Azul para acentos sutiles
 };
 
-// Optimized vertex shader with reduced brightness transitions
+// VERTEX SHADER PROFESIONAL Y SUTIL
 const vertexShader = `
   uniform float uTime;
-  uniform float uFrequency;
-  uniform float uAmplitude;
   uniform float uScrollProgress;
   uniform vec2 uMouse;
+  uniform float uDistortionFrequency;
+  uniform float uDistortionStrength;
+  uniform float uDepthOffset;
+  
   varying vec2 vUv;
   varying float vElevation;
   varying float vDistortion;
 
-  // Simplified noise function for better performance
-  float snoise(vec3 v){
-    // Simple noise approximation with better performance
-    float noise = sin(v.x*1.5 + v.y*2.3 + v.z*1.7 + uTime*0.5);
-    noise += cos(v.x*2.5 + v.y*1.3 + v.z*2.1 + uTime*0.7);
-    return noise * 0.25;
+  // Función de ruido sutil optimizada
+  float noise(vec2 p) {
+    return sin(p.x * 0.5 + p.y * 0.5 + uTime * 0.5) * 
+           cos(p.x * 0.4 + p.y * 0.3 + uTime * 0.3) * 0.1;
   }
 
-  void main(){
+  void main() {
     vUv = uv;
-
-    float mouseDistance = length(uMouse - vUv);
-    float mouseInfluence = smoothstep(0.5, 0.0, mouseDistance);
-
-    float scrollEffect = uScrollProgress * 1.5 - 0.75; // Reduced range
-    float scrollFrequency = uFrequency * (1.0 + scrollEffect * 0.4); // Less scroll impact
-
-    vec3 pos = position;
-
-    float noiseValue = snoise(vec3(vUv * scrollFrequency, uTime*0.3 + uScrollProgress*0.5)) * uAmplitude;
-    noiseValue *= (1.0 + mouseInfluence * 1.5); // Reduced mouse influence
-
-    pos.z += noiseValue * (0.8 + abs(scrollEffect) * 0.3); // Less z-distortion
-
-    // Optimized rotations - fewer calculations
-    float angleX = uScrollProgress * 0.08 * 3.14159;
-    float angleY = uScrollProgress * 0.15 * 3.14159;
     
-    // Optimized rotation calculations
-    float cosX = cos(angleX), sinX = sin(angleX);
-    float cosY = cos(angleY), sinY = sin(angleY);
-
-    float y1 = pos.y * cosX - pos.z * sinX;
-    float z1 = pos.y * sinX + pos.z * cosX;
-    pos.y = y1; pos.z = z1;
-
-    float x2 = pos.x * cosY + pos.z * sinY;
-    float z2 = -pos.x * sinY + pos.z * cosY;
-    pos.x = x2; pos.z = z2;
-
-    // Reduced horizontal wave
-    float storyWave = sin(vUv.y * 8.0 + uScrollProgress * 6.0) * 0.03 * uScrollProgress;
-    pos.x += storyWave;
-
-    vElevation = noiseValue;
-    vDistortion = mouseInfluence + abs(scrollEffect) * 0.2; // Reduced distortion effect
-
+    // Posición base
+    vec3 pos = position;
+    
+    // Distorsión sutil basada en ruido
+    float distortion = noise(pos.xy * uDistortionFrequency) * uDistortionStrength;
+    
+    // Reducir distorsión gradualmente con scroll
+    distortion *= (1.0 - uScrollProgress * 0.8);
+    
+    // Aplicar distorsión sutil
+    pos.z += distortion;
+    
+    // Descenso suave con aceleración controlada
+    float descent = pow(uScrollProgress, 1.2) * 1.5;
+    
+    // Aplicar descenso y ligero desplazamiento en profundidad
+    pos.y -= descent;
+    pos.z += uScrollProgress * uDepthOffset;
+    
+    // Ligera inclinación basada en scroll
+    float tiltAngle = uScrollProgress * 0.15;
+    pos.z -= sin(tiltAngle) * 0.1;
+    
+    // Variables para fragment shader
+    vElevation = distortion;
+    vDistortion = abs(distortion) * 5.0;
+    
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
   }
 `;
 
-// Optimized fragment shader with reduced brightness and darker colors
+// FRAGMENT SHADER PROFESIONAL Y SUTIL
 const fragmentShader = `
   uniform vec3 uColor;
+  uniform vec3 uSecondaryColor;
+  uniform vec3 uAccentColor;
   uniform float uTime;
   uniform sampler2D uTexture;
-  uniform float uRGBShift;
-  uniform vec3 uSecondaryColor;
+  uniform float uColorBalance;
   uniform float uScrollProgress;
-
+  uniform float uSharpenStrength;
+  uniform float uVignetteIntensity;
+  
   varying vec2 vUv;
   varying float vElevation;
   varying float vDistortion;
 
-  // Optimized RGB shift function
-  vec3 rgbShift(sampler2D textureImage, vec2 uv, vec2 offset){
-    float r = texture2D(textureImage, uv + offset).r;
-    vec2 gb = texture2D(textureImage, uv).gb;
-    return vec3(r, gb);
-  }
-
-  void main(){
-    // Reduced RGB shift amount
-    float rgbShiftAmount = uRGBShift * (0.7 + vDistortion * 1.3);
-    rgbShiftAmount *= (0.7 + uScrollProgress * 1.2); // Less extreme shift with scroll
-
-    vec2 offset = rgbShiftAmount * vec2(
-      cos(uTime * 0.15 + uScrollProgress * 2.5),
-      sin(uTime * 0.15 + uScrollProgress * 2.5)
-    );
-
-    vec2 animatedUV = vUv;
-    // Subtle UV animation
-    animatedUV.x += sin(vUv.y * 8.0 + uTime * 0.3 + uScrollProgress * 2.5) * 0.015 * uScrollProgress;
-    animatedUV.y += cos(vUv.x * 8.0 + uTime * 0.3 + uScrollProgress * 2.5) * 0.015 * uScrollProgress;
-
-    vec3 color = rgbShift(uTexture, animatedUV, offset);
-
-    // Darker color mixing with scroll
-    vec3 scrollColor = mix(uColor, uSecondaryColor, uScrollProgress);
-    color = mix(color, scrollColor, 0.2 + 0.15 * uScrollProgress); // More subtle mix
-
-    // Reduced elevation highlights
-    color += vElevation * uSecondaryColor * 0.1 * (0.1 + uScrollProgress * 0.15);
-
-    // Darker vignette
-    vec2 center = vec2(0.5, 0.5);
-    center.y += uScrollProgress * 0.15;
-    float d = length(vUv - center);
-    float vign = smoothstep(0.75 - uScrollProgress * 0.2, 0.15 + uScrollProgress * 0.2, d);
-    color = mix(vec3(0.02, 0.02, 0.04), color, vign); // Darker center for vignette
-
-    // More subtle flashes
-    float f1 = smoothstep(0.2, 0.3, uScrollProgress) - smoothstep(0.3, 0.4, uScrollProgress);
-    float f2 = smoothstep(0.6, 0.7, uScrollProgress) - smoothstep(0.7, 0.8, uScrollProgress);
-    float flash = (f1 + f2) * 0.5; // Reduced flash intensity
-    color += flash * vec3(0.15, 0.1, 0.3); // Darker flash colors
-
-    // Reduced halo effect
-    float sceneTransition = smoothstep(0.45, 0.55, uScrollProgress);
-    float halo = sin(uScrollProgress * 6.283185) * 0.3 + 0.3;
-    color += halo * vDistortion * vec3(0.05, 0.08, 0.15) * sceneTransition * 0.5;
-
-    // Guarantee minimum darkness
-    color = max(color, vec3(0.02, 0.02, 0.03));
-
+  void main() {
+    // UVs con ligero desplazamiento basado en distorsión
+    vec2 adjustedUV = vUv;
+    adjustedUV.x += vDistortion * 0.01 * (1.0 - uScrollProgress * 0.5);
+    
+    // Color base desde textura
+    vec4 texColor = texture2D(uTexture, adjustedUV);
+    vec3 color = texColor.rgb;
+    
+    // Filtro de nitidez sutil 
+    float sharpStrength = uSharpenStrength * (1.0 + uScrollProgress * 0.5);
+    vec3 blurred = (
+      texture2D(uTexture, adjustedUV + vec2(0.001, 0.001)).rgb + 
+      texture2D(uTexture, adjustedUV + vec2(-0.001, 0.001)).rgb + 
+      texture2D(uTexture, adjustedUV + vec2(0.001, -0.001)).rgb + 
+      texture2D(uTexture, adjustedUV + vec2(-0.001, -0.001)).rgb
+    ) * 0.25;
+    color += (color - blurred) * sharpStrength;
+    
+    // Balance de color ajustado con scroll
+    float balance = uColorBalance * (1.0 + uScrollProgress * 0.3);
+    vec3 colorTint = mix(uColor, uSecondaryColor, uScrollProgress);
+    color = mix(color, colorTint, balance);
+    
+    // Añadir sutil acento de color basado en elevación
+    vec3 accentHighlight = uAccentColor * vDistortion * 1.5 * (1.0 - uScrollProgress * 0.7);
+    color += accentHighlight;
+    
+    // Viñeta profesional que se intensifica sutilmente con scroll
+    float vignetteStrength = uVignetteIntensity * (1.0 + uScrollProgress * 0.5);
+    float vignette = smoothstep(0.4 - uScrollProgress * 0.1, 0.0, length(vUv - 0.5));
+    color = mix(color, vec3(0.02, 0.02, 0.05), (1.0 - vignette) * vignetteStrength);
+    
+    // Ajuste de brillo basado en scroll (oscurecer gradualmente)
+    color *= max(0.7, 1.0 - uScrollProgress * 0.4);
+    
     gl_FragColor = vec4(color, 1.0);
   }
 `;
 
-// Type definition
+// Tipo para el material
 export type DeepSpaceMaterialImpl = THREE.ShaderMaterial & {
   uTime: number;
-  uFrequency: number;
-  uAmplitude: number;
   uColor: THREE.Color;
   uSecondaryColor: THREE.Color;
+  uAccentColor: THREE.Color;
   uTexture: THREE.Texture;
-  uRGBShift: number;
   uMouse: THREE.Vector2;
   uScrollProgress: number;
+  uDistortionFrequency: number;
+  uDistortionStrength: number;
+  uDepthOffset: number;
+  uColorBalance: number;
+  uSharpenStrength: number;
+  uVignetteIntensity: number;
 };
 
-// Create material with shaderMaterial
+// Crear material
 const DeepSpaceMaterial = shaderMaterial(
   {
     uTime: 0,
-    uFrequency: 2.5, // Reduced from original
-    uAmplitude: 0.15, // Reduced from original
     uColor: new THREE.Color(COLORS.primary),
     uSecondaryColor: new THREE.Color(COLORS.secondary),
+    uAccentColor: new THREE.Color(COLORS.accent),
     uTexture: new THREE.Texture(),
-    uRGBShift: 0.008, // Reduced from original
     uMouse: new THREE.Vector2(0.5, 0.5),
     uScrollProgress: 0.0,
+    uDistortionFrequency: 2.0,
+    uDistortionStrength: 0.05,
+    uDepthOffset: 0.2,
+    uColorBalance: 0.2,
+    uSharpenStrength: 0.3,
+    uVignetteIntensity: 0.5,
   },
   vertexShader,
   fragmentShader
@@ -207,6 +198,180 @@ declare global {
   }
 }
 
+// CONTROLADOR PROFESIONAL CON TRANSICIONES SUAVES
+class ProfessionalTransitionController {
+  private tl: gsap.core.Timeline | null = null;
+  private meshRef: any = null;
+  private matRef: any = null;
+  private initialScale: number = 1;
+  private initialPosition = new THREE.Vector3();
+
+  // Configuración profesional con valores sutiles
+  private readonly config = {
+    // Descenso
+    descent: {
+      distance: 1.5, // Distancia total de descenso
+      curve: "power2.inOut", // Curva de ease para movimiento suave
+      depthChange: 0.2, // Cambio de profundidad durante el descenso
+    },
+
+    // Escala
+    scale: {
+      start: 1.0, // Escala inicial
+      end: 0.6, // Escala final (60% del original)
+      easePoint: 0.6, // Punto donde la escala cambia más rápidamente
+    },
+
+    // Rotación
+    rotation: {
+      maxAngleX: 0.1, // Rotación sutil en X
+      maxAngleY: 0.05, // Rotación muy sutil en Y
+    },
+
+    // Tiempo de transición
+    timing: {
+      durationFactor: 0.8, // Suavidad de las transiciones
+    },
+
+    // Efectos visuales
+    visual: {
+      distortionReduction: 0.8, // Reducción de distorsión con scroll
+      vignetteFactor: 0.5, // Factor de viñeta
+      colorBalance: 0.25, // Balance de color
+    },
+  };
+
+  // Inicializar controlador
+  init(meshRef: any, matRef: any): void {
+    if (typeof window === "undefined") return;
+
+    this.meshRef = meshRef;
+    this.matRef = matRef;
+
+    // Guardar escala y posición inicial
+    if (meshRef.current) {
+      this.initialScale = meshRef.current.scale.x;
+      this.initialPosition.copy(meshRef.current.position);
+    }
+
+    // Inicializar material con valores profesionales
+    if (matRef.current) {
+      matRef.current.uDistortionFrequency = 2.0;
+      matRef.current.uDistortionStrength = 0.05; // Distorsión muy sutil
+      matRef.current.uDepthOffset = this.config.descent.depthChange;
+      matRef.current.uColorBalance = this.config.visual.colorBalance;
+      matRef.current.uSharpenStrength = 0.3; // Nitidez sutil
+      matRef.current.uVignetteIntensity = this.config.visual.vignetteFactor;
+    }
+
+    this.setupScrollTrigger();
+  }
+
+  // Configurar ScrollTrigger
+  private setupScrollTrigger(): void {
+    this.tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: this.config.timing.durationFactor, // Transición suave
+        onUpdate: (self) => {
+          this.updateTransition(self.progress);
+        },
+      },
+    });
+  }
+
+  // Actualizar transición
+  private updateTransition(progress: number): void {
+    if (!this.meshRef?.current || !this.matRef?.current) return;
+
+    const mesh = this.meshRef.current;
+    const mat = this.matRef.current;
+
+    // Actualizar uniforms del shader
+    mat.uScrollProgress = progress;
+
+    // Aplicar descenso con curva de easing
+    let easedProgress: number;
+    // Convertir string de ease a función matemática simple
+    if (this.config.descent.curve === "power2.inOut") {
+      easedProgress =
+        progress < 0.5
+          ? 2 * progress * progress
+          : -1 + (4 - 2 * progress) * progress;
+    } else {
+      easedProgress = progress;
+    }
+
+    // Descenso suave
+    const descentDistance = easedProgress * this.config.descent.distance;
+
+    // Movimiento sutil en profundidad
+    const depthOffset = progress * this.config.descent.depthChange;
+
+    // Posición actualizada
+    mesh.position.set(
+      this.initialPosition.x,
+      this.initialPosition.y - descentDistance,
+      this.initialPosition.z + depthOffset
+    );
+
+    // Rotación sutil
+    const rotX = progress * this.config.rotation.maxAngleX;
+    const rotY = Math.sin(progress * Math.PI) * this.config.rotation.maxAngleY;
+
+    mesh.rotation.set(rotX, rotY, 0);
+
+    // Escala que se reduce de forma profesional
+    let scaleFactor: number;
+
+    // Usar punto de ease para transición de escala más suave
+    if (progress < this.config.scale.easePoint) {
+      // Transición suave hasta el punto de ease
+      const scaleProgress = progress / this.config.scale.easePoint;
+      scaleFactor = this.lerp(
+        this.config.scale.start,
+        this.config.scale.end,
+        scaleProgress * scaleProgress // Ease cuadrático para suavidad
+      );
+    } else {
+      // Mantener escala mínima después del punto de ease
+      scaleFactor = this.config.scale.end;
+    }
+
+    // Aplicar escala actualizada
+    mesh.scale.set(
+      this.initialScale * scaleFactor,
+      this.initialScale * scaleFactor,
+      this.initialScale * scaleFactor
+    );
+
+    // Reducir distorsión progresivamente
+    mat.uDistortionStrength =
+      0.05 * (1.0 - progress * this.config.visual.distortionReduction);
+
+    // Ajustar viñeta
+    mat.uVignetteIntensity =
+      this.config.visual.vignetteFactor * (1.0 + progress * 0.3);
+  }
+
+  // Interpolación lineal
+  private lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
+  }
+
+  // Limpiar recursos
+  destroy(): void {
+    if (this.tl) this.tl.kill();
+    this.meshRef = null;
+    this.matRef = null;
+  }
+}
+
+// Instancia del controlador
+const deepSpaceController = new ProfessionalTransitionController();
+
 function MeshWithOverlay({ children }: { children: ReactNode }) {
   return <group>{children}</group>;
 }
@@ -216,47 +381,41 @@ function FloatingDeepSpace() {
   const matRef = useRef<DeepSpaceMaterialImpl>(null);
   const { mouse, viewport, size } = useThree();
 
-  // Store initial position
-  useEffect(() => {
-    if (meshRef.current) {
-      meshRef.current.userData.initialY = meshRef.current.position.y;
-    }
-  }, []);
-
-  // Mount: initialize scroll
+  // Inicializar controlador
   useEffect(() => {
     if (!matRef.current) return;
+
     gsap.from(matRef.current, {
-      uAmplitude: 0,
-      duration: 1.8, // Slightly faster initialization
-      ease: "power2.out", // Smoother ease
+      uDistortionStrength: 0,
+      duration: 1.5,
+      ease: "power2.out",
     });
-    DeepSpaceController.init(meshRef, matRef);
+
+    deepSpaceController.init(meshRef, matRef);
 
     return () => {
-      DeepSpaceController.destroy();
+      deepSpaceController.destroy();
     };
   }, []);
 
-  // Optimized frame loop with reduced calculations
+  // Frame loop
   useFrame(({ clock }) => {
     if (matRef.current) {
-      matRef.current.uTime = clock.getElapsedTime() * 0.8; // Slower time progression
+      matRef.current.uTime = clock.getElapsedTime() * 0.5; // Movimiento más lento para profesionalismo
       matRef.current.uMouse.set(mouse.x * 0.5 + 0.5, -mouse.y * 0.5 + 0.5);
     }
   });
 
-  // Optimized geometry with fewer segments
-  const geometry = useMemo(() => new THREE.PlaneGeometry(3, 2, 12, 12), []);
+  // Geometría con menos segmentos para rendimiento
+  const geometry = useMemo(() => new THREE.PlaneGeometry(3, 2, 10, 10), []);
   const baseScale = 0.4;
   const responsiveScale = Math.min(1, size.width / 1200) * baseScale;
   const yOffset = viewport.height / 2 - (2 * responsiveScale) / 2;
 
-  // Load texture
+  // Cargar textura
   const [texture] = useLoader(THREE.TextureLoader, [
-    "https://images.unsplash.com/photo-1673526759317-be71a1243e3d?auto=format&fit=crop&w=3432&q=80",
+    "/images/home/gradient.jpg",
   ]);
-
   return (
     <MeshWithOverlay>
       <mesh
@@ -280,7 +439,7 @@ function DeepSpace() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
+  // Detectar móvil
   useEffect(() => {
     if (typeof window === "undefined") return;
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -289,13 +448,13 @@ function DeepSpace() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Faster fade in
+  // Fade in
   useEffect(() => {
     if (!containerRef.current) return;
     gsap.fromTo(
       containerRef.current,
       { opacity: 0 },
-      { opacity: 1, duration: 0.8, ease: "power2.out" }
+      { opacity: 1, duration: 1.2, ease: "power2.out" } // Fade in más lento para profesionalismo
     );
   }, []);
 
@@ -305,21 +464,21 @@ function DeepSpace() {
         style={{ width: "100%", height: "100%" }}
         gl={{
           alpha: true,
-          antialias: !isMobile,
+          antialias: true, // Siempre antialias para look profesional
           preserveDrawingBuffer: false,
           powerPreference: "high-performance",
-          precision: isMobile ? "mediump" : "highp", // Lower precision on mobile
+          precision: isMobile ? "mediump" : "highp",
         }}
-        dpr={[1, isMobile ? 1.5 : 2]} // Lower DPR on mobile
+        dpr={[1, isMobile ? 1.5 : 2]}
         camera={{
           position: [0, 0, isMobile ? 3 : 2.5],
           fov: isMobile ? 35 : 30,
           near: 0.1,
-          far: 100, // Reduced from 1000 for performance
+          far: 100,
         }}
         performance={{ min: 0.5 }}
       >
-        <ambientLight intensity={0.4} /> {/* Reduced light intensity */}
+        <ambientLight intensity={0.4} />
         <Suspense fallback={null}>
           <FloatingDeepSpace />
         </Suspense>
