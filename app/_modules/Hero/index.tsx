@@ -2,6 +2,7 @@
 
 import React from "react";
 import classNames from "classnames/bind";
+import Link from "next/link"; // Importar Link de Next.js
 
 import ProjectForm from "@/app/_components/ProjectForm";
 import Modal from "@/app/_components/Modal";
@@ -52,20 +53,16 @@ export const Hero = ({ dictionary, projectFormDictionary }: HeroProps) => (
       </div>
 
       <div className={cx("hero__actions")}>
-        <Modal>
-          <Modal.Open opens="project-form">
-            <Button
-              size="lg"
-              variant="gradient"
-              className={cx("hero__cta-button")}
-            >
-              {dictionary.description.cta}
-            </Button>
-          </Modal.Open>
-          <Modal.Window name="project-form">
-            <ProjectForm dictionary={projectFormDictionary} />
-          </Modal.Window>
-        </Modal>
+        {/* Reemplazar el Modal con un Link que navega a /portfolio */}
+        <Link href="/portfolio">
+          <Button
+            size="lg"
+            variant="gradient"
+            className={cx("hero__cta-button")}
+          >
+            {dictionary.description.cta}
+          </Button>
+        </Link>
 
         <div className={cx("hero__scroll")}>
           <Typography

@@ -7,6 +7,15 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  margin-bottom: 120px;
+
+  @include tablet {
+    margin-bottom: 88px;
+  }
+
+  @include mobile-small {
+    margin-bottom: 48px;
+  }
 
   &__content {
     position: relative;
@@ -44,7 +53,7 @@
     text-align: center;
     opacity: 0;
     width: 100%;
-    max-width: 1036px;
+    max-width: 1024px;
     margin: 0 auto;
     animation: fadeInUp $transition-duration $transition-bezier forwards;
     animation-delay: 0.5s;
@@ -52,6 +61,10 @@
     flex-direction: column;
     align-items: center;
     gap: 40px;
+
+    @include desktop {
+      max-width: 80%;
+    }
 
     @include mobile {
       gap: 26px;
@@ -61,7 +74,6 @@
 
     @include mobile-medium {
       max-width: 400px;
-
       gap: 24px;
     }
 
@@ -190,19 +202,6 @@
       &::after {
         animation: scrollFadeRight 2s $transition-bezier infinite;
       }
-    }
-  }
-
-  &__cta-button {
-    font-family: "sofia-pro", sans-serif;
-    letter-spacing: 0.02em;
-    font-weight: 500 !important;
-    width: fit-content;
-    background-color: transparent;
-    font-size: clamp(16px, 2vw, 20px);
-
-    @include mobile-medium {
-      font-size: clamp(14px, 2vw, 18px);
     }
   }
 }
