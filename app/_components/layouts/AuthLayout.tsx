@@ -1,15 +1,15 @@
 import Link from "next/link";
 import classNames from "classnames/bind";
 import { ArrowLeft, HelpCircle } from "lucide-react";
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
 import {
   authLayoutDictionary,
   getPageDictionary,
-} from "../../_utils/dictionary";
+} from "@/app/_utils/dictionary";
 import { UIProvider } from "../../_context/UIContext";
-import { Brand } from "../Header/components";
+import Brand from "../BrandNoimage";
 import { FeatureCard } from "../FeatureCard";
-import { getIconComponent } from "../../_utils/iconUtils";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import Typography from "../Typography";
 import styles from "./AuthLayout.module.scss";
 
@@ -40,10 +40,11 @@ export default async function AuthLayout({
           </section>
 
           <section className={cx("auth__info")}>
-            <Brand variant="double-border" size="sm" />
+            {/* <Brand variant="double-border" size="sm" /> */}
+            {/* <Brand size="md" /> */}
             <div className={cx("auth__content")}>
               <div className={cx("auth__header")}>
-                <Typography variant="h2" className={cx("auth__title")}>
+                <Typography variant="h3" className={cx("auth__title")}>
                   {dict.header.title}
                 </Typography>
                 <Typography
@@ -72,7 +73,8 @@ export default async function AuthLayout({
 
         <div className={cx("auth__mobile-container")}>
           <div className={cx("auth__mobile-header")}>
-            <Brand variant="double-border" size="sm" />
+            <Brand size="sm" variant="minimal" />
+
             <Link href="/" className={cx("auth__home-link-mobile")}>
               <ArrowLeft size={24} className={cx("auth__home-icon")} />
             </Link>

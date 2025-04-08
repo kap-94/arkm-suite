@@ -7,7 +7,7 @@ import StageProgress from "../StageProgress";
 import Badge from "../Badge";
 
 import styles from "./ProjectCard.module.scss";
-import { buildLocalizedPath } from "../../_utils/path";
+import { buildLocalizedPath } from "@/app/_utils/path";
 
 const cx = classNames.bind(styles);
 
@@ -77,9 +77,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     >
       <div className={cx("project-card__header")}>
         <ThemedTypography
-          variant={size === "default" ? "h4" : "h5"}
-          // color="secondary"
-          fontWeight={400}
+          variant="p1"
+          color="secondary"
+          fontWeight={500}
           className={cx("project-card__header-title")}
           // noWrap
         >
@@ -99,8 +99,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {size === "default" && (
         <ThemedTypography
           variant="p1"
-          color="secondary"
-          fontWeight={300}
+          color="tertiary"
+          fontWeight={400}
           className={cx("project-card__description")}
         >
           {description}
@@ -122,12 +122,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <ThemedTypography
             variant="p2"
             color="secondary"
+            fontWeight={400}
             className={cx("project-card__footer-updated")}
           >
             {dictionary.labels.lastUpdated}:
           </ThemedTypography>
           <ThemedTypography
             variant="p2"
+            fontWeight={400}
             color="secondary"
             className={cx("project-card__footer-updated")}
           >

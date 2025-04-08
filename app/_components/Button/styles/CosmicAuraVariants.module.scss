@@ -1,0 +1,777 @@
+// src/components/Button/styles/CosmicAuraVariants.module.scss
+// Cosmic Aura button variants - designed specifically for dark cosmic backgrounds
+
+.button {
+  // Base Cosmic Aura
+  &--cosmic-aura {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+
+    // Glowing border with specific color matching the background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba(103, 58, 183, 0.9),
+        // Purple
+        rgba(63, 81, 181, 0.8),
+        // Deep Blue
+        rgba(33, 150, 243, 0.7),
+        // Bright Blue
+        rgba(63, 81, 181, 0.8),
+        // Deep Blue
+        rgba(103, 58, 183, 0.9) // Purple
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: cosmic-aura-shift 8s linear infinite;
+      z-index: -1;
+      box-shadow: 0 0 20px rgba(103, 58, 183, 0.4);
+    }
+
+    // Glass-like interior with subtle gradient
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba(20, 10, 40, 0.7) 0%,
+        rgba(30, 30, 70, 0.5) 100%
+      );
+      backdrop-filter: blur(12px);
+      z-index: 0;
+    }
+
+    // Starfield effect
+    .button__starfield {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background-image: radial-gradient(
+          1px 1px at 25% 25%,
+          rgba(255, 255, 255, 0.6) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          1px 1px at 50% 50%,
+          rgba(255, 255, 255, 0.6) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          1px 1px at 75% 75%,
+          rgba(255, 255, 255, 0.6) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          2px 2px at 10% 10%,
+          rgba(255, 255, 255, 0.5) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          2px 2px at 85% 30%,
+          rgba(255, 255, 255, 0.5) 0%,
+          transparent 100%
+        );
+      opacity: 0.1;
+      z-index: 1;
+    }
+
+    // Subtle aura glow effect
+    .button__aura {
+      position: absolute;
+      width: 180%;
+      height: 200%;
+      top: -50%;
+      left: -40%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(103, 58, 183, 0.15) 0%,
+        transparent 60%
+      );
+      filter: blur(20px);
+      opacity: 0.4;
+      z-index: 0;
+      transform: translateZ(0);
+      transition: opacity 0.6s ease;
+    }
+
+    // Ethereal light ripple
+    .button__ripple {
+      position: absolute;
+      inset: -5px;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(33, 150, 243, 0.2) 0%,
+        transparent 70%
+      );
+      opacity: 0;
+      z-index: -1;
+      transform: scale(0.8);
+      transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 15px rgba(33, 150, 243, 0.8);
+      letter-spacing: 0.02em;
+    }
+
+    // Hover effects
+    &:hover {
+      transform: translateY(-1px) scale(1.01);
+
+      &::before {
+        animation-duration: 4s;
+        box-shadow: 0 0 25px rgba(103, 58, 183, 0.6);
+      }
+
+      .button__aura {
+        opacity: 0.7;
+      }
+
+      .button__ripple {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .button__text {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.9),
+          0 0 20px rgba(33, 150, 243, 0.5);
+      }
+    }
+
+    // Active state
+    &:active {
+      transform: translateY(1px) scale(0.99);
+
+      .button__ripple {
+        opacity: 0.8;
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  // 1. Cosmic Aura Outlined - A more minimal, outlined version
+  &--cosmic-aura-outlined {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+
+    // Double-outline border with specific color matching the background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: linear-gradient(
+        135deg,
+        rgba(103, 58, 183, 0.9),
+        // Purple
+        rgba(63, 81, 181, 0.8),
+        // Deep Blue
+        rgba(33, 150, 243, 0.7),
+        // Bright Blue
+        rgba(63, 81, 181, 0.8),
+        // Deep Blue
+        rgba(103, 58, 183, 0.9) // Purple
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: cosmic-aura-shift 8s linear infinite;
+      z-index: -1;
+      box-shadow: 0 0 15px rgba(103, 58, 183, 0.3);
+    }
+
+    // Nearly transparent interior
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: rgba(10, 10, 20, 0.2);
+      backdrop-filter: blur(8px);
+      z-index: 0;
+    }
+
+    // Thin inner border
+    .button__inner-border {
+      position: absolute;
+      inset: 3px;
+      border-radius: calc(0.7 * 1rem - 3px);
+      border: 1px solid rgba(33, 150, 243, 0.3);
+      z-index: 1;
+    }
+
+    // Subtle glow
+    .button__outline-glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: transparent;
+      box-shadow: 0 0 5px rgba(103, 58, 183, 0.3),
+        inset 0 0 5px rgba(33, 150, 243, 0.3);
+      opacity: 0.5;
+      z-index: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.03em;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+
+      &::before {
+        animation-duration: 5s;
+        padding: 2px;
+      }
+
+      .button__outline-glow {
+        opacity: 0.8;
+        box-shadow: 0 0 10px rgba(103, 58, 183, 0.5),
+          inset 0 0 10px rgba(33, 150, 243, 0.5);
+      }
+
+      .button__text {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  // 2. Cosmic Aura Glow - Stronger glowing effect
+  &--cosmic-aura-glow {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+
+    // Strong glowing border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(124, 77, 255, 0.9),
+        // Bright Purple
+        rgba(33, 150, 243, 0.9),
+        // Bright Blue
+        rgba(124, 77, 255, 0.9) // Bright Purple
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: cosmic-aura-shift 8s linear infinite;
+      z-index: -1;
+      box-shadow: 0 0 15px rgba(124, 77, 255, 0.5),
+        0 0 30px rgba(124, 77, 255, 0.3);
+    }
+
+    // Dark glass interior
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba(25, 15, 50, 0.8) 0%,
+        rgba(15, 20, 40, 0.7) 100%
+      );
+      z-index: 0;
+    }
+
+    // Strong outer glow
+    .button__outer-glow {
+      position: absolute;
+      inset: -5px;
+      border-radius: calc(0.7 * 1rem + 5px);
+      box-shadow: 0 0 20px rgba(124, 77, 255, 0.4),
+        0 0 40px rgba(33, 150, 243, 0.2);
+      opacity: 0.7;
+      z-index: -2;
+      transition: opacity 0.5s ease;
+    }
+
+    // Subtle energy waves
+    .button__energy-waves {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        45deg,
+        transparent 45%,
+        rgba(124, 77, 255, 0.1) 50%,
+        transparent 55%
+      );
+      background-size: 200% 200%;
+      opacity: 0.5;
+      animation: energy-wave 3s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(124, 77, 255, 0.8),
+        0 0 15px rgba(33, 150, 243, 0.5);
+      letter-spacing: 0.02em;
+    }
+
+    &:hover {
+      transform: translateY(-2px) scale(1.02);
+
+      .button__outer-glow {
+        opacity: 1;
+        box-shadow: 0 0 25px rgba(124, 77, 255, 0.6),
+          0 0 50px rgba(33, 150, 243, 0.3);
+      }
+
+      .button__energy-waves {
+        opacity: 0.8;
+        animation: energy-wave 1.5s ease-in-out infinite;
+      }
+
+      .button__text {
+        text-shadow: 0 0 15px rgba(124, 77, 255, 1),
+          0 0 25px rgba(33, 150, 243, 0.7);
+      }
+    }
+  }
+
+  // 3. Cosmic Aura Gradient - Beautiful gradient variation
+  &--cosmic-aura-gradient {
+    position: relative;
+    border: none;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+    backdrop-filter: blur(3px);
+
+    // Main gradient background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        135deg,
+        rgba(103, 58, 183, 0.8) 0%,
+        // Purple
+        rgba(63, 81, 181, 0.7) 40%,
+        // Deep Blue
+        rgba(33, 150, 243, 0.6) 100% // Bright Blue
+      );
+
+      z-index: 0;
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    // Subtle shimmer overlay
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.05) 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 70%,
+        transparent 100%
+      );
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    // Thin border
+    .button__gradient-border {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 1;
+    }
+
+    // Subtle moving gradient
+    .button__gradient-shimmer {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 20%,
+        rgba(255, 255, 255, 0.1) 80%,
+        transparent 100%
+      );
+      transform: translateX(-100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1;
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.01em;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+
+      &::before {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 77, 255, 0.85) 0%,
+          // Brighter Purple
+          rgba(63, 81, 181, 0.75) 40%,
+          // Deep Blue
+          rgba(66, 165, 245, 0.65) 100% // Brighter Blue
+        );
+      }
+
+      .button__gradient-shimmer {
+        opacity: 1;
+        animation: shimmer-slide 2s forwards;
+      }
+
+      .button__gradient-border {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .button__text {
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+    }
+  }
+
+  // 4. Cosmic Aura Nebula - With nebula-like effects
+  &--cosmic-aura-nebula {
+    position: relative;
+    border: calc(0.08 * 1rem) solid transparent;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+
+    // Cosmic border
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba(103, 58, 183, 0.9),
+        // Purple
+        rgba(173, 20, 204, 0.7),
+        // Magenta
+        rgba(33, 150, 243, 0.7),
+        // Blue
+        rgba(173, 20, 204, 0.7),
+        // Magenta
+        rgba(103, 58, 183, 0.9) // Purple
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 300%;
+      animation: cosmic-aura-shift 10s linear infinite;
+      z-index: -1;
+    }
+
+    // Deep space interior
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(25, 15, 50, 0.8) 0%,
+        rgba(15, 20, 40, 0.7) 80%
+      );
+      z-index: 0;
+    }
+
+    // Nebula clouds
+    .button__nebula {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+          ellipse at 30% 40%,
+          rgba(173, 20, 204, 0.2) 0%,
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse at 70% 60%,
+          rgba(33, 150, 243, 0.2) 0%,
+          transparent 60%
+        );
+      filter: blur(5px);
+      opacity: 0.6;
+      z-index: 1;
+    }
+
+    // Star particles
+    .button__stars {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background-image: radial-gradient(
+          1px 1px at 20% 20%,
+          rgba(255, 255, 255, 0.8) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          1px 1px at 40% 50%,
+          rgba(255, 255, 255, 0.8) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          1px 1px at 60% 30%,
+          rgba(255, 255, 255, 0.8) 0%,
+          transparent 100%
+        ),
+        radial-gradient(
+          1px 1px at 80% 70%,
+          rgba(255, 255, 255, 0.8) 0%,
+          transparent 100%
+        );
+      opacity: 0.3;
+      z-index: 1;
+    }
+
+    // Cosmic dust
+    .button__dust {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 10px rgba(173, 20, 204, 0.5),
+        0 0 15px rgba(33, 150, 243, 0.3);
+      letter-spacing: 0.02em;
+    }
+
+    &:hover {
+      transform: translateY(-1px) scale(1.01);
+
+      .button__nebula {
+        opacity: 0.8;
+        animation: nebula-pulse 3s infinite alternate;
+      }
+
+      .button__stars {
+        opacity: 0.5;
+        animation: twinkle 2s infinite alternate;
+      }
+
+      .button__text {
+        text-shadow: 0 0 15px rgba(173, 20, 204, 0.7),
+          0 0 20px rgba(33, 150, 243, 0.5);
+      }
+    }
+  }
+
+  // 5. Cosmic Aura Minimal - A more subtle, elegant variant
+  &--cosmic-aura-minimal {
+    position: relative;
+    border: none;
+    color: #ffffff !important;
+    font-weight: 500;
+    overflow: hidden;
+    border-radius: calc(0.7 * 1rem);
+    cursor: pointer;
+    backdrop-filter: blur(3px);
+
+    // Minimal background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(30, 30, 60, 0.3);
+      backdrop-filter: blur(10px);
+      z-index: 0;
+    }
+
+    // Subtle top light
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      border-radius: inherit;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      z-index: 1;
+    }
+
+    // Very thin border
+    .button__minimal-border {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(103, 58, 183, 0.3);
+      z-index: 1;
+      transition: border-color 0.3s ease;
+    }
+
+    // Subtle bottom glow
+    .button__minimal-glow {
+      position: absolute;
+      width: 80%;
+      height: 40%;
+      bottom: -20%;
+      left: 10%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(33, 150, 243, 0.2) 0%,
+        transparent 70%
+      );
+      filter: blur(10px);
+      opacity: 0.3;
+      z-index: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .button__text {
+      position: relative;
+      z-index: 2;
+      letter-spacing: 0.03em;
+      font-weight: 400;
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+
+      &::before {
+        background: rgba(40, 40, 70, 0.4);
+      }
+
+      .button__minimal-border {
+        border-color: rgba(103, 58, 183, 0.5);
+      }
+
+      .button__minimal-glow {
+        opacity: 0.5;
+      }
+
+      .button__text {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+}
+
+// Animation for the cosmic aura border
+@keyframes cosmic-aura-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Additional animations for the new variants
+@keyframes energy-wave {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes nebula-pulse {
+  0% {
+    opacity: 0.6;
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 0.8;
+    filter: blur(7px);
+  }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

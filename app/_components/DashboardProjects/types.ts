@@ -1,5 +1,5 @@
-import { Project } from "../../_types/models/Project";
-import { ProjectSection } from "../../_types/dictionary/dashboard.types";
+import { Project } from "@/app/_types/models/Project";
+import { ProjectSection } from "@/app/_types/dictionary/dashboard.types";
 import { ProjectCardItem } from "../ProjectCard/types";
 
 // Interface for the theme colors specific to DashboardProjects

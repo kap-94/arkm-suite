@@ -1,0 +1,181 @@
+// src/components/Button/styles/Animations.module.scss
+// Animation keyframes for button effects
+
+@keyframes gradientFlow {
+  0% {
+    background-position: -100% 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aurora-wave {
+  0%,
+  100% {
+    transform: translateX(-15%);
+  }
+  50% {
+    transform: translateX(15%);
+  }
+}
+
+@keyframes radial-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes rainbow-animate {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+@keyframes pulse-radiate {
+  0% {
+    opacity: 0.2;
+    transform: translateX(-50%) scale(0.8);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+@keyframes pulse-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes pulse-border {
+  0%,
+  100% {
+    box-shadow: 0 -3px 15px 0 rgba($primary-color, 0.3) inset;
+  }
+  50% {
+    box-shadow: 0 -3px 25px 0 rgba($primary-color, 0.5) inset;
+  }
+}
+
+@keyframes cosmic-animate {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes shooting-star {
+  0% {
+    left: -5%;
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
+  100% {
+    left: 105%;
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes hologram-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 400% 50%;
+  }
+}
+
+@keyframes hologram-scan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes hologram-glitch {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+  20% {
+    clip-path: inset(20% 0 0 0);
+  }
+  40% {
+    clip-path: inset(0 0 0 20%);
+  }
+  60% {
+    clip-path: inset(0 0 20% 0);
+  }
+  80% {
+    clip-path: inset(0 20% 0 0);
+  }
+}
+
+@keyframes neon-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@keyframes neon-flicker {
+  0%,
+  19%,
+  21%,
+  23%,
+  54%,
+  56%,
+  100% {
+    background: transparent;
+  }
+  20%,
+  22%,
+  55% {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

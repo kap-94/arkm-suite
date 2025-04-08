@@ -1,0 +1,263 @@
+// src/components/Typography/_typography.scss
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+// Maps para temas
+$typography-dark: (
+  "text": $text-primary,
+  "text-secondary": $text-secondary,
+  "text-tertiary": $text-tertiary,
+  "text-disabled": rgba($text-primary, 0.4),
+  "link": $text-link,
+  "link-hover": $text-link-hover,
+  "link-visited": $text-link-visited,
+  "success": $text-success,
+  "error": $text-error,
+  "warning": $text-warning,
+  "info": $text-info,
+);
+
+$typography-light: (
+  "text": $black-base,
+  "text-secondary": rgba($black-base, 0.8),
+  "text-tertiary": rgba($black-base, 0.7),
+  "text-disabled": rgba($black-base, 0.4),
+  "link": $primary-dark,
+  "link-hover": $primary-color,
+  "link-visited": $primary-light,
+  "success": $success-dark,
+  "error": $error-dark,
+  "warning": #d97706,
+  "info": #2563eb,
+);
+
+// Base font size
+$base-font-size: 16 !default;
+
+// Font Families
+$font-primary: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !default;
+
+@function rem($pixels) {
+  @return #{$pixels / $base-font-size}rem;
+}
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.typography {
+  // Headings
+  &--h1 {
+    font-family: $font-primary;
+    font-size: rem(62);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(48);
+    }
+  }
+
+  &--h2 {
+    font-family: $font-primary;
+    font-size: rem(48);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(28);
+    }
+  }
+
+  &--h3 {
+    font-family: $font-primary;
+    font-size: rem(24);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(20);
+    }
+  }
+
+  &--h4 {
+    font-family: $font-primary;
+    font-size: rem(20);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(16);
+    }
+  }
+
+  &--h5 {
+    font-family: $font-primary;
+    font-size: rem(16);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(14);
+    }
+  }
+
+  // Paragraph styles
+  &--p1 {
+    font-family: $font-primary;
+    font-size: rem(16);
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(14);
+    }
+  }
+
+  &--p2 {
+    font-family: $font-primary;
+    font-size: rem(14);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+
+    @include mobile {
+      font-size: rem(13);
+    }
+  }
+
+  &--p3 {
+    font-family: $font-primary;
+    font-size: rem(12);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(11);
+    }
+  }
+
+  &--label {
+    font-family: $font-primary;
+    font-size: rem(14);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+
+    @include mobile {
+      font-size: rem(12);
+    }
+  }
+
+  // Theme styles
+  &--theme-dark {
+    color: map-get($typography-dark, "text");
+
+    &.typography--secondary {
+      color: map-get($typography-dark, "text-secondary");
+    }
+
+    &.typography--tertiary {
+      color: map-get($typography-dark, "text-tertiary");
+    }
+
+    &.typography--disabled {
+      color: map-get($typography-dark, "text-disabled");
+    }
+
+    &.typography--link {
+      color: map-get($typography-dark, "link");
+
+      &:hover {
+        color: map-get($typography-dark, "link-hover");
+      }
+
+      &:visited {
+        color: map-get($typography-dark, "link-visited");
+      }
+    }
+
+    &.typography--success {
+      color: map-get($typography-dark, "success");
+    }
+
+    &.typography--error {
+      color: map-get($typography-dark, "error");
+    }
+
+    &.typography--warning {
+      color: map-get($typography-dark, "warning");
+    }
+
+    &.typography--info {
+      color: map-get($typography-dark, "info");
+    }
+  }
+
+  &--theme-light {
+    color: map-get($typography-light, "text");
+
+    &.typography--secondary {
+      color: map-get($typography-light, "text-secondary");
+    }
+
+    &.typography--tertiary {
+      color: map-get($typography-light, "text-tertiary");
+    }
+
+    &.typography--disabled {
+      color: map-get($typography-light, "text-disabled");
+    }
+
+    &.typography--link {
+      color: map-get($typography-light, "link");
+
+      &:hover {
+        color: map-get($typography-light, "link-hover");
+      }
+
+      &:visited {
+        color: map-get($typography-light, "link-visited");
+      }
+    }
+
+    &.typography--success {
+      color: map-get($typography-light, "success");
+    }
+
+    &.typography--error {
+      color: map-get($typography-light, "error");
+    }
+
+    &.typography--warning {
+      color: map-get($typography-light, "warning");
+    }
+
+    &.typography--info {
+      color: map-get($typography-light, "info");
+    }
+  }
+
+  // Utility classes
+  &--truncate {
+    @include text-truncate;
+  }
+
+  &--gutterBottom {
+    margin-bottom: $spacing-md;
+  }
+
+  &--paragraph {
+    margin-bottom: $spacing-lg;
+  }
+}

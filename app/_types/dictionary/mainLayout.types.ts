@@ -1,4 +1,3 @@
-// layout.types.ts
 export interface Meta {
   version: string;
   lastUpdated: string;
@@ -7,10 +6,15 @@ export interface Meta {
 }
 
 export interface NavigationItem {
+  menu_item_id: number;
+  menu_item_parent: number;
   label: string;
+  title: string;
   href: string;
+  url: string;
   aria: string;
-  icon: string;
+  showDropdownIcon: boolean;
+  icon?: string;
   meta?: {
     description: string;
     keywords?: string[];
@@ -20,18 +24,15 @@ export interface NavigationItem {
 export interface LanguageOption {
   label: string;
   aria: string;
+  code: string;
+  countryCode: string;
 }
 
 export interface HeaderDictionary {
   aria: string;
-  subtitle?: {
-    firstLetter: string;
-    text: string;
-  };
-  navigation: Record<string, NavigationItem>;
-  clientPortal: {
-    label: string;
-    href: string;
+  navigation: {
+    primary: Record<string, NavigationItem>;
+    secondary: Record<string, NavigationItem>;
   };
   languageOptions: {
     english: LanguageOption;
@@ -39,37 +40,9 @@ export interface HeaderDictionary {
   };
 }
 
-export interface FooterLegends {
-  rights: string;
-  privacy: {
-    label: string;
-    aria: string;
-    href: string;
-  };
-  terms: {
-    label: string;
-    aria: string;
-    href: string;
-  };
-}
-
 export interface FooterDictionary {
-  company: {
-    title: string;
-    aria: string;
-  };
-  legends: FooterLegends;
-  navigation: Record<string, NavigationItem>;
-  // Additional properties for footer content
-  description: string;
-  cta: string;
-  links: {
-    showcase: string;
-    solutions: string;
-    clientSuite: string;
-    journey: string;
-  };
   copyright: string;
+  navigation: Record<string, NavigationItem>;
 }
 
 export interface Accessibility {

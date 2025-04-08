@@ -1,119 +1,225 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-01-22",
+    "lastUpdated": "2025-04-03",
     "description": "Main layout configuration for public routes",
     "maintainer": "Development Team"
   },
   "header": {
     "aria": "Main site navigation",
-    "subtitle": {
-      "firstLetter": "D",
-      "text": "esign and development studio"
-    },
     "navigation": {
-      "home": {
-        "label": "Home",
-        "href": "/",
-        "aria": "Home page",
-        "icon": "home",
-        "meta": {
-          "description": "Welcome to our platform",
-          "keywords": [
-            "home",
-            "welcome",
-            "main"
-          ]
+      "primary": {
+        "abilities": {
+          "menu_item_id": 1,
+          "menu_item_parent": 0,
+          "label": "Abilities",
+          "title": "Abilities",
+          "href": "#abilities",
+          "url": "#abilities",
+          "aria": "Professional Abilities and Services",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Professional skills, expertise areas, and specialized services offered",
+            "keywords": [
+              "professional services",
+              "expertise",
+              "specialized skills",
+              "service offerings"
+            ]
+          }
+        },
+        "method": {
+          "menu_item_id": 2,
+          "menu_item_parent": 0,
+          "label": "Method",
+          "title": "Method",
+          "href": "#method",
+          "url": "#method",
+          "aria": "Professional Methodology and Approach",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Detailed methodology, proven processes, and strategic approach to project delivery",
+            "keywords": [
+              "methodology",
+              "professional process",
+              "project approach",
+              "strategic framework"
+            ]
+          }
+        },
+        "experience": {
+          "menu_item_id": 3,
+          "menu_item_parent": 0,
+          "label": "Experience",
+          "title": "Experience",
+          "href": "#experience",
+          "url": "#experience",
+          "aria": "Professional Experience and Portfolio",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Professional background, project history, and portfolio of successful work",
+            "keywords": [
+              "professional experience",
+              "portfolio",
+              "work history",
+              "project showcase"
+            ]
+          }
         }
       },
-      "features": {
-        "label": "Features",
-        "href": "/features",
-        "aria": "Features overview",
-        "icon": "features",
-        "meta": {
-          "description": "Explore our platform features"
-        }
-      },
-      "pricing": {
-        "label": "Pricing",
-        "href": "/pricing",
-        "aria": "Pricing plans",
-        "icon": "pricing",
-        "meta": {
-          "description": "View our pricing plans"
-        }
-      },
-      "about": {
-        "label": "About",
-        "href": "/about",
-        "aria": "About us",
-        "icon": "info",
-        "meta": {
-          "description": "Learn about our company"
+      "secondary": {
+        "portfolio": {
+          "menu_item_id": 4,
+          "menu_item_parent": 0,
+          "label": "Portfolio",
+          "title": "Portfolio",
+          "href": "/portfolio",
+          "url": "/portfolio",
+          "aria": "Complete Project Portfolio",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Comprehensive collection of completed projects, case studies, and professional achievements",
+            "keywords": [
+              "project portfolio",
+              "case studies",
+              "work examples",
+              "professional projects"
+            ]
+          }
+        },
+        "contact": {
+          "menu_item_id": 5,
+          "menu_item_parent": 0,
+          "label": "Contact",
+          "title": "Contact",
+          "href": "#contact",
+          "url": "#contact",
+          "aria": "Contact Information",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Professional contact details, inquiry form, and communication channels",
+            "keywords": [
+              "contact details",
+              "professional inquiry",
+              "get in touch",
+              "communication"
+            ]
+          }
         }
       }
     },
-    "clientPortal": {
-      "label": "Client's Suite",
-      "href": "/dashboard"
-    },
     "languageOptions": {
       "english": {
-        "label": "English",
-        "aria": "English language option"
+        "label": "EN",
+        "aria": "English",
+        "code": "en",
+        "countryCode": "GB"
       },
       "spanish": {
-        "label": "Spanish",
-        "aria": "Spanish language option"
+        "label": "ES",
+        "aria": "Spanish",
+        "code": "es",
+        "countryCode": "ES"
       }
     }
   },
   "footer": {
-    "description": "Creating digital experiences that inspire, transform and innovate.",
-    "cta": "Connect With Us Today",
-    "links": {
-      "showcase": "Showcase",
-      "solutions": "Solutions",
-      "clientSuite": "Client's Suite",
-      "journey": "Journey"
-    },
-    "copyright": "© {year} ARKM Studio. All rights reserved.",
-    "company": {
-      "title": "Company",
-      "aria": "Company information"
-    },
-    "legends": {
-      "rights": "All rights reserved",
-      "privacy": {
-        "label": "Privacy Policy",
-        "aria": "Privacy policy link",
-        "href": "/privacy-policy"
-      },
-      "terms": {
-        "label": "Terms & Conditions",
-        "aria": "Terms and conditions link",
-        "href": "/terms-and-conditions"
-      }
-    },
+    "copyright": "© {year} José Pablo Karam Dolores. All rights reserved.",
     "navigation": {
-      "careers": {
-        "label": "Careers",
-        "href": "/careers",
-        "aria": "Career opportunities",
-        "icon": "briefcase"
+      "abilities": {
+        "menu_item_id": 1,
+        "menu_item_parent": 0,
+        "label": "Abilities",
+        "title": "Abilities",
+        "href": "#abilities",
+        "url": "#abilities",
+        "aria": "Professional Abilities and Services",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Professional skills, expertise areas, and specialized services offered",
+          "keywords": [
+            "professional services",
+            "expertise",
+            "specialized skills",
+            "service offerings"
+          ]
+        }
       },
-      "blog": {
-        "label": "Blog",
-        "href": "/blog",
-        "aria": "Company blog",
-        "icon": "book"
+      "method": {
+        "menu_item_id": 2,
+        "menu_item_parent": 0,
+        "label": "Method",
+        "title": "Abilities",
+        "href": "#method",
+        "url": "#method",
+        "aria": "Professional Methodology and Approach",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Detailed methodology, proven processes, and strategic approach to project delivery",
+          "keywords": [
+            "methodology",
+            "professional process",
+            "project approach",
+            "strategic framework"
+          ]
+        }
       },
-      "legal": {
-        "label": "Legal",
-        "href": "/legal",
-        "aria": "Legal information",
-        "icon": "shield"
+      "experience": {
+        "menu_item_id": 3,
+        "menu_item_parent": 0,
+        "label": "Experience",
+        "title": "Experience",
+        "href": "#experience",
+        "url": "#experience",
+        "aria": "Professional Experience and Portfolio",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Professional background, project history, and portfolio of successful work",
+          "keywords": [
+            "professional experience",
+            "portfolio",
+            "work history",
+            "project showcase"
+          ]
+        }
+      },
+      "portfolio": {
+        "menu_item_id": 5,
+        "menu_item_parent": 0,
+        "label": "Portfolio",
+        "title": "Portfolio",
+        "href": "/portfolio",
+        "url": "/portfolio",
+        "aria": "Complete Project Portfolio",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Comprehensive collection of completed projects, case studies, and professional achievements",
+          "keywords": [
+            "project portfolio",
+            "case studies",
+            "work examples",
+            "professional projects"
+          ]
+        }
+      },
+      "contact": {
+        "menu_item_id": 4,
+        "menu_item_parent": 0,
+        "label": "Contact",
+        "title": "Contact",
+        "href": "#contact",
+        "url": "#contact",
+        "aria": "Contact Information",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Professional contact details, inquiry form, and communication channels",
+          "keywords": [
+            "contact details",
+            "professional inquiry",
+            "get in touch",
+            "communication"
+          ]
+        }
       }
     }
   },

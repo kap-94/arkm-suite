@@ -1,0 +1,260 @@
+// @import "@/app/_styles/functions.scss";
+@import "@/app/_styles/variables.scss";
+@import "@/app/_styles/mixins.scss";
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 68px;
+  gap: clamp(12px, 5vw, 70px);
+
+  position: relative;
+  z-index: 10; // Aumentado para asegurar que esté por encima de otros elementos
+  flex-wrap: wrap;
+
+  // Pseudo-element for the indicator (horizontal orientation)
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: var(--indicator-left, 0);
+    width: var(--indicator-width, 0);
+    height: 2px;
+    background-color: $white-color;
+    opacity: calc(
+      var(--indicator-width, 0) * 1000
+    ); // Opacity is 0 if width is 0
+    transition: left 0.3s ease-in-out, width 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
+  }
+
+  // Styles for vertical orientation
+  &.menu--vertical {
+    flex-direction: column;
+    align-items: center; // Center the items horizontally
+    gap: var(--menu-gap, 16px); // Use the CSS variable for gap
+
+    &::after {
+      display: none; // Hide the indicator in vertical orientation
+    }
+  }
+
+  &:hover > li:not(:hover) {
+    opacity: 0.7;
+    transition: all 0.24s ease-in;
+  }
+
+  &__item {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+
+    // Adjust the right border to be 6px apart and 80% of the height
+    &--border {
+      border-right: 1px solid $white-color;
+      height: 18px; // Make the border 80% of the item's height
+      margin-top: auto;
+      margin-bottom: auto;
+      padding-right: 16px; // Adds the 6px separation
+    }
+
+    // Remove the border for the last item
+    &:last-child {
+      border-right: none;
+    }
+
+    // Hover state for desktop
+    @media (min-width: 1360px) {
+      &:hover {
+        .submenu {
+          display: flex;
+          z-index: 20; // Asegurar que esté por encima de otros elementos
+        }
+      }
+    }
+
+    // Adjustments for vertical orientation
+    .menu--vertical & {
+      width: auto; // Allow the item to auto-size based on content
+      justify-content: center; // Center the content within the item
+
+      &::before {
+        // Remove active indicator in vertical orientation
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        background-color: transparent;
+      }
+
+      &--active {
+        &::before {
+          display: none;
+        }
+      }
+    }
+
+    &--active {
+      // Styles for the active menu item in horizontal orientation
+      // Add additional styles here if desired
+    }
+  }
+
+  &__link {
+    align-items: center;
+    display: flex;
+    gap: 0; // Default gap is 0
+    padding: 16px 0;
+    width: auto;
+    justify-content: center;
+    text-decoration: none;
+
+    // When there is an icon, add the gap
+    &:has(.menu__icon:not(:empty)) {
+      gap: 8px;
+    }
+
+    &-text {
+      text-wrap: nowrap;
+      font-weight: 500 !important;
+      font-size: 18px !important;
+
+      @include desktop {
+        font-size: 16px !important;
+      }
+    }
+
+    .icon {
+      flex: 0;
+      transform: translateY(22px);
+    }
+
+    .dropdown__icon {
+      font-size: 10px;
+      transform: translateY(1px);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    &Open {
+      .dropdown__icon {
+        transform: rotate(180deg);
+      }
+    }
+
+    // Adjustments for vertical orientation
+    .menu--vertical & {
+      padding: 8px 0;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    color: $white-base;
+    stroke-width: 3px;
+    // height: 16px;
+    // width: 16px;
+  }
+}
+
+// Adjustments for submenus in vertical orientation
+.menu--vertical {
+  .submenu {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: auto; // Adjust width to auto
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 0;
+    overflow: visible;
+    align-items: center; // Center submenu items
+
+    &__item {
+      width: auto; // Adjust width to auto
+      display: flex;
+      justify-content: center; // Center the content
+    }
+
+    &__link {
+      padding: 8px 16px;
+      width: auto; // Adjust width to auto
+      display: flex;
+      justify-content: center; // Center the content
+    }
+  }
+}
+
+.submenu {
+  background-color: $white-color;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); // Sombra más sutil
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0; // Alineado a la izquierda del elemento padre
+  border-radius: 8px;
+  width: 220px; // Ancho ajustado
+  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  z-index: 20; // Asegurar que esté por encima de otros elementos
+
+  &--open {
+    display: flex !important;
+  }
+
+  &__item {
+    background-color: $white-color;
+    cursor: pointer;
+    list-style: none;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $primary-color;
+
+      a {
+        color: $white-color !important;
+      }
+    }
+  }
+
+  &__link {
+    color: #2c2929 !important;
+    display: block;
+    padding: 16px 20px;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    color: $white-base;
+  }
+}
+
+// Media query para versión móvil
+@media (max-width: 1359px) {
+  .menu__item {
+    position: initial; // Reposicionar para móvil
+  }
+
+  .submenu {
+    width: 100%; // Ancho completo en móvil
+    left: 0;
+    top: calc(100% + 10px); // Espacio adicional desde el menú principal
+
+    &--open {
+      display: flex !important;
+    }
+  }
+}

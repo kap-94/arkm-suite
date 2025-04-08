@@ -1,58 +1,60 @@
-// src/components/SolutionCard/SolutionCardExpandable.module.scss
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
 
-$font: "usual", sans-serif !important;
+$font: "sofia-pro", sans-serif !important;
 
 .solution-card {
   position: relative;
-  padding: $spacing-xxl 0;
+  padding: 0;
   border-radius: $border-radius-lg;
-  min-height: 412px;
   overflow: hidden;
   @include transition(transform, background);
   isolation: isolate;
 
-  &__icon-wrapper {
-    @include flex-center;
-    width: 82px;
-    height: 82px;
-    margin-block: 0 $spacing-lg;
-    border-radius: $border-radius-xl;
-    border-radius: $border-radius-full;
-    background: rgba($primary-color, 0.1);
-    color: $primary-color;
-    position: relative;
-    @include transition(transform);
-
-    // Glow effect
-    &::after {
-      content: "";
-      position: absolute;
-      inset: -30%;
-      background: radial-gradient(
-        circle at center,
-        rgba($primary-color, 0.1),
-        transparent 70%
-      );
-      filter: blur(10px);
-    }
-
-    svg {
-      width: 44px;
-      height: 44px;
-      @include transition(transform);
-    }
+  &__content {
+    @include flex(column, flex-start, flex-start);
   }
 
-  &__content {
-    @include flex(column, flex-start, flex-start, $spacing-md);
+  &__title-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-md;
+    gap: $spacing-md;
+  }
+
+  // Estilo para el contenedor del número con efecto glass
+  &__number-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.15)
+    );
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    position: relative;
+  }
+
+  // Estilo para el número de solución
+  &__number {
+    font-family: $font;
+    font-weight: 600;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    line-height: 1;
+    z-index: 2;
   }
 
   &__title {
     position: relative;
-    font-size: 40px;
-    letter-spacing: 0.013em;
+    margin: 0 !important;
     color: transparent;
 
     // Capa 1 - texto base con gradiente principal
@@ -62,7 +64,7 @@ $font: "usual", sans-serif !important;
       left: 0;
       top: 0;
       width: 100%;
-      background: linear-gradient(120deg, $primary-color, $primary-light);
+      background: linear-gradient(120deg, $white-base, $white-base);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -90,29 +92,32 @@ $font: "usual", sans-serif !important;
   }
 
   &__description {
-    letter-spacing: 0.03em !important;
     text-align: left;
+    margin-bottom: $spacing-lg;
+    max-width: 500px !important;
   }
 
   &__features {
     @include flex(column, flex-start, flex-start, $spacing-md);
-    margin-top: $spacing-md;
+    // margin-top: $spacing-md;
+    margin-left: -12px;
     width: 100%;
+    max-width: 540px;
   }
 
   &__feature-container {
     width: 100%;
-    @include transition(height);
+    overflow: hidden;
   }
 
   &__feature {
     @include flex(row, flex-start, center, 8px);
     letter-spacing: 0.03em !important;
     cursor: pointer;
-    padding: $spacing-xs $spacing-sm;
-    padding-left: 0;
+    padding: $spacing-sm;
+    // padding-left: 0;
     border-radius: $border-radius-sm;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.15s ease-out;
 
     &:hover {
       background-color: rgba($primary-color, 0.05);
@@ -120,6 +125,10 @@ $font: "usual", sans-serif !important;
 
     &--expanded {
       background-color: rgba($primary-color, 0.08);
+    }
+
+    p {
+      color: $white-base;
     }
   }
 
@@ -133,62 +142,46 @@ $font: "usual", sans-serif !important;
   }
 
   &__feature-icon {
-    color: $primary-color;
-    transition: transform 0.2s ease;
-    stroke-width: 3px;
+    color: $white-base;
+    transition: transform 0.15s ease-out;
+    stroke-width: 3.5px;
   }
 
   &__feature-description {
-    max-height: 0;
-    text-align: left;
-    letter-spacing: 0.03em !important;
     overflow: hidden;
-    padding: 0 $spacing-sm 0 $spacing-lg;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
+    height: 0;
+    transition: height 0.2s ease-out;
+  }
 
-    // Mejoramos la transición para hacerla más suave
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.25s ease-in-out, transform 0.3s ease-out,
-      padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  &__feature-description-content {
+    padding: 8px $spacing-md 10px $spacing-xl;
+    opacity: 1;
+    text-align: left;
 
-    &--expanded {
-      max-height: 200px; // Ajustar según el contenido
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+    p {
+      margin: 0;
+      padding: 0;
     }
   }
 
   @include tablet {
     min-height: 380px;
-    padding: $spacing-xl;
-
-    &__icon-wrapper {
-      width: 80px;
-      height: 80px;
-      margin-bottom: $spacing-lg;
-
-      svg {
-        width: 40px;
-        height: 40px;
-      }
-    }
   }
 
   @include mobile {
     min-height: 340px;
-    padding: $spacing-lg;
 
-    &__icon-wrapper {
-      width: 64px;
-      height: 64px;
+    &__number-container {
+      width: 24px;
+      height: 24px;
+    }
 
-      svg {
-        width: 32px;
-        height: 32px;
-      }
+    &__number {
+      font-size: 14px;
+    }
+
+    &__title-container {
+      gap: 0.75rem;
     }
   }
 }

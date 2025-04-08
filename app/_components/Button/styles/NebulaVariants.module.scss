@@ -1,0 +1,229 @@
+// src/components/Button/styles/NebulaVariants.module.scss
+// Nebula button variants
+
+.button {
+  // Nebula Stardust: Cosmic dust effect
+  &--nebula-stardust {
+    position: relative;
+    border: none;
+    overflow: hidden;
+
+    // Cosmic background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to right,
+        rgba($primary-dark, 0.9),
+        rgba(darken($primary-dark, 10%), 0.8),
+        rgba($primary-dark, 0.9)
+      );
+      z-index: 0;
+    }
+
+    // Stars layer
+    .button__stars {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0.3;
+      background-image: radial-gradient(white, transparent 1px);
+      background-size: 4px 4px;
+      z-index: 1;
+    }
+
+    // Nebula glow
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to top,
+        transparent,
+        rgba($primary-color, 0.2),
+        transparent
+      );
+      z-index: 0;
+    }
+
+    // Subtle border
+    .button__border {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba($primary-light, 0.1);
+      z-index: 1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba($primary-color, 0.3);
+    }
+  }
+
+  // Nebula Vortex: Cosmic vortex
+  &--nebula-vortex {
+    position: relative;
+    border: none;
+    overflow: hidden;
+
+    // Base background
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to right,
+        rgba($primary-dark, 0.8),
+        rgba($primary-color, 0.6),
+        rgba(darken($primary-dark, 10%), 0.8)
+      );
+      z-index: 0;
+    }
+
+    .button__text,
+    .button__icon {
+      color: $white-base;
+    }
+
+    // Central vortex
+    .button__vortex {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at center,
+        rgba($primary-light, 0.4) 0%,
+        transparent 70%
+      );
+      animation: radial-pulse 3s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    // Particles
+    .button__particles {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+          circle at 30% 40%,
+          rgba(255, 255, 255, 0.15) 0%,
+          transparent 20%
+        ),
+        radial-gradient(
+          circle at 70% 60%,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 20%
+        );
+      z-index: 0;
+    }
+
+    // Outer glow
+    .button__glow {
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba($primary-light, 0.2),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__glow {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Nebula Quantum: Quantum energy
+  &--nebula-quantum {
+    position: relative;
+    border: none;
+    overflow: hidden;
+
+    // Base gradient
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to bottom right,
+        rgba($primary-dark, 0.9),
+        rgba($primary-color, 0.7),
+        rgba(darken($primary-dark, 10%), 0.9)
+      );
+      z-index: 0;
+    }
+
+    // Quantum particles
+    .button__quantum {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba($primary-light, 0.1) 50%,
+          transparent 100%
+        ),
+        linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba($primary-color, 0.1) 50%,
+          transparent 100%
+        );
+      z-index: 0;
+    }
+
+    // Energy flare
+    .button__energy {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba($primary-light, 0.3) 0%,
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 0;
+    }
+
+    // Energy border
+    .button__border {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba($primary-light, 0.2);
+      transition: border-color 0.3s ease;
+      z-index: 1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__energy {
+        opacity: 1;
+      }
+
+      .button__border {
+        border-color: rgba($primary-light, 0.4);
+      }
+    }
+  }
+}

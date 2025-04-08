@@ -3,21 +3,21 @@
 
 .project-form {
   &__wrapper {
-    width: 100%;
+    @include container;
     max-width: 600px;
     min-width: 420px;
-    margin: 0 auto;
-    padding: 0 $spacing-md;
+    padding: $spacing-xs $spacing-sm;
   }
 
   &__progress {
-    @include flex(row, space-between, center, $spacing-sm);
-    margin-bottom: $spacing-xl;
+    @include flex(row, space-between, center, 10px);
+    margin-bottom: 30px;
+    padding-right: 16px;
   }
 
   &__progress-step {
     flex: 1;
-    height: 4px;
+    height: 5.4px;
     background: rgba($text-primary, 0.1);
     border-radius: $border-radius-sm;
     @include transition(all);
@@ -25,17 +25,6 @@
 
     &--active {
       background: $primary-color;
-      &::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: $spacing-sm;
-        height: $spacing-sm;
-        background: $primary-color;
-        border-radius: $border-radius-full;
-        transform: translate(-50%, -50%);
-      }
     }
 
     &--completed {
@@ -44,10 +33,8 @@
     }
   }
 
-  // Los estilos de título y subtítulo se limitan a márgenes y espaciados,
-  // ya que la tipografía (font-size, peso, etc.) se maneja desde el Typography component.
   &__title {
-    margin-bottom: $spacing-sm;
+    margin-bottom: 12px;
     letter-spacing: -0.02em;
   }
 
@@ -60,81 +47,21 @@
     @include transition(all);
   }
 
-  // Las etiquetas se muestran como bloques con margen inferior.
-  &__label {
-    display: block;
-    margin-bottom: $spacing-sm;
-  }
-
-  &__input,
-  &__select {
-    width: 100%;
-    padding: $spacing-md;
-    border: 1px solid rgba($text-primary, 0.2);
-    border-radius: $border-radius-md;
-    background: transparent;
-    color: $text-primary;
-    @include transition(all);
-    font-size: 16px;
-
-    &:focus {
-      outline: none;
-      border-color: $primary-color;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
-    }
-
-    &::placeholder {
-      color: $text-secondary;
-    }
-
-    &--error {
-      border-color: $error-color;
-      &:focus {
-        box-shadow: 0 0 0 2px rgba($error-color, 0.2);
-      }
-    }
-
-    &--success {
-      border-color: $success-color;
-      &:focus {
-        box-shadow: 0 0 0 2px rgba($success-color, 0.2);
-      }
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-
-  &__select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right $spacing-md center;
-    background-size: $spacing-lg $spacing-lg;
-    padding-right: $spacing-xl;
+  // Divider moderno y sutil
+  &__divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba($text-primary, 0.2),
+      transparent
+    );
+    margin: $spacing-lg 0;
   }
 
   &__buttons {
     @include flex(row, space-between, center, $spacing-md);
-    margin-top: $spacing-xl;
     position: relative;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: -$spacing-md;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        rgba($text-primary, 0.1),
-        transparent
-      );
-    }
   }
 
   &__button {
@@ -194,30 +121,25 @@
     }
   }
 
+  // Rediseño profesional de las cards del summary
   &__summary {
-    @include flex(column, flex-start, flex-start, $spacing-xl);
+    @include flex(column, flex-start, flex-start, $spacing-lg);
   }
 
   &__summary-section {
-    background: rgba($text-primary, 0.05);
+    width: 100%;
+    background: #fff;
     padding: $spacing-lg;
     border-radius: $border-radius-md;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    // border: 1px solid rgba($text-primary, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    margin-bottom: $spacing-lg;
+    border-left: 4px solid $primary-color;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 100%;
-      background: $primary-color;
-      border-radius: $border-radius-sm;
-    }
-
-    @include hover {
-      background: rgba($text-primary, 0.08);
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
     }
   }
 
@@ -272,32 +194,62 @@
   }
 
   @include mobile {
+    &__wrapper {
+      @include container;
+      max-width: unset;
+      min-width: unset;
+      padding: $spacing-xs $spacing-sm;
+    }
+
+    &__progress {
+      gap: 10px;
+      width: 95%;
+      padding-right: 10px;
+      margin-bottom: 32px;
+    }
+
+    &__progress-step {
+      height: 5.6px;
+    }
+
+    &__title {
+      margin-bottom: 10px;
+    }
+
+    &__subtitle {
+      margin-bottom: $spacing-lg;
+    }
+
+    &__group {
+      margin-bottom: 20px;
+    }
+
+    &__divider {
+      margin: 22px 0;
+    }
+
     &__buttons {
       flex-direction: column-reverse;
+      gap: 20px;
     }
+
     &__button {
       width: 100%;
-      padding: $spacing-lg;
+
+      padding: 14px $spacing-md;
+
       &--secondary {
         order: 1;
       }
+
       &--primary {
         order: 2;
       }
     }
-    &__summary-list {
-      grid-template-columns: 1fr;
-      gap: $spacing-xs;
-    }
-    &__summary-term {
-      margin-top: $spacing-sm;
-      &:first-child {
-        margin-top: 0;
-      }
-    }
-    &__calendar-container {
-      min-height: 150px;
-    }
+
+    // &__calendar-container {
+    //   min-height: 150px;
+    // }
   }
 }
 
@@ -314,4 +266,94 @@
 
 .slide-in {
   animation: slideIn $transition-duration $transition-bezier;
+}
+
+.summary-option {
+  width: 100%;
+  border-radius: $border-radius-sm;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  // margin-bottom: $spacing-lg;
+  // border: 1px solid rgba(255, 255, 255, 0.05);
+
+  &__header {
+    padding: 8px $spacing-md;
+    background: rgba($primary-color, 0.25);
+    // border-bottom: 1px solid rgba($primary-color, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    // font-size: 16px;
+  }
+
+  &__items {
+    padding: $spacing-sm 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 8px $spacing-md;
+    transition: all 0.2s ease;
+  }
+
+  &__icon {
+    width: 26px;
+    height: 26px;
+    background: rgba($text-primary, 0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    transition: all 0.3s ease;
+    // border: 1px solid transparent;
+    color: $black-base; // Color de los iconos establecido a $black-base
+    // transform: rotate(-10deg);
+
+    // This will style the SVG directly
+    svg {
+      fill: rgba($text-tertiary, 0.4);
+      stroke: $black-base;
+      stroke-width: 2px;
+    }
+
+    // For the icon wrapper
+    .icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__icon-svg {
+    fill: $white-base;
+    stroke: $black-base;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__term {
+  }
+
+  &__description {
+    font-weight: 500;
+  }
+
+  @include mobile {
+    &__item {
+      padding: 6px $spacing-md;
+    }
+  }
 }

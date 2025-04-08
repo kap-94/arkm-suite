@@ -28,7 +28,7 @@ export const SpacingSection: FC<SpacingSectionProps> = ({
   return (
     <section className={cx("spacing-section")}>
       <ThemedTypography
-        variant="h4"
+        variant="h5"
         fontWeight={500}
         color="secondary"
         noWrap

@@ -1,0 +1,484 @@
+@import "@/app/_styles/variables.scss";
+@import "@/app/_styles/mixins.scss";
+
+.dynamic-layout {
+  --left-width: min(500px, 45%);
+  --right-width: 32%;
+  --background-width: 500px;
+  --background-height: 532px;
+  --aspect-ratio: 1.2;
+  --elements-gap: 0;
+  --padding-h: clamp($spacing-sm, 3vw, $spacing-lg);
+  --padding-v: clamp($spacing-sm, 2vw, $spacing-md);
+  --total-content-width: unset;
+  --max-right-height: 500px;
+  --max-right-width: 400px;
+  --max-left-height: 500px;
+  --max-left-width: 500px;
+
+  height: auto;
+  min-height: 500px;
+  max-height: none;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin: 0 auto;
+  z-index: 1;
+  contain: layout style;
+  transform: translateZ(0);
+  opacity: 1;
+  padding: var(--padding-v) var(--padding-h);
+  box-sizing: border-box;
+  visibility: visible !important;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &--ready {
+    opacity: 1;
+  }
+
+  @include tablet {
+    --left-width: min(450px, 45%) !important;
+    --right-width: 32%;
+    --elements-gap: 40px; // Consistent spacing between elements
+    --padding-v: $spacing-lg;
+    min-height: 450px;
+  }
+
+  @include mobile {
+    --aspect-ratio: 1;
+    --right-width: min(85%, 300px);
+    --elements-gap: 32px; // Reduced but consistent spacing for mobile
+    --left-width: 100%;
+    --padding-v: $spacing-md;
+    height: auto;
+    min-height: unset;
+    max-height: none;
+    padding: var(--padding-v) var(--padding-h);
+    contain: content;
+  }
+
+  @include mobile-small {
+    --elements-gap: 24px; // Even smaller but still visually balanced
+    --padding-v: $spacing-sm;
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    padding: 0;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    max-width: var(--total-content-width);
+    overflow: visible;
+
+    @include tablet {
+      perspective: none;
+      transform-style: flat;
+    }
+
+    @include mobile {
+      perspective: none;
+      transform-style: flat;
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+
+  &__content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--elements-gap);
+    height: 100%;
+    width: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+
+    @include tablet {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: flat;
+      gap: var(--elements-gap);
+    }
+
+    @include mobile {
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transform-style: flat;
+      gap: var(--elements-gap);
+    }
+  }
+
+  &__left-wrapper {
+    position: relative;
+    width: 50% !important;
+    max-width: 50% !important;
+    z-index: 5;
+    height: auto;
+    flex: 0 0 50% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    transform-style: preserve-3d;
+    contain: layout paint style;
+
+    @include tablet {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    @include mobile {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0 auto;
+      height: fit-content;
+      align-items: flex-start;
+      justify-content: flex-start;
+      z-index: 6;
+      transform-style: flat;
+      contain: content;
+      padding: 0;
+
+      &.dynamic-layout__card-container {
+        order: 1;
+      }
+    }
+  }
+
+  &__right-wrapper {
+    position: relative;
+    width: 50% !important;
+    max-width: 50% !important;
+    flex: 0 0 50% !important;
+    height: 85%;
+    z-index: 4;
+    border-radius: $border-radius-md;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    contain: layout paint style;
+
+    @include tablet {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto;
+      margin: 0;
+      padding: 0;
+    }
+
+    @include mobile {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0;
+      align-items: center;
+      height: fit-content;
+      z-index: 5;
+      transform-style: flat;
+      contain: content;
+      padding: 0;
+
+      &.dynamic-layout__images-container {
+        order: 2;
+      }
+    }
+  }
+
+  &__card-container {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+      order: 1;
+    }
+  }
+
+  &__images-container {
+    @include mobile {
+      order: 2;
+    }
+  }
+
+  &--left-right &__content-wrapper {
+    flex-direction: row;
+
+    @include tablet {
+      flex-direction: column;
+    }
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &--right-left &__content-wrapper {
+    flex-direction: row-reverse;
+
+    @include tablet {
+      flex-direction: column;
+    }
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &__floating-element {
+    position: absolute;
+    transform-style: flat;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    contain: paint style;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+    }
+
+    @include desktop {
+      &--1 {
+        width: 120px !important;
+        height: 120px !important;
+      }
+
+      &--2 {
+        width: 100px !important;
+        height: 100px !important;
+      }
+
+      &--3,
+      &--4 {
+        width: 70px !important;
+        height: 70px !important;
+      }
+    }
+
+    @include tablet {
+      display: none;
+    }
+
+    &--1 {
+      width: 150px;
+      height: 150px;
+      border-radius: $border-radius-lg;
+      background: radial-gradient(
+        circle,
+        rgba($primary-color, 0.08) 0%,
+        rgba($primary-color, 0.03) 50%,
+        transparent 100%
+      );
+      filter: blur(20px);
+      top: 20%;
+      right: 5%;
+      transform: rotate(25deg) translate3d(0, 0, 0);
+    }
+
+    &--2 {
+      width: 120px;
+      height: 120px;
+      border-radius: $border-radius-full;
+      background: radial-gradient(
+        circle,
+        rgba($primary-color, 0.06) 0%,
+        rgba($primary-color, 0.02) 50%,
+        transparent 100%
+      );
+      filter: blur(15px);
+      bottom: 15%;
+      left: 10%;
+    }
+
+    &--3 {
+      width: 80px;
+      height: 80px;
+      border-radius: $border-radius-sm;
+      background: radial-gradient(
+        circle,
+        rgba($white-color, 0.05) 0%,
+        rgba($white-color, 0.02) 50%,
+        transparent 100%
+      );
+      filter: blur(10px);
+      top: 30%;
+      left: 5%;
+      transform: rotate(-15deg) translate3d(0, 0, 0);
+    }
+
+    &--4 {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(
+        circle,
+        rgba($white-color, 0.04) 0%,
+        rgba($white-color, 0.01) 50%,
+        transparent 100%
+      );
+      filter: blur(12px);
+      bottom: 25%;
+      right: 15%;
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__connector {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba($primary-color, 0.1) 50%,
+      transparent 100%
+    );
+    z-index: 3;
+    opacity: 0;
+    transform-origin: left center;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, opacity;
+    contain: paint style;
+
+    @include desktop {
+      &--horizontal {
+        width: 20% !important;
+      }
+
+      &--diagonal-1 {
+        width: 15% !important;
+      }
+
+      &--diagonal-2 {
+        width: 15% !important;
+      }
+    }
+
+    @include tablet {
+      display: none;
+    }
+
+    &--horizontal {
+      width: 30%;
+      top: 50%;
+      left: 10%;
+    }
+
+    &--diagonal-1 {
+      width: 25%;
+      top: 40%;
+      left: 15%;
+      transform: rotate(25deg) translate3d(0, 0, 0);
+    }
+
+    &--diagonal-2 {
+      width: 20%;
+      bottom: 35%;
+      right: 15%;
+      transform: rotate(-15deg) translate3d(0, 0, 0);
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  &__ambient-light {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(
+      ellipse at center,
+      rgba($primary-color, 0.02) 0%,
+      transparent 70%
+    );
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    @include transition(opacity);
+    contain: paint style;
+
+    @include tablet {
+      display: none;
+    }
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  @include reduced-motion {
+    * {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dynamic-layout:hover {
+    .dynamic-layout__left-wrapper,
+    .dynamic-layout__right-wrapper {
+      filter: brightness(1.05);
+    }
+  }
+}
+
+// Mobile specific styles
+.dynamic-layout--mobile {
+  .dynamic-layout__left-wrapper,
+  .dynamic-layout__right-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  .dynamic-layout__content-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+// Adaptive specific styles
+.dynamic-layout--adaptive {
+  .dynamic-layout__left-wrapper,
+  .dynamic-layout__right-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
+
+// Project Layout specific styles
+.projectLayout {
+  &--card-left,
+  &--card-right {
+    .dynamic-layout__content-wrapper {
+      @include mobile {
+        flex-direction: column !important;
+      }
+    }
+  }
+}

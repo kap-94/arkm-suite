@@ -1,0 +1,227 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.selector {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: $border-radius-sm;
+  border: 1px solid rgba($white-light, 0.06);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: all $transition-duration-fast ease;
+  width: 100%;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: $spacing-md $spacing-lg;
+    height: 100%;
+    width: 100%;
+
+    &::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: 100%;
+      transform: translate(0%, 50%);
+      background: linear-gradient(
+        to bottom right,
+        $primary-dark,
+        $primary-color
+      );
+      opacity: 0.35;
+      mix-blend-mode: normal;
+      filter: blur(90px);
+      z-index: -1;
+    }
+
+    &--active {
+      background: rgba($primary-color, 0.03);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      border: none;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(
+          to right bottom,
+          rgba($primary-dark, 0.8) 0%,
+          $primary-color
+        );
+
+        opacity: 0.5;
+        z-index: -1;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1.3px;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          $primary-light,
+          transparent
+        );
+        opacity: 0.8;
+      }
+
+      .selector__company,
+      .selector__role,
+      .selector__industry {
+        color: $white-light;
+      }
+
+      .selector__icon {
+        color: $primary-light;
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__company {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+  }
+
+  &__role-container {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__industry-container {
+    display: flex;
+    align-items: center;
+    background: rgba($white-light, 0.05);
+    padding: 2px 8px;
+    border-radius: $border-radius-sm;
+  }
+
+  &__industry {
+    margin: 0;
+    white-space: nowrap;
+    font-size: 10px;
+  }
+
+  &__icon {
+    color: $text-secondary;
+  }
+
+  &__role {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 50%;
+    top: 50%;
+    height: 150px;
+    width: 300px;
+    transform: translate(0%, 50%);
+    background: linear-gradient(to bottom right, $primary-dark, $primary-color);
+    opacity: 0.5;
+    mix-blend-mode: normal;
+    filter: blur(90px);
+    z-index: -1;
+  }
+
+  &--active {
+    background: rgba($primary-light, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100px;
+      width: 70%;
+      background: linear-gradient(
+        to right bottom,
+        rgba($primary-dark, 0.8) 0%,
+        $primary-color
+      );
+
+      opacity: 0.5;
+      z-index: -1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        $primary-light,
+        transparent
+      );
+      opacity: 0.8;
+    }
+
+    .selector__company,
+    .selector__role,
+    .selector__icon {
+      color: $white-light;
+    }
+  }
+}

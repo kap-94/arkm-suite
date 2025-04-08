@@ -107,7 +107,7 @@ interface Translations {
 const translations: Record<Language, Translations> = {
   en: {
     dashboard: {
-      title: "Dashboard",
+      title: "Control Panel",
       description: "Overview of your workspace",
       aria: "Main dashboard",
     },

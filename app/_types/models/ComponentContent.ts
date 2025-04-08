@@ -1,6 +1,6 @@
-import { TypographyVariant } from "../../_components/Typography/types";
+import { TypographyVariant } from "@/app/_components/Typography/types";
 import { BaseContent } from "./Common";
-import { ThemeConfig } from "../../_components/DesignSystemPreview/types";
+import { ThemeConfig } from "@/app/_components/DesignSystemPreview/types";
 
 export interface ComponentContent extends BaseContent {
   type: "component";
@@ -54,6 +54,7 @@ export interface DesignSystemContent extends ComponentContent {
       copiedText: string;
     };
     components: {
+      title: string;
       buttons: {
         title: string;
         variants: {

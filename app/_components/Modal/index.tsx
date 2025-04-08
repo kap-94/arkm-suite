@@ -10,7 +10,7 @@ import React, {
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import classNames from "classnames/bind";
-import { useOutsideClick } from "../../_hooks/useOutsideClick";
+import { useOutsideClick } from "@/app/_hooks/useOutsideClick";
 import styles from "./Modal.module.scss";
 
 const cx = classNames.bind(styles);

@@ -42,6 +42,21 @@ $font-primary: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI"
   @return #{$pixels / $base-font-size}rem;
 }
 
+// Función para crear un valor clamp responsive simplificada
+@function fluid-type($min-size, $max-size) {
+  $min-size-rem: rem($min-size);
+  $max-size-rem: rem($max-size);
+
+  @return clamp(
+    #{$min-size-rem},
+    calc(
+      #{$min-size-rem} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) /
+            (1200 - 320))
+    ),
+    #{$max-size-rem}
+  );
+}
+
 @mixin text-truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -49,114 +64,78 @@ $font-primary: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI"
 }
 
 .typography {
-  // Headings
+  // Headings con clamp() para responsive fluido
   &--h1 {
     font-family: $font-primary;
-    font-size: rem(64);
+    font-size: fluid-type(48, 62);
     font-weight: 600;
     line-height: 1.1;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(48);
-    }
   }
 
   &--h2 {
     font-family: $font-primary;
-    font-size: rem(60);
+    font-size: fluid-type(24, 48);
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(36);
-    }
   }
 
   &--h3 {
     font-family: $font-primary;
-    font-size: rem(24);
+    font-size: fluid-type(20, 32);
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(20);
-    }
   }
 
   &--h4 {
     font-family: $font-primary;
-    font-size: rem(20);
+    font-size: fluid-type(18, 24);
     font-weight: 500;
     line-height: 1.5;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(16);
-    }
   }
 
   &--h5 {
     font-family: $font-primary;
-    font-size: rem(16);
+    font-size: fluid-type(16, 20);
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.5;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(14);
-    }
   }
 
-  // Paragraph styles
+  // Paragraph styles con clamp()
   &--p1 {
     font-family: $font-primary;
-    font-size: rem(16);
-    font-weight: 400;
+    font-size: fluid-type(14, 16);
+    font-weight: 500;
     line-height: 1.6;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(14);
-    }
   }
 
   &--p2 {
     font-family: $font-primary;
-    font-size: rem(14);
-    font-weight: 400;
-    line-height: 1.5;
+    font-size: fluid-type(13, 14);
+    font-weight: 500;
+    line-height: 1.6;
     letter-spacing: 0.02em;
-
-    @include mobile {
-      font-size: rem(13);
-    }
   }
 
   &--p3 {
     font-family: $font-primary;
-    font-size: rem(12);
-    font-weight: 400;
-    line-height: 1.4;
+    font-size: fluid-type(11, 12);
+    font-weight: 500;
+    line-height: 1.6;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(11);
-    }
   }
 
   &--label {
     font-family: $font-primary;
-    font-size: rem(14);
-    font-weight: 400;
-    line-height: 1.4;
+    font-size: fluid-type(12, 14);
+    font-weight: 500;
+    line-height: 1.6;
     letter-spacing: 0.01em;
-
-    @include mobile {
-      font-size: rem(11);
-    }
   }
 
   // Theme styles

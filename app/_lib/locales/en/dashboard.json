@@ -12,7 +12,7 @@
         "ogImage": "/images/dashboard-og.jpg"
     },
     "header": {
-        "title": "Client Portal",
+        "title": "Control Panel",
         "subtitle": "Welcome back! Here's what's happening with your projects",
         "aria": "Dashboard main header"
     },

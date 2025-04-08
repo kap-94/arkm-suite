@@ -1,6 +1,6 @@
 // types.ts
 
-import { Content } from "../../_types/models/Content";
+import { Content } from "@/app/_types/models/Content";
 
 export type ContentItemType =
   | "Document"

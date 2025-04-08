@@ -1,0 +1,684 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.portfolio-images {
+  width: 100%;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.6s ease-out;
+
+  &--loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &__container {
+    width: 100%;
+    position: relative;
+    /* Eliminamos min-height fijo y dejamos que el contenido determine la altura */
+    display: flex;
+    flex-direction: column;
+
+    @include tablet {
+      /* Eliminamos min-height: fit-content; */
+    }
+  }
+
+  // z-index management for containers
+  &__main {
+    position: relative;
+    z-index: 3;
+
+    &:hover {
+      z-index: 10 !important;
+
+      & ~ .portfolio-images__secondary {
+        z-index: -1 !important;
+      }
+    }
+  }
+
+  &__secondary {
+    position: relative;
+    z-index: 2;
+
+    &:hover {
+      z-index: 10 !important;
+
+      & ~ .portfolio-images__main {
+        z-index: -1 !important;
+      }
+
+      & ~ .portfolio-images__secondary {
+        z-index: -1 !important;
+      }
+    }
+
+    @include tablet {
+      display: none;
+    }
+
+    &--first {
+      z-index: 2;
+    }
+
+    &--second {
+      z-index: 1;
+    }
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    /* Usamos aspect-ratio en lugar de height fijo */
+    aspect-ratio: 16/9; /* Ajusta según la relación de aspecto deseada (16:9, 4:3, etc.) */
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    transform: translateZ(0);
+    box-shadow: 0 8px 20px rgba($primary-dark, 0.02);
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+
+      @include tablet {
+        transform: unset;
+        box-shadow: unset;
+      }
+    }
+
+    &--main {
+      &:hover,
+      &:focus {
+        .portfolio-images__image {
+          transform: scale(1.05);
+
+          @include tablet {
+            transform: unset;
+          }
+        }
+
+        .portfolio-images__overlay {
+          background-color: rgba($black-base, 0.2);
+
+          @include tablet {
+            transform: unset;
+          }
+        }
+      }
+    }
+
+    &--secondary {
+      &:hover,
+      &:focus {
+        .portfolio-images__image {
+          transform: scale(1.08);
+        }
+
+        .portfolio-images__overlay {
+          background-color: rgba($black-base, 0.15);
+        }
+      }
+    }
+  }
+
+  &__image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-out;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($black-base, 0.3);
+    transition: background-color 0.3s ease-out, opacity 0.3s ease-out;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  // Overlay with primary color
+  &--with-overlay {
+    .portfolio-images__overlay {
+      background: linear-gradient(
+        90deg,
+        rgba($primary-dark, 0.2),
+        rgba($primary-color, 0.28)
+      );
+    }
+
+    .portfolio-images__image-wrapper {
+      &:hover,
+      &:focus {
+        .portfolio-images__overlay {
+          opacity: 0;
+
+          @include tablet {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  /* Cascade Variant */
+  &--cascade {
+    .portfolio-images__container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px; /* Espacio entre imágenes */
+      // margin-bottom: 40px; /* Espacio después del contenedor */
+    }
+
+    .portfolio-images__main {
+      position: relative;
+      width: 85%;
+      /* Usamos aspect-ratio en lugar de height fijo */
+      aspect-ratio: 16/9;
+
+      @include tablet {
+        width: 75%;
+      }
+
+      @include mobile {
+        width: 100%;
+      }
+    }
+
+    .portfolio-images__secondary {
+      position: relative;
+      width: 68%;
+      aspect-ratio: 16/9;
+      margin-top: -40px;
+
+      &--first {
+        align-self: flex-start;
+      }
+
+      &--second {
+        align-self: flex-end;
+        margin-top: -30px;
+      }
+
+      @include tablet {
+        width: 70%;
+        margin-top: -30px;
+      }
+
+      @include mobile {
+        width: 80%;
+        margin-top: -20px;
+
+        &--second {
+          margin-top: -15px;
+        }
+      }
+
+      @include mobile-small {
+        margin-top: -15px;
+
+        &--second {
+          margin-top: -10px;
+        }
+      }
+    }
+
+    // For single image
+    &.portfolio-images--count-1 {
+      .portfolio-images__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .portfolio-images__main {
+        width: 75%;
+        aspect-ratio: 16/9;
+
+        @include mobile-medium {
+          width: 90%;
+        }
+      }
+    }
+
+    // For two images
+    &.portfolio-images--count-2 {
+      .portfolio-images__secondary--first {
+        align-self: center;
+        width: 80%;
+
+        @include tablet {
+          width: 85%;
+        }
+
+        @include mobile {
+          width: 90%;
+        }
+      }
+    }
+  }
+
+  /* Mosaic Variant */
+  &--mosaic {
+    .portfolio-images__container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: $spacing-md;
+      /* Usamos aspect-ratio para cada celda del grid */
+
+      @include tablet {
+        gap: $spacing-sm;
+      }
+
+      @include mobile {
+        gap: $spacing-sm;
+        display: flex;
+        flex-direction: column;
+      }
+
+      @include mobile-small {
+        gap: $spacing-xs;
+      }
+    }
+
+    .portfolio-images__main {
+      grid-column: 1 / span 3;
+      grid-row: 1 / span 3;
+      /* El aspect-ratio está definido en __image-wrapper */
+    }
+
+    .portfolio-images__secondary {
+      &--first {
+        grid-column: 4 / span 1;
+        grid-row: 1 / span 2;
+      }
+
+      &--second {
+        grid-column: 3 / span 2;
+        grid-row: 3 / span 2;
+      }
+    }
+
+    @include mobile {
+      .portfolio-images__main,
+      .portfolio-images__secondary {
+        /* Ajustamos los aspect-ratio para móvil */
+        .portfolio-images__image-wrapper {
+          aspect-ratio: 16/10; /* Un poco más ancho para móvil */
+        }
+      }
+
+      .portfolio-images__secondary {
+        margin-top: $spacing-sm;
+      }
+    }
+
+    @include mobile-small {
+      .portfolio-images__secondary {
+        margin-top: $spacing-xs;
+      }
+    }
+
+    // Single image
+    &.portfolio-images--count-1 {
+      .portfolio-images__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .portfolio-images__main {
+        width: 100%;
+        grid-column: 1 / -1;
+        grid-row: 1 / -1;
+      }
+    }
+
+    // Two images
+    &.portfolio-images--count-2 {
+      .portfolio-images__container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto;
+        gap: $spacing-md;
+
+        @include tablet {
+          gap: $spacing-sm;
+        }
+
+        @include mobile {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-sm;
+        }
+
+        @include mobile-small {
+          gap: $spacing-xs;
+        }
+      }
+
+      .portfolio-images__main {
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1;
+      }
+
+      .portfolio-images__secondary--first {
+        grid-column: 2 / span 1;
+        grid-row: 1 / span 1;
+
+        @include mobile {
+          margin-top: $spacing-sm;
+        }
+
+        @include mobile-small {
+          margin-top: $spacing-xs;
+        }
+      }
+    }
+  }
+
+  /* Panorama Variant */
+  &--panorama {
+    .portfolio-images__container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      @include mobile {
+        flex-direction: column;
+        gap: $spacing-sm;
+      }
+
+      @include mobile-small {
+        gap: $spacing-xs;
+      }
+    }
+
+    .portfolio-images__main {
+      flex: 0 0 55%;
+
+      .portfolio-images__image-wrapper {
+        aspect-ratio: 16/9;
+      }
+
+      @include tablet {
+        flex: 0 0 60%;
+      }
+
+      @include mobile {
+        width: 100%;
+        flex: none;
+      }
+    }
+
+    .portfolio-images__secondary {
+      flex: 0 0 calc(45% - #{$spacing-md});
+
+      .portfolio-images__image-wrapper {
+        aspect-ratio: 16/10; /* Ligeramente diferente para variedad */
+      }
+
+      &--first {
+        align-self: flex-start;
+      }
+
+      &--second {
+        align-self: flex-end;
+      }
+
+      @include tablet {
+        flex: 0 0 calc(40% - #{$spacing-md});
+      }
+
+      @include mobile {
+        margin-left: 0;
+        width: 100%;
+        flex: none;
+      }
+    }
+
+    // Three images
+    &.portfolio-images--count-3 {
+      .portfolio-images__container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+      }
+
+      .portfolio-images__main {
+        flex: 0 0 100%;
+        margin-bottom: $spacing-sm;
+      }
+
+      .portfolio-images__secondary {
+        flex: 0 0 calc(50% - #{$spacing-sm} / 2);
+
+        @include mobile {
+          flex: none;
+          width: 100%;
+
+          &--second {
+            margin-top: $spacing-sm;
+          }
+        }
+
+        @include mobile-small {
+          &--second {
+            margin-top: $spacing-xs;
+          }
+        }
+      }
+    }
+
+    // Single image
+    &.portfolio-images--count-1 {
+      .portfolio-images__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .portfolio-images__main {
+        flex: 0 0 100%;
+      }
+    }
+
+    // Two images
+    &.portfolio-images--count-2 {
+      .portfolio-images__main {
+        flex: 0 0 65%;
+
+        @include tablet {
+          flex: 0 0 60%;
+        }
+
+        @include mobile {
+          flex: none;
+          width: 100%;
+        }
+      }
+
+      .portfolio-images__secondary--first {
+        flex: 0 0 calc(35% - #{$spacing-md});
+        align-self: center;
+
+        @include tablet {
+          flex: 0 0 calc(40% - #{$spacing-md});
+        }
+
+        @include mobile {
+          flex: none;
+          width: 100%;
+          margin-top: $spacing-sm;
+        }
+
+        @include mobile-small {
+          margin-top: $spacing-xs;
+        }
+      }
+    }
+  }
+
+  /* Horizontal Variant */
+  &--horizontal {
+    .portfolio-images__container {
+      display: flex;
+      gap: $spacing-md;
+
+      @include tablet {
+        gap: $spacing-sm;
+      }
+
+      @include mobile {
+        flex-direction: column;
+        gap: $spacing-sm;
+      }
+
+      @include mobile-small {
+        gap: $spacing-xs;
+      }
+    }
+
+    .portfolio-images__main {
+      flex: 0 0 calc(100% / 3);
+
+      .portfolio-images__image-wrapper {
+        aspect-ratio: 9/16; /* Vertical para variante horizontal */
+      }
+
+      @include mobile {
+        flex: 0 0 auto;
+        width: 100%;
+      }
+    }
+
+    .portfolio-images__secondary {
+      flex: 0 0 calc(100% / 3);
+      margin-left: 0;
+
+      .portfolio-images__image-wrapper {
+        aspect-ratio: 9/16; /* Vertical para variante horizontal */
+      }
+
+      @include mobile {
+        flex: 0 0 auto;
+        width: 100%;
+        margin-top: $spacing-sm;
+      }
+
+      @include mobile-small {
+        margin-top: $spacing-xs;
+      }
+    }
+
+    // Single image
+    &.portfolio-images--count-1 {
+      .portfolio-images__container {
+        justify-content: center;
+      }
+
+      .portfolio-images__main {
+        flex: 0 0 100%;
+        max-width: 85%;
+
+        .portfolio-images__image-wrapper {
+          aspect-ratio: 16/9; /* Horizontal para una sola imagen */
+        }
+
+        @include tablet {
+          max-width: 90%;
+        }
+
+        @include mobile {
+          max-width: 100%;
+        }
+      }
+    }
+
+    // Two images
+    &.portfolio-images--count-2 {
+      .portfolio-images__container {
+        justify-content: center;
+      }
+
+      .portfolio-images__main,
+      .portfolio-images__secondary--first {
+        flex: 0 0 calc(50% - #{$spacing-md} / 2);
+
+        @include tablet {
+          flex: 0 0 calc(50% - #{$spacing-sm} / 2);
+        }
+
+        @include mobile {
+          flex: 0 0 auto;
+          width: 100%;
+        }
+      }
+    }
+
+    // Three images
+    &.portfolio-images--count-3 {
+      .portfolio-images__main,
+      .portfolio-images__secondary {
+        flex: 0 0 calc(33.333% - #{$spacing-md} * 2 / 3);
+
+        @include tablet {
+          flex: 0 0 calc(33.333% - #{$spacing-sm} * 2 / 3);
+        }
+
+        @include mobile {
+          flex: 0 0 auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // Tablet or smaller specific styles
+  &--tablet-or-smaller {
+    .portfolio-images__container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portfolio-images__main {
+      width: 100%;
+      margin: 0 auto;
+
+      .portfolio-images__image-wrapper {
+        aspect-ratio: 16/9;
+      }
+    }
+
+    // All variants in tablet or smaller
+    &.portfolio-images--cascade,
+    &.portfolio-images--mosaic,
+    &.portfolio-images--panorama,
+    &.portfolio-images--horizontal {
+      .portfolio-images__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-sm;
+      }
+
+      .portfolio-images__main {
+        // width: 100%;
+        max-width: 100%;
+        flex: 0 0 auto;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { ProfileDictionary } from "../../_types/dictionary/profile.types";
-import { User } from "../../_types/models";
+import { ProfileDictionary } from "@/app/_types/dictionary/profile.types";
+import { User } from "@/app/_types/models";
 
 export type ThemeType = "light" | "dark" | "custom";
 

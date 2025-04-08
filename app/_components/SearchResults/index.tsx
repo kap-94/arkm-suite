@@ -4,7 +4,7 @@ import React, { FC, useMemo, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./SearchResults.module.scss";
 import { SearchResultsProps } from "./types";
-import { Dropdown, Option } from "../Dropdown";
+import { ThemedDropdown, Option } from "../Dropdown";
 import { SearchCard } from "../SearchCard";
 import { Pagination } from "../Pagination";
 import { ThemedTypography } from "../Typography/ThemedTypography";
@@ -85,7 +85,7 @@ const SearchResults: FC<SearchResultsProps> = ({
         </div>
         {contentTypeOptions && contentTypeOptions.length > 0 && (
           <div className={cx("search-results__dropdown-wrapper")}>
-            <Dropdown
+            <ThemedDropdown
               options={contentTypeOptions}
               selected={selectedContentType}
               onSelectedChange={handleOptionChange}

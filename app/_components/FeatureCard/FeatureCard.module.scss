@@ -46,6 +46,11 @@
     color: $primary-color;
     @include flex-center;
     @include transition(all 0.4s cubic-bezier(0.16, 1, 0.3, 1));
+
+    svg {
+      height: 20px;
+      width: 20px;
+    }
   }
 
   &__title {
@@ -71,8 +76,8 @@
     color: $primary-color;
 
     svg {
-      height: 20px;
-      width: 20px;
+      height: 18px;
+      width: 18px;
     }
   }
 

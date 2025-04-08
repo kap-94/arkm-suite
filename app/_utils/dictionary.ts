@@ -12,6 +12,7 @@ import { MainLayoutDictionary } from "../_types/dictionary/mainLayout.types";
 import { ProjectDetailsDictionary } from "../_types/dictionary/projectDetails.types";
 import { ContentPreviewDictionary } from "../_types/dictionary/contentPreview.types";
 import { DesignSystemDictionary } from "../_types/dictionary/designSystemPreview.types";
+import { PortfolioDictionary } from "../_types/dictionary/portfolio.types";
 
 export type DictionaryFile = "dashboard" | "settings" | "profile";
 
@@ -86,6 +87,15 @@ export const homeDictionary = new DictionaryService<HomeDictionary>(
     es: () => import("@/app/_lib/locales/es/home.json"),
   },
   (dict) => validateDictionary<HomeDictionary>({} as HomeDictionary, dict)
+);
+
+export const portfolioDictionary = new DictionaryService<PortfolioDictionary>(
+  {
+    en: () => import("@/app/_lib/locales/en/portfolio.json"),
+    es: () => import("@/app/_lib/locales/es/portfolio.json"),
+  },
+  (dict) =>
+    validateDictionary<PortfolioDictionary>({} as PortfolioDictionary, dict)
 );
 
 export const projectDetailsDictionary =

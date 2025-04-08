@@ -1,112 +1,459 @@
 {
-    "meta": {
-      "title": "ARKM Studio - Diseño y Desarrollo Web",
-      "description": "Estudio de diseño y desarrollo especializado en crear experiencias digitales excepcionales. Transformamos ideas en soluciones web innovadoras y elegantes.",
-      "keywords": [
-        "diseño web",
-        "desarrollo web",
-        "agencia digital",
-        "diseño UI/UX",
-        "desarrollo frontend",
-        "desarrollo backend",
-        "diseño responsive",
-        "branding digital",
-        "experiencia de usuario",
-        "ARKM Studio"
-      ],
-      "authors": [
-        {
-          "name": "ARKM Studio"
-        }
-      ],
-      "creator": "ARKM Studio",
-      "publisher": "ARKM Studio"
+  "meta": {
+    "title": "Pablo Karam Dolores | Desarrollador Fullstack",
+    "description": "Desarrollador fullstack con especialización en front-end, React, Next.js, TypeScript y diseño UI/UX. Soluciones web completas para proyectos modernos.",
+    "keywords": [
+      "desarrollador fullstack",
+      "frontend",
+      "backend",
+      "react",
+      "next.js",
+      "typescript",
+      "ui/ux",
+      "diseño web",
+      "node.js",
+      "flutter",
+      "azure devops",
+      "gcloud",
+      "fintech"
+    ],
+    "authors": [
+      {
+        "name": "José Pablo Karam"
+      }
+    ],
+    "creator": "José Pablo Karam",
+    "publisher": "José Pablo Karam"
+  },
+  "hero": {
+    "description": {
+      "description": "Convierto ideas de negocio en experiencias digitales únicas.",
+      "cta": "Ver mi trabajo"
     },
-    "hero": {
-      "headline": {
-        "create": "Transforma",
-        "scale": "Tu",
-        "transform": "Negocio"
+    "title": {
+      "main": "Desarrollador",
+      "secondary": "Diseñador",
+      "connector": "&"
+    },
+    "scroll": "Desliza para explorar"
+  },
+  "methodology": {
+    "title": "Mi Proceso Creativo",
+    "subtitle": "Transformando ideas de negocio, del concepto a la realidad",
+    "steps": {
+      "research": {
+        "title": "Comprensión",
+        "description": "Analizo a fondo los objetivos del negocio y las necesidades de los usuarios para definir claramente el alcance y los requisitos del proyecto."
       },
-      "description": {
-        "subtitle": "Un sitio web profesional es algo complejo",
-        "description": "Transformamos visiones en experiencias digitales excepcionales",
-        "cta": "Cuéntanos del proyecto"
+      "visualDirection": {
+        "title": "Dirección Visual",
+        "description": "Defino la identidad visual del proyecto, explorando paletas de colores, tipografías y patrones de UI que resonarán con los usuarios y reflejarán la marca."
       },
-      "scroll": "Explora desplazándote"
+      "uiDesign": {
+        "title": "Diseño UI/UX",
+        "description": "Creo interfaces intuitivas y atractivas centradas en el usuario, con wireframes y prototipos que visualizan la experiencia antes de la implementación."
+      },
+      "development": {
+        "title": "Desarrollo",
+        "description": "Desarrollo tanto el front-end como el back-end con un código limpio, modular y bien documentado, siguiendo las mejores prácticas y estándares."
+      },
+      "testing": {
+        "title": "Pruebas",
+        "description": "Realizo pruebas en todos los niveles: unitarias, de integración y end-to-end, garantizando funcionalidad, rendimiento y seguridad en todo el stack."
+      },
+      "launch": {
+        "title": "Despliegue",
+        "description": "Implemento soluciones con CI/CD en entornos versátiles y escalables, optimizando procesos clave y brindando soporte continuo."
+      }
+    }
+  },
+  "solutions": {
+    "title": "Áreas de especialización",
+    "subtitle": "Habilidades técnicas para crear soluciones digitales",
+    "solutions": [
+      {
+        "id": "frontend-development",
+        "title": "Desarrollo Front-end",
+        "description": "Especialización principal en tecnologías front-end para crear interfaces dinámicas, responsivas y de alto rendimiento.",
+        "features": [
+          {
+            "title": "Ecosistema React & TypeScript",
+            "description": "Dominio avanzado de React.js, TypeScript, Next.js, Redux, Context API y más tecnologías para crear interfaces dinámicas, tipadas y con rendimiento optimizado."
+          },
+          {
+            "title": "Animaciones y CSS Avanzado",
+            "description": "Creación de experiencias interactivas con CSS animations, GSAP, Framer Motion, Three.js y WebGL para interfaces con movimiento fluido e impacto visual."
+          },
+          {
+            "title": "Desarrollo Multiplataforma",
+            "description": "Experiencia con Flutter y Dart para crear aplicaciones móviles y web con una única base de código, entregando experiencias nativas de alta calidad en múltiples plataformas."
+          }
+        ]
+      },
+      {
+        "id": "fullstack-skills",
+        "title": "Habilidades Complementarias",
+        "description": "Capacidades técnicas adicionales que me permiten abordar proyectos de forma integral como desarrollador fullstack.",
+        "features": [
+          {
+            "title": "Diseño UI/UX Web",
+            "description": "Habilidades de diseño centrado en el usuario, wireframing y prototipos con Figma, creando experiencias usables y atractivas."
+          },
+          {
+            "title": "Backend & Bases de Datos",
+            "description": "Desarrollo de APIs y servicios con Node.js, Express y gestión de bases de datos SQL/NoSQL para crear soluciones fullstack completas."
+          },
+          {
+            "title": "DevOps & Cloud",
+            "description": "Experiencia con Azure DevOps, GCloud, Docker y CI/CD para automatizar procesos y gestionar infraestructura en entornos cloud."
+          }
+        ]
+      }
+    ]
+  },
+  "workExperience": {
+    "title": "Trayectoria profesional",
+    "subtitle": "En donde he desarrollado mi carrera",
+    "aboutMe": {
+      "title": "Más sobre mí",
+      "subtitle": "Trayectoria profesional",
+      "roles": [
+        "Fullstack Developer",
+        "UI/UX Designer"
+      ],
+      "description": "Desarrollador web especializado en crear experiencias digitales excepcionales con más de 5 años de experiencia en el sector financiero e internacional.",
+      "paragraphs": [
+        "Soy un desarrollador web apasionado por crear interfaces intuitivas y de alto rendimiento que transforman ideas complejas en experiencias digitales excepcionales.",
+        "Mi enfoque combina conocimientos técnicos avanzados con una comprensión profunda de la experiencia de usuario, lo que me permite desarrollar soluciones que no sólo funcionan perfectamente sino que también deleitan a los usuarios.",
+        "Con experiencia trabajando en entornos internacionales y equipos multidisciplinarios, me adapto rápidamente a nuevos desafíos y aporto soluciones innovadoras a cualquier proyecto."
+      ],
+      "skills": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "Node.js",
+        "Flutter Web",
+        "Gatsby js",
+        "Figma",
+        "CSS/SASS",
+        "Sql",
+        "Cloud",
+        "Python",
+        "Azure",
+        "And more"
+      ],
+      "skillsTitle": "Arsenal Tecnológico ⚡",
+      "careerTitle": "Acerca de mi",
+      "imageUrl": "/images/experience/profile2.png"
     },
-    "solutions": {
-      "title": "Soluciones que generan impacto",
-      "subtitle": "Cada proyecto es una oportunidad de crear impacto duradero",
-      "solutions": [
-        {
-          "id": "web-design-solution",
-          "title": "Diseño Web",
-          "description": "Para nosotros el diseño no se trata solo de pantallas eficaces, eficientes y visualmente agradables, sino también de diseño de movimiento con sus animaciones en vivo e ilustraciones atractivas.",
-          "features": [
-            {
-              "title": "Diseño UX/UI Avanzado",
-              "description": "Diseño centrado en el usuario, refinado mediante investigación, wireframing y prototipos para lograr una forma y función perfectas."
-            },
-            {
-              "title": "Sistemas de Diseño",
-              "description": "Marcos consistentes con componentes reutilizables y guías de estilo que garantizan la escalabilidad en todos los puntos de contacto."
-            },
-            {
-              "title": "Animaciones Personalizadas",
-              "description": "Diseño de movimiento intencional que mejora las interacciones y da vida a las interfaces mientras mejora la usabilidad."
-            }
-          ]
-        },
-        {
-          "id": "web-development-solution",
-          "title": "Desarrollo Web",
-          "description": "Construimos soluciones web robustas y escalables utilizando tecnologías de vanguardia y mejores prácticas.",
-          "features": [
-            {
-              "title": "Arquitectura Moderna",
-              "description": "Soluciones a prueba de futuro que utilizan microservicios y tecnología nativa en la nube para máxima escalabilidad y mantenibilidad."
-            },
-            {
-              "title": "Código Limpio",
-              "description": "Código limpio y documentado con pruebas automatizadas y CI que garantiza calidad a largo plazo."
-            },
-            {
-              "title": "Rendimiento Optimizado",
-              "description": "Experiencias web ultrarrápidas mediante division de código, almacenamiento en caché y monitoreo de rendimiento."
-            }
-          ]
-        }
-      ]
+    "positions": [
+      {
+        "id": 1,
+        "company": "Gendra REM",
+        "role": "Senior Frontend Developer",
+        "location": "Ciudad de México, México",
+        "period": "2022 - Presente",
+        "description": "Desarrolo de soluciones digitales para el sector financiero, diseñando e implementando interfaces intuitivas y de alto rendimiento. He creado sistemas bancarios utilizando React JS y Flutter Web, optimizando la experiencia de usuario y la eficiencia operativa. Implemento metodologías ágiles para acelerar ciclos de desarrollo y garantizar entregas puntuales.",
+        "technologies": [
+          "React",
+          "TypeScript",
+          "Flutter Web",
+          "Microservicios",
+          "Metodologías ágiles",
+          "Arquitectura modular"
+        ],
+        "imageUrl": "/images/experience/laptop-fintech-3D.svg",
+        "industry": "Fintech",
+        "iconType": "development"
+      },
+      {
+        "id": 2,
+        "company": "Nebulosa Studio",
+        "role": "Fullstack Developer",
+        "location": "Vancouver, Canadá",
+        "period": "2020 - 2022",
+        "description": "Desarrollé soluciones web completas para el sector hotelero y turístico internacional. Trabajé con equipos de diseño implementando experiencias UI/UX excepcionales que aumentaron las tasas de conversión. Apliqué tecnologías de vanguardia y mejores prácticas en desarrollo web, logrando productos optimizados para SEO y con tiempos de carga reducidos.",
+        "technologies": [
+          "React",
+          "Node.js",
+          "Next.js",
+          "UI/UX Integration",
+          "SEO Optimization",
+          "Performance Tuning"
+        ],
+        "imageUrl": "/images/experience/nebulosa-logo.png",
+        "industry": "Marketing",
+        "iconType": "development"
+      },
+      {
+        "id": 3,
+        "company": "DOKA Systems",
+        "role": "Web Developer",
+        "location": "Puebla, México",
+        "period": "2018 - 2020",
+        "description": "Participé en el desarrollo de sistemas internos y la automatización de procesos operativos que incrementaron la eficiencia en la operación. Diseñé soluciones personalizadas para gestión de proyectos de construcción, digitalización de flujos de trabajo y optimización de la cadena de suministro. Se redujeron los tiempos de respuesta y mejoró la toma de decisiones basadas en datos.",
+        "technologies": [
+          "JavaScript",
+          "React",
+          "SQL",
+          "Process Automation",
+          "ERP Integration",
+          "Business Intelligence"
+        ],
+        "imageUrl": "/images/experience/doka-logo.png",
+        "industry": "Construcción",
+        "iconType": "development"
+      },
+      {
+        "id": 4,
+        "company": "CENIDET, UNAM",
+        "role": "Data Analyst",
+        "location": "Ciudad de México, México",
+        "period": "2020",
+        "description": "Implementé soluciones de análisis de datos utilizando Azure Cognitive Services para el procesamiento de audio. Realicé tareas de limpieza y preparación de datos para garantizar entradas de alta calidad para el análisis. Apliqué técnicas de tratamiento de datos para estructurar adecuadamente la información y generé informes completos para respaldar la toma de decisiones basadas en evidencia.",
+        "technologies": [
+          "Azure Cognitive Services",
+          "Machine Learning",
+          "Statistical Analysis",
+          "Data Visualization",
+          "Python"
+        ],
+        "imageUrl": "/images/experience/unam-logo.png",
+        "industry": "Educación",
+        "iconType": "data"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Conectemos y hagamos realidad tus ideas",
+    "subtitle": "¿Tienes preguntas o quieres saludar? Estoy aquí para ti",
+    "cta": "Envíame un mensaje",
+    "links": {
+      "showcase": "Proyectos",
+      "solutions": "Soluciones",
+      "clientSuite": "Portal Cliente",
+      "journey": "Trayectoria"
     },
-    "clientSuite": {
-      "title": "Acceda a nuestra Suite del Cliente",
-      "subtitle": "Una plataforma integral que centraliza la gestión de proyectos con visibilidad en tiempo real y herramientas de seguimiento.",
-      "benefits": [
-        {
-          "title": "Colaboración efectiva",
-          "description": "Comunícate directamente con nuestro equipo y evalua cada fase."
-        },
-        {
-          "title": "Seguimiento en tiempo real",
-          "description": "Monitorea el progreso de tu proyecto con métricas en tiempo real."
-        },
-        {
-          "title": "Gestión de los documentos",
-          "description": "Accede a toda la documentación, recursos y entregables del proyecto."
-        },
-        {
-          "title": "Métricas y reportes",
-          "description": "Analiza el rendimiento y avance con reportes y métricas detalladas."
-        },
-        {
-          "title": "Planificación clara",
-          "description": "Visualiza hitos, fechas clave y cronogramas detallados del proyecto."
-        },
-        {
-          "title": "Comunicación directa",
-          "description": "Canal de comunicación dedicado con seguimiento de conversaciones."
+    "navigation": {
+      "showcase": {
+        "menu_item_id": 10,
+        "menu_item_parent": 0,
+        "label": "Proyectos",
+        "title": "Proyectos",
+        "href": "/showcase",
+        "url": "/showcase",
+        "aria": "Ver mis proyectos",
+        "showDropdownIcon": false
+      },
+      "solutions": {
+        "menu_item_id": 11,
+        "menu_item_parent": 0,
+        "label": "Soluciones",
+        "title": "Soluciones",
+        "href": "/solutions",
+        "url": "/solutions",
+        "aria": "Explora mis soluciones",
+        "showDropdownIcon": false
+      },
+      "clientSuite": {
+        "menu_item_id": 12,
+        "menu_item_parent": 0,
+        "label": "Portal Cliente",
+        "title": "Portal Cliente",
+        "href": "/client-suite",
+        "url": "/client-suite",
+        "aria": "Acceder al portal de cliente",
+        "showDropdownIcon": false
+      },
+      "journey": {
+        "menu_item_id": 13,
+        "menu_item_parent": 0,
+        "label": "Trayectoria",
+        "title": "Trayectoria",
+        "href": "/process",
+        "url": "/process",
+        "aria": "Conoce mi trayectoria",
+        "showDropdownIcon": false
+      }
+    },
+    "forms": {
+      "contactForm": {
+        "title": "Contacta conmigo",
+        "subtitle": "Me encantaría saber de ti",
+        "name": "Nombre",
+        "namePlaceholder": "Tu nombre",
+        "email": "Correo electrónico",
+        "emailPlaceholder": "tu@email.com",
+        "message": "Mensaje",
+        "messagePlaceholder": "Cuéntame sobre tu proyecto o pregúntame lo que quieras...",
+        "submit": "Enviar mensaje",
+        "success": "¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.",
+        "error": "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+        "validation": {
+          "nameRequired": "Por favor ingresa tu nombre",
+          "emailRequired": "Por favor ingresa tu correo electrónico",
+          "emailInvalid": "Por favor ingresa un correo electrónico válido",
+          "messageRequired": "Por favor ingresa tu mensaje"
         }
-      ]
+      }
+    }
+  },
+  "forms": {
+    "projectForm": {
+      "title": "¿Listo para iniciar tu proyecto?",
+      "subtitle": "Cuéntame sobre tu idea y veamos cómo puedo ayudarte",
+      "steps": {
+        "step1": {
+          "title": "Sobre tu proyecto",
+          "subtitle": "Háblame de lo que tienes en mente",
+          "projectType": "Tipo de proyecto",
+          "pleaseSpecify": "Especifica detalles",
+          "specifyPlaceholder": "Describe brevemente tu idea"
+        },
+        "step2": {
+          "title": "Alcance del proyecto",
+          "subtitle": "Información para entender mejor tus necesidades",
+          "budgetRange": "Presupuesto estimado",
+          "timeline": "Cronograma deseado"
+        },
+        "step3": {
+          "title": "Tus datos de contacto",
+          "subtitle": "Para poder comunicarnos sobre tu proyecto",
+          "companyName": "Empresa o proyecto",
+          "companyNamePlaceholder": "Nombre de tu empresa o proyecto",
+          "emailAddress": "Correo electrónico",
+          "emailPlaceholder": "tu@email.com",
+          "phone": "Teléfono",
+          "phonePlaceholder": "+1 (555) 000-0000",
+          "preferredContact": "Método de contacto preferido"
+        },
+        "step4": {
+          "title": "Confirmación",
+          "subtitle": "Revisa los detalles de tu solicitud",
+          "projectDetails": "Detalles del proyecto",
+          "contactInformation": "Información de contacto",
+          "terms": {
+            "type": "Tipo:",
+            "budget": "Presupuesto:",
+            "timeline": "Plazo:",
+            "company": "Empresa:",
+            "email": "Email:",
+            "phone": "Teléfono:",
+            "preferredContact": "Contacto preferido:"
+          }
+        }
+      },
+      "controls": {
+        "back": "Anterior",
+        "continue": "Siguiente",
+        "complete": "Enviar mensaje"
+      },
+      "options": {
+        "projectType": [
+          {
+            "label": "Sitio web",
+            "value": "website"
+          },
+          {
+            "label": "Aplicación web",
+            "value": "web-app"
+          },
+          {
+            "label": "Aplicación móvil",
+            "value": "mobile-app"
+          },
+          {
+            "label": "E-commerce",
+            "value": "e-commerce"
+          },
+          {
+            "label": "Dashboard",
+            "value": "dashboard"
+          },
+          {
+            "label": "Proyecto fullstack",
+            "value": "fullstack"
+          },
+          {
+            "label": "Otro",
+            "value": "other"
+          }
+        ],
+        "budget": [
+          {
+            "label": "Menos de $5,000",
+            "value": "under-5k"
+          },
+          {
+            "label": "$5,000 - $10,000",
+            "value": "5k-10k"
+          },
+          {
+            "label": "$10,000 - $20,000",
+            "value": "10k-20k"
+          },
+          {
+            "label": "$20,000+",
+            "value": "over-20k"
+          },
+          {
+            "label": "A definir",
+            "value": "to-be-determined"
+          }
+        ],
+        "timeline": [
+          {
+            "label": "Menos de 1 mes",
+            "value": "under-1-month"
+          },
+          {
+            "label": "1-2 meses",
+            "value": "1-2-months"
+          },
+          {
+            "label": "2-4 meses",
+            "value": "2-4-months"
+          },
+          {
+            "label": "Más de 4 meses",
+            "value": "over-4-months"
+          },
+          {
+            "label": "Continuo/Por fases",
+            "value": "ongoing"
+          }
+        ],
+        "contactMethod": [
+          {
+            "label": "Email",
+            "value": "email"
+          },
+          {
+            "label": "Teléfono",
+            "value": "phone"
+          },
+          {
+            "label": "Videollamada",
+            "value": "video-call"
+          },
+          {
+            "label": "WhatsApp",
+            "value": "whatsapp"
+          }
+        ]
+      },
+      "validation": {
+        "projectTypeRequired": "Por favor selecciona un tipo de proyecto",
+        "customTypeRequired": "Por favor describe tu tipo de proyecto",
+        "budgetRequired": "Por favor selecciona un rango de presupuesto",
+        "timelineRequired": "Por favor selecciona un plazo estimado",
+        "companyNameRequired": "Por favor ingresa el nombre de tu empresa o proyecto",
+        "emailRequired": "Por favor ingresa tu correo electrónico",
+        "emailInvalid": "Por favor ingresa un correo electrónico válido",
+        "preferredContactRequired": "Por favor selecciona tu método de contacto preferido"
+      },
+      "success": "¡Gracias por contactarme! He recibido tu mensaje y me pondré en contacto contigo lo antes posible.",
+      "error": "Ha ocurrido un error al enviar tu mensaje. Por favor intenta nuevamente o contáctame directamente por correo electrónico."
     }
   }
+}

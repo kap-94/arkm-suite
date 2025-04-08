@@ -1,0 +1,111 @@
+.background-container {
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+  overflow: hidden;
+  will-change: transform;
+
+  .shader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+    &.active {
+      opacity: 1;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    min-height: 50vh;
+
+    &.scroll-section {
+      will-change: transform;
+      transform: translateZ(0);
+    }
+  }
+
+  /* Efecto de sombra inferior sutil y profesional que termina en negro total */
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 180px; /* Mayor altura para un degradado más suave */
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      rgba(0, 0, 0, 0.7) 80%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+    backdrop-filter: blur(2px); /* Efecto sutil de desenfoque */
+    -webkit-backdrop-filter: blur(2px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .background-container {
+    .shader {
+      height: 100% !important;
+    }
+
+    canvas {
+      image-rendering: optimizeSpeed;
+    }
+
+    /* Ajuste de sombra para móvil */
+    &::after {
+      height: 120px;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.8) 85%,
+        rgba(0, 0, 0, 1) 100%
+      );
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .background-container {
+    .content {
+      min-height: 40vh;
+    }
+
+    /* Ajuste para móviles pequeños */
+    &::after {
+      height: 90px;
+    }
+  }
+}
+
+.loading-shader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #26225f 0%, #4f46e5 100%);
+  opacity: 0.5;
+}

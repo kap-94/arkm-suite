@@ -1,4 +1,3 @@
-// src/components/DashboardHeader/DashboardHeader.tsx
 "use client";
 
 import React, {
@@ -9,6 +8,7 @@ import React, {
   useRef,
 } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import classNames from "classnames/bind";
 import { FileIcon, ListTodoIcon, Layout, BookOpen } from "lucide-react";
 import { UserInfo } from "../UserInfo";
@@ -19,11 +19,12 @@ import styles from "./DashboardHeader.module.scss";
 import type {
   HeaderSection,
   UserMenuItem,
-} from "../../_types/dictionary/dashboardLayout.types";
-import { getIconComponent } from "../../_utils/iconUtils";
+} from "@/app/_types/dictionary/dashboardLayout.types";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import { SearchableEntity, searchService } from "../../_services/searchService";
 import { UserProfile } from "../../[lang]/dashboard/account/profile/ProfileClient";
-import { Language } from "../../_lib/config/i18n";
+import { Language } from "@/app/_lib/config/i18n";
+import Brand from "../BrandNoimage";
 
 const cx = classNames.bind(styles);
 
@@ -62,8 +63,21 @@ const transformSearchEntityToOption = (
   icon: CATEGORY_ICONS[entity.type as keyof typeof CATEGORY_ICONS],
 });
 
-const transformUserMenuOptions = (options: UserMenuItem[]) => {
+const transformUserMenuOptions = (
+  options: UserMenuItem[],
+  handleSignOut: () => void
+) => {
   return options.map((option) => {
+    // Manejamos específicamente la opción de cierre de sesión
+    if (option.id === "signout") {
+      return {
+        ...option,
+        icon: option.icon ? getIconComponent(option.icon) : undefined,
+        onClick: handleSignOut,
+      };
+    }
+
+    // Para el resto de opciones, solo transformamos el ícono
     if (!option.icon) return option;
 
     const IconComponent = getIconComponent(option.icon);
@@ -75,13 +89,40 @@ const transformUserMenuOptions = (options: UserMenuItem[]) => {
 };
 
 export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
-  ({ className, theme = { type: "light" }, config, user, lang }, ref) => {
+  (
+    { className, theme = { type: "light" }, config, user, lang, onSignOut },
+    ref
+  ) => {
     const router = useRouter();
     const { state, toggleSidebar } = useDashboard();
     const [isSearching, setIsSearching] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchBarOption[]>([]);
     const searchTimeoutRef = useRef<NodeJS.Timeout>();
-    const userMenuOptions = transformUserMenuOptions(config.user.menu.options);
+
+    // Función para manejar el cierre de sesión
+    const handleSignOut = useCallback(async () => {
+      // Si se proporciona una función onSignOut personalizada, la usamos
+      if (onSignOut) {
+        onSignOut();
+        return;
+      }
+
+      try {
+        // De lo contrario, usamos la función signOut de next-auth
+        await signOut({
+          callbackUrl: `/${lang}/auth/signin`,
+          redirect: true,
+        });
+      } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+      }
+    }, [onSignOut, lang]);
+
+    // Transformamos las opciones de menú agregando la función de signOut
+    const userMenuOptions = transformUserMenuOptions(
+      config.user.menu.options,
+      handleSignOut
+    );
 
     const performSearch = useCallback(
       async (searchTerm: string) => {
@@ -155,11 +196,13 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
         if (searchTerm.trim()) {
           // Redirigir a la página de resultados de búsqueda
           router.push(
-            `/dashboard/search?query=${encodeURIComponent(searchTerm.trim())}`
+            `/${lang}/dashboard/search?query=${encodeURIComponent(
+              searchTerm.trim()
+            )}`
           );
         }
       },
-      [router]
+      [router, lang]
     );
 
     return (
@@ -193,7 +236,13 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
               />
             </div>
 
-            <SearchBar
+            <Brand
+              size="sm"
+              variant="minimal"
+              className={cx("dashboard-header__logo")}
+            />
+
+            {/* <SearchBar
               buttonText={config.search.config.buttonText}
               closeOnScroll
               label={config.search.config.label}
@@ -206,7 +255,7 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
               showLabel={false}
               theme={theme}
               loading={isSearching}
-            />
+            /> */}
           </div>
 
           <div className={cx("dashboard-header__actions")}>

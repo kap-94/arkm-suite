@@ -1,0 +1,9 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.home-page {
+  background-color: $black-base;
+  position: relative;
+  width: 100%;
+  padding: 0;
+}

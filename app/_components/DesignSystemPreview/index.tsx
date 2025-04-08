@@ -6,7 +6,7 @@ import { TypographySection } from "./components/TypographySection/TypographySect
 import { SpacingSection } from "./components/SpacingSection/SpacingSection";
 import { ComponentsSection } from "./components/ComponentsSection/ComponentsSection";
 import { ThemeConfig } from "./types";
-import { DesignSystemContent } from "../../_types/models/ComponentContent";
+import { DesignSystemContent } from "@/app/_types/models/ComponentContent";
 import styles from "./DesignSystemPreview.module.scss";
 
 const cx = classNames.bind(styles);
@@ -30,7 +30,7 @@ export const DesignSystemPreview: FC<DesignSystemPreviewProps> = ({
     { id: "colors", title: data.labels.colors.title },
     { id: "typography", title: data.labels.typography.title },
     { id: "spacing", title: data.labels.spacing.title },
-    { id: "components", title: data.labels.components.buttons.title },
+    { id: "components", title: data.labels.components.title },
   ];
 
   const handleSectionChange = (sectionId: string) => {
@@ -96,9 +96,9 @@ export const DesignSystemPreview: FC<DesignSystemPreviewProps> = ({
             })}
           >
             <ThemedTypography
-              variant="h5"
+              variant="p1"
               color="tertiary"
-              fontWeight={300}
+              // fontWeight={400}
               noWrap
             >
               {item.title}

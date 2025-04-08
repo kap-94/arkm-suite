@@ -1,0 +1,437 @@
+// @import "@/app/_styles/variables";
+// @import "@/app/_styles/mixins";
+
+// .about-card {
+//   display: flex;
+//   flex-direction: column;
+//   padding-right: 64px;
+//   padding-top: 32px;
+//   position: relative;
+//   height: 600px;
+//   border-right: 1px solid $black-light;
+//   box-sizing: border-box;
+//   width: 70%;
+//   flex-grow: 1;
+
+//   // Efectos de background aplicados del TurborepoCard
+//   background: linear-gradient(
+//     180deg,
+//     rgba(255, 255, 255, 0.03) 0%,
+//     rgba(255, 255, 255, 0) 100%
+//   );
+//   border: 1px solid rgba(255, 255, 255, 0.05);
+//   border-radius: 0.75rem;
+//   overflow: hidden;
+
+//   // // Glow effect detrás de la tarjeta
+//   // &::before {
+//   //   content: "";
+//   //   pointer-events: none;
+//   //   position: absolute;
+//   //   left: 50%;
+//   //   top: 50%;
+//   //   height: 261px;
+//   //   width: 261px;
+//   //   transform: translate(-50%, -50%);
+//   //   background: linear-gradient(to bottom, #ff3358, #ff4fd8);
+//   //   opacity: 0.05;
+//   //   mix-blend-mode: normal;
+//   //   filter: blur(60px);
+//   //   // z-index: -1;
+
+//   //   @media (prefers-color-scheme: dark) {
+//   //     opacity: 0.15;
+//   //   }
+//   // }
+
+//   @include tablet {
+//     border-right: none;
+//     padding: 32px 24px 24px; // Añadido padding horizontal para mantener contenido visible
+//     height: 600px;
+//     width: 100%;
+//     max-width: 560px;
+//   }
+
+//   @include mobile {
+//     height: 550px;
+//   }
+
+//   &__content {
+//     width: 100%;
+//     height: 100%;
+//     min-width: 320px;
+//     display: flex;
+//     flex-direction: column;
+//     overflow: hidden;
+
+//     @include tablet {
+//       min-width: auto;
+//       width: 100%;
+//     }
+
+//     @include mobile {
+//       align-items: center;
+//     }
+//   }
+
+//   &__header {
+//     width: 100%;
+//     margin-bottom: $spacing-lg;
+
+//     @include tablet {
+//       align-items: center;
+//     }
+//   }
+
+//   &__name-container {
+//     @include flex(column, flex-start, baseline, 12px);
+//     width: 100%;
+//     flex-wrap: wrap;
+//     // margin-bottom: $spacing-sm;
+
+//     @include tablet {
+//       justify-content: center;
+//       flex-direction: column;
+//       gap: $spacing-sm;
+//     }
+//   }
+
+//   &__name {
+//     margin: 0;
+//   }
+
+//   &__subtitle {
+//     margin: 0;
+//     padding-left: 1px;
+//   }
+
+//   &__period {
+//     margin: 0;
+//     display: block;
+//     width: 100%;
+//   }
+
+//   &__details {
+//     @include flex(column, flex-start, flex-start, $spacing-xs);
+//     width: 100%;
+
+//     @include tablet {
+//       align-items: center;
+//     }
+
+//     @include mobile {
+//       align-items: center;
+//     }
+//   }
+
+//   &__content-wrapper {
+//     display: flex;
+//     flex-direction: column;
+//     flex: 1;
+//     overflow-y: auto;
+//     scrollbar-width: none;
+//     -ms-overflow-style: none;
+//     position: relative;
+//     width: 100%;
+//     margin-bottom: $spacing-md;
+//     justify-content: flex-start;
+
+//     &::-webkit-scrollbar {
+//       display: none;
+//       width: 0;
+//       height: 0;
+//     }
+//   }
+
+//   &__paragraphs {
+//     display: flex;
+//     flex-direction: column;
+//     gap: $spacing-md;
+//     width: 100%;
+//     margin-bottom: $spacing-xxl;
+//   }
+
+//   &__paragraph {
+//     margin: 0;
+//     padding: 0;
+//     width: 100%;
+//     max-width: 550px;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 9;
+//     -webkit-box-orient: vertical;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+
+//     @include tablet {
+//       max-width: unset;
+//       -webkit-line-clamp: 7;
+//     }
+//   }
+
+//   &__skills {
+//     width: 100%;
+//     @include flex(column, flex-start, flex-start, $spacing-lg);
+
+//     padding-top: 0;
+
+//     @include tablet {
+//       margin: 0 auto;
+//     }
+//   }
+
+//   &__skills-title {
+//     margin: 0;
+//     padding: 0;
+//     // @include fluid-type(14, 20);
+//   }
+
+//   &__skills-list {
+//     display: flex;
+//     flex-wrap: wrap;
+//     column-gap: $spacing-lg;
+//     width: 100%;
+//     max-width: 600px;
+
+//     @include mobile {
+//       max-width: 100%;
+//     }
+//   }
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+// Variables replicando Tailwind con SCSS
+$tw-gradient-from: #ff3358;
+$tw-gradient-to: #ff4fd8;
+$tw-blur: blur(60px);
+$tw-filter-chain: $tw-blur brightness(100%) contrast(100%) grayscale(0)
+  hue-rotate(0deg) invert(0) saturate(100%) sepia(0) drop-shadow(0 0 #0000);
+
+.about-card {
+  display: flex;
+  flex-direction: column;
+  padding-right: 64px;
+  // padding-top: 32px;
+  border-right: 1px solid $black-light;
+  position: relative;
+  height: 600px;
+  box-sizing: border-box;
+  width: 70%;
+  flex-grow: 1;
+
+  // Efectos de background aplicados del TurborepoCard
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  // Fondo con gradiente
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, $tw-gradient-from, $tw-gradient-to);
+    opacity: 0.02;
+    z-index: -2;
+  }
+
+  // Glow effect detrás de la tarjeta
+  &::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 261px;
+    width: 261px;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to bottom, $tw-gradient-from, $tw-gradient-to);
+    opacity: 0.05;
+    mix-blend-mode: normal;
+    filter: $tw-filter-chain;
+    z-index: -1;
+
+    @media (prefers-color-scheme: dark) {
+      opacity: 0.15;
+    }
+  }
+
+  @include tablet {
+    border-right: none;
+    padding: 32px 24px 24px; // Añadido padding horizontal para mantener contenido visible
+    height: 600px;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  @include mobile {
+    height: 550px;
+  }
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @include tablet {
+      min-width: auto;
+      width: 100%;
+    }
+
+    @include mobile {
+      align-items: center;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    margin-bottom: $spacing-lg;
+
+    @include tablet {
+      align-items: center;
+    }
+  }
+
+  &__name-container {
+    @include flex(column, flex-start, baseline, 12px);
+    width: 100%;
+    flex-wrap: wrap;
+    // margin-bottom: $spacing-sm;
+
+    @include tablet {
+      justify-content: center;
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+  }
+
+  &__name {
+    margin: 0;
+  }
+
+  &__subtitle {
+    margin: 0;
+    padding-left: 1px;
+  }
+
+  &__period {
+    margin: 0;
+    display: block;
+    width: 100%;
+  }
+
+  &__details {
+    @include flex(column, flex-start, flex-start, $spacing-xs);
+    width: 100%;
+
+    @include tablet {
+      align-items: center;
+    }
+
+    @include mobile {
+      align-items: center;
+    }
+  }
+
+  &__content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+    width: 100%;
+    margin-bottom: $spacing-md;
+    justify-content: flex-start;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  &__paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    width: 100%;
+    margin-bottom: $spacing-xxl;
+  }
+
+  &__paragraph {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 550px;
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @include tablet {
+      max-width: unset;
+      -webkit-line-clamp: 7;
+    }
+  }
+
+  &__skills {
+    width: 100%;
+    @include flex(column, flex-start, flex-start, $spacing-lg);
+    padding-top: 0;
+
+    @include tablet {
+      margin: 0 auto;
+    }
+  }
+
+  &__skills-title {
+    margin: 0;
+    padding: 0;
+    // @include fluid-type(14, 20);
+  }
+
+  &__skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: $spacing-lg;
+    width: 100%;
+    max-width: 600px;
+
+    @include mobile {
+      max-width: 100%;
+    }
+  }
+
+  &__skill-tag {
+    // background-color: rgba($primary-color, 0.1);
+    // color: $primary-color;
+    // border-radius: $border-radius-sm;
+    padding: 2px 0;
+    // display: inline-block;
+    margin-bottom: $spacing-sm;
+    // font-style: italic;
+    // background: linear-gradient(
+    //   135deg,
+    //   $primary-light 0%,
+    //   rgba($primary-light, 0.9) 100%
+    // );
+    // background-size: 100%;
+    // -webkit-background-clip: text;
+    // background-clip: text;
+    // color: transparent;
+    // /* Mejora para hacer el texto más legible */
+    // text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+  }
+}

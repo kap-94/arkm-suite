@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { signOut } from "next-auth/react";
 import classNames from "classnames/bind";
 import type { Language } from "../../../_lib/config/i18n";
 import { HeaderSection } from "../../../_types/dictionary/dashboardLayout.types";
@@ -69,6 +70,7 @@ export function DashboardLayoutClient({
             user={user}
             mainNavigation={initialNavigation.mainNavigation}
             bottomNavigation={initialNavigation.bottomNavigation}
+            lang={lang}
           >
             {children}
           </DashboardUI>
@@ -84,6 +86,7 @@ interface DashboardUIProps {
   mainNavigation: NavItem[];
   bottomNavigation: NavItem[];
   user: UserProfile;
+  lang: Language;
 }
 
 function DashboardUI({
@@ -92,10 +95,23 @@ function DashboardUI({
   mainNavigation,
   bottomNavigation,
   user,
+  lang,
 }: DashboardUIProps) {
   const { theme, language } = useSettings();
   const { state, updateDimensions } = useDashboard();
   const headerRef = useRef<HTMLDivElement>(null);
+
+  // Manejador de cierre de sesión
+  const handleSignOut = useCallback(async () => {
+    try {
+      await signOut({
+        callbackUrl: `/${lang}/auth/signin`,
+        redirect: true,
+      });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  }, [lang]);
 
   useEffect(() => {
     const updateHeaderDimensions = () => {
@@ -143,6 +159,7 @@ function DashboardUI({
           config={header}
           user={user}
           lang={language}
+          onSignOut={handleSignOut}
         />
         <main className={cx("layout__content")}>{children}</main>
       </div>

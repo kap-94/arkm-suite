@@ -1,0 +1,185 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+.contact-section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: $black-base;
+  color: $text-primary;
+  overflow: hidden;
+  padding: $spacing-xxl 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url("/images/home/gradient.jpg");
+    background-size: cover;
+    background-position: center;
+    // opacity: 0.7;
+    pointer-events: none;
+    width: 200%;
+    height: 150%;
+
+    // Máscara de gradiente para transición vertical
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 15%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(0, 0, 0, 1) 70%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.2) 15%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(0, 0, 0, 1) 70%
+    );
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba($black-base, 0.3) 0%,
+        rgba($black-dark, 0.6) 100%
+      );
+    }
+  }
+
+  &__container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: $content-max-width;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__content {
+    @include flex(column, center, center);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__center-content {
+    @include flex(column, center, center, $spacing-xl);
+    width: 100%;
+  }
+
+  &__heading {
+    margin-bottom: 12px;
+  }
+
+  &__message {
+    margin-bottom: 30px;
+    max-width: 480px;
+  }
+
+  &__message-text {
+    @include fluid-type(14, 18);
+  }
+
+  &__action-button {
+    padding: 20px 40px !important;
+
+    span {
+      color: $white-color;
+      letter-spacing: 0.02em !important;
+      font-weight: 500 !important;
+      font-size: clamp(16px, 2vw, 20px) !important;
+    }
+  }
+
+  /* Footer Glassmorphism Section */
+  &__footer-glass {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba($black-base, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    // border-top: 1px solid rgba($text-primary, 0.1);
+    z-index: 5; /* Aseguramos que esté por encima del fondo pero por debajo de otros elementos interactivos */
+  }
+
+  // Eliminamos los estilos de navegación ya que no los usaremos
+
+  &__copyright {
+    color: $text-tertiary;
+    text-align: center;
+  }
+
+  @include mobile {
+    padding: $spacing-xl $spacing-md $spacing-xxl $spacing-md;
+
+    &__container {
+      padding: 0 $spacing-sm;
+    }
+
+    &__message {
+      max-width: 100%;
+    }
+
+    &__footer-glass {
+      padding: $spacing-md 0;
+    }
+
+    // Eliminados los estilos mobile para navegación
+  }
+
+  // Animation
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__heading,
+  &__message,
+  &__action-button {
+    animation: fadeIn 0.8s $transition-bezier forwards;
+  }
+
+  &__heading {
+    animation-delay: 0.2s;
+  }
+
+  &__message {
+    animation-delay: 0.4s;
+  }
+
+  &__action-button {
+    animation-delay: 0.6s;
+  }
+
+  &__footer-glass {
+    animation: fadeIn 0.8s $transition-bezier forwards;
+    animation-delay: 0.8s;
+  }
+}

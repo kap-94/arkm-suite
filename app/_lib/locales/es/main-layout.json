@@ -1,119 +1,225 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-01-22",
+    "lastUpdated": "2025-04-03",
     "description": "Configuración principal del diseño para rutas públicas",
     "maintainer": "Equipo de Desarrollo"
   },
   "header": {
     "aria": "Navegación principal del sitio",
-    "subtitle": {
-      "firstLetter": "E",
-      "text": "studio de diseño y desarrollo web"
-    },
     "navigation": {
-      "home": {
-        "label": "Inicio",
-        "href": "/",
-        "aria": "Página de inicio",
-        "icon": "home",
-        "meta": {
-          "description": "Bienvenido a nuestra plataforma",
-          "keywords": [
-            "inicio",
-            "bienvenida",
-            "principal"
-          ]
+      "primary": {
+        "abilities": {
+          "menu_item_id": 1,
+          "menu_item_parent": 0,
+          "label": "Habilidades",
+          "title": "Habilidades",
+          "href": "/#abilities",
+          "url": "/#abilities",
+          "aria": "Habilidades Profesionales y Servicios",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Habilidades profesionales, áreas de especialización y servicios especializados ofrecidos",
+            "keywords": [
+              "servicios profesionales",
+              "experiencia",
+              "habilidades especializadas",
+              "oferta de servicios"
+            ]
+          }
+        },
+        "method": {
+          "menu_item_id": 2,
+          "menu_item_parent": 0,
+          "label": "Metodología",
+          "title": "Método",
+          "href": "/#method",
+          "url": "/#method",
+          "aria": "Metodología y Enfoque Profesional",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Metodología detallada, procesos probados y enfoque estratégico para la entrega de proyectos",
+            "keywords": [
+              "metodología",
+              "proceso profesional",
+              "enfoque de proyecto",
+              "marco estratégico"
+            ]
+          }
+        },
+        "experience": {
+          "menu_item_id": 3,
+          "menu_item_parent": 0,
+          "label": "Experiencia",
+          "title": "Experiencia",
+          "href": "/#experience",
+          "url": "/#experience",
+          "aria": "Experiencia Profesional y Portafolio",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Trayectoria profesional, historial de proyectos y portafolio de trabajos exitosos",
+            "keywords": [
+              "experiencia profesional",
+              "portafolio",
+              "historial laboral",
+              "muestra de proyectos"
+            ]
+          }
         }
       },
-      "features": {
-        "label": "Características",
-        "href": "/caracteristicas",
-        "aria": "Resumen de características",
-        "icon": "features",
-        "meta": {
-          "description": "Explora las características de nuestra plataforma"
-        }
-      },
-      "pricing": {
-        "label": "Precios",
-        "href": "/precios",
-        "aria": "Planes de precios",
-        "icon": "pricing",
-        "meta": {
-          "description": "Ver nuestros planes de precios"
-        }
-      },
-      "about": {
-        "label": "Nosotros",
-        "href": "/nosotros",
-        "aria": "Acerca de nosotros",
-        "icon": "info",
-        "meta": {
-          "description": "Conoce más sobre nuestra empresa"
+      "secondary": {
+        "portfolio": {
+          "menu_item_id": 5,
+          "menu_item_parent": 0,
+          "label": "Portafolio",
+          "title": "Portafolio",
+          "href": "/portfolio",
+          "url": "/portfolio",
+          "aria": "Portafolio Completo de Proyectos",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Colección completa de proyectos realizados, casos de estudio y logros profesionales",
+            "keywords": [
+              "portafolio de proyectos",
+              "casos de estudio",
+              "ejemplos de trabajo",
+              "proyectos profesionales"
+            ]
+          }
+        },
+        "contact": {
+          "menu_item_id": 4,
+          "menu_item_parent": 0,
+          "label": "Contacto",
+          "title": "Contacto",
+          "href": "/#contact",
+          "url": "/#contact",
+          "aria": "Información de Contacto",
+          "showDropdownIcon": false,
+          "meta": {
+            "description": "Datos de contacto profesional, formulario de consulta y canales de comunicación",
+            "keywords": [
+              "datos de contacto",
+              "consulta profesional",
+              "ponerse en contacto",
+              "comunicación"
+            ]
+          }
         }
       }
     },
-    "clientPortal": {
-      "label": "Suite del Cliente",
-      "href": "/dashboard"
-    },
     "languageOptions": {
       "english": {
-        "label": "Inglés",
-        "aria": "Opción de idioma inglés"
+        "label": "EN",
+        "aria": "Inglés",
+        "code": "en",
+        "countryCode": "GB"
       },
       "spanish": {
-        "label": "Español",
-        "aria": "Opción de idioma español"
+        "label": "ES",
+        "aria": "Español",
+        "code": "es",
+        "countryCode": "ES"
       }
     }
   },
   "footer": {
-    "description": "Creando experiencias digitales que inspiran, innovan y transforman.",
-    "cta": "Conecta Con Nosotros Hoy",
-    "links": {
-      "showcase": "Showcase",
-      "solutions": "Soluciones",
-      "clientSuite": "Suite del Cliente",
-      "journey": "Trayecto"
-    },
-    "copyright": "© {year} ARKM Studio. Todos los derechos reservados.",
-    "company": {
-      "title": "Empresa",
-      "aria": "Información de la empresa"
-    },
-    "legends": {
-      "rights": "Todos los derechos reservados",
-      "privacy": {
-        "label": "Política de Privacidad",
-        "aria": "Enlace a política de privacidad",
-        "href": "/politica-de-privacidad"
-      },
-      "terms": {
-        "label": "Términos y Condiciones",
-        "aria": "Enlace a términos y condiciones",
-        "href": "/terminos-y-condiciones"
-      }
-    },
+    "copyright": "© {year} José Pablo Karam Dolores. Todos los derechos reservados.",
     "navigation": {
-      "careers": {
-        "label": "Carreras",
-        "href": "/carreras",
-        "aria": "Oportunidades laborales",
-        "icon": "briefcase"
+      "abilities": {
+        "menu_item_id": 1,
+        "menu_item_parent": 0,
+        "label": "Habilidades",
+        "title": "Habilidades Profesionales y Servicios",
+        "href": "/#abilities",
+        "url": "/#abilities",
+        "aria": "Habilidades Profesionales y Servicios",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Habilidades profesionales, áreas de especialización y servicios especializados ofrecidos",
+          "keywords": [
+            "servicios profesionales",
+            "experiencia",
+            "habilidades especializadas",
+            "oferta de servicios"
+          ]
+        }
       },
-      "blog": {
-        "label": "Blog",
-        "href": "/blog",
-        "aria": "Blog de la empresa",
-        "icon": "book"
+      "method": {
+        "menu_item_id": 2,
+        "menu_item_parent": 0,
+        "label": "Método",
+        "title": "Metodología",
+        "href": "/#method",
+        "url": "/#method",
+        "aria": "Metodología y Enfoque Profesional",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Metodología detallada, procesos probados y enfoque estratégico para la entrega de proyectos",
+          "keywords": [
+            "metodología",
+            "proceso profesional",
+            "enfoque de proyecto",
+            "marco estratégico"
+          ]
+        }
       },
-      "legal": {
-        "label": "Legal",
-        "href": "/legal",
-        "aria": "Información legal",
-        "icon": "shield"
+      "experience": {
+        "menu_item_id": 3,
+        "menu_item_parent": 0,
+        "label": "Experiencia",
+        "title": "Experiencia",
+        "href": "/#experience",
+        "url": "/#experience",
+        "aria": "Experiencia Profesional y Portafolio",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Trayectoria profesional, historial de proyectos y portafolio de trabajos exitosos",
+          "keywords": [
+            "experiencia profesional",
+            "portafolio",
+            "historial laboral",
+            "muestra de proyectos"
+          ]
+        }
+      },
+      "portfolio": {
+        "menu_item_id": 5,
+        "menu_item_parent": 0,
+        "label": "Portafolio",
+        "title": "Portafolio",
+        "href": "/portfolio",
+        "url": "/portfolio",
+        "aria": "Portafolio Completo de Proyectos",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Colección completa de proyectos realizados, casos de estudio y logros profesionales",
+          "keywords": [
+            "portafolio de proyectos",
+            "casos de estudio",
+            "ejemplos de trabajo",
+            "proyectos profesionales"
+          ]
+        }
+      },
+      "contact": {
+        "menu_item_id": 4,
+        "menu_item_parent": 0,
+        "label": "Contacto",
+        "title": "Contacto",
+        "href": "/#contact",
+        "url": "/#contact",
+        "aria": "Información de Contacto",
+        "showDropdownIcon": false,
+        "meta": {
+          "description": "Datos de contacto profesional, formulario de consulta y canales de comunicación",
+          "keywords": [
+            "datos de contacto",
+            "consulta profesional",
+            "ponerse en contacto",
+            "comunicación"
+          ]
+        }
       }
     }
   },

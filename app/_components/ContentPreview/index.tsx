@@ -7,7 +7,7 @@ import classNames from "classnames/bind";
 import {
   ComponentContent,
   DesignSystemContent,
-} from "../../_types/models/ComponentContent";
+} from "@/app/_types/models/ComponentContent";
 import { ContentPreviewProps } from "./types";
 import { useSettings } from "../../_context/SettingsContext";
 import { ThemedTypography } from "../Typography/ThemedTypography";
@@ -15,7 +15,7 @@ import { DesignSystemPreview } from "../DesignSystemPreview";
 import { FilePreviewFactory } from "./PreviewComponents";
 import { DownloadButton } from "../DownloadButton";
 import { downloadFile } from "./utils";
-import { formatCustomDateUTC } from "../../_utils/date-utils";
+import { formatCustomDateUTC } from "@/app/_utils/date-utils";
 import styles from "./ContentPreview.module.scss";
 
 const cx = classNames.bind(styles);
@@ -99,7 +99,7 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
         <div className={cx("preview__title-section")}>
           <div className={cx("preview__title-content")}>
             <ThemedTypography
-              variant="h3"
+              variant="h4"
               color="secondary"
               fontWeight={400}
               className={cx("preview__filename")}
@@ -115,7 +115,6 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({
               <ThemedTypography
                 variant="p1"
                 color="tertiary"
-                fontWeight={300}
                 className={cx("preview__description")}
               >
                 {content.description}

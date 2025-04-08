@@ -1,0 +1,661 @@
+// src/components/Button/_styles/_basic-variants.scss
+// Basic button variants: primary, secondary, gradient
+
+.button {
+  // Primary Variant
+  &--primary {
+    background: linear-gradient(45deg, #6366f1, #818cf8);
+    border: none;
+    border-radius: 9999px;
+    color: $white-light !important;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #818cf8, #6366f1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Secondary Variant
+  &--secondary {
+    background: transparent;
+    padding: 12px 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #818cf8;
+    backdrop-filter: blur(4px);
+    -webkit-font-smoothing: antialiased;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background: linear-gradient(45deg, #6366f1, transparent) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: destination-out;
+      mask-composite: exclude;
+      transition: background 0.6s cubic-bezier(0.4, 0, 0, 1);
+      border-radius: inherit;
+    }
+
+    &:hover::before {
+      background: linear-gradient(to right, transparent, #6366f1, transparent)
+        border-box;
+      background-size: 100% 100%;
+      animation: gradientFlow 1.2s cubic-bezier(0.4, 0, 0, 1) forwards;
+    }
+  }
+
+  // Gradient Variant
+  //   &--gradient {
+  //     // background: rgba(255, 255, 255, 0.05);
+  //     border: none;
+  //     color: $white-light !important;
+  //     background: linear-gradient(
+  //       43deg,
+  //       transparent 0%,
+  //       #6eeb83 46%,
+  //       transparent 100%
+  //     );
+
+  //     /* 7. Azul Índigo */
+  //     background: linear-gradient(
+  //       43deg,
+  //       transparent 0%,
+  //       #283593 46%,
+  //       transparent 100%
+  //     );
+  //     background: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+  //     background: linear-gradient(43deg, #4158d0 0%, #29b6f6 46%, #1976d2 100%);
+  //     background: linear-gradient(
+  //       43deg,
+  //       #4158d0 0%,
+  //       transparent 46%,
+  //       #1976d2 100%
+  //     );
+
+  //     position: relative;
+  //     overflow: hidden;
+  //     z-index: 1;
+
+  //     // Button background with semi-transparent gradient
+  //     &::before {
+  //       filter: blur(10px);
+  //       content: "";
+  //       position: absolute;
+  //       inset: 0;
+  //       background: linear-gradient(
+  //         135deg,
+  //         rgba($primary-color, 0.2),
+  //         rgba($primary-light, 0.05)
+  //       );
+  //       border-radius: inherit;
+  //       z-index: -2;
+  //       transition: opacity 0.4s ease;
+  //     }
+
+  //     // Gradient border
+  //     // &::after {
+  //     //   content: "";
+  //     //   position: absolute;
+  //     //   inset: 0;
+  //     //   border-radius: inherit;
+  //     //   padding: 1px;
+  //     //   // background: linear-gradient(
+  //     //   //   135deg,
+  //     //   //   rgba($primary-color, 0.7),
+  //     //   //   rgba($primary-dark, 0.3)
+  //     //   // );
+  //     //   // background: linear-gradient(135deg, #6a0dad, #187bcd);
+  //     //   // background: linear-gradient(43deg, #c850c0 0%, #4158d0 46%, #c850c0 100%);
+  //     //   /* 1. Azul Intenso a Morado */
+
+  //     //   /* 2. Índigo a Azul Eléctrico */
+  //     //   background: linear-gradient(43deg, #1a237e 0%, #512da8 46%, #283593 100%);
+  //     //   background: linear-gradient(43deg, #4158d0 0%, #29b6f6 46%, #1976d2 100%);
+
+  //     //   background: linear-gradient(43deg, #3949ab 0%, #1e88e5 46%, #0d47a1 100%);
+  //     //   background: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+  //     //   background: linear-gradient(43deg, #4158d0 0%, #3949ab 46%, #29b6f6 100%);
+  //     //   /* 1. Azul Intenso con Púrpura */
+  //     //   background: linear-gradient(43deg, #5e35b1 0%, #283593 46%, #1565c0 100%);
+
+  //     //   /* 2. Azul Neón con Índigo */
+  //     //   // background: linear-gradient(43deg, #1a237e 0%, #3949ab 46%,  #03a9f4 100%);
+
+  //     //   /* 3. Púrpura a Azul Eléctrico */
+  //     //   // background: linear-gradient(43deg, #6200ea 0%, #3d5afe 46%, #00e5ff 100%);
+
+  //     //   /* 4. Azul Oscuro con Turquesa */
+  //     //   // background: linear-gradient(43deg, #283593 0%, #1976d2 46%, #4fc3f7 100%);
+
+  //     //   /* 5. Morado a Azul Profundo */
+  //     //   // background: linear-gradient(43deg, #512da8 0%, #283593 46%, #1e88e5 100%);
+
+  //     //   /* 6. Azul Noche con Celeste */
+  //     //   // background: linear-gradient(43deg, #0d47a1 0%, #3949ab 46%, #0d47a1 100%);
+
+  //     //   /* 7. Índigo con Detalles Turquesa */
+  //     //   // background: linear-gradient(43deg, #283593 0%, #1e3a8a 46%, #26c6da 100%);
+
+  //     //   /* 3. Azul Nocturno con Púrpura */
+  //     //   // background: linear-gradient(43deg, #283593 0%, #6a0dad 46%, #512da8 100%);
+
+  //     //   /* 4. Morado a Cian */
+  //     //   // background: linear-gradient(43deg, #6200ea 0%, #03a9f4 46%, #1e3a8a 100%);
+
+  //     //   /* 5. Azul Metálico con Destellos Morados */
+  //     //   // background: linear-gradient(43deg, #0d47a1 0%, #5e35b1 46%, #1976d2 100%);
+
+  //     //   /* 6. Púrpura Oscuro con Azul Intenso */
+  //     //   // background: linear-gradient(43deg, #4a148c 0%, #283593 46%, #00b0ff 100%);
+
+  //     //   /* 7. Azul Profundo con Tonos Violeta */
+  //     //   // background: linear-gradient(43deg, #1e3a8a 0%, #8e24aa 46%, #283593 100%);
+
+  //     //   -webkit-mask: linear-gradient(#fff 0 0) content-box,
+  //     //     linear-gradient(#fff 0 0);
+  //     //   -webkit-mask-composite: destination-out;
+  //     //   mask-composite: exclude;
+  //     //   z-index: -1;
+  //     //   opacity: 0.8;
+  //     //   transition: opacity 0.4s ease;
+  //     // }
+
+  //     // Light effect on hover
+  //     .button__glow {
+  //       position: absolute;
+  //       width: 100%;
+  //       height: 100%;
+  //       top: 0;
+  //       left: -100%;
+  //       background: linear-gradient(
+  //         90deg,
+  //         transparent,
+  //         rgba(255, 255, 255, 0.2),
+  //         transparent
+  //       );
+  //       z-index: -1;
+  //       transition: left 0s ease;
+  //     }
+
+  //     &:hover {
+  //       transform: translateY(-1px);
+  //       box-shadow: 0 5px 15px rgba($primary-dark, 0.2);
+
+  //       &::before {
+  //         opacity: 0.9;
+  //       }
+
+  //       &::after {
+  //         opacity: 1;
+  //       }
+
+  //       .button__glow {
+  //         left: 100%;
+  //         transition: left 0.8s ease;
+  //       }
+  //     }
+
+  //     // Color variant: purple
+  //     &--purple {
+  //       &::before {
+  //         background: linear-gradient(
+  //           135deg,
+  //           rgba(139, 92, 246, 0.2),
+  //           rgba(99, 102, 241, 0.1)
+  //         );
+  //       }
+
+  //       &::after {
+  //         background: linear-gradient(
+  //           135deg,
+  //           rgba(139, 92, 246, 0.7),
+  //           rgba(99, 102, 241, 0.3)
+  //         );
+  //       }
+  //     }
+
+  //     // Color variant: red
+  //     &--red {
+  //       &::before {
+  //         background: linear-gradient(
+  //           135deg,
+  //           rgba(255, 107, 107, 0.2),
+  //           rgba(201, 24, 74, 0.1)
+  //         );
+  //       }
+
+  //       &::after {
+  //         background: linear-gradient(
+  //           135deg,
+  //           rgba(255, 107, 107, 0.7),
+  //           rgba(201, 24, 74, 0.3)
+  //         );
+  //       }
+  //     }
+  //   }
+
+  // &--gradient {
+  //   border: none;
+  //   color: $white-light !important;
+
+  //   // Mantenemos el gradiente con áreas transparentes
+  //   background: linear-gradient(
+  //     43deg,
+  //     #4158d0 0%,
+  //     transparent 46%,
+  //     #1976d2 100%
+  //   );
+
+  //   position: relative;
+  //   overflow: hidden;
+  //   z-index: 1;
+
+  //   // Capa de efecto glassy/vidrio para las áreas transparentes
+  //   &::before {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: rgba(255, 255, 255, 0.07);
+  //     backdrop-filter: blur(10px);
+  //     -webkit-backdrop-filter: blur(10px);
+  //     border-radius: inherit;
+  //     z-index: -3;
+  //   }
+
+  //   // Efecto de reflejo en el vidrio
+  //   &::after {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: linear-gradient(
+  //       135deg,
+  //       rgba(255, 255, 255, 0.15),
+  //       rgba(255, 255, 255, 0.05) 70%,
+  //       rgba(255, 255, 255, 0.01)
+  //     );
+  //     border-radius: inherit;
+  //     z-index: -2;
+  //     opacity: 0.5;
+  //     transition: opacity 0.4s ease;
+  //   }
+
+  //   // Light effect on hover
+  //   .button__glow {
+  //     position: absolute;
+  //     width: 100%;
+  //     height: 100%;
+  //     top: 0;
+  //     left: -100%;
+  //     background: linear-gradient(
+  //       90deg,
+  //       transparent,
+  //       rgba(255, 255, 255, 0.2),
+  //       transparent
+  //     );
+  //     z-index: -1;
+  //     transition: left 0s ease;
+  //   }
+
+  //   // Textura sutil para mejorar el efecto glassy
+  //   &::before {
+  //     background-image: repeating-linear-gradient(
+  //       45deg,
+  //       rgba(255, 255, 255, 0.01) 0,
+  //       rgba(255, 255, 255, 0.01) 1px,
+  //       transparent 1px,
+  //       transparent 4px
+  //     );
+  //     background-blend-mode: overlay;
+  //   }
+
+  //   &:hover {
+  //     transform: translateY(-1px);
+  //     box-shadow: 0 5px 15px rgba($primary-dark, 0.2);
+
+  //     &::before {
+  //       background: rgba(255, 255, 255, 0.1);
+  //     }
+
+  //     &::after {
+  //       opacity: 0.7;
+  //     }
+
+  //     .button__glow {
+  //       left: 100%;
+  //       transition: left 0.8s ease;
+  //     }
+  //   }
+
+  //   // Color variant: purple
+  //   &--purple {
+  //     background: linear-gradient(
+  //       43deg,
+  //       rgba(139, 92, 246, 0.8) 0%,
+  //       transparent 46%,
+  //       rgba(99, 102, 241, 0.8) 100%
+  //     );
+
+  //     &::before {
+  //       background-color: rgba(139, 92, 246, 0.05);
+  //     }
+  //   }
+
+  //   // Color variant: red
+  //   &--red {
+  //     background: linear-gradient(
+  //       43deg,
+  //       rgba(255, 107, 107, 0.8) 0%,
+  //       transparent 46%,
+  //       rgba(201, 24, 74, 0.8) 100%
+  //     );
+
+  //     &::before {
+  //       background-color: rgba(255, 107, 107, 0.05);
+  //     }
+  //   }
+  // }
+
+  // &--gradient {
+  //   border: none;
+  //   color: $white-light !important;
+  //   position: relative;
+  //   overflow: hidden;
+  //   z-index: 1;
+
+  //   // Eliminamos el background directo del elemento principal
+  //   // para aplicarlo en una capa superior
+  //   background: transparent;
+
+  //   // Capa de efecto glassy/vidrio (capa inferior)
+  //   &::before {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: rgba(255, 255, 255, 0.07);
+  //     backdrop-filter: blur(10px);
+  //     -webkit-backdrop-filter: blur(10px);
+  //     border-radius: inherit;
+  //     z-index: -3;
+
+  //     // Textura sutil para mejorar el efecto glassy
+  //     background-image: repeating-linear-gradient(
+  //       45deg,
+  //       rgba(255, 255, 255, 0.01) 0,
+  //       rgba(255, 255, 255, 0.01) 1px,
+  //       transparent 1px,
+  //       transparent 4px
+  //     );
+  //     background-blend-mode: overlay;
+  //   }
+
+  //   // Capa de gradiente (capa superior)
+  //   &::after {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: linear-gradient(
+  //       43deg,
+  //       #4158d0 0%,
+  //       transparent 46%,
+  //       #1976d2 100%
+  //     );
+  //     border-radius: inherit;
+  //     z-index: -2;
+  //     transition: opacity 0.4s ease;
+  //   }
+
+  //   // Efecto de reflejo en el vidrio (entre la capa glassy y el gradiente)
+  //   &:before {
+  //     content: "";
+  //     position: absolute;
+  //     inset: 0;
+  //     background: linear-gradient(
+  //       135deg,
+  //       rgba(255, 255, 255, 0.15),
+  //       rgba(255, 255, 255, 0.05) 70%,
+  //       rgba(255, 255, 255, 0.01)
+  //     );
+  //     border-radius: inherit;
+  //     z-index: -2.5;
+  //     opacity: 0.5;
+  //     transition: opacity 0.4s ease;
+  //   }
+
+  //   // Light effect on hover
+  //   .button__glow {
+  //     position: absolute;
+  //     width: 100%;
+  //     height: 100%;
+  //     top: 0;
+  //     left: -100%;
+  //     background: linear-gradient(
+  //       90deg,
+  //       transparent,
+  //       rgba(255, 255, 255, 0.2),
+  //       transparent
+  //     );
+  //     z-index: -1;
+  //     transition: left 0s ease;
+  //   }
+
+  //   &:hover {
+  //     transform: translateY(-1px);
+  //     box-shadow: 0 5px 15px rgba($primary-dark, 0.2);
+
+  //     &::before {
+  //       background-color: rgba(255, 255, 255, 0.1);
+  //     }
+
+  //     &::after {
+  //       opacity: 0.9;
+  //     }
+
+  //     .button__glow {
+  //       left: 100%;
+  //       transition: left 0.8s ease;
+  //     }
+  //   }
+
+  //   // Color variant: purple
+  //   &--purple {
+  //     &::after {
+  //       background: linear-gradient(
+  //         43deg,
+  //         rgba(139, 92, 246, 0.8) 0%,
+  //         transparent 46%,
+  //         rgba(99, 102, 241, 0.8) 100%
+  //       );
+  //     }
+
+  //     &::before {
+  //       background-color: rgba(139, 92, 246, 0.05);
+  //     }
+  //   }
+
+  //   // Color variant: red
+  //   &--red {
+  //     &::after {
+  //       background: linear-gradient(
+  //         43deg,
+  //         rgba(255, 107, 107, 0.8) 0%,
+  //         transparent 46%,
+  //         rgba(201, 24, 74, 0.8) 100%
+  //       );
+  //     }
+
+  //     &::before {
+  //       background-color: rgba(255, 107, 107, 0.05);
+  //     }
+  //   }
+  // }
+
+  &--gradient {
+    border: none;
+    color: $white-color !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0px -3px 15px 0px #4158d0 inset;
+    box-shadow: 0px -3px 15px 0px rgba($white-color, 0.3) inset;
+
+    // El botón base es transparente para permitir ver las capas
+    background: transparent;
+
+    // Capa de efecto glassy/vidrio (capa base)
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(#4158d0, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: inherit;
+      z-index: -3;
+
+      // Textura sutil para mejorar el efecto glassy
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.02) 0,
+        rgba(255, 255, 255, 0.01) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      background-blend-mode: overlay;
+      transition: background-color 0.4s ease;
+    }
+
+    // Elemento adicional con gradiente encima del glassy
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        43deg,
+        rgba(#4158d0, 0.5) 0%,
+        transparent 46%,
+        rgba(#1976d2, 0.5) 100%
+      );
+      // background: transparent;
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0.85; // Ajusta la opacidad para controlar cuánto efecto glassy se ve
+      transition: opacity 0.4s ease;
+    }
+
+    // Efecto de reflejo en el vidrio
+    .glass-shine {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.05) 70%,
+        rgba(255, 255, 255, 0.01)
+      );
+      border-radius: inherit;
+      z-index: -2;
+      opacity: 0.5;
+      pointer-events: none; // Asegura que no interfiera con los eventos del botón
+    }
+
+    // Light effect on hover
+    .button__glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: -100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      z-index: 0;
+      pointer-events: none; // Asegura que no interfiera con los eventos del botón
+      transition: left 0s ease;
+    }
+
+    // Asegúrate de añadir este elemento en tu HTML
+    // <button class="&--gradient">
+    //   <span class="glass-shine"></span>
+    //   <span class="button__glow"></span>
+    //   Texto del botón
+    // </button>
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba($primary-dark, 0.2);
+
+      &::before {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &::after {
+        opacity: 0.95;
+      }
+
+      .button__glow {
+        left: 100%;
+        transition: left 0.8s ease;
+      }
+    }
+
+    // Color variant: purple
+    &--purple {
+      &::after {
+        background: linear-gradient(
+          43deg,
+          rgba(139, 92, 246, 0.8) 0%,
+          transparent 46%,
+          rgba(99, 102, 241, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba(139, 92, 246, 0.05);
+      }
+    }
+
+    // Color variant: red
+    &--red {
+      &::after {
+        background: linear-gradient(
+          43deg,
+          rgba(255, 107, 107, 0.8) 0%,
+          transparent 46%,
+          rgba(201, 24, 74, 0.8) 100%
+        );
+      }
+
+      &::before {
+        background-color: rgba(255, 107, 107, 0.05);
+      }
+    }
+  }
+}

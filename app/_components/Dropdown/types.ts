@@ -1,3 +1,5 @@
+import { TypographyFontFamily } from "../Typography/types";
+
 export interface Option {
   label: string | React.ReactNode;
   value: string;
@@ -28,5 +30,8 @@ export interface DropdownProps {
   icon?: React.ReactNode;
   maxHeight?: string | number;
   disabled?: boolean;
-  variant?: "default" | "filter";
+  // Variantes: default, filter, tertiary y placeholderInput.
+  variant?: "default" | "filter" | "tertiary" | "placeholderInput";
+  // Nueva prop para definir la tipografía a usar en los Typography
+  fontFamily?: TypographyFontFamily; // PROP NUEVA
 }

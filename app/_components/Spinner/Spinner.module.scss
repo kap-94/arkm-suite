@@ -4,10 +4,10 @@
 
 $spinner-theme-map: (
   dark: (
-    spinner-border: $primary-light,
+    spinner-border: $white-base,
   ),
   light: (
-    spinner-border: $primary-light,
+    spinner-border: $white-base,
   ),
   custom: (
     spinner-border: var(--spinner-border),

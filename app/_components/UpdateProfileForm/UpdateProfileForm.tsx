@@ -9,7 +9,7 @@ import type { UpdateProfileFormProps } from "./types";
 import { Button } from "../Button";
 import { AtSign } from "lucide-react";
 // import { User } from "@/types/User.types";
-import { ProfileDictionary } from "../../_types/dictionary/profile.types";
+import { ProfileDictionary } from "@/app/_types/dictionary/profile.types";
 import styles from "./UpdateProfileForm.module.scss";
 
 const cx = classNames.bind(styles);
@@ -81,7 +81,7 @@ export const UpdateProfileForm: React.FC<UpdateProfileFormProps> = ({
             disabled
             icon={<AtSign size={18} />}
             placeholder={dictionary.form.fields.email.placeholder}
-            autoComplete="email"
+            // autoComplete="email"
             inputMode="email"
             spellCheck={false}
             aria-label={dictionary.aria.emailInput}

@@ -1,5 +1,6 @@
 // src/components/Modal/Modal.module.scss
 @import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
 
 .modal {
   &__overlay {
@@ -9,7 +10,7 @@
     width: 100%;
     height: 100vh;
     background: $black-overlay;
-    backdrop-filter: blur($spacing-md);
+    backdrop-filter: blur(12px);
     z-index: $z-index-modal;
     animation: fadeIn $transition-duration $transition-bezier;
   }
@@ -30,16 +31,16 @@
     overflow-y: auto;
     animation: modalEnter $transition-duration $transition-bezier forwards;
 
-    @media (max-width: $mobile-breakpoint) {
-      padding: $spacing-lg;
-      width: 95%;
+    @include mobile {
+      padding: $spacing-xl $spacing-lg;
+      width: 100%;
     }
   }
 
   &__close {
     position: absolute;
-    top: $spacing-md;
-    right: $spacing-md;
+    top: 20px;
+    right: 20px;
     background: transparent;
     border: none;
     padding: $spacing-xs;
@@ -50,6 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: $z-index-modal;
 
     &:hover {
       background: rgba($text-primary, 0.1);
@@ -60,10 +62,16 @@
       outline: 2px solid $primary-color;
       outline-offset: 2px;
     }
+
+    @include mobile {
+      top: 16px;
+    }
   }
 
   &__body {
-    margin-top: $spacing-sm;
+    // @include mobile {
+    //   margin-top: $spacing-lg;
+    // }
   }
 }
 

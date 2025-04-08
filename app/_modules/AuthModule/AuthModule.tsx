@@ -1,12 +1,12 @@
 // src/components/AuthModule/AuthModule.tsx
 import { FC } from "react";
-import AuthLayout from "../../_components/layouts/AuthLayout";
+import AuthLayout from "@/app/_components/layouts/AuthLayout";
 import { SigninForm } from "./components";
 import { AuthScreenType, AuthScreenProps } from "./types/auth.types";
 import {
   authLayoutDictionary,
   getPageDictionary,
-} from "../../_utils/dictionary";
+} from "@/app/_utils/dictionary";
 
 // Definir el mapeo fuera del componente
 const ComponentMapping: { [key: string]: FC<any> } = {

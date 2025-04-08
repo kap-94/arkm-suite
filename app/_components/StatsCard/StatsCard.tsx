@@ -213,7 +213,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
               />
             </div> */}
             <ThemedTypography
-              variant="h3"
+              variant="h4"
               fontWeight={600}
               // color="secondary"
               className={cx("stats-card__value")}

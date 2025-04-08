@@ -1,0 +1,68 @@
+{
+  "title": "Featured Projects",
+  "subtitle": "A collection of my recent work showcasing my skills and expertise in web development",
+  "projects": [
+    {
+      "id": "supreme-barf-canine",
+      "title": "Supreme BARF Canine E-commerce",
+      "description": "E-commerce specialized in natural dog food, with an intuitive interface, portion calculator, and discount package system. Designed to provide a smooth shopping experience for pet owners.",
+      "technologies": ["React", "Next.js", "TypeScript", "SASS", "GSAP", "Formik", "Shopify API"],
+      "images": [
+        {
+          "src": "/images/portfolio/supreme-barf-hero.png",
+          "alt": "Hero section of the Supreme BARF Canine site showcasing natural dog food"
+        },
+        {
+          "src": "/images/portfolio/supreme-barf-about.png",
+          "alt": "About the Food page displaying the benefits of natural dog products"
+        }
+      ],
+      "liveUrl": "https://supremebarfcanine.com",
+      "githubUrl": "https://github.com/kap-94/Supreme-BARF-Canine"
+    },
+    {
+      "id": "arkm-suite",
+      "title": "ARKM Suite",
+      "description": "Centralized project management portal with interactive dashboard, detailed progress tracking through Gantt timelines, and comprehensive deliverables system, optimized to improve communication between teams and clients.",
+      "technologies": ["React", "TypeScript", "Next.js", "SASS", "RESTful API", "Recharts", "Next Auth Access Control"],
+      "images": [
+        {
+          "src": "/images/portfolio/arkm-signin.png",
+          "alt": "ARKM Suite portal login page with modern and secure design"
+        },
+        {
+          "src": "/images/portfolio/arkm-design-system.png",
+          "alt": "Design system panel showing consistent UI components and documentation"
+        },
+        {
+          "src": "/images/portfolio/arkm-timeline-dark.png",
+          "alt": "Gantt timeline view showing project stages and dependencies"
+        }
+      ],
+      "liveUrl": "https://arkm-studio-git-beta-arkm-studios-projects.vercel.app/en/dashboard",
+      "githubUrl": "https://github.com/arkm-studio/arkm-studio"
+    },
+    {
+      "id": "trvlr-travel-platform",
+      "title": "TRVLR Travel Platform",
+      "description": "Modern travel website with destination search, guides, and blogs. Allows users to explore exclusive destinations, plan itineraries, and discover local recommendations with a visually appealing interface.",
+      "technologies": ["React", "Next.js", "TypeScript", "SASS", "Leaflet", "GSAP", "React Slick", "React Datepicker"],
+      "images": [
+        {
+          "src": "/images/portfolio/trvlr-hero.png",
+          "alt": "TRVLR main page showcasing international destinations with immersive navigation"
+        },
+        {
+          "src": "/images/portfolio/trvlr-trips.png",
+          "alt": "Travel itineraries visualization with interactive maps and route planning"
+        },
+        {
+          "src": "/images/portfolio/trvlr-why-travel.png",
+          "alt": "Why Travel page with inspirational content and reasons to travel around the world"
+        }
+      ],
+      "liveUrl": "https://trvlr-xi.vercel.app/",
+      "githubUrl": "https://github.com/kap-94/trvlr"
+    }
+  ]
+}

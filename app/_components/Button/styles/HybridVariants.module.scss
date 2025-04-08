@@ -1,0 +1,565 @@
+// src/components/Button/styles/HybridVariants.module.scss
+// Hybrid button variants (combinations of other variants)
+
+// Responsive clip path for modern variants
+$responsive-clip-path: path(
+  "M 0% 50% C 0% -10%, -5% 0%, 50% 0% S 100% -10%, 100% 50%, 105% 100% 50% 100%, 0% 110%, 0% 50%"
+);
+
+.button {
+  /* 1. modern-glow-hologram */
+  // Combines "modern-glow" shine with "rainbow-hologram" futuristic effect
+  &--modern-glow-hologram {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
+    color: $primary-light !important;
+    transition: all 0.3s ease;
+
+    /* Base from "modern-glow" */
+    background-color: rgba($primary-dark, 0.06);
+    box-shadow: 0 -3px 15px 0 rgba($primary-color, 0.25) inset;
+
+    /* Holographic border */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.7),
+        rgba(255, 165, 0, 0.7),
+        rgba(255, 255, 0, 0.7),
+        rgba(0, 128, 0, 0.7),
+        rgba(0, 0, 255, 0.7),
+        rgba(75, 0, 130, 0.7),
+        rgba(238, 130, 238, 0.7)
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.8;
+      background-size: 400%;
+      animation: hologram-shift 8s linear infinite;
+      z-index: -1;
+    }
+
+    /* Glow effect from "modern-glow" */
+    .button__glow-effect {
+      width: 120px;
+      height: 60px;
+      background-color: rgba($primary-color, 0.25);
+      border-radius: 100%;
+      filter: blur(20px);
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    /* Flare, noise, and glitch from "hologram" */
+    .button__hologram-flare,
+    .button__hologram-noise,
+    .button__hologram-glitch {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .button__hologram-flare {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      background-size: 200%;
+      transform: translateX(-100%);
+      animation: hologram-scan 4s cubic-bezier(0.36, 0, 0.66, 1) infinite;
+    }
+
+    .button__hologram-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+    }
+
+    .button__hologram-glitch {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__glow-effect {
+        opacity: 0.6;
+      }
+
+      .button__hologram-glitch {
+        opacity: 1;
+        animation: hologram-glitch 3s infinite;
+      }
+
+      &::before {
+        opacity: 1;
+        animation-duration: 4s;
+      }
+    }
+  }
+
+  /* 2. modern-shape-rainbow */
+  // Combines "modern-shape" clip-path with "rainbow-gradient" animated multicolor
+  &--modern-shape-rainbow {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    color: #f3f3f3 !important;
+    transition: all 0.3s ease;
+
+    /* Button shape using clip-path from "modern-shape" */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      background: rgba($primary-dark, 0.08);
+      z-index: 0;
+    }
+
+    /* Rainbow gradient border and background */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba($primary-color, 0.9),
+        rgba($primary-light, 0.8),
+        $primary-color,
+        $primary-dark,
+        $primary-dark-90,
+        $primary-color-90,
+        rgba($primary-color, 0.9)
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      background-size: 200%;
+      animation: rainbow-animate 2s infinite linear;
+      z-index: -1;
+    }
+
+    /* Bottom glow */
+    .button__shape-glow {
+      width: 120px;
+      height: 60px;
+      background: linear-gradient(
+        90deg,
+        rgba($primary-color, 0.7),
+        rgba($primary-light, 0.6),
+        $primary-color-80,
+        $primary-dark-80,
+        $primary-dark-80,
+        $primary-color-80,
+        rgba($primary-color, 0.7)
+      );
+      filter: blur(20px);
+      border-radius: 100%;
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      background-size: 200%;
+      animation: rainbow-animate 2s infinite linear;
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__shape-glow {
+        opacity: 0.7;
+        animation-duration: 0.5s; /* Speed up rainbow on hover */
+      }
+    }
+  }
+
+  /* 3. modern-glow-cosmic */
+  // Combines "modern-glow" inner shine with "rainbow-cosmic" background and animations
+  &--modern-glow-cosmic {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    color: #f3f3f3 !important;
+    cursor: pointer;
+    background-color: rgba($primary-dark, 0.05);
+    transition: all 0.3s ease;
+
+    /* Base from "modern-glow" */
+    box-shadow: 0 -3px 15px 0 rgba($primary-color, 0.25) inset;
+
+    /* Cosmic background from "rainbow-cosmic" */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(
+        90deg,
+        rgba($primary-color, 0.9),
+        rgba(138, 43, 226, 0.8),
+        rgba(75, 0, 130, 0.9),
+        rgba(0, 0, 255, 0.8),
+        rgba(75, 0, 130, 0.9),
+        rgba(138, 43, 226, 0.8),
+        rgba($primary-color, 0.9)
+      );
+      background-size: 200%;
+      animation: cosmic-animate 4s infinite linear;
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      z-index: -1;
+    }
+
+    /* Nebulas */
+    .button__cosmic-nebula {
+      position: absolute;
+      height: 120%;
+      width: 120%;
+      top: -10%;
+      left: -10%;
+      background: radial-gradient(
+          ellipse at 30% 40%,
+          rgba(138, 43, 226, 0.3) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 70% 60%,
+          rgba(75, 0, 130, 0.3) 0%,
+          transparent 50%
+        );
+      filter: blur(12px);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: 0;
+    }
+
+    /* Shooting star */
+    .button__cosmic-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background-color: white;
+      border-radius: 50%;
+      top: 40%;
+      left: -5%;
+      opacity: 0;
+      filter: blur(1px);
+      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+      z-index: 1;
+    }
+
+    /* Inner glow from "modern-glow" */
+    .button__glow-effect {
+      width: 100px;
+      height: 60px;
+      background-color: rgba($primary-color, 0.25);
+      border-radius: 100%;
+      filter: blur(20px);
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      &::before {
+        animation-duration: 2s; /* Speed up cosmic background */
+      }
+
+      .button__glow-effect {
+        opacity: 0.5;
+      }
+
+      .button__cosmic-nebula {
+        opacity: 1;
+      }
+
+      .button__cosmic-star {
+        opacity: 1;
+        animation: shooting-star 1.5s ease-in-out;
+      }
+    }
+  }
+
+  /* 4. modern-pulse-neon */
+  // Combines "modern-glow-pulse" pulsing with "rainbow-neon" glow
+  &--modern-pulse-neon {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    color: #f3f3f3 !important;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /* Shape and base from "modern-glow-pulse" */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      background: linear-gradient(
+        165deg,
+        rgba($primary-dark, 0.2),
+        rgba($primary-dark, 0.05)
+      );
+      z-index: 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      background: transparent;
+      box-shadow: 0 -3px 15px 0 rgba($primary-color, 0.3) inset;
+      z-index: 0;
+    }
+
+    /* Multicolor neon border */
+    .button__neon-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        90deg,
+        #ff1493,
+        #ff00ff,
+        #ff1493,
+        #00ffff,
+        #00bfff,
+        #00ffff
+      );
+      background-size: 300%;
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: neon-shift 3s infinite linear;
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.5),
+        0 0 20px rgba(255, 20, 147, 0.3), 0 0 30px rgba(255, 20, 147, 0.1);
+      z-index: -1;
+    }
+
+    /* Pulsing glow */
+    .button__pulse-glow {
+      width: 120px;
+      height: 60px;
+      background: radial-gradient(
+        circle,
+        rgba($primary-color, 0.4) 0%,
+        transparent 70%
+      );
+      filter: blur(20px);
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    /* Animated flash */
+    .button__pulse-flash {
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba($primary-light, 0.1),
+        transparent
+      );
+      opacity: 0;
+      transform: translateX(-100%);
+      z-index: 1;
+    }
+
+    /* Extra glow from "rainbow-neon" */
+    .button__neon-reflection {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      opacity: 0.2;
+      z-index: 2;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__pulse-glow {
+        opacity: 0.6;
+        animation: pulse-radiate 2s infinite alternate;
+      }
+
+      .button__pulse-flash {
+        opacity: 1;
+        animation: pulse-sweep 2s infinite;
+      }
+
+      .button__neon-glow {
+        animation-duration: 1.5s;
+      }
+
+      &::after {
+        animation: pulse-border 2s infinite;
+      }
+    }
+  }
+
+  /* 5. modern-shape-hologram */
+  // Combines "modern-shape" clip-path with "rainbow-hologram" effect
+  &--modern-shape-hologram {
+    position: relative;
+    border: none;
+    overflow: hidden;
+    cursor: pointer;
+    color: #f3f3f3 !important;
+    transition: all 0.3s ease;
+
+    /* "modern-shape" shape with clip-path */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      background-color: rgba($primary-dark, 0.08);
+      z-index: 0;
+    }
+
+    /* Holographic border */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      clip-path: $responsive-clip-path;
+      padding: 1px;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.7),
+        rgba(255, 165, 0, 0.7),
+        rgba(255, 255, 0, 0.7),
+        rgba(0, 128, 0, 0.7),
+        rgba(0, 0, 255, 0.7),
+        rgba(75, 0, 130, 0.7),
+        rgba(238, 130, 238, 0.7)
+      );
+      -webkit-mask: linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.85;
+      background-size: 400%;
+      animation: hologram-shift 8s linear infinite;
+      z-index: -1;
+    }
+
+    /* Internal glass effect */
+    backdrop-filter: blur(6px);
+
+    /* Flare, noise, and glitch from hologram */
+    .button__hologram-flare,
+    .button__hologram-noise,
+    .button__hologram-glitch {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .button__hologram-flare {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.08),
+        transparent
+      );
+      background-size: 200%;
+      transform: translateX(-100%);
+      animation: hologram-scan 4s cubic-bezier(0.36, 0, 0.66, 1) infinite;
+    }
+
+    .button__hologram-noise {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+    }
+
+    .button__hologram-glitch {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Small glow at bottom from "modern-shape" */
+    .button__shape-glow {
+      width: 100px;
+      height: 60px;
+      background-color: rgba($primary-color, 0.25);
+      border-radius: 100%;
+      filter: blur(20px);
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      .button__shape-glow {
+        opacity: 0.6;
+      }
+
+      .button__hologram-glitch {
+        opacity: 1;
+        animation: hologram-glitch 3s infinite;
+      }
+
+      &::after {
+        animation-duration: 4s;
+      }
+    }
+  }
+}

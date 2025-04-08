@@ -2,320 +2,186 @@
 @import "@/app/_styles/mixins";
 
 .hero {
-  $self: &;
-  @include flex(column);
+  @include flex(column, space-between);
   position: relative;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   overflow: hidden;
-  padding-block: 12px 24px;
-  background: transparent;
+  margin-bottom: 120px;
 
-  /* 1) Eliminado hero__ambient-glow y hero__grid-background */
-
-  &__headline {
-    position: relative;
-    @include flex(row, center, center);
-    flex: 1;
-    pointer-events: auto;
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    margin-top: 114px;
+  @include tablet {
+    margin-bottom: 88px;
   }
 
-  /* --- Nuevo contenedor para el canvas (shader) --- */
-  &__headline-shader {
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* por encima del texto */
-    pointer-events: none; /* no bloquea interacciones */
-  }
-
-  &__headline-text {
-    // display: none;
-    position: absolute;
-    font-family: "kranto-normal-semicondensed", sans-serif;
-    font-style: normal;
-    text-align: center;
-    font-size: clamp(48px, 6vw, 142px);
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-    pointer-events: none;
-    margin-top: 40px;
-    @include transition(transform);
-    // opacity: 0; /* Inicialmente invisible */
-    opacity: 1; /* Inicialmente invisible */
-    transition: opacity 0.5s ease;
-
-    &--visible {
-      opacity: 1; /* Se hace visible con esta clase */
-    }
-
-    &--behind {
-      color: transparent;
-      animation: glowPulse 4s infinite alternate;
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: -20%;
-        background: radial-gradient(
-          circle at var(--x) var(--y),
-          rgba($error-light, 0.1),
-          transparent 70%
-        );
-        filter: blur(15px);
-        animation: hazeGlow 6s infinite alternate;
-      }
-    }
-
-    &--blur {
-      filter: blur(45px);
-      z-index: 0;
-      background: conic-gradient(
-        from 0deg at 50% 50%,
-        rgba($error-light, 0.2),
-        rgba($error-light, 0.2),
-        rgba($error-light, 0.2)
-      );
-      transform: translateZ(-35px) scale(1.2);
-    }
-
-    &--main {
-      background: linear-gradient(
-        120deg,
-        rgba($error-color, 1) 0%,
-        rgba($error-light, 0.9) 50%,
-        rgba($error-color, 1) 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      filter: contrast(100%) brightness(100%);
-      text-shadow: 0 0 20px rgba($error-color, 0.5);
-
-      &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          circle at var(--x) var(--y),
-          rgba($error-color, 0.2) 0%,
-          transparent 70%
-        );
-        mix-blend-mode: screen;
-      }
-    }
-
-    &--white-stroke {
-      color: transparent;
-      text-shadow: 0 0 10px rgba($primary-color, 0.8),
-        0 0 20px rgba($primary-color, 0.4), 0 0 30px rgba($primary-color, 0.2);
-      -webkit-text-stroke: 1px rgba($white-color, 0.9);
-      background: radial-gradient(
-        circle at center,
-        rgba($primary-color, 1) 0%,
-        rgba($primary-light, 0.8) 30%,
-        rgba($primary-color, 0.4) 70%,
-        transparent 100%
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-
-    &--permanent-stroke {
-      color: transparent;
-      -webkit-text-stroke: 2px rgba($primary-color, 0.8);
-      z-index: 3;
-      mix-blend-mode: overlay;
-      pointer-events: none;
-      text-shadow: 0 0 20px rgba($primary-color, 0.4);
-    }
-
-    &--front {
-      display: NONE;
-      z-index: 4;
-      /* Siempre invisible inicialmente */
-      opacity: 0;
-    }
-
-    &-indent {
-      margin-left: $spacing-lg;
-    }
-
-    @include tablet {
-      font-size: clamp(60px, 10vw, 120px);
-    }
-
-    @include mobile {
-      font-size: clamp(60px, 8vw, 80px);
-    }
-  }
-
-  &__webgl-text {
-    font-size: clamp(64px, 12vw, 142px);
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-    color: transparent;
-    opacity: 1;
-    @include transition(opacity);
-    position: absolute;
-    margin-top: $spacing-lg;
-    margin-right: $spacing-md;
-    top: 0;
-    bottom: 0;
-    z-index: 100;
-
-    &--fade-out {
-      opacity: 0;
-    }
-
-    @include tablet {
-      font-size: clamp(60px, 10vw, 120px);
-    }
-
-    @include mobile {
-      font-size: clamp(60px, 8vw, 80px);
-    }
-  }
-
-  &__mask {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, #6366f1, #818cf8);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    mask-image: url("/images/elipse.svg");
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: 0;
-    z-index: 1000;
-    pointer-events: all;
-    cursor: none;
-
-    &-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      transform: translate(-50%, -50%);
-      font-family: "kranto-normal-semicondensed", sans-serif;
-      font-style: normal;
-      font-size: clamp(48px, 12vw, 142px);
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 0.01em;
-      line-height: 0.92;
-      text-align: center;
-      color: transparent;
-      -webkit-text-stroke: 2px rgba(99, 102, 241, 0.8);
-      pointer-events: none;
-      display: block;
-      white-space: pre-line;
-
-      &-accent {
-        display: inline;
-        color: transparent;
-        -webkit-text-stroke: 2px rgba($primary-color, 0.8);
-      }
-
-      &-indent {
-        margin-left: $spacing-lg;
-      }
-
-      @include tablet {
-        font-size: clamp(60px, 10vw, 120px);
-      }
-
-      @include mobile {
-        font-size: clamp(60px, 8vw, 80px);
-        display: none;
-      }
-    }
+  @include mobile-small {
+    margin-bottom: 48px;
   }
 
   &__content {
     position: relative;
-    @include flex(column, flex-end, center);
-    gap: clamp($spacing-xxl, 4vh, $spacing-xxxl * 1.5);
-    padding: $spacing-lg;
+    @include flex(column, space-between, center);
     z-index: 2;
-    margin-top: auto;
-    flex: 1;
+    width: 100%;
+    height: 100%;
+    padding-bottom: $spacing-lg;
 
-    @media screen and (max-height: 800px) {
-      gap: $spacing-md;
+    @include mobile {
+      height: 100vh;
       padding-bottom: $spacing-md;
+      @include flex(column, flex-start, center);
     }
 
-    @media screen and (max-height: 600px) {
-      gap: $spacing-sm;
+    @include mobile-medium {
       padding-bottom: $spacing-sm;
+    }
+  }
+
+  &__spacer {
+    width: 100%;
+    height: 12vh;
+
+    @include mobile {
+      flex: 1; // Make spacer take up available space
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; // Push content to bottom
+      min-height: 6vh; // Maintain minimum height
     }
   }
 
   &__info {
     text-align: center;
     opacity: 0;
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
     animation: fadeInUp $transition-duration $transition-bezier forwards;
     animation-delay: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
 
-    &-subtitle {
-      margin-bottom: $spacing-md;
-      letter-spacing: 0.03em;
-      opacity: 0.9;
+    @include desktop {
+      max-width: 80%;
     }
 
-    &-description {
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.5 !important;
-      margin-bottom: $spacing-xxl;
-      letter-spacing: 0.03em;
-
-      @include mobile {
-        max-width: 20rem;
-      }
-
-      @media screen and (max-height: 600px) {
-        max-width: 18rem;
-      }
+    @include mobile {
+      gap: 26px;
+      margin: 0; // Ensure no additional margins
+      align-self: center; // Center horizontally
     }
-  }
 
-  &__cta-button {
-    font-family: "usual", sans-serif !important;
-    letter-spacing: 0.02em !important;
-    font-weight: 500 !important;
-    padding-block: 16px;
-  }
+    @include mobile-medium {
+      max-width: 400px;
+      gap: 24px;
+    }
 
-  &__scroll {
-    text-align: center;
-    margin-block: $spacing-sm $spacing-md;
-    opacity: 0;
-    animation: fadeIn $transition-duration ease forwards;
-    animation-delay: 1s;
-
-    @media screen and (max-height: 600px) {
-      display: none;
+    @include mobile-small {
+      gap: 20px;
     }
 
     &-text {
-      margin-bottom: $spacing-xs;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+      font-size: clamp(28px, 5vw, 62px);
+      color: $white-base;
+
+      @include mobile {
+        font-size: clamp(24px, 4.5vw, 52px);
+        max-width: 90%;
+      }
+
+      @include mobile-medium {
+        // max-width: 18rem;
+        line-height: 1.27;
+        font-size: clamp(20px, 3.5vh, 42px);
+      }
+
+      @include mobile-small {
+        font-size: clamp(20px, 4vw, 36px);
+        // max-width: 90%;
+      }
+    }
+
+    &-subtitle {
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 0.02em;
+
+      @include mobile-small {
+        font-size: 14px;
+      }
+
+      &-and-character {
+        font-style: italic;
+        font-weight: 400;
+        margin-right: 8px;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  &__actions {
+    @include flex(column, flex-start, center);
+    text-align: center;
+    margin-bottom: $spacing-md;
+    opacity: 0;
+    animation: fadeInUp $transition-duration $transition-bezier forwards;
+    animation-delay: 1s;
+    gap: clamp(64px, 8vh, 86px);
+
+    @include mobile {
+      margin-top: 64px; // Maintain the 64px gap here
+      flex: 1; // Make it take up equal space as spacer
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; // Start from the top of its container
+    }
+
+    @include mobile-medium {
+      margin-top: 56px; // Maintain the 64px gap here
+      margin-bottom: $spacing-sm;
+    }
+
+    @include mobile-small {
+      margin-top: 52px; // Maintain the 64px gap here
+    }
+  }
+
+  &__scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xs;
+
+    @include mobile {
+      margin-top: auto; // Push to the bottom
+    }
+
+    &-text {
+      @include mobile-small {
+        font-size: 12px;
+      }
     }
 
     &-indicator {
       position: relative;
       width: 1.2px;
       height: 24px;
-      margin: 0 auto;
       margin-top: $spacing-sm;
-      overflow: visible;
+
+      @include mobile {
+        height: 20px;
+      }
+
+      @include mobile-medium {
+        height: 16px;
+      }
+
+      @include mobile-small {
+        height: 18px;
+        margin-top: $spacing-xs;
+      }
 
       &::before,
       &::after {
@@ -336,15 +202,10 @@
       &::after {
         animation: scrollFadeRight 2s $transition-bezier infinite;
       }
-
-      @media screen and (max-height: 800px) {
-        height: 20px;
-      }
     }
   }
 }
 
-/* Keyframes originales */
 @keyframes scrollFadeLeft {
   0%,
   100% {
@@ -377,34 +238,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 20px rgba($primary-color, 0.4);
-  }
-  100% {
-    text-shadow: 0 0 30px rgba($primary-color, 0.6);
-  }
-}
-
-@keyframes hazeGlow {
-  0% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0.8;
-    transform: scale(1.1);
   }
 }

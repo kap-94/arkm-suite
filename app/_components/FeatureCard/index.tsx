@@ -41,7 +41,7 @@ export function FeatureCard({
       <span className={cx("feature-card__icon")}>{icon}</span>
       <div>
         <Typography
-          variant="h5"
+          variant="p1"
           // color="secondary"
           fontWeight={500}
           theme={{ type: "dark" }}

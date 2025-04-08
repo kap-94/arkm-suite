@@ -2,7 +2,7 @@
 // components/DownloadButton.tsx
 import React from "react";
 import { pdf } from "@react-pdf/renderer";
-import { DesignSystemContent } from "../../_types/models/ComponentContent";
+import { DesignSystemContent } from "@/app/_types/models/ComponentContent";
 import { DesignSystemDocument } from "../pdfTemplates/DesignSystemDocument";
 import { useSettings } from "../../_context/SettingsContext";
 

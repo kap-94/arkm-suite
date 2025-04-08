@@ -1,4 +1,6 @@
-// Variables (reutilizando tus mismas variables)
+/* landing.scss */
+
+/* Variables */
 $primary-color: #6366f1;
 $primary-color-90: rgba($primary-color, 0.9);
 $primary-color-80: rgba($primary-color, 0.8);
@@ -8,25 +10,30 @@ $primary-dark-90: rgba($primary-dark, 0.9);
 $primary-dark-80: rgba($primary-dark, 0.8);
 $indigo-light: #9698fd;
 
-// Dark Theme Colors
-$dark-bg: #0a0a0c;
-$dark-surface: rgba(24, 24, 27, 0.7);
+/* Dark Theme Colors */
+$dark-bg: #1f1f2c; // Valor final
+$dark-surface: #1f1f2c;
 $dark-border: rgba(63, 63, 70, 0.4);
 $dark-text: rgba(228, 228, 231, 0.9);
 $dark-text-secondary: rgba(161, 161, 170, 0.8);
 
-// Glass Effect
-$glass-bg: rgba(24, 24, 27, 0.5);
-$glass-border: rgba(63, 63, 70, 0.2);
+/* Glass Effect */
+$glass-bg: rgba($primary-light, 0.05);
+$glass-border: rgba(63, 63, 70, 0);
 $glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 $glass-highlight: rgba(255, 255, 255, 0.05);
 
-// Mixins
+/* Breakpoints */
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+
+/* Mixins */
 @mixin glass-effect {
   background: $glass-bg;
   backdrop-filter: blur(12px);
   border: 1px solid $glass-border;
-  box-shadow: $glass-shadow;
+  // box-shadow: $glass-shadow;
 }
 
 @mixin flex-center {
@@ -41,20 +48,40 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
   justify-content: flex-start;
 }
 
-// BEM Notation para Landing Wireframe
+@mixin neomorphism($color, $intensity: 0.1) {
+  background: $color;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, $intensity),
+    -5px -5px 10px rgba(255, 255, 255, $intensity * 0.3);
+}
+
+@mixin pressed-neomorphism($color, $intensity: 0.15) {
+  background: $color;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, $intensity),
+    inset -2px -2px 5px rgba(255, 255, 255, $intensity * 0.2);
+}
+
+/* Landing Wireframe Component */
 .landing {
+  --max-landing-width: 400px;
+  --max-landing-height: 500px;
+
   position: relative;
+  max-width: var(--max-landing-width);
   width: 100%;
-  height: 520px;
+  max-height: var(--max-landing-height);
+  aspect-ratio: 4 / 5; // Aspect ratio fijo 4:5 (equivalente aproximado al original de 400x500)
   background: $dark-bg;
   overflow: hidden;
-  padding: 1.5rem;
+  border-radius: 8px;
+  padding: clamp(24px, 4%, 32px); // Padding responsivo que se adapta al tamaño
   color: $dark-text;
   display: flex;
   flex-direction: column;
-  z-index: 1; // Para que el ::before quede detrás
+  z-index: 1;
+  will-change: opacity, transform;
+  margin: 0 auto; // Para centrar el componente
+  box-sizing: border-box; // Asegurar que el padding se incluya en el ancho
 
-  // Pseudo-elemento para la forma sutil de fondo
   &::before {
     content: "";
     position: absolute;
@@ -78,42 +105,65 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
 
   &__header {
     width: 100%;
-    height: 4rem;
+    height: clamp(2.2rem, 5vw, 2.8rem); // Altura responsiva
     @include glass-effect;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: clamp(0.8rem, 3vw, 1.2rem); // Margen responsivo
     flex-shrink: 0;
     transition: all 0.3s ease;
+    will-change: opacity, transform;
 
     &-content {
-      @include flex-start;
       height: 100%;
-      padding: 0 1rem;
-      gap: 1rem;
+      padding: 0 clamp(0.8rem, 3vw, 1.25rem); // Padding horizontal responsivo
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
     &-logo {
-      width: 2rem;
-      height: 2rem;
-      background: linear-gradient(135deg, $primary-color, $primary-dark);
-      border-radius: 50%;
-      box-shadow: 0 2px 8px rgba($primary-color, 0.3);
+      width: clamp(2.5rem, 8vw, 3rem);
+      height: clamp(1.1rem, 3vw, 1.3rem);
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0.1rem;
+        left: 0rem;
+        width: clamp(0.9rem, 3vw, 1.1rem);
+        opacity: 0.9;
+        height: clamp(0.9rem, 3vw, 1.1rem);
+        border: clamp(0.15rem, 0.5vw, 0.2rem) solid $primary-color;
+        background: $primary-color;
+        border-radius: 50%;
+      }
+
+      &::after {
+        content: "";
+        background: $primary-color;
+        position: absolute;
+        top: 0.1rem;
+        left: 0.5rem;
+        width: clamp(0.9rem, 3vw, 1.1rem);
+        height: clamp(0.9rem, 3vw, 1.1rem);
+        border: clamp(0.15rem, 0.5vw, 0.2rem) solid $primary-color;
+        border-radius: 50%;
+        opacity: 0.6;
+      }
     }
+    &-nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.6rem, 2vw, 1rem);
 
-    &-text {
-      flex: 1;
+      &-item {
+        height: clamp(0.4rem, 1vw, 0.45rem);
+        width: clamp(1.4rem, 3vw, 1.6rem);
+        background: rgba($primary-color, 0.4);
+        border-radius: 2px;
 
-      &-line {
-        height: 0.5rem;
-        background: linear-gradient(90deg, $primary-color-80, transparent);
-        border-radius: 0.25rem;
-        margin-bottom: 0.5rem;
-
-        &--short {
-          width: 25%;
-        }
-        &--medium {
-          width: 33%;
+        &--active {
+          background: $primary-color;
         }
       }
     }
@@ -121,21 +171,32 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
 
   &__hero {
     display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    height: 200px;
+    gap: clamp(10px, 3vw, 20px);
+    margin-bottom: clamp(1rem, 4vw, 2rem);
     flex-shrink: 0;
+    will-change: opacity, transform;
+    flex: 1 0 auto;
+
+    @media (max-width: $breakpoint-md) {
+      flex-direction: column;
+    }
 
     &-content {
       width: 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-right: 1rem;
+      padding-right: clamp(0.5rem, 2vw, 1rem);
+
+      @media (max-width: $breakpoint-md) {
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: clamp(0.8rem, 2vw, 1rem);
+      }
     }
 
     &-title {
-      height: 1.25rem;
+      height: clamp(1rem, 3vw, 1.25rem);
       width: 75%;
       background: linear-gradient(
         90deg,
@@ -143,11 +204,11 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
         rgba($primary-dark, 0.3)
       );
       border-radius: 0.25rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
     }
 
     &-subtitle {
-      height: 0.75rem;
+      height: clamp(0.6rem, 1.5vw, 0.75rem);
       width: 90%;
       background: linear-gradient(
         90deg,
@@ -155,33 +216,43 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
         rgba($primary-dark-80, 0.2)
       );
       border-radius: 0.25rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
     }
 
     &-buttons {
       display: flex;
-      gap: 0.75rem;
+      gap: clamp(0.4rem, 1.5vw, 0.6rem);
     }
 
     &-button {
-      height: 1.55rem;
-      width: 6rem;
-      border-radius: 0.375rem;
+      height: clamp(1.1rem, 3vw, 1.35rem);
+      width: clamp(3rem, 8vw, 3.75rem) !important;
+      border-radius: 4px;
 
       &--primary {
         background: linear-gradient(135deg, $primary-dark-80, $primary-dark);
       }
       &--secondary {
-        @include glass-effect;
+        border: 1px solid $glass-bg;
+        background-color: $glass-bg;
       }
     }
 
     &-image {
       width: 50%;
-      @include glass-effect;
-      border-radius: 0.75rem;
+      border-radius: 6px;
       position: relative;
       overflow: hidden;
+      max-height: calc(var(--max-landing-height) * 0.4);
+
+      @media (max-width: $breakpoint-md) {
+        display: none;
+      }
+
+      // Estabilizador para el contenedor 3D
+      &[data-animating="false"] {
+        transform: none !important; // Forzar reset cuando no está animando
+      }
 
       &-overlay {
         position: absolute;
@@ -189,25 +260,30 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
         @include flex-center;
       }
 
-      // Estilos para el SVG inline
       &-svg {
         width: 100%;
         height: 100%;
         display: block;
+
+        .rotating-group {
+          transform-origin: center;
+          animation: rotate 120s linear infinite;
+        }
       }
     }
   }
 
   &__features {
     flex-grow: 1;
+    will-change: opacity, transform;
 
     &-header {
       text-align: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: clamp(10px, 3vw, 14px);
     }
 
     &-title {
-      height: 0.7rem;
+      height: clamp(0.55rem, 1.3vw, 0.65rem);
       width: 33%;
       background: linear-gradient(
         90deg,
@@ -215,11 +291,11 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
         rgba($primary-dark, 0.3)
       );
       border-radius: 0.25rem;
-      margin: 0 auto 0.65rem;
+      margin: 0 auto clamp(0.5rem, 1.5vw, 0.7rem);
     }
 
     &-subtitle {
-      height: 0.5rem;
+      height: clamp(0.45rem, 1vw, 0.5rem);
       width: 50%;
       background: linear-gradient(
         90deg,
@@ -228,26 +304,26 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
       );
       border-radius: 0.25rem;
       margin: 0 auto;
+      margin-bottom: clamp(20px, 5vw, 28px);
     }
 
     &-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      height: calc(100% - 2.5rem);
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(8px, 2vw, 10px);
+      height: calc(100% - clamp(3rem, 8vw, 4rem));
     }
 
     &-item {
-      aspect-ratio: 1 / 1;
+      aspect-ratio: auto;
+      width: 100%;
+      margin: 0 auto;
       @include glass-effect;
-      border-radius: 0.75rem;
+      border-radius: 4px;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      // margin-top: 6px;
+      will-change: opacity, transform;
 
       &::before {
         content: "";
@@ -271,58 +347,72 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
           animation: shine 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
       }
+    }
+  }
 
-      &-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        width: 80%;
-        height: 80%;
-        z-index: 2;
-      }
+  // Modificadores especiales para tablet y móvil
+  &--tablet {
+    aspect-ratio: 1 / 1; // Cambia el ratio para tablet
+    font-size: 0.9em;
+    max-width: var(--max-landing-width);
+    max-height: var(--max-landing-height);
 
-      &-icon {
-        display: none;
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(
-          135deg,
-          rgba($primary-color, 0.9),
-          rgba($primary-dark, 0.9)
-        );
-        border-radius: 50%;
-        margin-bottom: 1rem;
-      }
+    .landing__hero {
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 0;
+    }
 
-      &-title {
-        height: 0.45rem;
-        width: 70%;
-        background: linear-gradient(
-          90deg,
-          $primary-dark-80,
-          rgba($primary-dark-80, 0.2)
-        );
-        border-radius: 0.25rem;
-        margin-bottom: 0.65rem;
-      }
+    .landing__hero-content,
+    .landing__hero-image {
+      width: 100%;
+    }
 
-      &-text {
-        height: 0.45rem;
-        width: 85%;
-        background: linear-gradient(
-          90deg,
-          rgba($primary-dark-80, 0.6),
-          rgba($primary-dark-80, 0.1)
-        );
-        border-radius: 0.25rem;
-      }
+    .landing__hero-image {
+      height: 150px;
+      max-height: calc(var(--max-landing-height) * 0.3);
+    }
+
+    .landing__features-grid {
+      height: calc(100% - 3rem);
+    }
+  }
+
+  &--mobile {
+    aspect-ratio: 3 / 4; // Cambia el ratio para móvil
+    font-size: 0.8em;
+    max-width: var(--max-landing-width);
+    max-height: var(--max-landing-height);
+
+    .landing__header {
+      margin-bottom: 0.8rem;
+      height: 2.2rem;
+    }
+
+    .landing__hero-content {
+      margin-bottom: 0.8rem;
+    }
+
+    .landing__hero-title {
+      margin-bottom: 0.5rem;
+    }
+
+    .landing__hero-subtitle {
+      margin-bottom: 1rem;
+    }
+
+    .landing__hero-image {
+      height: 120px;
+      max-height: calc(var(--max-landing-height) * 0.25);
+    }
+
+    .landing__features-grid {
+      height: calc(100% - 2.5rem);
     }
   }
 }
 
-// Animación "shine"
+/* Animaciones */
 @keyframes shine {
   0% {
     left: -100%;
@@ -335,4 +425,52 @@ $glass-highlight: rgba(255, 255, 255, 0.05);
     left: 100%;
     opacity: 0.7;
   }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Optimización para pantallas con prefiere-reducir-movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .landing {
+    * {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+}
+
+// Clase de utilidad para estabilizar Three.js
+.earth-container {
+  isolation: isolate;
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }

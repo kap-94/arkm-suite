@@ -1,0 +1,233 @@
+@import "@/app/_styles/variables";
+@import "@/app/_styles/mixins";
+
+$tw-gradient-from: rgba($white-base, 0.05);
+$tw-gradient-to: rgba($white-base, 0.08);
+$tw-blur: blur(100px);
+$tw-filter-chain: $tw-blur brightness(100%) contrast(100%) grayscale(0)
+  hue-rotate(0deg) invert(0) saturate(100%) sepia(0) drop-shadow(0 0 #0000);
+
+.portfolio-card {
+  position: relative;
+  padding: $spacing-lg;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  isolation: isolate;
+  height: 100%;
+
+  @include tablet {
+    padding: $spacing-md;
+  }
+
+  @include mobile-small {
+    padding: $spacing-sm;
+  }
+
+  &__content {
+    @include flex(column, flex-start, flex-start);
+    height: 100%;
+
+    @include tablet {
+      align-items: center;
+    }
+  }
+
+  &__title-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-md;
+    gap: $spacing-md;
+    width: 100%;
+
+    @include tablet {
+      justify-content: center;
+      margin-bottom: $spacing-md;
+      gap: $spacing-sm;
+    }
+
+    @include mobile-small {
+      gap: $spacing-xs;
+    }
+  }
+
+  &__title {
+    position: relative;
+    margin: 0 !important;
+  }
+
+  &__description {
+    text-align: left;
+    margin-bottom: $spacing-lg;
+    max-width: 500px !important;
+    flex-grow: 1;
+    position: relative;
+    padding: $spacing-lg;
+    border: 1px solid rgba($white-base, 0.05);
+    background: linear-gradient(
+      to right,
+      transparent 25%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    backdrop-filter: blur(20px);
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      border-radius: $border-radius-sm;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        $tw-gradient-from 25%,
+        $tw-gradient-to
+      );
+      opacity: 0.4;
+      z-index: -2;
+    }
+
+    @include tablet {
+      text-align: center;
+      margin-bottom: $spacing-md;
+      padding: $spacing-md;
+    }
+
+    @include mobile {
+      padding: $spacing-sm;
+    }
+
+    @include mobile-small {
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  &__technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+    width: 100%;
+
+    @include tablet {
+      justify-content: center;
+      gap: $spacing-sm;
+      margin-bottom: $spacing-md;
+    }
+
+    @include mobile {
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  &__links {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    width: 100%;
+
+    @include tablet {
+      justify-content: center;
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    backdrop-filter: blur(8px);
+    text-decoration: none;
+    @include transition(background, transform, box-shadow);
+    transform: translateY(0);
+
+    @include mobile {
+      width: 36px;
+      height: 36px;
+    }
+
+    @include mobile-small {
+      width: 32px;
+      height: 32px;
+    }
+
+    &--github,
+    &--live {
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      color: $white-base;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+
+  // Right-aligned card styles
+  &--right-aligned {
+    .portfolio-card__content {
+      align-items: flex-end;
+    }
+
+    .portfolio-card__title-container {
+      justify-content: flex-end;
+    }
+
+    .portfolio-card__description {
+      text-align: right;
+      background: linear-gradient(
+        to right,
+        transparent 25%,
+        rgba(255, 255, 255, 0.03) 100%
+      );
+      &::after {
+        background: linear-gradient(
+          to left,
+          $tw-gradient-from 25%,
+          $tw-gradient-to
+        );
+      }
+    }
+
+    .portfolio-card__technologies {
+      justify-content: flex-end;
+    }
+
+    .portfolio-card__links {
+      justify-content: flex-end;
+    }
+
+    // Tablet/mobile adjustments (always center elements)
+    @include tablet {
+      align-items: center;
+
+      .portfolio-card__content {
+        align-items: center;
+      }
+
+      .portfolio-card__title-container {
+        justify-content: center;
+      }
+
+      .portfolio-card__description {
+        text-align: center;
+      }
+
+      .portfolio-card__technologies {
+        justify-content: center;
+      }
+
+      .portfolio-card__links {
+        justify-content: center;
+      }
+    }
+  }
+}

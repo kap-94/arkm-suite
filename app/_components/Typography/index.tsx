@@ -27,7 +27,7 @@ const ELEMENT_MAPPING: Record<TypographyVariant, keyof JSX.IntrinsicElements> =
 const FONT_FAMILY_MAPPING: Record<TypographyFontFamily, string> = {
   default: "",
   usual: "'usual', sans-serif",
-  kranto: "'kranto-normal-semicondensed', sans-serif",
+  sofia: "'sofia-pro', sans-serif",
 };
 
 export const Typography = <T extends ElementType = "span">({

@@ -42,7 +42,7 @@ export const ColorSection: FC<ColorSectionProps> = ({
         {Object.entries(colorPalette).map(([category, { colors, label }]) => (
           <div key={category} className={cx("color-section__category")}>
             <ThemedTypography
-              variant="h4"
+              variant="h5"
               fontWeight={500}
               color="secondary"
               textTransform="capitalize"

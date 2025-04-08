@@ -115,7 +115,7 @@
   &__content {
     flex: 1;
     max-width: 680px;
-    padding-top: 100px;
+    @include flex($direction: column, $align: flex-start, $justify: center);
   }
 
   &__header {
@@ -124,7 +124,7 @@
   }
 
   &__title {
-    font-family: "kranto-normal-semicondensed", sans-serif;
+    font-family: "sofia", sans-serif;
     background: linear-gradient(to right, $white-base, $white-light);
     -webkit-background-clip: text;
     background-clip: text;
@@ -169,7 +169,7 @@
     @include tablet {
       @include flex-center;
       position: relative;
-      padding: $spacing-xl 0 $spacing-xxl;
+      padding: $spacing-xl 0 $spacing-lg;
       width: 100%;
     }
   }

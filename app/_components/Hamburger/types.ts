@@ -1,5 +1,5 @@
 // types.ts
-export type HamburgerVariant = "slide" | "morph" | "slideFade";
+export type HamburgerVariant = "slide" | "morph" | "slideFade" | "triple";
 
 export interface HamburgerTheme {
   type: "light" | "dark" | "custom";

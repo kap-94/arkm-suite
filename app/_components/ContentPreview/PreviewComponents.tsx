@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { Eye } from "lucide-react";
-import { FileContent } from "../../_types/models/FileContent";
+import { FileContent } from "@/app/_types/models/FileContent";
 import { getFileType } from "./utils";
 import { ThemedTypography } from "../Typography/ThemedTypography";
 import styles from "./ContentPreview.module.scss";

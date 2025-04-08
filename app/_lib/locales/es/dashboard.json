@@ -12,7 +12,7 @@
         "ogImage": "/images/dashboard-og.jpg"
     },
     "header": {
-        "title": "Portal del Cliente",
+        "title": "Panel de Control",
         "subtitle": "¡Bienvenido de nuevo! Esto es lo que está sucediendo con tus proyectos",
         "aria": "Encabezado principal del panel"
     },
