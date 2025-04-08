@@ -382,6 +382,7 @@ export const projectDataEN: Project = {
             copiedText: "Copied!",
           },
           components: {
+            title: "Components",
             buttons: {
               title: "Buttons",
               variants: {
@@ -2789,6 +2790,7 @@ export const projectDataES: Project = {
             copiedText: "¡Copiado!",
           },
           components: {
+            title: "Componentes",
             buttons: {
               title: "Botones",
               variants: {
