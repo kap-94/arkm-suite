@@ -19,10 +19,10 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
             variant="h2"
             color="primary"
             fontFamily="sofia"
-            fontWeight={400}
+            fontWeight={500}
             theme="dark"
             className={cx("suite__title")}
-            align="left"
+            align="center"
           >
             {dictionary?.title || "Access our Client Suite"}
           </Typography>
@@ -30,8 +30,9 @@ export const ClientSuitePreview = ({ dictionary }: ClientSuitePreviewProps) => {
             variant="p1"
             color="tertiary"
             theme="dark"
-            fontWeight={300}
+            fontWeight={400}
             fontFamily="sofia"
+            align="center"
             className={cx("suite__subtitle")}
           >
             {dictionary?.subtitle ||
