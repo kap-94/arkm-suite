@@ -4,22 +4,13 @@ import classNames from "classnames/bind";
 import dynamic from "next/dynamic";
 import { useInView } from "react-intersection-observer";
 import styles from "./ShaderBackground.module.scss";
-import ParallaxDepthScene from "@/app/_components/WaveScene/ParallaxDepthScene";
-// import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene copy 2";
-// import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene copy";
-import PrismaticGlass from "@/app/_components/WaveScene/PrismaticGlass";
-import DeepSpaceShader from "@/app/_components/WaveScene/DeepSpaceShader";
-import MinimalNoirShader from "@/app/_components/WaveScene/MinimalNoirShader";
-import CorporateDarkShader from "@/app/_components/WaveScene/CorporateDarkShader";
-import DarkEleganceShader from "@/app/_components/WaveScene/DarkEleganceShader";
-import DarkMidnightShader from "@/app/_components/WaveScene/DarkMidnightShader";
-// import FragmentationScene from "@/app/_components/WaveScene/FragmentationScene";
+import DeepSpaceShader from "@/app/_components/shaderScenes/DeepSpaceShader";
 
 const cx = classNames.bind(styles);
 
 // Carga dinámica del componente Three.js para evitar SSR
 const ChromaticRippleScene = dynamic(
-  () => import("@/app/_components/WaveScene/ChromaticRippleScene"),
+  () => import("@/app/_components/shaderScenes/ChromaticRippleScene"),
   { ssr: false, loading: () => <div className={cx("loading-shader")} /> }
 );
 
@@ -90,8 +81,8 @@ export const ShaderBackground = ({ children }: ShaderBackgroundProps) => {
         {/* {inView && <PrismaticGlass />} */}
         {/* {inView && <DarkEleganceShader />} */}
         {/* {inView && <DarkMidnightShader />} */}
-        {inView && <CorporateDarkShader />}
-        {/* {inView && <DeepSpaceShader />} */}
+        {/* {inView && <CorporateDarkShader />} */}
+        {inView && <DeepSpaceShader />}
       </div>
 
       {/* Content layer */}
