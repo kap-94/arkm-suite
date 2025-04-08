@@ -54,6 +54,7 @@ export interface DesignSystemContent extends ComponentContent {
       copiedText: string;
     };
     components: {
+      title: string;
       buttons: {
         title: string;
         variants: {
