@@ -64,7 +64,7 @@
   }
 
   &__logo {
-    margin-left: $sidebar-spacing-xs;
+    // margin-left: $sidebar-spacing-xs;
     @include transition(all);
 
     .sidebar[data-theme="light"] & {

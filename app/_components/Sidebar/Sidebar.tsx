@@ -6,9 +6,9 @@ import classNames from "classnames/bind";
 import { SidebarProps } from "./types/sidebar.types";
 import { SidebarItem } from "./components/SidebarItem";
 import { Hamburger } from "../Hamburger";
-import { Brand } from "../Header/components";
 import { useDashboard } from "../../_context/DashboardContext";
 import styles from "./styles/Sidebar.module.scss";
+import Brand from "../BrandNoimage";
 
 const cx = classNames.bind(styles);
 
@@ -87,7 +87,11 @@ export function Sidebar({
         >
           {state.isSidebarExpanded ? (
             <>
-              <Brand size="sm" />
+              <Brand
+                size="sm"
+                variant="minimal"
+                className={cx("sidebar__logo")}
+              />
 
               {/* <div
                 style={{ width: 88, height: 24, transform: "translateX(-8px)" }}
