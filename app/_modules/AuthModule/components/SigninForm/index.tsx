@@ -115,9 +115,7 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
               radius="md"
               className={cx("signin-form__google-button")}
             >
-              <Typography variant="p1" theme={{ type: "dark" }}>
-                {dictionary.form.buttons.google.label}
-              </Typography>
+              {dictionary.form.buttons.google.label}
             </GoogleButton>
 
             <Typography

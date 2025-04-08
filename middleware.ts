@@ -146,7 +146,6 @@ export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   // Obtener el host actual para depuración
   const currentHost = request.headers.get("host") || "";
-  console.log(`Current host: ${currentHost}, Path: ${pathname}`);
 
   // 1. Si es una ruta de auth API, permitir sin modificaciones
   if (pathname.startsWith("/api/auth")) {

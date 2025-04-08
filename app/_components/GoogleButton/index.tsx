@@ -91,11 +91,13 @@ export const GoogleButton = forwardRef<HTMLButtonElement, GoogleButtonProps>(
                 d="M24 9.62c3.23 0 6.12 1.11 8.41 3.28l6.31-6.31C34.91 1.81 29.43 0 24 0 15.4 0 8.08 4.63 4.36 11.48l7.26 5.71C13.46 13.47 18.3 9.62 24 9.62z"
               />
             </svg>
+
             <Typography
               variant="p1"
-              className={cx("google-button__text")}
+              theme={{ type: "dark" }}
               fontWeight={500}
               noWrap
+              className={cx("google-button__text")}
             >
               {children || "Continue with Google"}
             </Typography>

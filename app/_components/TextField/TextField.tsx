@@ -4,9 +4,9 @@ import React, { ElementType, useState, useEffect, useCallback } from "react";
 import classNames from "classnames/bind";
 import { useField } from "formik";
 import type { TextFieldProps } from "./types";
+import { getIconComponent } from "@/app/_utils/iconUtils";
 import { Typography } from "../Typography";
 import styles from "./TextField.module.scss";
-import { getIconComponent } from "@/app/_utils/iconUtils";
 
 const cx = classNames.bind(styles);
 

@@ -36,8 +36,6 @@ export const config: NextAuthConfig = {
           password,
         });
 
-        console.log({ data });
-
         // Verificar si hubo un error y lanzarlo si es necesario
         if (error) {
           throw new Error("Invalid email or password");
