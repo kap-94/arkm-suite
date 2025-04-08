@@ -104,8 +104,9 @@ function DashboardUI({
   // Manejador de cierre de sesión
   const handleSignOut = useCallback(async () => {
     try {
+      const baseUrl = window.location.origin;
       await signOut({
-        callbackUrl: `/${lang}/auth/signin`,
+        callbackUrl: `${baseUrl}/${lang}/auth/signin`,
         redirect: true,
       });
     } catch (error) {
