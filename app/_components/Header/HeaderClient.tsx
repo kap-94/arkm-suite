@@ -14,12 +14,12 @@ import { useLanguage } from "../../_context/LanguageContext";
 
 import { useHeaderScroll } from "./hooks";
 
-import { Brand } from "./components";
 import { MenuList } from "../MenuList";
 import { Header } from "./Header";
 import LanguageSelector from "../LanguageSelector";
 
 import styles from "./styles/Header.module.scss";
+import Brand from "../Brand";
 
 const cx = classnames.bind(styles);
 
@@ -175,7 +175,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
 
             {/* Logo (centered in both desktop and mobile) */}
             <div className={cx("header__logo")}>
-              <Brand variant="minimal" />
+              <Brand size="lg" />
             </div>
 
             {/* Desktop Actions */}
