@@ -1,13 +1,28 @@
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
-@import "@/app/_components/Typography/Typography.module.scss";
+
+/* Definición de gradiente similar al de los iconos */
+@mixin title-gradient {
+  /* Usando el mismo gradiente que tienen los iconos */
+  background: linear-gradient(
+    135deg,
+    $primary-light 0%,
+    rgba($primary-light, 0.85) 100%
+  );
+  background-size: 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Mejora para hacer el texto más legible */
+  text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+}
 
 .methodology {
   @include flex($justify: center);
   position: relative;
-  padding: 0;
-  background: $black-base;
-  overflow: hidden;
+  padding: 88px 0 120px;
+  // overflow: hidden;
+  // background: $black-base; // Removido para que el GlowBackground se muestre
   width: 100%;
   contain: content;
   will-change: opacity;
@@ -15,6 +30,26 @@
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+
+  background-color: transparent;
+
+  @include desktop {
+    padding-inline: 48px;
+  }
+
+  @include tablet {
+    padding-block: 88px;
+    padding-inline: 88px 32px;
+  }
+
+  @include mobile {
+    padding-inline: 44px 32px;
+  }
+
+  @include mobile-small {
+    padding-inline: 24px;
+    padding-block: 48px;
+  }
 
   // Fondo grid minimalista
   &__backdrop {
@@ -28,12 +63,6 @@
   &__grid {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(
-        rgba($primary-color, 0.05) 1px,
-        transparent 1px
-      ),
-      linear-gradient(90deg, rgba($primary-color, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
     will-change: opacity, transform;
     // Inicialmente oculto usando CSS estándar
     opacity: 0;
@@ -59,16 +88,12 @@
   }
 
   &__container {
-    @include flex(column, center, center, 88px);
+    @include flex(column, center, center, 74px);
     max-width: 1200px;
     width: 100%;
     position: relative;
     z-index: 2;
     contain: layout style;
-
-    @include desktop {
-      gap: 72px;
-    }
 
     @include tablet {
       gap: 64px;
@@ -76,70 +101,40 @@
 
     @include mobile {
       align-items: flex-start;
-      gap: 48px;
+      gap: 32px;
     }
   }
 
   &__header {
-    @include flex(column, center, center);
-    gap: $spacing-lg;
+    @include flex(column, center, flex-start, $spacing-lg);
     width: 100%;
-    text-align: center;
     will-change: opacity, transform;
-    // Inicialmente oculto usando CSS estándar
     opacity: 0;
     visibility: hidden;
     transform: translate3d(0, 25px, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    perspective: 1000;
-    -webkit-perspective: 1000;
-    contain: layout style;
-
-    // Clase que se añade al finalizar la animación para fijar la posición
-    &.animation-completed {
-      opacity: 1 !important;
-      transform: translate3d(0, 0, 0) !important;
-      visibility: visible !important;
-      will-change: auto !important;
-      backface-visibility: visible !important;
-      -webkit-backface-visibility: visible !important;
-      perspective: none !important;
-      -webkit-perspective: none !important;
-    }
-
-    @include tablet {
-      align-items: flex-start;
-      gap: $spacing-md;
-    }
+    position: relative;
   }
 
-  &__title {
-    max-width: 680px;
-    margin-bottom: $spacing-md;
-    position: relative;
-    transform: translate3d(0, 0, 0);
-
+  &__heading {
     @include tablet {
-      text-align: left !important;
-      max-width: 540px;
-    }
+      align-items: flex-start;
 
-    @include mobile {
-      margin-bottom: $spacing-lg;
-      max-width: 460px;
+      h2,
+      h5 {
+        text-align: left !important;
+      }
     }
   }
 
   &__steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 48px;
+    gap: 44px;
     width: 100%;
     contain: layout style;
 
     @include desktop {
-      gap: 32px;
+      gap: 24px;
     }
 
     @include tablet {
@@ -148,12 +143,8 @@
     }
 
     @include mobile {
-      gap: 44px;
+      gap: 0px;
       grid-template-columns: 1fr;
-    }
-
-    @include mobile-small {
-      gap: 40px;
     }
   }
 
@@ -190,68 +181,40 @@
     }
   }
 
-  &__step-icon-container {
-    position: absolute;
-    top: -24px;
-    left: 10px;
-    width: 44px;
-    height: 44px;
-    background: rgba($primary-dark, 0.35);
-    border-radius: $border-radius-full;
-    @include flex-center;
-    @include glass-effect($primary-color, 0.15);
-    z-index: 2;
-    will-change: opacity, transform;
-    // Inicialmente oculto usando CSS estándar
-    opacity: 0;
-    visibility: hidden;
-    transform: translate3d(0, 0, 0) scale(0.6);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    perspective: 1000;
-    -webkit-perspective: 1000;
-    contain: layout style;
-    // Aumentar el tamaño para evitar recorte de iconos
-    overflow: visible; // Permitir que el contenido exceda el límite
-
-    // Clase que se añade al finalizar la animación para fijar la posición
-    &.animation-completed {
-      opacity: 1 !important;
-      transform: translate3d(0, 0, 0) scale(1) !important;
-      visibility: visible !important;
-      will-change: auto !important;
-      backface-visibility: visible !important;
-      -webkit-backface-visibility: visible !important;
-      perspective: none !important;
-      -webkit-perspective: none !important;
-    }
-
-    @include mobile {
-      top: -32px;
-      left: 0px;
-    }
-  }
-
   &__step-content {
     @include flex(column, flex-start, stretch, 16px);
-    background: rgba($black-light, 0.2);
+
     backdrop-filter: blur(8px);
     border-radius: $border-radius-md;
     padding: 24px;
     height: 100%;
-    margin-top: 10px;
+    // margin-top: 10px;
     position: relative;
     overflow: hidden;
     contain: content;
 
+    // background-image: linear-gradient(
+    //   135deg,
+    //   rgba($primary-light, 0.05),
+    //   rgba($primary-light, 0.08)
+    // );
+
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.03);
     @include tablet {
-      padding: 20px;
+      padding: $spacing-md;
     }
 
     @include mobile {
+      background: transparent !important;
+      border: 0;
+      gap: 8px;
       max-width: 480px;
-      gap: 12px;
-      margin-top: 8px;
+      padding: $spacing-md 0;
     }
   }
 
@@ -279,20 +242,39 @@
   }
 
   &__step-header {
-    @include flex(row, flex-start, center, 16px);
+    @include flex(row, space-between, flex-start, 16px);
+    margin-bottom: 16px;
+    width: 100%;
 
     @include mobile {
       gap: 12px;
     }
   }
 
+  &__step-title-container {
+    @include flex(row, flex-start, center, 8px);
+    flex: 1;
+
+    @include mobile {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 4px;
+    }
+  }
+
   &__step-icon {
     @include flex-center;
-    width: 36px;
-    height: 36px;
-    border-radius: $border-radius-full;
-    padding: 5px;
-    // Dar más espacio a los iconos para evitar recortes
+    width: 35px;
+    height: 35px;
+    margin-left: 8px;
+    margin-top: -4px;
+
+    @include mobile {
+      margin-left: 0;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
     svg {
       width: 100%;
       height: 100%;
@@ -323,10 +305,12 @@
   }
 
   &__step-title {
-    color: $primary-light;
-    font-size: fluid-type(18, 28);
+    /* Aplicar el gradiente definido arriba */
+    @include title-gradient;
+    flex: 1;
+
+    /* Mantener las propiedades de animación existentes */
     will-change: opacity, transform;
-    // Inicialmente oculto usando CSS estándar
     opacity: 0;
     visibility: hidden;
     transform: translate3d(0, 10px, 0);
@@ -335,7 +319,8 @@
     perspective: 1000;
     -webkit-perspective: 1000;
 
-    // Clase que se añade al finalizar la animación para fijar la posición
+    @include fluid-type(18, 22);
+
     &.animation-completed {
       opacity: 1 !important;
       transform: translate3d(0, 0, 0) !important;
@@ -351,7 +336,8 @@
   &__step-number-inline {
     display: inline-block;
     margin-right: 4px;
-    color: $primary-light;
+    /* Aplicar el mismo gradiente al número */
+    @include title-gradient;
   }
 
   &__step-description {

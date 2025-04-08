@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./MethodologyPreview.module.scss";
 
 const cx = classNames.bind(styles);
-// SVG Icons for each methodology step
+
 export const ResearchIcon = () => (
   <svg
     viewBox="0 0 64 64"
@@ -41,135 +41,6 @@ export const ResearchIcon = () => (
   </svg>
 );
 
-// export const VisualDirectionIcon = () => (
-//   <svg
-//     viewBox="0 0 64 64"
-//     fill="none"
-//     xmlns="http://www.w3.org/2000/svg"
-//     className={cx("icon", "icon--visual")}
-//   >
-//     <defs>
-//       <linearGradient id="visualGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-//         <stop offset="0%" stopColor="#818cf8" stopOpacity="0.7" />
-//         <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.3" />
-//       </linearGradient>
-//     </defs>
-//     <circle
-//       cx="20"
-//       cy="20"
-//       r="10"
-//       fill="url(#visualGradient)"
-//       opacity="0.8"
-//       className={cx("icon__shape", "icon__shape--1")}
-//     />
-//     <rect
-//       x="34"
-//       y="10"
-//       width="20"
-//       height="20"
-//       rx="4"
-//       fill="url(#visualGradient)"
-//       opacity="0.6"
-//       className={cx("icon__shape", "icon__shape--2")}
-//     />
-//     <path
-//       d="M15 40H49"
-//       stroke="url(#visualGradient)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//       className={cx("icon__line")}
-//     />
-//     <path
-//       d="M20 48H44"
-//       stroke="url(#visualGradient)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//       className={cx("icon__line")}
-//     />
-//     <path
-//       d="M25 56H39"
-//       stroke="url(#visualGradient)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//       className={cx("icon__line")}
-//     />
-//   </svg>
-// );
-
-// export const VisualDirectionIcon = () => (
-//   <svg
-//     viewBox="0 0 64 64"
-//     fill="none"
-//     xmlns="http://www.w3.org/2000/svg"
-//     className={cx("icon", "icon--visual")}
-//   >
-//     <defs>
-//       <linearGradient id="visualGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-//         <stop offset="0%" stopColor="#818cf8" stopOpacity="0.7" />
-//         <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.3" />
-//       </linearGradient>
-//     </defs>
-//     {/* Capas apiladas */}
-//     <rect
-//       x="16"
-//       y="22"
-//       width="32"
-//       height="24"
-//       rx="2"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//       opacity="0.4"
-//     />
-//     <rect
-//       x="20"
-//       y="18"
-//       width="32"
-//       height="24"
-//       rx="2"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//       opacity="0.6"
-//     />
-//     <rect
-//       x="24"
-//       y="14"
-//       width="32"
-//       height="24"
-//       rx="2"
-//       fill="url(#visualGradient2)"
-//       opacity="0.2"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//     />
-
-//     {/* Herramientas de diseño */}
-//     <circle
-//       cx="18"
-//       cy="46"
-//       r="4"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//     />
-//     <path
-//       d="M46 46H52"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//     />
-//     <path
-//       d="M48 42L48 50"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//     />
-//     <path
-//       d="M30 46H38"
-//       stroke="url(#visualGradient2)"
-//       strokeWidth="2"
-//       strokeLinecap="round"
-//     />
-//   </svg>
-// );
 export const VisualDirectionIcon = () => (
   <svg
     viewBox="0 0 64 64"
@@ -216,14 +87,14 @@ export const VisualDirectionIcon = () => (
     />
 
     {/* Reflejo en el ojo */}
-    <circle
+    {/* <circle
       cx="35"
       cy="29"
       r="2"
       fill="white"
       opacity="0.9"
       className={cx("icon__eye", "icon__eye--highlight")}
-    />
+    /> */}
 
     {/* Líneas de dirección/enfoque visual */}
     <path
@@ -259,6 +130,9 @@ export const VisualDirectionIcon = () => (
 
 export const UIDesignIcon = () => (
   <svg
+    // Further reduced size for an even smaller icon
+    width={42}
+    height={42}
     viewBox="0 0 64 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -271,36 +145,36 @@ export const UIDesignIcon = () => (
       </linearGradient>
     </defs>
     <rect
-      x="10"
-      y="10"
-      width="44"
-      height="44"
+      x="11"
+      y="11"
+      width="42"
+      height="42"
       rx="4"
       stroke="url(#uiGradient)"
-      strokeWidth="2.5"
+      strokeWidth="2"
       className={cx("icon__frame")}
     />
     <path
-      d="M10 20H54"
+      d="M11 20H53"
       stroke="url(#uiGradient)"
-      strokeWidth="2.5"
+      strokeWidth="2"
       className={cx("icon__header")}
     />
     <rect
-      x="16"
+      x="17"
       y="26"
-      width="20"
-      height="8"
+      width="19"
+      height="7"
       rx="2"
       fill="url(#uiGradient)"
       opacity="0.9"
       className={cx("icon__element", "icon__element--1")}
     />
     <rect
-      x="16"
+      x="17"
       y="38"
-      width="32"
-      height="10"
+      width="31"
+      height="9"
       rx="2"
       fill="url(#uiGradient)"
       opacity="0.7"
@@ -309,7 +183,7 @@ export const UIDesignIcon = () => (
     <circle
       cx="44"
       cy="30"
-      r="4"
+      r="3.5"
       fill="url(#uiGradient)"
       opacity="0.9"
       className={cx("icon__element", "icon__element--3")}
@@ -355,172 +229,7 @@ export const DevelopmentIcon = () => (
     />
   </svg>
 );
-// export const LaunchIcon = () => (
-//   <svg
-//     viewBox="0 0 64 64"
-//     fill="none"
-//     xmlns="http://www.w3.org/2000/svg"
-//     className={cx("icon", "icon--launch")}
-//   >
-//     <defs>
-//       <linearGradient id="launchGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-//         <stop offset="0%" stopColor="#818cf8" stopOpacity="0.7" />
-//         <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.3" />
-//       </linearGradient>
-//     </defs>
-//     {/* Botón de lanzamiento */}
-//     <circle
-//       cx="32"
-//       cy="32"
-//       r="18"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="2"
-//     />
-//     <circle
-//       cx="32"
-//       cy="32"
-//       r="12"
-//       fill="url(#launchGradient2)"
-//       opacity="0.3"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="2"
-//     />
 
-//     {/* Triángulo de play/lanzamiento */}
-//     <path
-//       d="M28 26L38 32L28 38V26Z"
-//       fill="url(#launchGradient2)"
-//       opacity="0.8"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="2"
-//       strokeLinejoin="round"
-//     />
-
-//     {/* Ondas de lanzamiento */}
-//     <path
-//       d="M32 8C17.6406 8 6 19.6406 6 34"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="1"
-//       strokeLinecap="round"
-//       strokeDasharray="2 2"
-//     />
-//     <path
-//       d="M32 14C20.9543 14 12 22.9543 12 34"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="1"
-//       strokeLinecap="round"
-//       strokeDasharray="2 2"
-//     />
-//     <path
-//       d="M58 34C58 19.6406 46.3594 8 32 8"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="1"
-//       strokeLinecap="round"
-//       strokeDasharray="2 2"
-//     />
-//     <path
-//       d="M52 34C52 22.9543 43.0457 14 32 14"
-//       stroke="url(#launchGradient2)"
-//       strokeWidth="1"
-//       strokeLinecap="round"
-//       strokeDasharray="2 2"
-//     />
-//   </svg>
-// );
-export const LaunchIcon = () => (
-  <svg
-    viewBox="0 0 64 64"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={cx("icon", "icon--launch")}
-  >
-    <defs>
-      <linearGradient id="launchGradient3" x1="0%" y1="100%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
-        <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.4" />
-      </linearGradient>
-    </defs>
-    {/* Base de lanzamiento */}
-    <path
-      d="M18 54H46"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M22 54L22 46"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M42 54L42 46"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-
-    {/* Torre de lanzamiento */}
-    <path
-      d="M26 46H38"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M30 46L30 38"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M34 46L34 38"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-
-    {/* Cohete */}
-    <path
-      d="M32 10L36 20L28 20L32 10Z"
-      fill="url(#launchGradient3)"
-      opacity="0.9"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-      strokeLinejoin="round"
-    />
-    <rect
-      x="28"
-      y="20"
-      width="8"
-      height="16"
-      fill="url(#launchGradient3)"
-      opacity="0.4"
-      stroke="url(#launchGradient3)"
-      strokeWidth="2.5"
-    />
-
-    {/* Trayectoria y nubes */}
-    <path
-      d="M32 10C32 10 38 22 38 30"
-      stroke="url(#launchGradient3)"
-      strokeWidth="1.5"
-      strokeDasharray="1 1"
-    />
-
-    {/* Nubes estilizadas */}
-    <path
-      d="M44 26C45.6569 26 47 24.6569 47 23C47 21.3431 45.6569 20 44 20C44 17.7909 42.2091 16 40 16C37.7909 16 36 17.7909 36 20"
-      stroke="url(#launchGradient3)"
-      strokeWidth="1.5"
-    />
-    <path
-      d="M20 30C21.6569 30 23 28.6569 23 27C23 25.3431 21.6569 24 20 24C20 21.7909 18.2091 20 16 20C13.7909 20 12 21.7909 12 24"
-      stroke="url(#launchGradient3)"
-      strokeWidth="1.5"
-    />
-  </svg>
-);
 export const MaintenanceIcon = () => (
   <svg
     viewBox="0 0 64 64"
@@ -566,7 +275,83 @@ export const MaintenanceIcon = () => (
   </svg>
 );
 
-// Arrow component for connecting steps
+export const TestsIcon = () => (
+  <svg
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cx("icon", "icon--tests")}
+  >
+    <defs>
+      <linearGradient id="testsGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.4" />
+      </linearGradient>
+    </defs>
+
+    {/* Outer circle (gear-like) */}
+    <circle
+      cx="32"
+      cy="32"
+      r="20"
+      stroke="url(#testsGradient)"
+      strokeWidth="2.5"
+      className={cx("icon__gear", "icon__gear--outer")}
+    />
+
+    {/* Centered flask with fill */}
+    <path
+      d="M30.5 21.5H33.5V29.5L39.5 40.5H24.5L30.5 29.5V21.5Z"
+      stroke="url(#testsGradient)"
+      fill="url(#testsGradient)"
+      fillOpacity="0.9"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cx("icon__test-flask")}
+    />
+  </svg>
+);
+
+export const LaunchIcon = () => (
+  <svg
+    // Significantly increased size for a much bigger icon
+    width={120}
+    height={120}
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cx("icon", "icon--launch")}
+  >
+    <defs>
+      <linearGradient id="launchGradient3" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#4f46e5" stopOpacity="0.4" />
+      </linearGradient>
+    </defs>
+
+    {/* Solo dejamos el cohete */}
+    <path
+      d="M32 8L38 22L26 22L32 8Z"
+      fill="url(#launchGradient3)"
+      opacity="0.9"
+      stroke="url(#launchGradient3)"
+      strokeWidth="3"
+      strokeLinejoin="round"
+    />
+    <rect
+      x="26"
+      y="22"
+      width="12"
+      height="24"
+      fill="url(#launchGradient3)"
+      opacity="0.4"
+      stroke="url(#launchGradient3)"
+      strokeWidth="3"
+    />
+  </svg>
+);
+
 export const ConnectorArrow = () => (
   <svg
     width="60"
@@ -593,7 +378,6 @@ export const ConnectorArrow = () => (
   </svg>
 );
 
-// Vertical connector for rows
 export const VerticalConnector = () => (
   <svg
     width="20"
