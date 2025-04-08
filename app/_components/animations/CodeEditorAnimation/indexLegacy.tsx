@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import gsap from "gsap";
-import { ScrollTrigger } from "@/app/_lib/gsap-init";
 import styles from "./CodeEditorAnimation.module.scss";
 
 const cx = classNames.bind(styles);
@@ -150,29 +149,6 @@ export const CodeEditorAnimation = () => {
   const [animatedTabs, setAnimatedTabs] = useState<Record<string, boolean>>({});
   const containerRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const animationId = useRef(`code-editor-${Date.now()}`);
-
-  // Estado para detectar tamaño de pantalla
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-
-  // Detectar cambios en el tamaño de la ventana para responsividad
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 480);
-      setIsTablet(window.innerWidth > 480 && window.innerWidth <= 768);
-    };
-
-    // Verificar tamaño al montar
-    handleResize();
-
-    // Escuchar cambios de tamaño
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   // Determine which code lines to show based on active tab
   const CODE_LINES =
@@ -184,28 +160,13 @@ export const CodeEditorAnimation = () => {
     setActiveTab(tab);
   };
 
-  // Función para asegurar que el texto sea visible después de animaciones
-  const resetCodeVisibility = () => {
-    // Asegurar que el texto siempre esté visible al final
-    setTimeout(() => {
-      const codeTexts = document.querySelectorAll(
-        `.${cx("editor__code-text")}`
-      );
-      codeTexts.forEach((el) => {
-        gsap.set(el, { opacity: 1, width: "100%" });
-      });
-    }, 100);
-  };
-
   // Efecto para animar el código cuando cambia la tab (solo si esa tab no ha sido animada antes)
   useEffect(() => {
     if (!initialAnimationDone) return;
 
     // Check if this tab needs animation
     if (animatedTabs[activeTab]) {
-      // Para tabs ya animados, solo asegurar que el código sea visible
-      resetCodeVisibility();
-      return;
+      return; // Skip animation if this tab has already been animated
     }
 
     // Animate the code for this tab
@@ -217,38 +178,24 @@ export const CodeEditorAnimation = () => {
         );
         const codeTimeline = gsap.timeline({
           defaults: { ease: "power2.out" },
-          onComplete: resetCodeVisibility,
         });
-
-        // Ajustar velocidad y desplazamiento según tamaño de pantalla
-        const xOffset = isMobile ? -10 : isTablet ? -15 : -20;
-        const staggerDelay = isMobile ? 0.01 : isTablet ? 0.015 : 0.02;
-        const duration = isMobile ? 0.25 : isTablet ? 0.3 : 0.35;
 
         codeLines.forEach((line, index) => {
           const textElement = line.querySelector(`.${cx("editor__code-text")}`);
 
           codeTimeline.fromTo(
             line,
-            { x: xOffset, opacity: 0 },
-            { x: 0, opacity: 1, duration },
-            index * staggerDelay
+            { x: -20, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.4 },
+            index * 0.03
           );
 
           if (textElement) {
             codeTimeline.fromTo(
               textElement,
               { width: "0%", opacity: 0 },
-              {
-                width: "100%",
-                opacity: 1,
-                duration: duration - 0.05,
-                onComplete: () => {
-                  // Garantizar que cada elemento se mantenga visible con verificación de tipo
-                  gsap.set(textElement, { opacity: 1, width: "100%" });
-                },
-              },
-              "-=0.15"
+              { width: "100%", opacity: 1, duration: 0.3 },
+              "-=0.2"
             );
           }
         });
@@ -261,12 +208,10 @@ export const CodeEditorAnimation = () => {
     };
 
     animateCodeLines();
-  }, [activeTab, initialAnimationDone, cx, animatedTabs, isMobile, isTablet]);
+  }, [activeTab, initialAnimationDone, cx, animatedTabs]);
 
   // Detectar cuando el componente está visible
-  useLayoutEffect(() => {
-    if (!containerRef.current) return;
-
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -276,25 +221,19 @@ export const CodeEditorAnimation = () => {
           }
         });
       },
-      // Configuración adaptativa por dispositivo
-      {
-        threshold: isMobile ? 0.2 : isTablet ? 0.25 : 0.35,
-        rootMargin: isMobile
-          ? "0px 0px -30px 0px"
-          : isTablet
-          ? "0px 0px -50px 0px"
-          : "0px 0px -100px 0px",
-      }
+      { threshold: 0.35, rootMargin: "0px 0px -100px 0px" }
     );
 
-    observer.observe(containerRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => observer.disconnect();
-  }, [shouldAnimate, isMobile, isTablet]);
+  }, [shouldAnimate]);
 
   // Ejecutar la animación inicial cuando el componente es visible
-  useLayoutEffect(() => {
-    if (!shouldAnimate || !containerRef.current) return;
+  useEffect(() => {
+    if (!shouldAnimate) return;
 
     const ctx = gsap.context(() => {
       // Elementos principales
@@ -302,130 +241,69 @@ export const CodeEditorAnimation = () => {
       const editor = document.querySelector(`.${cx("editor__content")}`);
       const footer = footerRef.current;
 
-      // Ajuste de valores de animación según dispositivo
-      const animConfig = {
-        duration: isMobile ? 0.4 : isTablet ? 0.5 : 0.6,
-        tabsX: isMobile ? "-40%" : isTablet ? "-70%" : "-100%",
-        editorY: isMobile ? "20" : isTablet ? "30" : "40",
-        footerY: isMobile ? "10" : isTablet ? "15" : "20",
-        rotationX: isMobile ? 3 : isTablet ? 4 : 5,
-      };
-
       // Timeline principal
       const mainTimeline = gsap.timeline({
-        defaults: { ease: "power3.out", duration: animConfig.duration },
+        defaults: { ease: "power3.out", duration: 0.8 },
         onComplete: () => {
           setInitialAnimationDone(true);
+          // Mark the initial tab as animated
           setAnimatedTabs((prev) => ({ ...prev, [activeTab]: true }));
-
-          // Garantizar que el código sea visible después de la animación principal
-          resetCodeVisibility();
         },
       });
 
-      // Primero hacer visible el contenedor
-      gsap.to(containerRef.current, { autoAlpha: 1, duration: 0.2 });
-
-      // Animación de los elementos principales
+      // Animación de los elementos principales (solo una vez)
       mainTimeline
         .fromTo(
           tabs,
-          { x: animConfig.tabsX, opacity: 0 },
-          { x: "0", opacity: 1, duration: animConfig.duration * 0.9 }
+          { x: "-100%", opacity: 0 },
+          { x: "0", opacity: 1, duration: 0.5 }
         )
         .fromTo(
           editor,
-          {
-            y: animConfig.editorY,
-            opacity: 0,
-            rotationX: animConfig.rotationX,
-          },
-          { y: "0", opacity: 1, rotationX: 0, duration: animConfig.duration },
+          { y: "50", opacity: 0 },
+          { y: "0", opacity: 1, duration: 0.6 },
           "-=0.3"
         )
         .fromTo(
           footer,
-          { y: animConfig.footerY, opacity: 0 },
-          { y: "0", opacity: 1, duration: animConfig.duration * 0.9 },
+          { y: "20", opacity: 0 },
+          { y: "0", opacity: 1, duration: 0.5 },
           "-=0.6"
         );
 
-      // Animación de las líneas de código
+      // Animación de las líneas de código iniciales
       const codeLines = document.querySelectorAll(
         `.${cx("editor__code-line")}`
       );
       const codeTimeline = gsap.timeline({
         defaults: { ease: "power2.out" },
-        onComplete: resetCodeVisibility, // Garantiza que el código sea visible al finalizar
       });
-
-      // Ajustar stagger según dispositivo
-      const staggerDelay = isMobile ? 0.01 : isTablet ? 0.015 : 0.02;
-      const xOffset = isMobile ? -10 : isTablet ? -15 : -20;
-      const duration = isMobile ? 0.25 : isTablet ? 0.3 : 0.35;
 
       codeLines.forEach((line, index) => {
         const textElement = line.querySelector(`.${cx("editor__code-text")}`);
 
         codeTimeline.fromTo(
           line,
-          { x: xOffset, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration,
-            clearProps: "x", // Limpiar la propiedad x para prevenir problemas
-          },
-          index * staggerDelay
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.4 },
+          index * 0.03
         );
 
         if (textElement) {
           codeTimeline.fromTo(
             textElement,
             { width: "0%", opacity: 0 },
-            {
-              width: "100%",
-              opacity: 1,
-              duration: duration - 0.05,
-              onComplete: () => {
-                // Verificar y convertir el elemento correctamente para acceder a style
-                if (textElement instanceof HTMLElement) {
-                  textElement.style.opacity = "1";
-                  textElement.style.width = "100%";
-                } else {
-                  // Si no es un HTMLElement, usar gsap.set como alternativa
-                  gsap.set(textElement, { opacity: 1, width: "100%" });
-                }
-              },
-            },
-            "-=0.15"
+            { width: "100%", opacity: 1, duration: 0.3 },
+            "-=0.2"
           );
         }
       });
 
       mainTimeline.add(codeTimeline, "-=0.5");
-
-      // Configurar ScrollTrigger para móviles
-      if (isMobile || isTablet) {
-        ScrollTrigger.create({
-          id: animationId.current,
-          trigger: containerRef.current,
-          start: isMobile ? "top 90%" : "top 85%",
-          onEnter: () => {
-            mainTimeline.play();
-          },
-          once: true,
-        });
-      }
     }, containerRef);
 
-    return () => {
-      ctx.revert();
-      if (isMobile || isTablet) {
-        ScrollTrigger.getById(animationId.current)?.kill();
-      }
-    };
-  }, [shouldAnimate, cx, activeTab, isMobile, isTablet]);
+    return () => ctx.revert();
+  }, [shouldAnimate, cx, activeTab]);
 
   // Para sincronizar el scroll entre números de línea y el código
   useEffect(() => {
@@ -444,22 +322,8 @@ export const CodeEditorAnimation = () => {
     return () => codeElement.removeEventListener("scroll", handleScroll);
   }, [cx, activeTab]);
 
-  // Recrear animaciones cuando cambia el tamaño de pantalla
-  useEffect(() => {
-    if (initialAnimationDone) {
-      // Asegurar que el texto sea visible si ya se ha completado la animación
-      resetCodeVisibility();
-    }
-  }, [isMobile, isTablet, initialAnimationDone]);
-
   return (
-    <div
-      ref={containerRef}
-      className={cx("editor", {
-        "editor--mobile": isMobile,
-        "editor--tablet": isTablet,
-      })}
-    >
+    <div ref={containerRef} className={cx("editor")}>
       {/* Editor Tabs */}
       <div className={cx("editor__tabs")}>
         <div

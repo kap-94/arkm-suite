@@ -4,6 +4,33 @@ import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import gsap from "gsap";
 import styles from "./LandingWireframe.module.scss";
+import dynamic from "next/dynamic";
+
+// Importar el componente Earth3D con dynamic import para evitar problemas de SSR
+const Earth3D = dynamic(() => import("./Earth3D"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
+          background: "#4f46e5",
+          opacity: 0.5,
+        }}
+      ></div>
+    </div>
+  ),
+});
 
 const cx = classNames.bind(styles);
 
@@ -12,9 +39,31 @@ export const LandingWireframe = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const heroRef = useRef<HTMLElement | null>(null);
   const featuresRef = useRef<HTMLDivElement | null>(null);
+  const earthContainerRef = useRef<HTMLDivElement | null>(null);
   const gridItemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  // Detectar cambios en el tamaño de la ventana para responsividad
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 480);
+      setIsTablet(window.innerWidth > 480 && window.innerWidth <= 768);
+    };
+
+    // Verificar tamaño al montar
+    handleResize();
+
+    // Escuchar cambios de tamaño
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const addToGridRefs = (el: HTMLDivElement | null, index: number) => {
     if (el && !gridItemsRef.current.includes(el)) {
@@ -28,33 +77,74 @@ export const LandingWireframe = () => {
       !headerRef.current ||
       !heroRef.current ||
       !featuresRef.current ||
-      !timeline.current
+      !timeline.current ||
+      !earthContainerRef.current
     )
       return;
 
     timeline.current.clear();
+
+    // Adaptar la animación según el tamaño de pantalla
+    const animationConfig = {
+      headerX: isMobile ? "-50%" : "-100%",
+      heroY: isMobile ? "30" : "50",
+      earthScale: isMobile ? 0.9 : 0.8,
+      featuresY: isMobile ? "20" : "30",
+      itemDelay: isMobile ? 0.03 : 0.05,
+    };
 
     // Establecer animaciones pero pausarlas inicialmente
     // Animación del Header
     timeline.current
       .fromTo(
         headerRef.current,
-        { x: "-100%", opacity: 0 },
+        { x: animationConfig.headerX, opacity: 0 },
         { x: "0", opacity: 1 }
       )
       // Animación del Hero
       .fromTo(
         heroRef.current,
-        { y: "50", opacity: 0 },
+        { y: animationConfig.heroY, opacity: 0 },
         { y: "0", opacity: 1, duration: 0.6 },
         "-=0.4"
+      )
+      // Animación del Earth Container - versión adaptada para responsividad
+      .fromTo(
+        earthContainerRef.current,
+        {
+          scale: animationConfig.earthScale,
+          opacity: 0,
+          transformOrigin: "center center",
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.7,
+          ease: "power3.out",
+          onComplete: () => {
+            // No limpiamos la propiedad transform para evitar reajustes visuales
+            if (earthContainerRef.current) {
+              // Mantener la transformación final explícitamente en lugar de limpiarla
+              gsap.set(earthContainerRef.current, {
+                scale: 1,
+                transformOrigin: "center center",
+              });
+            }
+            // Marcar como no animando
+            setIsAnimating(false);
+          },
+          onStart: () => {
+            setIsAnimating(true);
+          },
+        },
+        "-=0.3"
       )
       // Animación del Features Header
       .fromTo(
         featuresRef.current,
-        { y: "30", opacity: 0 },
+        { y: animationConfig.featuresY, opacity: 0 },
         { y: "0", opacity: 1, duration: 0.5 },
-        "-=0.3"
+        "-=0.2"
       );
 
     // Animación de los Items de Features con efecto "shine"
@@ -76,7 +166,7 @@ export const LandingWireframe = () => {
             }, 1000);
           },
         },
-        `-=${index ? 0.2 : 0.2}`
+        `-=${index ? animationConfig.itemDelay : animationConfig.itemDelay}`
       );
     });
 
@@ -102,6 +192,10 @@ export const LandingWireframe = () => {
       heroRef.current.style.visibility = "hidden";
       heroRef.current.style.opacity = "0";
     }
+    if (earthContainerRef.current) {
+      earthContainerRef.current.style.visibility = "hidden";
+      earthContainerRef.current.style.opacity = "0";
+    }
     if (featuresRef.current) {
       featuresRef.current.style.visibility = "hidden";
       featuresRef.current.style.opacity = "0";
@@ -117,7 +211,7 @@ export const LandingWireframe = () => {
       timeline.current = gsap.timeline({
         defaults: {
           ease: "power3.out",
-          duration: 0.8,
+          duration: isMobile ? 0.7 : 0.8, // Animaciones ligeramente más rápidas en móvil
         },
       });
 
@@ -128,8 +222,14 @@ export const LandingWireframe = () => {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
+            // Ajustar el umbral de intersección según el dispositivo
+            const thresholdRatio = isMobile ? 0.25 : 0.35;
+
             // Si el componente es visible aproximadamente a la mitad del viewport o un poco antes
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+            if (
+              entry.isIntersecting &&
+              entry.intersectionRatio >= thresholdRatio
+            ) {
               // Iniciar la animación
               startAnimation();
 
@@ -139,6 +239,9 @@ export const LandingWireframe = () => {
               }
               if (heroRef.current) {
                 heroRef.current.style.visibility = "visible";
+              }
+              if (earthContainerRef.current) {
+                earthContainerRef.current.style.visibility = "visible";
               }
               if (featuresRef.current) {
                 featuresRef.current.style.visibility = "visible";
@@ -155,10 +258,10 @@ export const LandingWireframe = () => {
           });
         },
         {
-          // Configurar el umbral para que se active cuando al menos el 35% del componente esté visible
-          threshold: [0.35],
-          // Configurar rootMargin para activar la animación un poco antes (100px antes de llegar al centro)
-          rootMargin: "0px 0px -100px 0px",
+          // Configurar el umbral para que se active según el dispositivo
+          threshold: [isMobile ? 0.25 : 0.35],
+          // Configurar rootMargin para activar la animación un poco antes
+          rootMargin: isMobile ? "0px 0px -50px 0px" : "0px 0px -100px 0px",
         }
       );
 
@@ -189,10 +292,23 @@ export const LandingWireframe = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile, isTablet]);
+
+  // Recrear las animaciones si cambia el tamaño del dispositivo
+  useEffect(() => {
+    if (hasAnimated) {
+      setupAnimation();
+    }
+  }, [isMobile, isTablet]);
 
   return (
-    <div ref={containerRef} className={cx("landing", "wireframe")}>
+    <div
+      ref={containerRef}
+      className={cx("landing", "wireframe", {
+        "landing--mobile": isMobile,
+        "landing--tablet": isTablet,
+      })}
+    >
       <header ref={headerRef} className={cx("landing__header")}>
         <div className={cx("landing__header-content")}>
           {/* Logo Minimalista */}
@@ -232,177 +348,14 @@ export const LandingWireframe = () => {
           </div>
         </div>
 
-        {/* Contenedor de la imagen del Hero con SVG inline */}
-        <div className={cx("landing__hero-image")}>
-          <div className={cx("landing__hero-image-overlay")}>
-            <svg
-              className={cx("landing__hero-image-svg")}
-              width="100%"
-              height="100%"
-              viewBox="0 0 600 400"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient
-                  id="neoGradient1A"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#18181f" />
-                </linearGradient>
-                <filter id="neoShadow1A">
-                  <feDropShadow
-                    dx="5"
-                    dy="5"
-                    stdDeviation="3"
-                    floodColor="#000"
-                    floodOpacity="0.3"
-                  />
-                  <feDropShadow
-                    dx="-5"
-                    dy="-5"
-                    stdDeviation="3"
-                    floodColor="#6366f1"
-                    floodOpacity="0.1"
-                  />
-                </filter>
-                <filter id="glow1A">
-                  <feGaussianBlur stdDeviation="2" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-
-              {/* Grupo principal con animación de rotación */}
-              <g className={cx("rotating-group")}>
-                {/* Formas neomórficas - Dos triángulos (más grandes) */}
-                <polygon
-                  points="150,80 420,120 300,320"
-                  // fill="url(#neoGradient1A)"
-                  fill="url(#neoGradient1A)"
-                  filter="url(#neoShadow1A)"
-                />
-
-                <polygon
-                  points="180,100 400,140 280,300"
-                  fill="#1f1f2c"
-                  filter="url(#neoShadow1A)"
-                  opacity="0.7"
-                />
-
-                {/* Vértices brillantes del triángulo principal (círculos perfectos) */}
-                <circle
-                  cx="150"
-                  cy="80"
-                  r="8"
-                  fill="#6366f1"
-                  filter="url(#glow1A)"
-                />
-                <circle
-                  cx="420"
-                  cy="120"
-                  r="8"
-                  fill="#818cf8"
-                  filter="url(#glow1A)"
-                />
-                <circle
-                  cx="300"
-                  cy="320"
-                  r="8"
-                  fill="#4f46e5"
-                  filter="url(#glow1A)"
-                />
-
-                {/* Vértices brillantes del triángulo secundario (círculos perfectos) */}
-                <circle
-                  cx="180"
-                  cy="100"
-                  r="5"
-                  fill="#6366f1"
-                  filter="url(#glow1A)"
-                  opacity="0.7"
-                />
-                <circle
-                  cx="400"
-                  cy="140"
-                  r="5"
-                  fill="#818cf8"
-                  filter="url(#glow1A)"
-                  opacity="0.7"
-                />
-                <circle
-                  cx="280"
-                  cy="300"
-                  r="5"
-                  fill="#4f46e5"
-                  filter="url(#glow1A)"
-                  opacity="0.7"
-                />
-
-                {/* Líneas conectoras sutiles */}
-                <line
-                  x1="150"
-                  y1="80"
-                  x2="420"
-                  y2="120"
-                  stroke="#6366f1"
-                  strokeWidth="2"
-                  strokeOpacity="0.3"
-                />
-                <line
-                  x1="420"
-                  y1="120"
-                  x2="300"
-                  y2="320"
-                  stroke="#818cf8"
-                  strokeWidth="2"
-                  strokeOpacity="0.3"
-                />
-                <line
-                  x1="300"
-                  y1="320"
-                  x2="150"
-                  y2="80"
-                  stroke="#4f46e5"
-                  strokeWidth="2"
-                  strokeOpacity="0.3"
-                />
-
-                {/* Líneas conectoras entre los dos triángulos */}
-                <line
-                  x1="150"
-                  y1="80"
-                  x2="180"
-                  y2="100"
-                  stroke="#6366f1"
-                  strokeWidth="1.5"
-                  strokeOpacity="0.2"
-                  strokeDasharray="3,2"
-                />
-                <line
-                  x1="420"
-                  y1="120"
-                  x2="400"
-                  y2="140"
-                  stroke="#818cf8"
-                  strokeWidth="1.5"
-                  strokeOpacity="0.2"
-                  strokeDasharray="3,2"
-                />
-                <line
-                  x1="300"
-                  y1="320"
-                  x2="280"
-                  y2="300"
-                  stroke="#4f46e5"
-                  strokeWidth="1.5"
-                  strokeOpacity="0.2"
-                  strokeDasharray="3,2"
-                />
-              </g>
-            </svg>
+        {/* Reemplazando el SVG con el componente 3D Earth */}
+        <div
+          ref={earthContainerRef}
+          className={cx("landing__hero-image")}
+          data-animating={isAnimating ? "true" : "false"} // Atributo para gestionar estado
+        >
+          <div className={cx("landing__hero-image-overlay", "earth-container")}>
+            <Earth3D />
           </div>
         </div>
       </section>
