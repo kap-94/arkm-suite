@@ -15,6 +15,7 @@ export type BrandVariant =
   | "wide-separator"
   | "framed"
   | "minimal"
+  | "minimal-right"
   | "stacked"
   | "bracket"
   | "elevated"
@@ -85,6 +86,22 @@ export const Brand: React.FC<BrandProps> = ({
               <span
                 className={cx("logo-text", "logo-text--studio-under")}
                 style={{ marginRight: "-1px" }}
+              >
+                SUITE
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Variation: Minimal Right - clean and simple with smaller STUDIO on the right */}
+        {variant === "minimal-right" && (
+          <div
+            className={cx("logo-container", "logo-container--minimal-right")}
+          >
+            <span className={cx("logo-text", "logo-text--bold")}>ARKM</span>
+            {showStudio && (
+              <span
+                className={cx("logo-text", "logo-text--studio-right-aligned")}
               >
                 SUITE
               </span>

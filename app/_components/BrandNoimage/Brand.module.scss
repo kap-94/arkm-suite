@@ -25,6 +25,13 @@
         gap: 2px;
       }
 
+      // Minimal Right variant container
+      &--minimal-right {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 8px;
+      }
+
       // Stacked variant container
       &--stacked {
         flex-direction: column;
@@ -70,6 +77,14 @@
         font-weight: 300;
         letter-spacing: 0.08em;
         margin-top: -4px;
+      }
+
+      // Studio right-aligned for minimal-right variant
+      &--studio-right-aligned {
+        font-size: 0.425em;
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        transform: translateY(0px);
       }
 
       // Studio right-aligned
@@ -223,6 +238,18 @@
     &--minimal {
       .logo-text--bold {
         border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
+      }
+
+      &:hover .logo-text--bold {
+        // border-bottom-color: $primary-color;
+      }
+    }
+
+    // Minimal Right variant
+    &--minimal-right {
+      .logo-text--bold {
+        transform: translateY(3px);
         transition: border-color 0.3s ease;
       }
 
@@ -542,7 +569,7 @@
 
         .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
             .logo-text--studio-elevated
-          ) {
+          ):not(.logo-text--studio-right-aligned) {
           border-right: 2px solid $text-primary;
           padding-right: 16px;
         }
@@ -574,7 +601,7 @@
 
         .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
             .logo-text--studio-elevated
-          ) {
+          ):not(.logo-text--studio-right-aligned) {
           border-right-width: 1px;
           padding-right: 12px;
         }
@@ -606,7 +633,7 @@
 
         .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
             .logo-text--studio-elevated
-          ) {
+          ):not(.logo-text--studio-right-aligned) {
           border-right-width: 3px;
           padding-right: 20px;
         }
