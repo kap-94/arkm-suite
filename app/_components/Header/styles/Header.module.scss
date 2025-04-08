@@ -140,18 +140,14 @@
     display: flex;
     height: 100%;
     align-items: center;
-    justify-content: space-between; // Asegura que los elementos estén distribuidos
-
-    @include tablet {
-      justify-content: space-between; // Mantiene la distribución en tablet/móvil
-    }
+    justify-content: flex-end; // Asegura que los elementos estén distribuidos
 
     &-wrapper {
       width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
-      gap: $spacing-md;
+      gap: $spacing-lg;
       position: relative; // For absolute positioning of mobile menu
     }
   }
@@ -194,9 +190,9 @@
     );
 
     // Mantener centrado en todos los dispositivos
-    position: absolute;
-    right: 50%;
-    transform: translateX(50%);
+    // position: absolute;
+    // right: 50%;
+    // transform: translateX(50%);
 
     &-subtitle {
       letter-spacing: 0.046em !important;
