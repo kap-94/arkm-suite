@@ -73,7 +73,7 @@ const ExpandableFeature = ({
           color="primary"
           theme="dark"
           fontFamily="sofia"
-          fontWeight={400}
+          fontWeight={500}
         >
           {feature.title}
         </Typography>
@@ -94,7 +94,7 @@ const ExpandableFeature = ({
             color="secondary"
             theme="dark"
             fontFamily="sofia"
-            fontWeight={400}
+            fontWeight={500}
           >
             {feature.description}
           </Typography>
@@ -158,9 +158,9 @@ export const SolutionCard = ({
             </span>
           </div> */}
           <Typography
-            variant="h4"
+            variant="h3"
             className={cx("solution-card__title")}
-            fontWeight={500}
+            fontWeight={600}
             fontFamily="sofia"
             theme="dark"
             data-text={title}
@@ -172,9 +172,9 @@ export const SolutionCard = ({
         <Typography
           variant="p1"
           className={cx("solution-card__description")}
-          color="primary"
+          color="secondary"
           fontFamily="sofia"
-          fontWeight={400}
+          fontWeight={500}
           theme="dark"
         >
           {description}
