@@ -9,9 +9,9 @@ import { ThemedDropdown } from "../Dropdown";
 import Spinner from "../Spinner";
 import { useProjectFilters } from "./hooks/useProjectFilters";
 import { DashboardProjectsProps, ViewMode } from "./types";
-import styles from "./DashboardProjects.module.scss";
 import { useDashboard } from "../../_context/DashboardContext";
 import { VIEW_PREFERENCES } from "@/app/_lib/constants/viewPreferences";
+import styles from "./DashboardProjects.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -74,7 +74,7 @@ export const DashboardProjects: React.FC<DashboardProjectsProps> = ({
       <div className={cx("dashboard-projects__header")}>
         <div className={cx("dashboard-projects__title-wrapper")}>
           <ThemedTypography
-            variant="h4"
+            variant="h5"
             fontWeight={400}
             className={cx("dashboard-projects__title")}
             noWrap
