@@ -23,9 +23,10 @@ export function FeatureCard({
       <div className={cx("feature-card-mobile")}>
         <span className={cx("feature-card-mobile__icon")}>{icon}</span>
         <Typography
+          fontFamily="sofia"
           variant="p3"
           color="secondary"
-          fontWeight={500}
+          fontWeight={400}
           align="center"
           theme={{ type: "dark" }}
           className={cx("feature-card-mobile__title")}
@@ -41,6 +42,7 @@ export function FeatureCard({
       <span className={cx("feature-card__icon")}>{icon}</span>
       <div>
         <Typography
+          fontFamily="sofia"
           variant="p1"
           // color="secondary"
           fontWeight={500}
@@ -50,10 +52,12 @@ export function FeatureCard({
           {title}
         </Typography>
         <Typography
+          fontFamily="sofia"
           variant="p1"
           color="secondary"
           fontWeight={300}
           theme={{ type: "dark" }}
+          className={cx("feature-card__description")}
         >
           {description}
         </Typography>

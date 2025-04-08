@@ -3,7 +3,7 @@
 
 .feature-card {
   @include flex(row, flex-start, center, $spacing-md);
-  padding: $spacing-xl $spacing-lg;
+  padding: $spacing-lg;
   background: linear-gradient(
     to right,
     rgba($primary-color, 0.05),
@@ -55,6 +55,10 @@
 
   &__title {
     margin-bottom: $spacing-xs;
+  }
+
+  &__description {
+    max-width: 420px;
   }
 }
 
