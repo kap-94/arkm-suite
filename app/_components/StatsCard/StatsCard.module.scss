@@ -66,11 +66,11 @@ $stats-card-theme-map: (
 .stats-card {
   position: relative;
   padding: $spacing-lg;
-  border-radius: $border-radius-lg;
+  border-radius: $border-radius-md;
   transition: all $transition-duration-fast ease;
   overflow: hidden;
   // min-height: 148px;
-  min-height: 140px;
+  min-height: 132px;
 
   @each $theme, $values in $stats-card-theme-map {
     &--theme-#{$theme} {
@@ -193,7 +193,7 @@ $stats-card-theme-map: (
   &__text {
     flex-grow: 1;
     min-width: 0;
-    @include flex($direction: column, $align: flex-start, $gap: $spacing-xs);
+    @include flex($direction: column, $align: flex-start, $gap: 6px);
   }
 
   &__label {
