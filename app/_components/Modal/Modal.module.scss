@@ -51,6 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: $z-index-modal;
 
     &:hover {
       background: rgba($text-primary, 0.1);
