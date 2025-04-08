@@ -68,7 +68,7 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({
             color="secondary"
             fontFamily="sofia"
             theme="dark"
-            data-text={title}
+            // data-text={title}
           >
             {title}
           </Typography>

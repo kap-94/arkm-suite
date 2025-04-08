@@ -182,7 +182,7 @@ $tw-filter-chain: $tw-blur brightness(100%) contrast(100%) grayscale(0)
     .portfolio-card__description {
       text-align: right;
       background: linear-gradient(
-        to light,
+        to right,
         transparent 25%,
         rgba(255, 255, 255, 0.03) 100%
       );
