@@ -1,13 +1,10 @@
-// Brand.module.scss
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
 
 .brand {
   .logo {
-    font-family: "prohibition", sans-serif;
     font-family: "sofia-pro", sans-serif;
-    font-size: 24px !important;
-    color: rgba($text-primary, 0.9);
+    font-size: 26px !important;
     color: $white-base;
     text-decoration: none;
     letter-spacing: 0.03em;
@@ -22,654 +19,183 @@
       // Minimal variant container
       &--minimal {
         flex-direction: column;
-        align-items: flex-end;
-      }
-
-      // Stacked variant container
-      &--stacked {
-        flex-direction: column;
         align-items: center;
       }
+    }
 
-      // Bracket variant container
-      &--bracket {
-        padding: 0 4px;
-      }
+    &-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
 
-      // Elevated variant container
-      &--elevated {
-        position: relative;
+      &:hover {
+        transform: scale(1.05); // Mantener el traslado incluso al hacer hover
       }
+    }
 
-      // Underlined variant container
-      &--underlined {
-        flex-direction: column;
-        align-items: flex-start;
-        position: relative;
-      }
+    &-image {
+      display: block;
+      filter: brightness(0) invert(92%) sepia(30%) saturate(866%)
+        hue-rotate(293deg) brightness(123%) contrast(87%);
     }
 
     &-text {
-      // Default text styles
-
-      &--bold {
-        font-weight: 400 !important;
-      }
-
-      // Studio text styles
-      &--studio {
-        font-size: 0.65em;
-        font-weight: 300;
-        letter-spacing: 0.08em;
-      }
-
-      // Studio underneath style
       &--studio-under {
         font-size: 0.4em;
-        font-weight: 300;
-        letter-spacing: 0.08em;
-        margin-top: -4px;
+        font-weight: 400;
+        color: $text-secondary;
+        letter-spacing: 0.07em;
+        transform: translateY(-6px);
       }
-
-      // Studio right-aligned
-      &--studio-right {
-        align-self: flex-end;
-      }
-
-      // Studio elevated (superscript)
-      &--studio-elevated {
-        font-size: 0.35em;
-        font-weight: 300;
-        letter-spacing: 0.08em;
-        position: absolute;
-        top: 0;
-        right: -16px;
-      }
-    }
-
-    &-dot {
-      color: $primary-color;
-    }
-
-    &-separator {
-      height: 24px;
-      width: 1.24px;
-      background: linear-gradient(to bottom, transparent, $primary-color 75%);
-      margin-inline: 8px;
-      transform: rotate(20deg);
-    }
-
-    // Bracket elements
-    &-bracket {
-      color: $primary-color;
-      font-weight: 300;
-      display: inline-block;
-
-      &--left {
-        margin-right: 4px;
-      }
-
-      &--right {
-        margin-left: 4px;
-      }
-    }
-
-    // Underline element
-    &-underline {
-      height: 1px;
-      width: 100%;
-      background: linear-gradient(to right, $text-primary, $primary-color);
-      margin-top: 2px;
-      margin-bottom: 4px;
     }
 
     // Size variants
     &--xs {
       font-size: 16px;
 
-      .logo-separator {
-        height: 16px;
-        width: 1px;
-        margin: 0 6px;
-      }
-
       .logo-container {
         padding: 6px 0;
       }
 
-      .logo-text--studio-elevated {
-        font-size: 0.35em;
-        top: 0;
-        right: -12px;
+      .logo-image-container {
+        .logo-image {
+          width: 24px !important;
+          height: 24px !important;
+        }
       }
     }
 
     &--sm {
       font-size: 20px;
 
-      .logo-separator {
-        height: 20px;
-        width: 1.5px;
-        margin: 0 8px;
-      }
-
       .logo-container {
         padding: 8px 0;
       }
 
-      .logo-text--studio-elevated {
-        right: -14px;
+      .logo-image-container {
+        .logo-image {
+          width: 32px !important;
+          height: 32px !important;
+        }
       }
     }
 
     &--md {
-      // Default size - no changes needed
+      // Default size
+      .logo-image-container {
+        .logo-image {
+          width: 48px !important;
+          height: 48px !important;
+        }
+      }
     }
 
     &--lg {
       font-size: 32px;
 
-      .logo-separator {
-        height: 32px;
-        width: 0.5px;
-        margin: 0 12px;
-      }
-
       .logo-container {
         padding: 12px 0;
       }
 
-      .logo-text--studio-elevated {
-        right: -20px;
+      .logo-image-container {
+        .logo-image {
+          width: 72px !important;
+          height: 72px !important;
+        }
       }
     }
 
     &--xl {
       font-size: 40px;
 
-      .logo-separator {
-        height: 40px;
-        width: 3px;
-        margin: 0 16px;
-      }
-
       .logo-container {
         padding: 16px 0;
       }
 
-      .logo-text--studio-elevated {
-        right: -24px;
-      }
-    }
-
-    // Default variant mobile styles
-    &--default {
-      @include mobile {
-        font-size: 18px; // Tamaño más pequeño en mobile
-
-        .logo-separator,
-        .logo-text:not(.logo-text--bold) {
-          display: none;
-        }
-
-        .logo-container {
-          padding: 6px 0;
+      .logo-image-container {
+        .logo-image {
+          width: 56px !important;
+          height: 56px !important;
         }
       }
     }
 
     // Minimal variant
     &--minimal {
-      .logo-text--bold {
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.3s ease;
-      }
-
-      &:hover .logo-text--bold {
-        border-bottom-color: $primary-color;
-      }
-    }
-
-    // Stacked variant
-    &--stacked {
-      .logo-text--studio {
-        margin-top: -6px;
-      }
-    }
-
-    // Bracket variant
-    &--bracket {
-      .logo-text--studio {
-        font-size: 0.5em;
-        margin-left: 4px;
-      }
-    }
-
-    // Elevated variant
-    &--elevated {
-      .logo-text--bold {
-        position: relative;
-      }
-    }
-
-    // Underlined variant
-    &--underlined {
-      .logo-text--studio-right {
-        margin-top: 0;
-      }
-    }
-
-    // Perspective variant
-    &--perspective {
-      .logo-text--perspective {
-        display: inline-flex;
-        transform: perspective(500px) rotateY(10deg);
-        transform-style: preserve-3d;
-
-        .logo-text-char {
-          display: inline-block;
-          font-weight: 400;
-          transition: transform 0.3s ease;
-
-          &:nth-child(1) {
-            transform: translateZ(1px);
-          }
-          &:nth-child(2) {
-            transform: translateZ(3px);
-          }
-          &:nth-child(3) {
-            transform: translateZ(5px);
-          }
-          &:nth-child(4) {
-            transform: translateZ(1px);
-          }
-        }
-      }
-
-      .logo-text--studio-perspective {
-        margin-left: 10px;
-        transform: perspective(500px) rotateY(-5deg);
-      }
-
-      &:hover {
-        .logo-text-char {
-          &:nth-child(1) {
-            transform: translateZ(2px);
-          }
-          &:nth-child(2) {
-            transform: translateZ(6px);
-          }
-          &:nth-child(3) {
-            transform: translateZ(10px);
-          }
-          &:nth-child(4) {
-            transform: translateZ(2px);
-          }
-        }
-      }
-    }
-
-    // Twist variant
-    &--twist {
-      .logo-text--twist {
-        display: inline-flex;
-        font-weight: 400;
-        position: relative;
-
-        .logo-text-char {
-          display: inline-block;
-          transition: all 0.3s ease;
-
-          &--twist {
-            transform: rotateY(20deg) translateZ(2px);
-            color: rgba($text-primary, 0.85);
-          }
-        }
-      }
-
-      .logo-text--studio-twist {
-        margin-left: 10px;
-        opacity: 0.8;
-        transform: translateY(2px);
-      }
-
-      &:hover {
-        .logo-text-char--twist {
-          transform: rotateY(-20deg) translateZ(2px);
-        }
-      }
-    }
-
-    // Fold variant
-    &--fold {
-      .logo-text--fold {
-        display: flex;
-        align-items: center;
-        font-weight: 400;
+      .logo-image-container {
         position: relative;
       }
 
-      .logo-text-fold {
-        display: inline-block;
-        transition: transform 0.4s ease;
-
-        &--left {
-          transform: perspective(300px) rotateY(15deg);
-          transform-origin: right center;
-        }
-
-        &--right {
-          transform: perspective(300px) rotateY(-15deg);
-          transform-origin: left center;
-        }
-      }
-
-      .logo-text-fold-line {
-        width: 2px;
-        height: 70%;
-        background: linear-gradient(
-          to bottom,
-          transparent,
-          $primary-color,
-          transparent
-        );
-        margin: 0 1px;
-      }
-
-      .logo-text--studio-fold {
-        margin-left: 10px;
-        font-size: 0.5em;
-        transform: translateY(4px);
-      }
-
-      &:hover {
-        .logo-text-fold--left {
-          transform: perspective(300px) rotateY(25deg);
-        }
-
-        .logo-text-fold--right {
-          transform: perspective(300px) rotateY(-25deg);
-        }
+      &:hover .logo-image-container::after {
+        width: 100%;
       }
     }
 
-    // Depth variant
-    &--depth {
-      .logo-text--depth {
-        position: relative;
-        display: inline-block;
-        font-weight: 400;
-      }
-
-      .logo-text-shadow {
-        position: absolute;
-        top: 1px;
-        left: 1px;
-        color: rgba($primary-color, 0.3);
-        z-index: 1;
-      }
-
-      .logo-text-front {
-        position: relative;
-        z-index: 2;
-      }
-
-      .logo-text--studio-depth {
-        margin-left: 10px;
-        position: relative;
-
-        &:before {
-          content: "STUDIO";
-          position: absolute;
-          top: 1px;
-          left: 1px;
-          color: rgba($primary-color, 0.3);
-          z-index: 1;
-        }
-      }
-
-      &:hover {
-        .logo-text-shadow {
-          top: 2px;
-          left: 2px;
-        }
-
-        .logo-text--studio-depth:before {
-          top: 2px;
-          left: 2px;
-        }
-      }
+    @include tablet {
+      transform: translateY(-4px); // Un poco menos de traslado en móviles
     }
 
-    // Double Border Variant
-    &--double-border {
-      .logo-container {
-        padding: 10px 4px;
-
-        &::before,
-        &::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          width: 100%;
-          height: 1.5px;
-          background-color: rgba($text-primary, 0.9);
-        }
-
-        &::before {
-          top: 0;
-
-          &::after {
-            content: "";
-            position: absolute;
-            top: 4px;
-            left: 0;
-            width: 75%;
-            height: 2px;
-            background-color: $primary-color;
-          }
-        }
-
-        &::after {
-          bottom: 0;
-
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: 4px;
-            right: 0;
-            width: 75%;
-            height: 1px;
-            background-color: $primary-color;
-          }
-        }
-      }
-    }
-
-    // Asymmetric Variant
-    &--asymmetric {
-      .logo-container {
-        padding: 12px 0;
-
-        &::before,
-        &::after {
-          content: "";
-          position: absolute;
-          height: 1px;
-          width: 66%;
-        }
-
-        &::before {
-          top: 0;
-          left: 0;
-          background-color: $text-primary;
-        }
-
-        &::after {
-          bottom: 0;
-          right: 0;
-          background-color: $primary-color;
-        }
-      }
-    }
-
-    // Wide Separator Variant
-    &--wide-separator {
-      .logo-separator {
-        width: 48px;
-        height: 2px;
-        margin: 0 16px;
-        background: linear-gradient(
-          to right,
-          rgba($text-primary, 0.4),
-          $primary-color
-        );
-      }
-    }
-
-    // Framed Variant
-    &--framed {
-      .logo-container {
-        border-top: 2px solid $text-primary;
-        border-bottom: 2px solid $text-primary;
-        padding: 8px 0;
-
-        .logo-text--bold {
-          border-left: 2px solid $text-primary;
-          padding-left: 16px;
-        }
-
-        .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
-            .logo-text--studio-elevated
-          ) {
-          border-right: 2px solid $text-primary;
-          padding-right: 16px;
-        }
-
-        .logo-separator {
-          background-color: $primary-color;
-        }
-      }
-    }
-
-    // Scale variant elements based on size
-    &--xs,
-    &--sm {
-      &.logo--double-border .logo-container {
-        &::before,
-        &::after {
-          height: 1px;
-        }
-      }
-
-      &.logo--framed .logo-container {
-        border-top-width: 1px;
-        border-bottom-width: 1px;
-
-        .logo-text--bold {
-          border-left-width: 1px;
-          padding-left: 12px;
-        }
-
-        .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
-            .logo-text--studio-elevated
-          ) {
-          border-right-width: 1px;
-          padding-right: 12px;
-        }
-      }
-
-      &.logo--wide-separator .logo-separator {
-        width: 32px;
-        margin: 0 12px;
-      }
-    }
-
-    &--lg,
-    &--xl {
-      &.logo--double-border .logo-container {
-        &::before,
-        &::after {
-          height: 3px;
-        }
-      }
-
-      &.logo--framed .logo-container {
-        border-top-width: 3px;
-        border-bottom-width: 3px;
-
-        .logo-text--bold {
-          border-left-width: 3px;
-          padding-left: 20px;
-        }
-
-        .logo-text:not(.logo-text--bold):not(.logo-text--studio-under):not(
-            .logo-text--studio-elevated
-          ) {
-          border-right-width: 3px;
-          padding-right: 20px;
-        }
-      }
-
-      &.logo--wide-separator .logo-separator {
-        width: 64px;
-        margin: 0 20px;
-      }
-    }
-
-    // Mobile styles for 3D/perspective variants
+    // Mobile styles
     @include mobile {
-      &--perspective,
-      &--twist,
-      &--fold,
-      &--depth {
-        .logo-text--studio-perspective,
-        .logo-text--studio-twist,
-        .logo-text--studio-fold,
-        .logo-text--studio-depth {
-          display: none;
+      font-size: 20px !important;
+      transform: translateY(-10px); // Un poco menos de traslado en móviles
+
+      .logo-image-container {
+        transform: translateY(10px); // Un poco menos de traslado en móviles
+
+        &:hover {
+          transform: translateY(10px) scale(1.05);
+        }
+
+        .logo-image {
+          width: 60px !important;
+          height: 60px !important;
         }
       }
 
-      &:not(&--xs):not(&--sm):not(&--default) {
-        font-size: 20px;
+      .logo-text--studio-under {
+        transform: translateY(0px);
+        display: none;
+      }
+    }
+    // Mobile styles
+    @include mobile-medium {
+      transform: translateY(-8px); // Un poco menos de traslado en móviles
 
-        .logo-separator {
-          height: 20px;
-          margin: 0 8px;
+      .logo-image-container {
+        .logo-image {
+          width: 54px !important;
+          height: 54px !important;
         }
       }
     }
   }
 }
-// Al final de tu Brand.module.scss, agrega:
 
 @include mobile-medium {
   .brand {
     .logo {
       // Reducir el tamaño de fuente en móviles
-      font-size: 22px !important;
+      font-size: 18px !important;
       letter-spacing: 0.02em;
 
       // Ajuste de la caja del logo
       .logo-container {
         padding: $spacing-sm 0;
-        // Si deseas centrar o cambiar la dirección en mobile:
-        flex-direction: column;
-        align-items: center;
       }
 
-      // Ajuste del separador del logo
-      .logo-separator {
-        height: 16px;
-        width: 1px;
-        margin: 0 $spacing-xs;
+      .logo-image-container {
+        transform: translateY(8px); // Aún menos traslado en móviles pequeños
+
+        &:hover {
+          transform: translateY(8px) scale(1.05);
+        }
       }
 
-      // Ajuste general de los textos
-      // .logo-text {
-      //   font-size: 0.9em;
-      // }
+      .logo-text--studio-under {
+        // margin-top: 12px; // Ajustado para móviles pequeños
+      }
     }
   }
 }
