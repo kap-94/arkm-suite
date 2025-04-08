@@ -1,19 +1,23 @@
 import { Metadata } from "next";
-import { Language } from "@/app/_lib/config/i18n";
-import { Hero } from "@/app/_modules/Hero";
-import { getPageDictionary, homeDictionary } from "@/app/_utils/dictionary";
-import ClientSuitePreview from "@/app/_modules/ClientSuitePreview";
-import SolutionsModule from "@/app/_modules/SolutionsModule";
-import { HomeDictionary } from "@/app/_types/dictionary/home.types";
-import ShaderBackground from "@/app/_modules/ShaderBackground";
-import styles from "./page.module.scss";
 import classNames from "classnames/bind";
+import { Language } from "@/app/_lib/config/i18n";
+import {
+  getPageDictionary,
+  homeDictionary,
+  mainLayoutDictionary,
+} from "@/app/_utils/dictionary";
+import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 import { UIProvider } from "@/app/_context/UIContext";
-import Snackbar from "@/app/_components/Snackbar";
+import { Hero } from "@/app/_modules/Hero";
+import SolutionsModule from "@/app/_modules/SolutionsModule";
+import ShaderBackground from "@/app/_modules/ShaderBackground";
 import MethodologyPreview from "@/app/_modules/MethodologyPreview";
 import WorkExperienceSection from "@/app/_modules/WorkExperience";
-import GlowBackground from "@/app/_components/GlowBackground";
 import ContactSection from "@/app/_modules/ContactSection";
+import Snackbar from "@/app/_components/Snackbar";
+import GlowBackground from "@/app/_components/GlowBackground";
+import styles from "./page.module.scss";
+import { MainLayoutDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 
@@ -52,6 +56,12 @@ export default async function Home({
     lang
   );
 
+  // Get main layout dictionary for contact section
+  const mainLayoutDict = await getPageDictionary<MainLayoutDictionary>(
+    mainLayoutDictionary,
+    lang
+  );
+
   return (
     <UIProvider>
       <div className={cx("home-page")}>
@@ -79,7 +89,7 @@ export default async function Home({
         </GlowBackground>
 
         <ContactSection
-          dictionary={dictionary.contact}
+          dictionary={mainLayoutDict.contact}
           customAnchorId="contact"
         />
       </div>

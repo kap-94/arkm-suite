@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Typography from "@/app/_components/Typography";
-import styles from "./SolutionsModule.module.scss";
 import SectionHeading from "@/app/_components/SectionHeading";
+import styles from "./SolutionsModule.module.scss";
 
 const DynamicSolution = dynamic(() => import("@/app/_modules/Solution"), {
   ssr: false,
@@ -65,22 +65,11 @@ export function SolutionsModule({
   return (
     <section id={customAnchorId} className={styles.container}>
       <div className={styles.solutions__header}>
-        {/* <Typography
-          variant="h2"
-          fontFamily="sofia"
-          fontWeight={500}
-          color="primary"
-          align="center"
-          theme="dark"
-          className={styles.solutions__title}
-        >
-          {dictionary?.title || "Solutions that drive impact"}
-        </Typography> */}
         <SectionHeading
           title={dictionary?.title || "Solutions that drive impact"}
           subtitle={dictionary?.subtitle || "Paths Forged with Passion"}
           align="center"
-          className={styles.methodology__heading}
+          className={styles.solutions__heading}
         />
       </div>
 

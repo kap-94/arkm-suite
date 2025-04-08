@@ -3,12 +3,12 @@
 import React from "react";
 import classNames from "classnames/bind";
 
-import { ContactDictionary } from "@/app/_types/dictionary/home.types";
 import styles from "./ContactSection.module.scss";
 import { Button } from "@/app/_components/Button";
 import ContactForm from "@/app/_components/ContactForm";
 import Modal from "@/app/_components/Modal";
 import Typography from "@/app/_components/Typography";
+import { ContactDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 

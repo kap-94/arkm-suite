@@ -4,6 +4,7 @@ import {
   getPageDictionary,
   portfolioDictionary,
   homeDictionary,
+  mainLayoutDictionary,
 } from "@/app/_utils/dictionary";
 import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 import { UIProvider } from "@/app/_context/UIContext";
@@ -14,6 +15,7 @@ import styles from "./page.module.scss";
 import classNames from "classnames/bind";
 import { PortfolioDictionary } from "@/app/_types/dictionary/portfolio.types";
 import ContactSection from "@/app/_modules/ContactSection";
+import { MainLayoutDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +24,6 @@ export async function generateMetadata({
 }: {
   params: { lang: Language };
 }): Promise<Metadata> {
-  // Get meta information from home dictionary
   const homeDictionaryData = await getPageDictionary<HomeDictionary>(
     homeDictionary,
     lang
@@ -62,20 +63,25 @@ export default async function PortfolioPage({
     lang
   );
 
+  // Get main layout dictionary for contact section
+  const mainLayoutDict = await getPageDictionary<MainLayoutDictionary>(
+    mainLayoutDictionary,
+    lang
+  );
+
   return (
     <UIProvider>
-      {/* Usamos className en lugar de style inline */}
       <div className={cx("portfolio-page")}>
         <GlowBackground
           variant="gradient-black"
           className={cx("portfolio-page__glow")}
         >
-          <PortfolioModule
-            dictionary={portfolioDictionaryData}
-            // No pasamos style directamente - usaremos CSS
-          />
-          <ContactSection />
+          <PortfolioModule dictionary={portfolioDictionaryData} />
         </GlowBackground>
+        <ContactSection
+          dictionary={mainLayoutDict.contact}
+          customAnchorId="contact"
+        />
       </div>
       <Snackbar duration={6000} position="top" />
     </UIProvider>

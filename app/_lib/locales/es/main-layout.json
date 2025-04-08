@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-04-03",
+    "lastUpdated": "2025-04-08",
     "description": "Configuración principal del diseño para rutas públicas",
     "maintainer": "Equipo de Desarrollo"
   },
@@ -238,6 +238,32 @@
       "notFound": "Página no encontrada",
       "unauthorized": "Acceso no autorizado",
       "forbidden": "Acceso prohibido"
+    }
+  },
+  "contact": {
+    "title": "Conectemos y hagamos realidad tus ideas",
+    "subtitle": "¿Tienes preguntas o quieres saludar? Estoy aquí para ti",
+    "cta": "Envíame un mensaje",
+    "forms": {
+      "contactForm": {
+        "title": "Contacta conmigo",
+        "subtitle": "Me encantaría saber de ti",
+        "name": "Nombre",
+        "namePlaceholder": "Tu nombre",
+        "email": "Correo electrónico",
+        "emailPlaceholder": "tu@email.com",
+        "message": "Mensaje",
+        "messagePlaceholder": "Cuéntame sobre tu proyecto o pregúntame lo que quieras...",
+        "submit": "Enviar mensaje",
+        "success": "¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.",
+        "error": "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+        "validation": {
+          "nameRequired": "Por favor ingresa tu nombre",
+          "emailRequired": "Por favor ingresa tu correo electrónico",
+          "emailInvalid": "Por favor ingresa un correo electrónico válido",
+          "messageRequired": "Por favor ingresa tu mensaje"
+        }
+      }
     }
   }
 }

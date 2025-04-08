@@ -56,6 +56,7 @@ const Solution = ({
   const connectors = useRef<(HTMLDivElement | null)[]>([]);
   const ambientLight = useRef<HTMLDivElement | null>(null);
   const isInitialized = useRef<boolean>(false);
+  const scrollTriggerInstances = useRef<ScrollTrigger[]>([]);
 
   // Estado para detectar si estamos en móvil o en modo adaptativo
   const [isMobile, setIsMobile] = useState(false);
@@ -67,9 +68,53 @@ const Solution = ({
   useEffect(() => {
     const checkViewportSize = () => {
       const windowWidth = window.innerWidth;
-      setIsMobile(windowWidth <= MOBILE_BREAKPOINT);
+      const newIsMobile = windowWidth <= MOBILE_BREAKPOINT;
 
-      // Solo aplicar modo adaptativo si estamos entre MOBILE_BREAKPOINT y ADAPTIVE_BREAKPOINT
+      // Si cambiamos a móvil, desactivar todas las animaciones existentes
+      if (!isMobile && newIsMobile && isInitialized.current) {
+        // Matar cualquier animación en curso
+        gsap.killTweensOf([
+          container.current,
+          cardRef.current,
+          wireframeRef.current,
+        ]);
+        floatingElements.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        connectors.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        if (ambientLight.current) gsap.killTweensOf(ambientLight.current);
+
+        // Restablecer los elementos a su estado visible final
+        gsap.set(container.current, { autoAlpha: 1 });
+        gsap.set([cardRef.current, wireframeRef.current], {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          rotationX: 0,
+          rotationY: 0,
+          scale: 1,
+          filter: "none",
+          clearProps: "all",
+        });
+
+        // Matar todos los ScrollTriggers
+        scrollTriggerInstances.current.forEach((instance) => {
+          if (instance && instance.kill) {
+            instance.kill();
+          }
+        });
+        scrollTriggerInstances.current = [];
+
+        // También matar el ScrollTrigger específico por ID
+        const specificTrigger = ScrollTrigger.getById(animationId.current);
+        if (specificTrigger) {
+          specificTrigger.kill();
+        }
+      }
+
+      setIsMobile(newIsMobile);
       setIsAdaptive(
         windowWidth <= ADAPTIVE_BREAKPOINT && windowWidth > MOBILE_BREAKPOINT
       );
@@ -81,17 +126,65 @@ const Solution = ({
     // Escuchar cambios de tamaño
     window.addEventListener("resize", checkViewportSize);
 
+    // Limpieza al desmontar
     return () => {
       window.removeEventListener("resize", checkViewportSize);
+
+      // Matar todas las animaciones y ScrollTriggers al desmontar
+      if (isInitialized.current) {
+        gsap.killTweensOf([
+          container.current,
+          cardRef.current,
+          wireframeRef.current,
+        ]);
+        floatingElements.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        connectors.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        if (ambientLight.current) gsap.killTweensOf(ambientLight.current);
+
+        scrollTriggerInstances.current.forEach((instance) => {
+          if (instance && instance.kill) {
+            instance.kill();
+          }
+        });
+
+        const specificTrigger = ScrollTrigger.getById(animationId.current);
+        if (specificTrigger) {
+          specificTrigger.kill();
+        }
+      }
     };
-  }, []);
+  }, [isMobile]);
 
   // Configuración inicial con useGSAP
   useGSAP(
     () => {
+      // No inicializar si ya está inicializado o no hay contenedor
       if (!container.current || isInitialized.current) return;
 
-      // Configuración inicial con mejores propiedades para rendimiento
+      // Si estamos en móvil, simplemente establecer todo como visible sin animaciones
+      if (isMobile) {
+        container.current.style.visibility = "visible";
+        container.current.style.opacity = "1";
+
+        if (cardRef.current) {
+          cardRef.current.style.opacity = "1";
+          cardRef.current.style.transform = "none";
+        }
+
+        if (wireframeRef.current) {
+          wireframeRef.current.style.opacity = "1";
+          wireframeRef.current.style.transform = "none";
+        }
+
+        isInitialized.current = true;
+        return;
+      }
+
+      // Configuración inicial solo para desktop
       gsap.set(container.current, {
         visibility: "visible",
         autoAlpha: 0,
@@ -135,15 +228,29 @@ const Solution = ({
 
       isInitialized.current = true;
     },
-    { scope: container }
+    { scope: container, dependencies: [isMobile] }
   );
 
   // Animación principal con useGSAP
   const { contextSafe } = useGSAP(
     () => {
-      if (!container.current || !isInitialized.current) return;
+      // No realizar ninguna animación si estamos en móvil o no está inicializado
+      if (!container.current || !isInitialized.current || isMobile) return;
 
-      // Animación de entrada optimizada
+      // Limpiamos cualquier ScrollTrigger existente antes de crear nuevos
+      scrollTriggerInstances.current.forEach((instance) => {
+        if (instance && instance.kill) {
+          instance.kill();
+        }
+      });
+      scrollTriggerInstances.current = [];
+
+      const specificTrigger = ScrollTrigger.getById(animationId.current);
+      if (specificTrigger) {
+        specificTrigger.kill();
+      }
+
+      // Animación de entrada optimizada solo para desktop
       const tl = gsap.timeline({
         paused: true,
         defaults: {
@@ -206,7 +313,7 @@ const Solution = ({
       const secondElement =
         layout === "card-left" ? wireframeRef.current : cardRef.current;
 
-      // Ajustar timing para el flujo adaptativo pero mantener normal para móvil
+      // Ajustar timing para el flujo adaptativo
       const secondDelay = isAdaptive ? 0.8 : 0.4;
 
       if (firstElement) {
@@ -237,8 +344,8 @@ const Solution = ({
         );
       }
 
-      // ScrollTrigger optimizado con precarga
-      ScrollTrigger.create({
+      // ScrollTrigger optimizado con precarga - solo para desktop
+      const mainTrigger = ScrollTrigger.create({
         id: animationId.current,
         trigger: container.current,
         start: "top bottom-=100", // Comienza antes de entrar completamente en el viewport
@@ -254,12 +361,14 @@ const Solution = ({
         once: true,
       });
 
+      scrollTriggerInstances.current.push(mainTrigger);
+
       // Efectos de parallax solo en desktop y NO en modo adaptativo
       if (!isMobile && !isAdaptive) {
         const parallaxMultiplier = layout === "card-left" ? 1 : -1;
 
         // Parallax con mejor rendimiento
-        ScrollTrigger.create({
+        const parallaxTrigger = ScrollTrigger.create({
           trigger: container.current,
           start: "top 80%", // Comienza antes para precargar
           end: "bottom 20%",
@@ -286,10 +395,12 @@ const Solution = ({
           },
         });
 
+        scrollTriggerInstances.current.push(parallaxTrigger);
+
         // Efecto de enfoque con debounce
         let brightnessTimeout: any;
 
-        ScrollTrigger.create({
+        const brightnessTrigger = ScrollTrigger.create({
           trigger: container.current,
           start: "top 60%",
           end: "bottom 40%",
@@ -310,6 +421,8 @@ const Solution = ({
             }, 50);
           },
         });
+
+        scrollTriggerInstances.current.push(brightnessTrigger);
       }
 
       // Limpieza de willChange al finalizar
@@ -345,8 +458,8 @@ const Solution = ({
       })}
       style={{
         visibility: "visible",
-        opacity: 0,
-        transform: "translateZ(0)", // Force hardware acceleration
+        opacity: isMobile ? 1 : 0,
+        transform: isMobile ? "none" : "translateZ(0)", // Force hardware acceleration solo en desktop
       }}
     >
       {/* Elementos decorativos - solo visibles en modo normal, no en adaptativo ni en móvil */}

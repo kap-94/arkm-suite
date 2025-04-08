@@ -53,6 +53,10 @@ $tw-filter-chain: $tw-blur brightness(100%) contrast(100%) grayscale(0)
   &__title {
     position: relative;
     margin: 0 !important;
+
+    @include tablet {
+      text-align: center;
+    }
   }
 
   &__description {

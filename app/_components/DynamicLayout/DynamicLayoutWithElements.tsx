@@ -48,6 +48,7 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
   const connectors = useRef<Array<HTMLDivElement | null>>([]);
   const ambientLight = useRef<HTMLDivElement | null>(null);
   const isInitialized = useRef<boolean>(false);
+  const scrollTriggerInstances = useRef<ScrollTrigger[]>([]);
 
   // State to detect if we're on mobile or in adaptive mode
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -59,7 +60,58 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
   useEffect(() => {
     const checkViewportSize = (): void => {
       const windowWidth = window.innerWidth;
-      setIsMobile(windowWidth <= MOBILE_BREAKPOINT);
+      const newIsMobile = windowWidth <= MOBILE_BREAKPOINT;
+
+      // Si cambiamos a móvil, desactivar todas las animaciones existentes
+      if (!isMobile && newIsMobile && isInitialized.current) {
+        // Matar cualquier animación en curso
+        gsap.killTweensOf([
+          container.current,
+          leftRef.current,
+          rightRef.current,
+        ]);
+        floatingElements.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        connectors.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        if (ambientLight.current) gsap.killTweensOf(ambientLight.current);
+
+        // Restablecer los elementos a su estado visible final
+        if (container.current) {
+          container.current.style.visibility = "visible";
+          container.current.style.opacity = "1";
+        }
+
+        if (leftRef.current) {
+          leftRef.current.style.opacity = "1";
+          leftRef.current.style.transform = "none";
+          leftRef.current.style.filter = "none";
+        }
+
+        if (rightRef.current) {
+          rightRef.current.style.opacity = "1";
+          rightRef.current.style.transform = "none";
+          rightRef.current.style.filter = "none";
+        }
+
+        // Matar todos los ScrollTriggers
+        scrollTriggerInstances.current.forEach((instance) => {
+          if (instance && instance.kill) {
+            instance.kill();
+          }
+        });
+        scrollTriggerInstances.current = [];
+
+        // También matar el ScrollTrigger específico por ID
+        const specificTrigger = ScrollTrigger.getById(animationId.current);
+        if (specificTrigger) {
+          specificTrigger.kill();
+        }
+      }
+
+      setIsMobile(newIsMobile);
       setIsAdaptive(
         windowWidth <= ADAPTIVE_BREAKPOINT && windowWidth > MOBILE_BREAKPOINT
       );
@@ -70,14 +122,61 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
 
     return () => {
       window.removeEventListener("resize", checkViewportSize);
+
+      // Matar todas las animaciones y ScrollTriggers al desmontar
+      if (isInitialized.current) {
+        gsap.killTweensOf([
+          container.current,
+          leftRef.current,
+          rightRef.current,
+        ]);
+        floatingElements.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        connectors.current.forEach((el) => {
+          if (el) gsap.killTweensOf(el);
+        });
+        if (ambientLight.current) gsap.killTweensOf(ambientLight.current);
+
+        scrollTriggerInstances.current.forEach((instance) => {
+          if (instance && instance.kill) {
+            instance.kill();
+          }
+        });
+
+        const specificTrigger = ScrollTrigger.getById(animationId.current);
+        if (specificTrigger) {
+          specificTrigger.kill();
+        }
+      }
     };
-  }, []);
+  }, [isMobile]);
 
   // Usando useGSAP para la configuración inicial de la animación
   useGSAP(
     () => {
       if (!container.current || isInitialized.current) return;
 
+      // Si estamos en móvil, usar directamente el DOM sin GSAP
+      if (isMobile) {
+        container.current.style.visibility = "visible";
+        container.current.style.opacity = "1";
+
+        if (leftRef.current) {
+          leftRef.current.style.opacity = "1";
+          leftRef.current.style.transform = "none";
+        }
+
+        if (rightRef.current) {
+          rightRef.current.style.opacity = "1";
+          rightRef.current.style.transform = "none";
+        }
+
+        isInitialized.current = true;
+        return;
+      }
+
+      // Solo aplicar animaciones si no estamos en móvil
       // Ocultar inicialmente pero mantener en el DOM
       gsap.set(container.current, {
         visibility: "visible",
@@ -122,13 +221,27 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
 
       isInitialized.current = true;
     },
-    { scope: container }
+    { scope: container, dependencies: [isMobile] }
   );
 
   // Usando useGSAP para la animación principal
   const { contextSafe } = useGSAP(
     () => {
-      if (!container.current || !isInitialized.current) return;
+      // No realizar ninguna animación si estamos en móvil
+      if (!container.current || !isInitialized.current || isMobile) return;
+
+      // Limpiamos cualquier ScrollTrigger existente antes de crear nuevos
+      scrollTriggerInstances.current.forEach((instance) => {
+        if (instance && instance.kill) {
+          instance.kill();
+        }
+      });
+      scrollTriggerInstances.current = [];
+
+      const specificTrigger = ScrollTrigger.getById(animationId.current);
+      if (specificTrigger) {
+        specificTrigger.kill();
+      }
 
       const tl = gsap.timeline({
         paused: true,
@@ -219,7 +332,7 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
       }
 
       // Creamos un ScrollTrigger con margen para precargar
-      ScrollTrigger.create({
+      const mainTrigger = ScrollTrigger.create({
         id: animationId.current,
         trigger: container.current,
         start: "top bottom-=100", // Comienza antes de entrar en viewport
@@ -229,10 +342,12 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
         once: true,
       });
 
+      scrollTriggerInstances.current.push(mainTrigger);
+
       if (!isMobile && !isAdaptive && !disableParallax) {
         const parallaxMultiplier = layout === "left-right" ? 1 : -1;
 
-        ScrollTrigger.create({
+        const parallaxTrigger = ScrollTrigger.create({
           trigger: container.current,
           start: "top 80%",
           end: "bottom 20%",
@@ -259,10 +374,12 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
           },
         });
 
+        scrollTriggerInstances.current.push(parallaxTrigger);
+
         // Aplicamos un debounce para el efecto de brillo
         let brightnessTimeout: any;
 
-        ScrollTrigger.create({
+        const brightnessTrigger = ScrollTrigger.create({
           trigger: container.current,
           start: "top 60%",
           end: "bottom 40%",
@@ -283,6 +400,8 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
             }, 50); // Pequeño delay para evitar demasiadas actualizaciones
           },
         });
+
+        scrollTriggerInstances.current.push(brightnessTrigger);
       }
 
       // Limpieza de willChange al finalizar
@@ -325,7 +444,8 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
       )}
       style={{
         visibility: "visible",
-        transform: "translateZ(0)", // Force hardware acceleration
+        opacity: isMobile ? 1 : "auto",
+        transform: isMobile ? "none" : "translateZ(0)", // Force hardware acceleration solo en desktop
       }}
     >
       {!isMobile && !isAdaptive && (
@@ -378,6 +498,7 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
               "dynamic-layout__left-wrapper",
               "dynamic-layout__card-container"
             )}
+            style={isMobile ? { opacity: 1, transform: "none" } : undefined}
           >
             {leftComponent}
           </div>
@@ -388,6 +509,7 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
               "dynamic-layout__right-wrapper",
               "dynamic-layout__images-container"
             )}
+            style={isMobile ? { opacity: 1, transform: "none" } : undefined}
           >
             {rightComponent}
           </div>
