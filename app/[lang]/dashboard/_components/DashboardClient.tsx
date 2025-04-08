@@ -201,7 +201,7 @@ export function DashboardClient({
           <div className={cx("dashboard__main-sidebar")}>
             <section className={cx("dashboard__main-sidebar-section")}>
               <ThemedTypography
-                variant="h4"
+                variant="h5"
                 color="primary"
                 fontWeight={400}
                 className={cx("dashboard__main-sidebar-section-title")}
@@ -226,7 +226,7 @@ export function DashboardClient({
 
             <section className={cx("dashboard__main-sidebar-section")}>
               <ThemedTypography
-                variant="h4"
+                variant="h5"
                 color="primary"
                 fontWeight={400}
                 className={cx("dashboard__main-sidebar-section-title")}
