@@ -1,0 +1,32 @@
+@import "@/app/_styles/variables.scss";
+@import "@/app/_styles/mixins.scss";
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+
+  // Contenedor principal que debe crecer para empujar el footer abajo
+  &__content {
+    flex: 1 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    // Establecer min-height para asegurar que ocupe espacio
+    min-height: 100vh;
+    // Asegurar que sea visible desde el inicio
+    visibility: visible;
+    z-index: 1;
+  }
+
+  // El footer debe mantenerse abajo
+  &__footer {
+    flex-shrink: 0;
+    width: 100%;
+    // Asegurar que no esté visible en la parte superior durante la carga
+    position: relative;
+    z-index: 0;
+  }
+}
