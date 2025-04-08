@@ -11,8 +11,8 @@ import Spinner from "../Spinner";
 import { Mail, User, MessageSquare } from "lucide-react";
 import { useUIContext } from "@/app/_context/UIContext";
 import { sendContactEmail } from "@/app/_services/emailService";
-import { ContactFormDictionary } from "@/app/_types/dictionary/mainLayout.types";
 import styles from "./ContactForm.module.scss";
+import { ContactFormDictionary } from "@/app/_types/dictionary/home.types";
 
 const cx = classNames.bind(styles);
 
