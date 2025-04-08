@@ -11,6 +11,9 @@ import classNames from "classnames/bind";
 import { UIProvider } from "@/app/_context/UIContext";
 import Snackbar from "@/app/_components/Snackbar";
 import MethodologyPreview from "@/app/_modules/MethodologyPreview";
+import WorkExperienceSection from "@/app/_modules/WorkExperience";
+import GlowBackground from "@/app/_components/GlowBackground";
+import ContactSection from "@/app/_modules/ContactSection";
 
 const cx = classNames.bind(styles);
 
@@ -52,15 +55,33 @@ export default async function Home({
   return (
     <UIProvider>
       <div className={cx("home-page")}>
-        {/* <ShaderBackground> */}
-        <Hero
-          dictionary={dictionary.hero}
-          projectFormDictionary={dictionary.forms.projectForm}
+        <ShaderBackground>
+          <Hero
+            dictionary={dictionary.hero}
+            projectFormDictionary={dictionary.forms.projectForm}
+          />
+          <SolutionsModule
+            dictionary={dictionary.solutions}
+            customAnchorId="abilities"
+          />
+        </ShaderBackground>
+
+        <GlowBackground variant="nebula">
+          <MethodologyPreview
+            dictionary={dictionary.methodology}
+            customAnchorId="method"
+          />
+
+          <WorkExperienceSection
+            customAnchorId="experience"
+            dictionary={dictionary.workExperience}
+          />
+        </GlowBackground>
+
+        <ContactSection
+          dictionary={dictionary.contact}
+          customAnchorId="contact"
         />
-        <SolutionsModule dictionary={dictionary.solutions} />
-        {/* </ShaderBackground> */}
-        <MethodologyPreview dictionary={dictionary.methodology} />
-        <ClientSuitePreview dictionary={dictionary.clientSuite} />
       </div>
       <Snackbar duration={6000} position="top" />
     </UIProvider>
