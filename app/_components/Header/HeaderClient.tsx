@@ -159,6 +159,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
                 data={primaryNavigationItems}
                 onClick={handleMenuClick}
                 useActiveStyle
+                locale={language}
               />
             </div>
 
@@ -187,6 +188,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
                 data={secondaryNavigationItems}
                 onClick={handleMenuClick}
                 useActiveStyle
+                locale={language}
               />
               <LanguageSelector
                 className={cx("header__language-selector")}
@@ -207,6 +209,7 @@ const HeaderClient: React.FC<HeaderProps> = ({
               <Header.MobileMenu
                 primaryNavigation={primaryNavigationItems}
                 secondaryNavigation={secondaryNavigationItems}
+                locale={language}
               />
             )}
           </Header.Nav>

@@ -79,9 +79,11 @@ export const Header = {
   MobileMenu: ({
     primaryNavigation,
     secondaryNavigation,
+    locale,
   }: {
     primaryNavigation: any[];
     secondaryNavigation: any[];
+    locale?: string;
   }) => {
     const { menuPosition, setIsNavOpen } = useHeaderContext();
     return (
@@ -90,6 +92,7 @@ export const Header = {
         primaryNavigation={primaryNavigation}
         secondaryNavigation={secondaryNavigation}
         onClose={() => setIsNavOpen(false)}
+        locale={locale}
       />
     );
   },
