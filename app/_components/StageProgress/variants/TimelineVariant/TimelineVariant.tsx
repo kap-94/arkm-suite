@@ -67,14 +67,14 @@ export const TimelineVariant: React.FC<VariantProps> = ({
         <div className={cx("timeline__header")}>
           <ThemedTypography
             variant="p2"
-            color="tertiary"
+            color="secondary"
             className={cx("timeline__type")}
           >
             {type}
           </ThemedTypography>
           <ThemedTypography
             variant="p2"
-            color="tertiary"
+            color="secondary"
             className={cx("timeline__progress-text")}
           >
             {progress}%
@@ -132,7 +132,11 @@ export const TimelineVariant: React.FC<VariantProps> = ({
                     "timeline__tooltip--visible": hoveredMarker === index,
                   })}
                 >
-                  <ThemedTypography variant="p3" color="secondary">
+                  <ThemedTypography
+                    variant="p3"
+                    color="tertiary"
+                    fontWeight={500}
+                  >
                     {stage.name}
                   </ThemedTypography>
                 </div>
@@ -153,7 +157,8 @@ export const TimelineVariant: React.FC<VariantProps> = ({
                 >
                   <ThemedTypography
                     variant="p3"
-                    color="secondary"
+                    color="tertiary"
+                    fontWeight={500}
                     className={cx("timeline__title")}
                     style={{
                       left: `${centerPosition}%`,
