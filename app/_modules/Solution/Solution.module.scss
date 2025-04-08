@@ -2,119 +2,151 @@
 @import "@/app/_styles/mixins.scss";
 
 .solution {
-  --card-width: 500px;
+  --card-width: min(500px, 45%);
   --animation-width: 32%;
   --background-width: 500px;
   --background-height: 532px;
   --aspect-ratio: 1.2;
-  --elements-gap: 200px;
+  --elements-gap: clamp(24px, 4vw, 200px);
+  --padding-h: clamp($spacing-sm, 3vw, $spacing-lg);
+  --padding-v: clamp($spacing-sm, 2vw, $spacing-md);
+  // --total-content-width: calc(
+  //   var(--card-width) + var(--animation-width) + var(--elements-gap)
+  // );
+  --total-content-width: unset;
+  // Nuevas variables para limitar los animation components
+  --max-animation-height: 500px;
+  --max-animation-width: 400px;
 
   height: fit-content;
-  // min-height: 600px;
   max-height: 900px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 100%;
   position: relative;
   margin: 0 auto;
   z-index: 1;
-  /* Forzar aceleración hardware */
+  contain: layout style;
   transform: translateZ(0);
-  contain: layout style; // Mejora el rendimiento aislando los cambios visuales
+  opacity: 1;
+  // overflow: hidden; // Necesario para contener elementos flotantes
+  padding: var(--padding-v) var(--padding-h); // Padding uniforme en todos los tamaños
+  box-sizing: border-box;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &--ready {
+    opacity: 1;
+  }
+
+  // Puntos de ruptura adaptables basados en el ancho del contenido
+  @include viewport-between(900px, $desktop-breakpoint) {
+    --card-width: min(450px, 45%) !important;
+    --animation-width: 32%;
+    --elements-gap: clamp(20px, 3vw, 150px);
+  }
+
+  // Punto de quiebre adaptativo - cuando ya no cabe cambia a vertical
+  @include viewport-between($mobile-breakpoint + 1, 900px) {
+    .solution__content-wrapper {
+      flex-direction: column !important; // Forzar dirección columna independientemente del layout
+    }
+
+    --aspect-ratio: 1.1;
+    --elements-gap: clamp($spacing-lg, 5vw, $spacing-xl);
+    --animation-width: min(70%, 300px);
+    --card-width: 100%;
+
+    &__card-wrapper,
+    &__wireframe-wrapper {
+      max-width: 100% !important;
+      width: 100% !important;
+      flex: 0 0 auto !important;
+    }
+
+    &__wireframe-wrapper {
+      height: auto !important;
+      margin-top: var(--elements-gap);
+    }
+  }
 
   @include tablet {
     --aspect-ratio: 1.1;
-    --elements-gap: 50px;
+    --elements-gap: clamp($spacing-md, 2.5vw, $spacing-xl);
     --animation-width: 35%;
+    --card-width: min(450px, 42%);
   }
-
 
   @include mobile {
     --aspect-ratio: 1;
-    --animation-width: 85%;
-    --elements-gap: 32px;
+    --animation-width: min(85%, 300px);
+    --elements-gap: clamp($spacing-md, 3vw, $spacing-lg);
+    --card-width: 100%;
     height: auto;
-    min-height: 650px;
+    min-height: unset; // Permitir altura natural según contenido
     max-height: none;
-    padding: 0;
-    contain: content; // Más agresivo en móvil
+    padding: var(--padding-v) var(--padding-h); // Mantener padding consistente
+    contain: content;
   }
 
   @include mobile-small {
-    --elements-gap: 24px;
-  }
-
-  // Optimización para elementos al cargar
-  &:not(.solution--ready) {
-    .solution__floating-element,
-    .solution__connector,
-    .solution__ambient-light {
-      display: none !important;
-    }
-  }
-
-  // Mejora para elementos principales
-  &__card-wrapper,
-  &__wireframe-wrapper {
-    transform: translateZ(0); // Forzar aceleración GPU
-    backface-visibility: hidden;
-    perspective: 1000px; // Optimizar renderizado 3D
-    will-change: transform, opacity;
-  }
-
-  // Optimizaciones para móvil
-  &--mobile {
-    .solution__card-wrapper,
-    .solution__wireframe-wrapper {
-      transform: none !important;
-      will-change: auto;
-      transition: opacity 0.3s ease !important;
-    }
-
-    .solution__container {
-      perspective: none !important;
-      transform-style: flat !important;
-    }
-
-    .solution__content-wrapper {
-      transform-style: flat !important;
-    }
+    --elements-gap: clamp($spacing-sm, 2vw, $spacing-md);
   }
 
   &__container {
     position: relative;
     width: 100%;
+    display: flex;
+    width: 100%;
     height: 100%;
     padding: 0;
     perspective: 1000px;
     transform-style: preserve-3d;
-    /* Reducir will-change a lo esencial */
-    will-change: transform-style;
+    max-width: var(
+      --total-content-width
+    ); // Contenedor interno con ancho máximo
+    // margin: 0 auto; // Centrar contenedor
+    overflow: visible; // Permitir que los efectos 3D se muestren
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      perspective: none;
+      transform-style: flat;
+      overflow: hidden; // Evitar desbordamiento en modo adaptativo
+    }
 
     @include mobile {
       perspective: none;
       transform-style: flat;
-      will-change: auto;
+      max-width: 100%;
+      overflow: hidden; // Evitar desbordamiento en móvil
     }
   }
 
   &__content-wrapper {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    gap: var(--elements-gap);
     height: 100%;
     width: 100%;
-    gap: var(--elements-gap);
     position: relative;
     transform-style: preserve-3d;
 
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transform-style: flat;
+    }
+
     @include mobile {
       flex-direction: column;
-      align-items: flex-start;
-      gap: var(--elements-gap);
+      align-items: center;
+      justify-content: flex-start;
       padding: $spacing-md 0;
       transform-style: flat;
-      will-change: auto;
     }
   }
 
@@ -126,12 +158,18 @@
     flex: 0 0 calc(55% - (var(--elements-gap) / 2));
     max-width: calc(55% - (var(--elements-gap) / 2));
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
-    justify-content: center;
-    will-change: transform, opacity;
     transform-style: preserve-3d;
-    backface-visibility: hidden;
-    contain: layout paint; // Contener los cambios
+    contain: layout paint style;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      width: 100%;
+      max-width: 100%;
+      flex: 0 0 auto;
+      margin: 0 auto;
+    }
 
     @include mobile {
       width: 100%;
@@ -142,108 +180,127 @@
       align-items: flex-start;
       justify-content: flex-start;
       z-index: 6;
-      will-change: auto;
       transform-style: flat;
-      backface-visibility: visible;
-      contain: content; // Más agresivo en móvil
+      contain: content;
+      margin-bottom: $spacing-md;
     }
   }
 
   &__wireframe-wrapper {
     position: relative;
     flex: 0 0 var(--animation-width);
-    max-width: var(--animation-width);
+    max-width: min(
+      var(--animation-width),
+      var(--max-animation-width)
+    ); // Limitando ancho máximo
+    max-height: var(--max-animation-height); // Limitando altura máxima
     height: 85%;
     z-index: 4;
     border-radius: $border-radius-md;
     display: flex;
-    align-items: center;
     justify-content: center;
-    will-change: transform, opacity;
+    align-items: center;
     transform-style: preserve-3d;
-    backface-visibility: hidden;
-    contain: layout paint; // Contener los cambios
+    contain: layout paint style;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      width: var(--animation-width);
+      max-width: min(
+        var(--animation-width),
+        var(--max-animation-width)
+      ); // Limitando ancho máximo
+      max-height: var(--max-animation-height); // Limitando altura máxima
+      height: auto;
+      margin-top: var(--elements-gap);
+    }
 
     @include mobile {
-      width: 90%;
+      width: var(--animation-width);
+      max-width: min(
+        var(--animation-width),
+        var(--max-animation-width)
+      ); // Limitando ancho máximo
+      max-height: var(--max-animation-height); // Limitando altura máxima
       flex: 0 0 auto;
       margin: 0 auto;
-      align-items: flex-start;
+      align-items: center;
       height: fit-content;
-      max-width: 90%;
       z-index: 5;
-      will-change: auto;
       transform-style: flat;
-      backface-visibility: visible;
-      contain: content; // Más agresivo en móvil
+      contain: content;
     }
   }
 
-  // Layout variations (sin cambios)
-  &--card-left {
-    .solution__content-wrapper {
-      flex-direction: row;
+  &--card-left &__content-wrapper {
+    flex-direction: row;
 
-      @include mobile {
-        flex-direction: column;
-      }
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column; // Columna en modo adaptativo
+    }
+
+    @include mobile {
+      flex-direction: column;
     }
   }
 
-  &--card-right {
-    .solution__content-wrapper {
-      flex-direction: row-reverse;
+  &--card-right &__content-wrapper {
+    flex-direction: row-reverse;
 
-      @include mobile {
-        flex-direction: column;
-      }
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column; // Columna en modo adaptativo
+    }
+
+    @include mobile {
+      flex-direction: column;
     }
   }
 
-  &__card {
-    h2,
-    h3,
-    p {
-      max-width: 100%;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-
-      @include mobile {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
-    }
-
-    h2,
-    h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
-
-      @include mobile {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-    }
-  }
-
-  /* Elementos para el efecto de parallax - optimizados */
   &__floating-element {
     position: absolute;
-    transform-style: flat; // Cambiado de preserve-3d
-    will-change: transform, opacity;
+    transform-style: flat;
     pointer-events: none;
     z-index: 1;
-    /* Reducir costo de rendering */
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
     contain: paint style;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+    }
+
+    // Ajustar tamaños para prevenir desbordamiento en pantallas medianas
+    @include desktop {
+      &--1 {
+        width: 120px !important;
+        height: 120px !important;
+      }
+
+      &--2 {
+        width: 100px !important;
+        height: 100px !important;
+      }
+
+      &--3,
+      &--4 {
+        width: 70px !important;
+        height: 70px !important;
+      }
+    }
+
+    // Ocultar en punto de ruptura adaptativo
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      display: none;
+    }
 
     &--1 {
       width: 150px;
       height: 150px;
-      border-radius: 20px;
-      /* Gradiente simplificado para mejor rendimiento */
+      border-radius: $border-radius-lg;
       background: radial-gradient(
         circle,
         rgba($primary-color, 0.08) 0%,
@@ -253,13 +310,13 @@
       filter: blur(20px);
       top: 20%;
       right: 5%;
-      transform: rotate(25deg);
+      transform: rotate(25deg) translate3d(0, 0, 0);
     }
 
     &--2 {
       width: 120px;
       height: 120px;
-      border-radius: 50%;
+      border-radius: $border-radius-full;
       background: radial-gradient(
         circle,
         rgba($primary-color, 0.06) 0%,
@@ -274,7 +331,7 @@
     &--3 {
       width: 80px;
       height: 80px;
-      border-radius: 10px;
+      border-radius: $border-radius-sm;
       background: radial-gradient(
         circle,
         rgba($white-color, 0.05) 0%,
@@ -284,7 +341,7 @@
       filter: blur(10px);
       top: 30%;
       left: 5%;
-      transform: rotate(-15deg);
+      transform: rotate(-15deg) translate3d(0, 0, 0);
     }
 
     &--4 {
@@ -302,15 +359,13 @@
     }
 
     @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
+      display: none;
     }
   }
 
-  /* Líneas conectoras optimizadas */
   &__connector {
     position: absolute;
     height: 1px;
-    /* Gradientes simplificados */
     background: linear-gradient(
       90deg,
       transparent 0%,
@@ -318,10 +373,31 @@
       transparent 100%
     );
     z-index: 3;
-    opacity: 0.7;
+    opacity: 0;
     transform-origin: left center;
+    transform: translate3d(0, 0, 0);
     will-change: transform, opacity;
     contain: paint style;
+
+    // Ajustar tamaños para prevenir desbordamiento en pantallas medianas
+    @include desktop {
+      &--horizontal {
+        width: 20% !important;
+      }
+
+      &--diagonal-1 {
+        width: 15% !important;
+      }
+
+      &--diagonal-2 {
+        width: 15% !important;
+      }
+    }
+
+    // Ocultar en punto de ruptura adaptativo
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      display: none;
+    }
 
     &--horizontal {
       width: 30%;
@@ -333,29 +409,27 @@
       width: 25%;
       top: 40%;
       left: 15%;
-      transform: rotate(25deg);
+      transform: rotate(25deg) translate3d(0, 0, 0);
     }
 
     &--diagonal-2 {
       width: 20%;
       bottom: 35%;
       right: 15%;
-      transform: rotate(-15deg);
+      transform: rotate(-15deg) translate3d(0, 0, 0);
     }
 
     @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
+      display: none;
     }
   }
 
-  /* Efecto de luz ambiental */
   &__ambient-light {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    /* Gradiente simplificado */
     background: radial-gradient(
       ellipse at center,
       rgba($primary-color, 0.02) 0%,
@@ -364,20 +438,38 @@
     z-index: 2;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s ease-out;
+    @include transition(opacity);
     contain: paint style;
 
-    &--active {
-      opacity: 1;
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      display: none;
     }
 
     @include mobile {
-      display: none; // Ocultar en móvil para mejor rendimiento
+      display: none;
     }
   }
 
-  // Optimizaciones para preferencias de usuario
-  @media (prefers-reduced-motion: reduce) {
+  .animation-placeholder {
+    width: 100%;
+    height: 100%;
+    max-width: var(--max-animation-width); // Limitando ancho máximo
+    max-height: var(--max-animation-height); // Limitando altura máxima
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &__pulse {
+      width: 30%;
+      height: 30%;
+      background-color: rgba($primary-color, 0.15);
+      border-radius: $border-radius-full;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+  }
+
+  @include reduced-motion {
     * {
       transition: none !important;
       animation: none !important;
@@ -386,7 +478,18 @@
   }
 }
 
-// Hover optimizado para no conflictuar con animaciones
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .solution:hover {
     .solution__card-wrapper,

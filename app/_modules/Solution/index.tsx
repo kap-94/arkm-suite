@@ -1,351 +1,333 @@
 "use client";
 
-import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect, useState, Suspense, lazy } from "react";
 import classNames from "classnames/bind";
-import { gsap, ScrollTrigger } from "@/app/_lib/gsap-init"; // Importación centralizada
+import gsap from "gsap";
+import { ScrollTrigger } from "@/app/_lib/gsap-init";
+import { useGSAP } from "@gsap/react";
 import SolutionCardExpandable from "@/app/_components/SolutionCard/SolutionCardExpandable";
 import styles from "./Solution.module.scss";
 
-// No necesitamos registrar ScrollTrigger aquí, ya se hace en gsap-init
-
-export type SolutionLayout = "card-left" | "card-right";
-
-export interface SolutionProps {
-  word?: string;
-  className?: string;
-  solution: any;
-  solutionNumber: number;
-  layout?: SolutionLayout;
-  cardWidth?: number;
-  backgroundWidth?: number;
-  backgroundHeight?: number;
-  AnimationComponent: React.ComponentType;
-  featureOffset?: number;
-}
+// Registrar el plugin useGSAP
+gsap.registerPlugin(useGSAP);
 
 const cx = classNames.bind(styles);
 
-export const Solution: React.FC<SolutionProps> = ({
-  word,
+const LazyLandingWireframe = lazy(
+  () => import("@/app/_components/animations/LandingWireframe")
+);
+const LazyCodeEditorAnimation = lazy(
+  () => import("@/app/_components/animations/CodeEditorAnimation")
+);
+
+const AnimationWrapper = ({
+  animationComponentName,
+}: {
+  animationComponentName: string;
+}) => {
+  const AnimationComponent =
+    animationComponentName === "CodeEditorAnimation"
+      ? LazyCodeEditorAnimation
+      : LazyLandingWireframe;
+
+  return (
+    <Suspense fallback={<div className={cx("animation-placeholder")} />}>
+      <AnimationComponent />
+    </Suspense>
+  );
+};
+
+const Solution = ({
   solution,
   solutionNumber,
-  className,
   layout = "card-left",
-  cardWidth = 500,
-  backgroundWidth = 490,
-  backgroundHeight = 500,
-  AnimationComponent,
-  featureOffset = 0,
+  animationComponentName,
+}: {
+  solution: any;
+  solutionNumber: number;
+  layout?: "card-left" | "card-right";
+  animationComponentName: string;
 }) => {
   const container = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const wireframeRef = useRef<HTMLDivElement>(null);
-  const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const animationId = useRef(`solution-${solutionNumber}-${Date.now()}`);
   const floatingElements = useRef<(HTMLDivElement | null)[]>([]);
   const connectors = useRef<(HTMLDivElement | null)[]>([]);
-  const ambientLight = useRef<HTMLDivElement>(null);
-  const [isLightActive, setIsLightActive] = useState(false);
+  const ambientLight = useRef<HTMLDivElement | null>(null);
+  const isInitialized = useRef<boolean>(false);
+
+  // Estado para detectar si estamos en móvil o en modo adaptativo
   const [isMobile, setIsMobile] = useState(false);
+  const [isAdaptive, setIsAdaptive] = useState(false);
+  const MOBILE_BREAKPOINT = 768;
+  const ADAPTIVE_BREAKPOINT = 830;
 
-  // Inicializar las referencias de arrays
+  // Detectar cambios en el tamaño de la ventana
   useEffect(() => {
-    floatingElements.current = [];
-    connectors.current = [];
-  }, []);
+    const checkViewportSize = () => {
+      const windowWidth = window.innerWidth;
+      setIsMobile(windowWidth <= MOBILE_BREAKPOINT);
 
-  // Aseguramos que los componentes de animación estén listos antes de intentar renderizarlos
-  const [isReady, setIsReady] = useState(false);
+      // Solo aplicar modo adaptativo si estamos entre MOBILE_BREAKPOINT y ADAPTIVE_BREAKPOINT
+      setIsAdaptive(
+        windowWidth <= ADAPTIVE_BREAKPOINT && windowWidth > MOBILE_BREAKPOINT
+      );
+    };
 
-  useEffect(() => {
-    // Pequeño retraso para asegurar que el DOM esté completamente cargado
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 20); // Reducido a 20ms para acelerar la inicialización
+    // Verificar al montar
+    checkViewportSize();
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Detectar si estamos en móvil para optimizaciones con ResizeObserver
-  useEffect(() => {
-    // ResizeObserver es más eficiente que window.resize
-    if (typeof ResizeObserver === "undefined") {
-      // Fallback para navegadores que no soportan ResizeObserver
-      setIsMobile(window.innerWidth <= 768);
-      return;
-    }
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      // Solo actualizar el estado si realmente cambia el tamaño relevante
-      const width = entries[0]?.contentRect.width || window.innerWidth;
-      const newIsMobile = width <= 768;
-      if (isMobile !== newIsMobile) {
-        setIsMobile(newIsMobile);
-      }
-    });
-
-    // Observar el documento o container si está disponible
-    if (document.documentElement) {
-      resizeObserver.observe(document.documentElement);
-    } else if (container.current) {
-      resizeObserver.observe(container.current);
-    }
+    // Escuchar cambios de tamaño
+    window.addEventListener("resize", checkViewportSize);
 
     return () => {
-      resizeObserver.disconnect();
+      window.removeEventListener("resize", checkViewportSize);
     };
-  }, [isMobile]);
+  }, []);
 
-  // GSAP animations setup
-  useLayoutEffect(() => {
-    let ctx: ReturnType<typeof gsap.context> | null = null;
+  // Configuración inicial con useGSAP
+  useGSAP(
+    () => {
+      if (!container.current || isInitialized.current) return;
 
-    if (typeof window !== "undefined" && isReady) {
-      // Configuración común para todos los dispositivos
-      ctx = gsap.context(() => {
-        // Aplicación de valores iniciales más eficiente con un solo set
-        if (cardRef.current) {
-          gsap.set(cardRef.current, {
-            y: 40,
-            rotationX: 5,
-            transformOrigin: "center center",
+      // Configuración inicial con mejores propiedades para rendimiento
+      gsap.set(container.current, {
+        visibility: "visible",
+        autoAlpha: 0,
+        willChange: "transform, opacity",
+        force3D: true,
+      });
+
+      gsap.set([cardRef.current, wireframeRef.current], {
+        opacity: 0,
+        y: 40,
+        rotationX: 5,
+        willChange: "transform, opacity",
+        force3D: true,
+      });
+
+      floatingElements.current.forEach((el) => {
+        if (el)
+          gsap.set(el, {
             opacity: 0,
-          });
-        }
-
-        if (wireframeRef.current) {
-          gsap.set(wireframeRef.current, {
-            autoAlpha: 0,
-            y: 40,
-            rotationX: 5,
-            transformOrigin: "center center",
-          });
-        }
-
-        // Filtrar elementos nulos antes de aplicar animaciones
-        const initialValidFloatingElements =
-          floatingElements.current.filter(Boolean);
-        if (initialValidFloatingElements.length > 0) {
-          gsap.set(initialValidFloatingElements, {
-            autoAlpha: 0,
             scale: 0.9,
+            willChange: "transform, opacity",
+            force3D: true,
           });
-        }
+      });
 
-        const initialValidConnectors = connectors.current.filter(Boolean);
-        if (initialValidConnectors.length > 0) {
-          gsap.set(initialValidConnectors, {
-            autoAlpha: 0,
+      connectors.current.forEach((el) => {
+        if (el)
+          gsap.set(el, {
+            opacity: 0,
             scaleX: 0,
+            willChange: "transform",
           });
-        }
+      });
 
-        // Timeline única de entrada para mejor rendimiento
-        const entranceTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: container.current,
-            start: "top 80%",
-            end: "top 50%",
-            scrub: isMobile ? false : 0.3,
-            toggleActions: "play none none none",
-            once: isMobile, // Mejorar rendimiento en móvil ejecutando solo una vez
-          },
-          onComplete: () => setIsLightActive(true),
+      if (ambientLight.current) {
+        gsap.set(ambientLight.current, {
+          opacity: 0,
+          willChange: "opacity",
+        });
+      }
+
+      isInitialized.current = true;
+    },
+    { scope: container }
+  );
+
+  // Animación principal con useGSAP
+  const { contextSafe } = useGSAP(
+    () => {
+      if (!container.current || !isInitialized.current) return;
+
+      // Animación de entrada optimizada
+      const tl = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+          overwrite: "auto",
+        },
+        onComplete: () => {
+          if (ambientLight.current) {
+            gsap.to(ambientLight.current, {
+              opacity: 1,
+              duration: 0.5,
+              clearProps: "willChange",
+            });
+          }
+
+          // Limpiar willChange después de completar la animación
+          gsap.set([cardRef.current, wireframeRef.current], {
+            clearProps: "willChange",
+          });
+        },
+      });
+
+      // Elementos flotantes (No mostrarlos en modo adaptativo)
+      if (!isAdaptive) {
+        floatingElements.current.forEach((el, i) => {
+          if (el) {
+            tl.to(
+              el,
+              {
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                delay: i * 0.05,
+              },
+              0
+            );
+          }
         });
 
-        // Secuencia optimizada de aparición
-        const entranceValidConnectors = connectors.current.filter(Boolean);
-        const entranceValidFloatingElements =
-          floatingElements.current.filter(Boolean);
+        // Conectores
+        connectors.current.forEach((el, i) => {
+          if (el) {
+            tl.to(
+              el,
+              {
+                opacity: 0.7,
+                scaleX: 1,
+                duration: 0.5,
+                delay: i * 0.03,
+              },
+              0
+            );
+          }
+        });
+      }
 
-        if (entranceValidConnectors.length > 0) {
-          entranceTl.to(
-            entranceValidConnectors,
-            {
-              autoAlpha: 0.7,
-              scaleX: 1,
-              duration: 0.5,
-              stagger: 0.03,
-              ease: "power2.inOut",
-            },
-            0
-          );
-        }
+      // Tarjeta y wireframe
+      const firstElement =
+        layout === "card-left" ? cardRef.current : wireframeRef.current;
+      const secondElement =
+        layout === "card-left" ? wireframeRef.current : cardRef.current;
 
-        if (entranceValidFloatingElements.length > 0) {
-          entranceTl.to(
-            entranceValidFloatingElements,
-            {
-              autoAlpha: 1,
-              scale: 1,
-              duration: 0.5,
-              stagger: 0.03,
-              ease: "power1.out",
-            },
-            0.2
-          );
-        }
+      // Ajustar timing para el flujo adaptativo pero mantener normal para móvil
+      const secondDelay = isAdaptive ? 0.8 : 0.4;
 
-        // Optimización: uso del mismo patrón para ambos layouts pero con condiciones
-        const firstElement =
-          layout === "card-left" ? cardRef.current : wireframeRef.current;
-        const secondElement =
-          layout === "card-left" ? wireframeRef.current : cardRef.current;
+      if (firstElement) {
+        tl.to(
+          firstElement,
+          {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.6,
+            force3D: true,
+          },
+          0.2
+        );
+      }
 
-        if (firstElement) {
-          entranceTl.to(
-            firstElement,
-            {
-              opacity: 1,
-              autoAlpha: 1, // Usar autoAlpha para combinar opacity y visibility
-              y: 0,
-              rotationX: 0,
-              duration: 0.6,
-              ease: "power2.out",
-            },
-            0.3
-          );
-        }
+      if (secondElement) {
+        tl.to(
+          secondElement,
+          {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 0.6,
+            force3D: true,
+          },
+          secondDelay
+        );
+      }
 
-        if (secondElement) {
-          entranceTl.to(
-            secondElement,
-            {
-              opacity: 1,
-              autoAlpha: 1,
-              y: 0,
-              rotationX: 0,
-              duration: 0.6,
-              ease: "power2.out",
-            },
-            0.5
-          );
-        }
-
-        // Solo aplicamos parallax en desktop para mejor rendimiento en móvil
-        if (!isMobile) {
-          // Parallax optimizado con menos valores y cálculos
-          const parallaxMultiplier = layout === "card-left" ? 1 : -1;
-
-          // Timeline simplificada
-          const scrollTl = gsap.timeline({
-            scrollTrigger: {
-              trigger: container.current,
-              start: "top 60%",
-              end: "bottom 20%",
-              scrub: 0.4,
-              invalidateOnRefresh: false, // Mejora rendimiento
-              fastScrollEnd: true, // Mejora rendimiento
+      // ScrollTrigger optimizado con precarga
+      ScrollTrigger.create({
+        id: animationId.current,
+        trigger: container.current,
+        start: "top bottom-=100", // Comienza antes de entrar completamente en el viewport
+        onEnter: () => {
+          gsap.to(container.current, {
+            autoAlpha: 1,
+            duration: 0.2,
+            onComplete: function () {
+              tl.play();
             },
           });
+        },
+        once: true,
+      });
 
-          // Optimización: animaciones con menos propiedades y valores menores
-          if (cardRef.current) {
-            scrollTl.to(
-              cardRef.current,
-              {
-                y: -40,
-                x: 15 * parallaxMultiplier,
-                rotationY: 3 * parallaxMultiplier,
-                rotationX: -1,
-                ease: "none",
-              },
-              0
-            );
-          }
+      // Efectos de parallax solo en desktop y NO en modo adaptativo
+      if (!isMobile && !isAdaptive) {
+        const parallaxMultiplier = layout === "card-left" ? 1 : -1;
 
-          if (wireframeRef.current) {
-            scrollTl.to(
-              wireframeRef.current,
-              {
-                y: -40,
-                x: -15 * parallaxMultiplier,
-                rotationY: -4 * parallaxMultiplier,
-                rotationX: 2,
-                ease: "none",
-              },
-              0
-            );
-          }
+        // Parallax con mejor rendimiento
+        ScrollTrigger.create({
+          trigger: container.current,
+          start: "top 80%", // Comienza antes para precargar
+          end: "bottom 20%",
+          scrub: 0.3, // Reducido para mejor rendimiento
+          onUpdate: (self) => {
+            if (cardRef.current) {
+              gsap.to(cardRef.current, {
+                y: -40 * self.progress,
+                x: 15 * parallaxMultiplier * self.progress,
+                rotationY: 3 * parallaxMultiplier * self.progress,
+                force3D: true,
+                overwrite: "auto",
+              });
+            }
+            if (wireframeRef.current) {
+              gsap.to(wireframeRef.current, {
+                y: -40 * self.progress,
+                x: -15 * parallaxMultiplier * self.progress,
+                rotationY: -4 * parallaxMultiplier * self.progress,
+                force3D: true,
+                overwrite: "auto",
+              });
+            }
+          },
+        });
 
-          // Filtrar elementos nulos antes de aplicar animaciones
-          const scrollValidFloatingElements =
-            floatingElements.current.filter(Boolean);
-          if (scrollValidFloatingElements.length > 0) {
-            scrollTl.to(
-              scrollValidFloatingElements,
-              {
-                y: (i) => -50 + i * 10,
-                x: (i) => (i % 2 === 0 ? 25 : -25) * parallaxMultiplier,
-                rotation: (i) => (i % 2 === 0 ? 5 : -5) * parallaxMultiplier,
-                ease: "none",
-                stagger: 0.05,
-              },
-              0
-            );
-          }
+        // Efecto de enfoque con debounce
+        let brightnessTimeout: any;
 
-          const scrollValidConnectors = connectors.current.filter(Boolean);
-          if (scrollValidConnectors.length > 0) {
-            scrollTl.to(
-              scrollValidConnectors,
-              {
-                y: -30,
-                rotation: (i) => i * 3 * parallaxMultiplier,
-                ease: "none",
-                stagger: 0.05,
-              },
-              0
-            );
-          }
+        ScrollTrigger.create({
+          trigger: container.current,
+          start: "top 60%",
+          end: "bottom 40%",
+          onUpdate: (self) => {
+            clearTimeout(brightnessTimeout);
 
-          // "Focus effect" optimizado: menos cálculos y valores más pequeños
-          ScrollTrigger.create({
-            trigger: container.current,
-            start: "top 60%",
-            end: "bottom 40%",
-            onUpdate: (self) => {
-              if (!cardRef.current || !wireframeRef.current) return;
-
-              const proximityToCenter = Math.abs(self.progress - 0.5) * 2;
-              const centerEffect = 1 - proximityToCenter;
+            brightnessTimeout = setTimeout(() => {
+              const progress = Math.abs(self.progress - 0.5) * 2;
+              const scale = 1 + 0.03 * (1 - progress);
+              const brightness = 1 + 0.07 * (1 - progress);
 
               gsap.to([cardRef.current, wireframeRef.current], {
-                scale: 1 + 0.03 * centerEffect,
-                filter: `brightness(${1 + 0.07 * centerEffect})`,
+                scale,
+                filter: `brightness(${brightness})`,
                 duration: 0.2,
-                overwrite: "auto", // Mejora rendimiento
+                overwrite: "auto",
               });
-
-              const focusValidFloatingElements =
-                floatingElements.current.filter(Boolean);
-              if (focusValidFloatingElements.length > 0) {
-                gsap.to(focusValidFloatingElements, {
-                  autoAlpha: 0.6 + 0.4 * centerEffect,
-                  duration: 0.2,
-                  overwrite: "auto",
-                });
-              }
-            },
-            toggleClass: {
-              targets: ambientLight.current,
-              className: cx("solution__ambient-light--active"),
-            },
-          });
-        }
-
-        // Solo refrescar cuando sea necesario
-        ScrollTrigger.refresh();
-      }, container);
-    }
-
-    return () => {
-      if (ctx) {
-        ctx.revert(); // Limpiar todas las animaciones
+            }, 50);
+          },
+        });
       }
-    };
-  }, [layout, isReady, isMobile]);
 
-  // Funciones para manejar referencias optimizadas
+      // Limpieza de willChange al finalizar
+      floatingElements.current.forEach((el) => {
+        if (el) gsap.set(el, { clearProps: "willChange" });
+      });
+
+      connectors.current.forEach((el) => {
+        if (el) gsap.set(el, { clearProps: "willChange" });
+      });
+    },
+    {
+      scope: container,
+      dependencies: [layout, isMobile, isAdaptive],
+    }
+  );
+
+  // Funciones helper para referencias
   const setFloatingElementRef = (el: HTMLDivElement | null, index: number) => {
     floatingElements.current[index] = el;
   };
@@ -357,22 +339,19 @@ export const Solution: React.FC<SolutionProps> = ({
   return (
     <div
       ref={container}
-      className={cx("solution", className, `solution--${layout}`, {
+      className={cx("solution", `solution--${layout}`, {
         "solution--mobile": isMobile,
-        "solution--ready": isReady,
+        "solution--adaptive": isAdaptive,
       })}
-      style={
-        {
-          "--card-width": `${cardWidth}px`,
-          "--background-width": `${backgroundWidth}px`,
-          "--background-height": `${backgroundHeight}px`,
-        } as React.CSSProperties
-      }
+      style={{
+        visibility: "visible",
+        opacity: 0,
+        transform: "translateZ(0)", // Force hardware acceleration
+      }}
     >
-      {/* Solo renderizamos elementos de efectos decorativos en desktop */}
-      {!isMobile && (
+      {/* Elementos decorativos - solo visibles en modo normal, no en adaptativo ni en móvil */}
+      {!isMobile && !isAdaptive && (
         <>
-          {/* Elementos flotantes para el efecto parallax */}
           {[1, 2, 3, 4].map((num, index) => (
             <div
               key={`float-${num}`}
@@ -381,47 +360,37 @@ export const Solution: React.FC<SolutionProps> = ({
                 "solution__floating-element",
                 `solution__floating-element--${num}`
               )}
-            ></div>
+            />
           ))}
 
-          {/* Líneas conectoras */}
           <div
             ref={(el) => setConnectorRef(el, 0)}
             className={cx(
               "solution__connector",
               "solution__connector--horizontal"
             )}
-          ></div>
+          />
           <div
             ref={(el) => setConnectorRef(el, 1)}
             className={cx(
               "solution__connector",
               "solution__connector--diagonal-1"
             )}
-          ></div>
+          />
           <div
             ref={(el) => setConnectorRef(el, 2)}
             className={cx(
               "solution__connector",
               "solution__connector--diagonal-2"
             )}
-          ></div>
+          />
 
-          {/* Efecto de luz ambiental */}
-          <div
-            ref={ambientLight}
-            className={cx("solution__ambient-light", {
-              "solution__ambient-light--active": isLightActive,
-            })}
-          ></div>
+          <div ref={ambientLight} className={cx("solution__ambient-light")} />
         </>
       )}
 
       <div className={cx("solution__container")}>
-        <div
-          ref={contentWrapperRef}
-          className={cx("solution__content-wrapper")}
-        >
+        <div className={cx("solution__content-wrapper")}>
           <div ref={cardRef} className={cx("solution__card-wrapper")}>
             <SolutionCardExpandable
               {...solution}
@@ -431,7 +400,7 @@ export const Solution: React.FC<SolutionProps> = ({
           </div>
 
           <div ref={wireframeRef} className={cx("solution__wireframe-wrapper")}>
-            <AnimationComponent />
+            <AnimationWrapper animationComponentName={animationComponentName} />
           </div>
         </div>
       </div>
@@ -439,5 +408,4 @@ export const Solution: React.FC<SolutionProps> = ({
   );
 };
 
-// Memoización para prevenir re-renders innecesarios
 export default React.memo(Solution);
