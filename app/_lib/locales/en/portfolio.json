@@ -44,8 +44,8 @@
     },
     {
       "id": "trvlr-travel-platform",
-      "title": "TRVLR Travel Platform",
-      "description": "Modern travel website with destination search, guides, and blogs. Allows users to explore exclusive destinations, plan itineraries, and discover local recommendations with a visually appealing interface.",
+      "title": "TRVLR",
+      "description": "Modern travel website with destination search, guides, and blogs. Allows users to explore incredible destinations, plan itineraries, and discover local recommendations with a visually appealing interface.",
       "technologies": ["React", "Next.js", "TypeScript", "SASS", "Leaflet", "GSAP", "React Slick", "React Datepicker"],
       "images": [
         {

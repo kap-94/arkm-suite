@@ -45,7 +45,7 @@
     {
       "id": "trvlr-travel-platform",
       "title": "TRVLR",
-      "description": "Web de viajes moderna con búsqueda de destinos, guías y blogs. Permite a los usuarios explorar destinos exclusivos, planificar itinerarios y descubrir recomendaciones locales con una interfaz visualmente atractiva.",
+      "description": "Web de viajes moderna con búsqueda de destinos, guías y blogs. Permite a los usuarios explorar destinos increíbles, planificar itinerarios y descubrir recomendaciones locales con una interfaz visualmente atractiva.",
       "technologies": ["React", "Next.js", "TypeScript", "SASS", "Leaflet", "GSAP", "React Slick", "React Datepicker"],
       "images": [
         {
