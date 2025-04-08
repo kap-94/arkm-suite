@@ -14,12 +14,10 @@ import { useLanguage } from "../../_context/LanguageContext";
 
 import { useHeaderScroll } from "./hooks";
 
-import { MenuList } from "../MenuList";
 import { Header } from "./Header";
 import LanguageSelector from "../LanguageSelector";
 
 import styles from "./styles/Header.module.scss";
-import Brand from "../Brand";
 
 const cx = classnames.bind(styles);
 
@@ -78,26 +76,6 @@ const HeaderClient: React.FC<HeaderProps> = ({
     });
   }, [dictionary.navigation.primary]);
 
-  // Process secondary navigation items similarly
-  const secondaryNavigationItems = useMemo(() => {
-    return Object.values(dictionary.navigation.secondary).map((item) => {
-      const iconElement =
-        typeof item.icon === "string"
-          ? createIconElement(item.icon, { size: 18, strokeWidth: 2 })
-          : item.icon;
-
-      const dropdownIcon = item.showDropdownIcon
-        ? createIconElement("dropDown", { size: 14, strokeWidth: 2 })
-        : undefined;
-
-      return {
-        ...item,
-        icon: iconElement,
-        dropdownIcon,
-      };
-    });
-  }, [dictionary.navigation.secondary]);
-
   const setIsNavOpen = (isOpen: boolean) =>
     setMenuState((prev) => ({ ...prev, isNavOpen: isOpen }));
 
@@ -123,12 +101,6 @@ const HeaderClient: React.FC<HeaderProps> = ({
     ]
   );
 
-  const handleMenuClick = () => {
-    if (menuState.isNavOpen) {
-      setIsNavOpen(false);
-    }
-  };
-
   useEffect(() => {
     document.body.style.overflow = menuState.isNavOpen ? "hidden" : "unset";
     return () => {
@@ -152,18 +124,10 @@ const HeaderClient: React.FC<HeaderProps> = ({
       >
         <Header.Content>
           <Header.Nav>
-            {/* Desktop Menu */}
-            <div className={cx("header__menu-group", "header__desktop-menu")}>
-              <MenuList
-                frontPageID={language || 1}
-                data={primaryNavigationItems}
-                onClick={handleMenuClick}
-                useActiveStyle
-                locale={language}
-              />
-            </div>
-
             {/* Mobile Language Selector (left) */}
+            {/* <div className={cx("header__logo")}>
+              <Brand size="md" variant="minimal" />
+            </div> */}
             <div className={cx("header__mobile-language-toggle")}>
               <LanguageSelector
                 className={cx("header__mobile-language-selector")}
@@ -174,22 +138,10 @@ const HeaderClient: React.FC<HeaderProps> = ({
               />
             </div>
 
-            {/* Logo (centered in both desktop and mobile) */}
-            <div className={cx("header__logo")}>
-              <Brand size="lg" />
-            </div>
-
             {/* Desktop Actions */}
             <div
               className={cx("header__actions-group", "header__desktop-actions")}
             >
-              <MenuList
-                frontPageID={language || 1}
-                data={secondaryNavigationItems}
-                onClick={handleMenuClick}
-                useActiveStyle
-                locale={language}
-              />
               <LanguageSelector
                 className={cx("header__language-selector")}
                 variant="rounded-dropdown-with-icon"
@@ -198,20 +150,6 @@ const HeaderClient: React.FC<HeaderProps> = ({
                 options={languageOptions}
               />
             </div>
-
-            {/* Mobile Menu Toggle (right) */}
-            <div className={cx("header__mobile-menu-toggle")}>
-              <Header.MenuToggle />
-            </div>
-
-            {/* Mobile Menu (shown when isNavOpen is true) */}
-            {menuState.isNavOpen && (
-              <Header.MobileMenu
-                primaryNavigation={primaryNavigationItems}
-                secondaryNavigation={secondaryNavigationItems}
-                locale={language}
-              />
-            )}
           </Header.Nav>
         </Header.Content>
       </Header.Root>

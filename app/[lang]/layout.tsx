@@ -1,25 +1,13 @@
 // src/app/[lang]/layout.tsx
-import type { Metadata } from "next";
-import { languages, type Language } from "../_lib/config/i18n";
-import { LanguageProvider } from "../_context/LanguageContext";
-import { inter } from "../_lib/fonts";
-import GoogleAnalytics from "../_components/GoogleAnalytics";
+import { LanguageProvider } from "@/app/_context/LanguageContext";
+import { languages, type Language } from "@/app/_lib/config/i18n";
+import { inter } from "@/app/_lib/fonts";
+import GoogleAnalytics from "@/app/_components/GoogleAnalytics";
 import "@/app/_styles/globals.scss";
 
 export async function generateStaticParams() {
   return languages.map((lang) => ({ lang }));
 }
-
-export const metadata: Metadata = {
-  metadataBase: new URL("https://yourdomain.com"), // Add your domain
-  title: {
-    template: "%s - ARKM Studio",
-    default: "ARKM Studio",
-  },
-  authors: [{ name: "ARKM Studio" }],
-  creator: "ARKM Studio",
-  publisher: "ARKM Studio",
-};
 
 export default async function RootLayout({
   children,

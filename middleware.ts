@@ -142,10 +142,16 @@ function isAuthPath(pathname: string): boolean {
   return AUTH_PATHS.some((path) => pathname.includes(path));
 }
 
+// Nueva función para verificar si una ruta es la raíz localizada
+function isLocalizedRoot(pathname: string): boolean {
+  return LOCALES.some((locale) => pathname === `/${locale}`);
+}
+
 export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   // Obtener el host actual para depuración
   const currentHost = request.headers.get("host") || "";
+  console.log(`Current host: ${currentHost}, Path: ${pathname}`);
 
   // 1. Si es una ruta de auth API, permitir sin modificaciones
   if (pathname.startsWith("/api/auth")) {
@@ -179,6 +185,13 @@ export default auth(async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  // NUEVO: Redirigir la raíz (/es o /en) al dashboard
+  if (isLocalizedRoot(pathname)) {
+    const locale = pathname.substring(1); // Obtener el locale (es o en)
+    const dashboardUrl = new URL(`/${locale}/dashboard`, request.url);
+    return NextResponse.redirect(dashboardUrl);
+  }
+
   // 4. Si la ruta ya tiene un locale válido
   if (hasValidLocale(pathname)) {
     const response = NextResponse.next();
@@ -199,6 +212,22 @@ export default auth(async function middleware(request: NextRequest) {
 
   // 7. Para rutas sin locale, redirigir a la versión localizada
   const locale = getPreferredLocale(request);
+
+  // MODIFICADO: Si la ruta es la raíz, redirigir directamente al dashboard
+  if (pathname === "/") {
+    const dashboardUrl = new URL(`/${locale}/dashboard`, request.url);
+    const response = NextResponse.redirect(dashboardUrl);
+
+    // Establecer cookie de locale
+    response.cookies.set("NEXT_LOCALE", locale, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+    });
+
+    return response;
+  }
+
+  // Para otras rutas sin locale, seguir con el comportamiento normal
   const localizedUrl = buildLocalizedUrl(request, locale);
   const response = NextResponse.redirect(localizedUrl);
 

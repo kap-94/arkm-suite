@@ -119,8 +119,8 @@
   }
 
   &__header {
-    margin-bottom: $spacing-xxxl;
-    margin-left: 2px;
+    margin-bottom: 52px;
+    padding-inline: $spacing-sm;
   }
 
   &__title {
@@ -169,7 +169,7 @@
     @include tablet {
       @include flex-center;
       position: relative;
-      padding: $spacing-xl 0 $spacing-lg;
+      padding: $spacing-md 0 $spacing-lg;
       width: 100%;
     }
   }
