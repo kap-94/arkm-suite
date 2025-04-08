@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ARKM Suite 📊
 
-## Getting Started
+![ARKM Suite portal login page](./public/images/portfolio/arkm-timeline-dark.png)
 
-First, run the development server:
+## 📋 Description
+
+ARKM Suite is a centralized project management portal offering an interactive dashboard, detailed progress tracking through Gantt timelines, and a comprehensive deliverables system. It's optimized to improve communication between teams and clients, making project management more efficient and transparent.
+
+## ✨ Features
+
+- **Interactive dashboard** - Complete visualization of project status
+- **Progress tracking** - Detailed Gantt timelines
+- **Deliverables system** - Management and tracking of documents and outcomes
+- **Access control** - Custom permissions for different user roles
+- **Integrated communication** - Tools to facilitate communication between teams and clients
+- **Dark/light mode** - Interface customization according to user preferences
+
+## 🛠️ Technologies
+
+- **React** - JavaScript library for building user interfaces
+- **TypeScript** - JavaScript superset with static typing
+- **Next.js** - React framework for web applications
+- **SASS** - CSS preprocessor for more efficient styling
+- **RESTful API** - Architecture for backend communication
+- **Recharts** - Library for data visualization
+- **Next Auth** - Authentication and access control system
+
+## 🚀 Installation and Usage
 
 ```bash
+# Clone the repository
+git clone https://github.com/kap-94/arkm-suite.git
+
+# Navigate to the directory
+cd arkm-studio
+
+# Install dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials and settings
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔒 Authentication Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To configure authentication and access control, you'll need to:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Set up your authentication providers in the `.env.local` file
 
-## Learn More
+## 🌐 Links
 
-To learn more about Next.js, take a look at the following resources:
+- **Live demo**: [ARKM Suite Dashboard](https://arkm-suite.vercel.app/en/dashboard)
+- **Repository**: [GitHub](https://github.com/kap-94/arkm-suite)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📸 Screenshots
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+![Design system panel](/public/images/portfolio/arkm-design-system.png)
 
-## Deploy on Vercel
+![Gantt timeline view](/public/images/portfolio/arkm-signin.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 👨‍💻 Author
+
+Developed by Pablo Karam - [See more projects](https://www.pablokaram.com)
