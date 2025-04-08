@@ -2,166 +2,60 @@
 @import "@/app/_styles/mixins";
 
 .footer {
-  position: relative;
-  // min-height: 660px;
-  min-height: 100vh;
-  background-color: $black-base;
+  width: 100%;
+  background: $black-base;
   color: $text-primary;
-  // overflow: hidden; // Importante para que el canvas no se salga
+  border-top: 1px solid rgba($text-primary, 0.1);
+  padding: $spacing-lg 0;
+  // @include glass-effect($black-base, 0.03, 4px);
 
-  &__particles-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2 !important; // Mayor que el container
-    pointer-events: none; // Permite que los clics pasen a través
-  }
-
-  &__particles-canvas {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    mix-blend-mode: screen; // Modo de mezcla para mejor integración visual
-    // background-color: white;
-  }
+  // Propiedades para corregir el posicionamiento
+  position: relative;
+  z-index: 0;
+  flex-shrink: 0;
+  margin-top: auto;
 
   &__container {
-    position: relative;
-    z-index: 3; // Por encima para interacciones
+    width: 100%;
+    max-width: $content-max-width;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    // min-height: 660px;
-    min-height: 100vh;
+    padding: 0 $spacing-md;
+    @include flex(column, center, center, $spacing-lg);
   }
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 0;
-    max-width: 1024px;
-    flex: 1;
-    height: 100%;
-    text-align: center;
+  &__navigation {
+    @include flex(row, center, center, $spacing-xl);
+    flex-wrap: wrap;
   }
 
-  &__information {
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    gap: 24px;
-  }
-
-  &__cta {
-    width: fit-content;
-    margin-top: 32px;
-  }
-
-  &__social {
-    justify-content: center;
-    display: flex;
-    gap: 18px;
-  }
-
-  &__social-link {
-    text-decoration: none;
-    color: $text-secondary;
-    font-size: 14px;
-    padding: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    padding: 8px;
-    display: grid;
-    place-content: center;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px); /* For Safari */
-    border: 1px solid rgba($text-primary, 0.2);
-
-    @include transition(color);
-
-    &:hover {
-      color: $white-color;
-    }
-  }
-
-  &__links {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-  }
-
-  &__link {
-    text-decoration: none;
+  &__nav-link {
     color: $text-secondary;
     @include transition(color);
+    margin: 0 $spacing-sm;
 
-    &:hover {
+    @include hover {
       color: $primary-color;
     }
   }
 
-  &__bottom-wrapper {
-    width: 100%;
-    border-top: 1px solid rgba($text-primary, 0.1);
-    display: flex;
-    justify-content: center;
-    @include glass-effect($blur: 4px);
-    background-color: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px); /* For Safari */
-    // border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  &__bottom {
-    margin-top: auto; // Empuja hacia abajo
-    width: 100%;
-    padding-block: 1.5rem;
-    max-width: 1024px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
   &__copyright {
-    text-align: right;
     color: $text-tertiary;
+    text-align: center;
   }
-}
 
-@media (max-width: 768px) {
-  .footer {
+  @include mobile {
+    padding: $spacing-md 0;
+
     &__container {
-      padding: 1.5rem;
+      padding: 0 $spacing-sm;
     }
 
-    &__links {
-      flex-wrap: wrap;
-      gap: 1rem 1.5rem;
+    &__navigation {
+      gap: $spacing-sm;
     }
 
-    &__bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.5rem;
-    }
-
-    &__copyright {
-      text-align: left;
-      width: 100%;
+    &__nav-link {
+      margin: $spacing-xs;
     }
   }
 }
