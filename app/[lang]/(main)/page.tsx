@@ -1,19 +1,18 @@
 import { Metadata } from "next";
-import { Language } from "@/app/_lib/config/i18n";
-import { Hero } from "@/app/_modules/Hero";
-import { getPageDictionary, homeDictionary } from "@/app/_utils/dictionary";
-import ClientSuitePreview from "@/app/_modules/ClientSuitePreview";
-import SolutionsModule from "@/app/_modules/SolutionsModule";
-import { HomeDictionary } from "@/app/_types/dictionary/home.types";
-import ShaderBackground from "@/app/_modules/ShaderBackground";
-import styles from "./page.module.scss";
 import classNames from "classnames/bind";
+import { Language } from "@/app/_lib/config/i18n";
+import { getPageDictionary, homeDictionary } from "@/app/_utils/dictionary";
+import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 import { UIProvider } from "@/app/_context/UIContext";
-import Snackbar from "@/app/_components/Snackbar";
+import { Hero } from "@/app/_modules/Hero";
+import SolutionsModule from "@/app/_modules/SolutionsModule";
+import ShaderBackground from "@/app/_modules/ShaderBackground";
 import MethodologyPreview from "@/app/_modules/MethodologyPreview";
 import WorkExperienceSection from "@/app/_modules/WorkExperience";
-import GlowBackground from "@/app/_components/GlowBackground";
 import ContactSection from "@/app/_modules/ContactSection";
+import Snackbar from "@/app/_components/Snackbar";
+import GlowBackground from "@/app/_components/GlowBackground";
+import styles from "./page.module.scss";
 
 const cx = classNames.bind(styles);
 
