@@ -27,7 +27,7 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
   return (
     <div className={cx("signin-form", className)}>
       <Typography
-        variant="h2"
+        variant="h3"
         theme={{ type: "dark" }}
         className={cx("signin-form__title")}
       >
@@ -90,7 +90,7 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
             <Button
               type="submit"
               variant="primary"
-              size="lg"
+              size="md"
               radius="md"
               fullWidth
               disabled={isLoading || !isValid || isSubmitting}
