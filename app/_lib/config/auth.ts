@@ -95,7 +95,7 @@ export const config: NextAuthConfig = {
       return session;
     },
   },
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
 };
 
 export const { auth, handlers } = NextAuth(config);
