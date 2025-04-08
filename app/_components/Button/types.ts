@@ -93,7 +93,7 @@ export interface ButtonProps {
   isLoading?: boolean;
   disabled?: boolean;
   fullWidth?: boolean;
-  onClick?: () => void;
+  onClick?: (() => void) | ((e: React.MouseEvent<HTMLElement>) => void);
   type?: "button" | "submit" | "reset";
   gradientColor?: "purple" | "red"; // For gradient variants
 }

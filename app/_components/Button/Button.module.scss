@@ -31,6 +31,7 @@
   outline: none;
   text-decoration: none;
   text-wrap: nowrap;
+  font-family: "sofia-pro", sans-serif;
 
   &__spinner {
     animation: spin 1s linear infinite;
@@ -64,12 +65,16 @@
 
   &--lg {
     padding: 22px 56px;
+    letter-spacing: 0.02em;
+    font-weight: 500 !important;
+    font-size: clamp(16px, 2vw, 20px);
 
     @include mobile {
       padding: 18px 32px;
     }
 
     @include mobile-medium {
+      font-size: clamp(14px, 2vw, 18px);
       padding: 16px 24px;
     }
   }
