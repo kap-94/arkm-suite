@@ -1,29 +1,29 @@
-"use client";
-import React, { useRef } from "react";
-import classNames from "classnames/bind";
-import Solution, { SolutionLayout } from "../Solution";
-import styles from "./SolutionsModule.module.scss";
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Typography from "@/app/_components/Typography";
-import { Box, Monitor } from "lucide-react";
-import CodeEditorAnimation from "@/app/_components/animations/CodeEditorAnimation";
-import LandingWireframe from "@/app/_components/animations/LandingWireframe";
+import styles from "./SolutionsModule.module.scss";
+import SectionHeading from "@/app/_components/SectionHeading";
 
-const cx = classNames.bind(styles);
+const DynamicSolution = dynamic(() => import("@/app/_modules/Solution"), {
+  ssr: false,
+  loading: () => <SolutionSkeleton />,
+});
 
-// No necesitamos el getIconComponent ya que ahora usamos números
-// pero mantenemos la función getAnimationComponent
-const getAnimationComponent = (id: string) => {
-  switch (id) {
-    case "web-design-solution":
-      return LandingWireframe;
-    case "web-development-solution":
-      return CodeEditorAnimation;
-    default:
-      return LandingWireframe;
-  }
-};
+const SolutionSkeleton = ({
+  layout = "card-left",
+}: { layout?: SolutionLayout } = {}) => (
+  <div
+    className={`${styles["solution-skeleton"]} ${
+      styles[`solution-skeleton--${layout}`]
+    }`}
+    aria-hidden="true"
+  >
+    <div className={styles["solution-skeleton__card"]}></div>
+    <div className={styles["solution-skeleton__wireframe"]}></div>
+  </div>
+);
 
-// Define types for solution data structure
+export type SolutionLayout = "card-left" | "card-right";
 interface SolutionFeature {
   title: string;
   description: string;
@@ -34,7 +34,6 @@ interface SolutionData {
   title: string;
   description: string;
   features: SolutionFeature[];
-  AnimationComponent?: React.ComponentType<any>;
 }
 
 interface SolutionsDictionary {
@@ -47,107 +46,73 @@ interface SolutionsModuleProps {
   alternateLayouts?: boolean;
   solutionLayout?: SolutionLayout;
   dictionary?: SolutionsDictionary;
+  customAnchorId?: string;
 }
 
-export const SolutionsModule = ({
+const animationComponentMap: Record<string, string> = {
+  "fullstack-skills": "LandingWireframe",
+  "frontend-development": "CodeEditorAnimation",
+};
+
+export function SolutionsModule({
   alternateLayouts = true,
   solutionLayout,
   dictionary,
-}: SolutionsModuleProps) => {
-  const containerRef = useRef<HTMLElement>(null);
-
-  // Use dictionary data when available, otherwise use hardcoded defaults
-  const solutionsData = dictionary?.solutions || [
-    {
-      id: "web-design-solution",
-      title: "Web Design",
-      description:
-        "Design to us is not only effective, efficient and visually pleasing screens, but motion design with its live animations as well as entertaining illustrations.",
-      features: [
-        {
-          title: "Advanced UX/UI Design",
-          description:
-            "User-focused design, refined via research, wireframing, and prototyping to achieve seamless form and function.",
-        },
-        {
-          title: "Design Systems",
-          description:
-            "Consistent frameworks with reusable components and style guides ensuring scalability across all touchpoints.",
-        },
-        {
-          title: "Custom Animations",
-          description:
-            "Purposeful motion design that enhances interactions and brings interfaces to life while improving usability.",
-        },
-      ],
-    },
-    {
-      id: "web-development-solution",
-      title: "Web Development",
-      description:
-        "We build robust and scalable web solutions using cutting-edge technologies and best practices.",
-      features: [
-        {
-          title: "Modern Architecture",
-          description:
-            "Future-proof solutions using microservices and cloud-native tech for maximum scalability and maintainability.",
-        },
-        {
-          title: "Clean Code",
-          description:
-            "Clean, documented code with automated tests and CI ensures long-term quality.",
-        },
-        {
-          title: "Optimized Performance",
-          description:
-            "Lightning-fast web experiences via code splitting, caching, and performance monitoring.",
-        },
-      ],
-    },
-  ];
-
-  // Calculamos el offset global para cada solución
-  let globalFeatureOffset = 0;
+  customAnchorId,
+}: SolutionsModuleProps) {
+  const solutionsData = dictionary?.solutions || [];
 
   return (
-    <section ref={containerRef} id="showcase" className={cx("container")}>
-      <div className={cx("solutions__header")}>
-        <Typography
+    <section id={customAnchorId} className={styles.container}>
+      <div className={styles.solutions__header}>
+        {/* <Typography
           variant="h2"
           fontFamily="sofia"
           fontWeight={500}
           color="primary"
+          align="center"
           theme="dark"
-          className={cx("solutions__title")}
+          className={styles.solutions__title}
         >
           {dictionary?.title || "Solutions that drive impact"}
-        </Typography>
+        </Typography> */}
+        <SectionHeading
+          title={dictionary?.title || "Solutions that drive impact"}
+          subtitle={dictionary?.subtitle || "Paths Forged with Passion"}
+          align="center"
+          className={styles.methodology__heading}
+        />
       </div>
 
-      <ul className={cx("solutions")}>
+      <ul className={styles.solutions}>
         {solutionsData.map((solution, index) => {
-          // Calculamos el offset sumando las features de las soluciones anteriores
-          // const offset = globalFeatureOffset;
-          // globalFeatureOffset += solution.features.length;
+          const layout =
+            solutionLayout ||
+            (alternateLayouts
+              ? index % 2 === 0
+                ? "card-left"
+                : "card-right"
+              : "card-left");
 
-          // Obtenemos el componente de animación
-          const AnimationComponent = getAnimationComponent(solution.id);
+          const animationComponentName =
+            animationComponentMap[solution.id] || "LandingWireframe";
 
           return (
-            <li key={index} className={cx("solutions__item")}>
-              <Solution
-                word="with gsap"
-                solution={solution}
-                solutionNumber={index + 1} // Añadimos el número secuencial (empezando desde 1)
-                AnimationComponent={AnimationComponent}
-                // featureOffset={offset}
-              />
+            <li key={solution.id} className={styles.solutions__item}>
+              <div className={styles["solution-wrapper"]}>
+                <DynamicSolution
+                  solution={solution}
+                  solutionNumber={index + 1}
+                  // layout={layout}
+                  animationComponentName={animationComponentName}
+                />
+              </div>
             </li>
           );
         })}
       </ul>
     </section>
   );
-};
+}
 
 export default SolutionsModule;
