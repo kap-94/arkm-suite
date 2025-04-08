@@ -255,3 +255,20 @@
     @content;
   }
 }
+
+$base-font-size: 16;
+
+@function rem($pixels) {
+  @return #{$pixels / $base-font-size}rem;
+}
+
+@mixin fluid-type($min-size, $max-size) {
+  font-size: clamp(
+    #{rem($min-size)},
+    calc(
+      #{rem($min-size)} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) /
+            (1200 - 320))
+    ),
+    #{rem($max-size)}
+  );
+}
