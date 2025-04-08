@@ -73,11 +73,11 @@ const BenefitItem = ({
     <div className={cx("benefit__content")}>
       <div className={cx("benefit__header")}>
         <Typography
-          variant="h3"
+          variant="h4"
           color="primary"
           fontFamily="sofia"
           theme="dark"
-          fontWeight={400}
+          fontWeight={500}
           className={cx("benefit__title")}
         >
           {title}
@@ -86,10 +86,10 @@ const BenefitItem = ({
       </div>
 
       <Typography
-        variant="p2"
+        variant="p1"
         color="tertiary"
         theme="dark"
-        fontWeight={300}
+        fontWeight={400}
         fontFamily="sofia"
         className={cx("benefit__description")}
       >
