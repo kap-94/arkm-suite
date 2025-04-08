@@ -1,0 +1,310 @@
+@import "@/app/_styles/variables.scss";
+@import "@/app/_styles/mixins.scss";
+
+.dynamic-layout {
+  --left-width: min(500px, 45%);
+  --right-width: 32%;
+  --elements-gap: clamp(24px, 4vw, 200px);
+  --padding-h: clamp($spacing-sm, 3vw, $spacing-lg);
+  --padding-v: clamp($spacing-sm, 2vw, $spacing-md);
+  --total-content-width: unset;
+  --max-right-height: 500px;
+  --max-right-width: 400px;
+  --max-left-height: 500px;
+  --max-left-width: 500px;
+
+  height: auto;
+  min-height: 500px;
+  max-height: none;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin: 0 auto;
+  z-index: 1;
+  contain: layout style;
+  transform: translateZ(0);
+  opacity: 1;
+  padding: var(--padding-v) var(--padding-h);
+  box-sizing: border-box;
+  visibility: visible !important;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &--ready {
+    opacity: 1;
+  }
+
+  // Adaptable breakpoints based on content width
+  @include viewport-between(900px, $desktop-breakpoint) {
+    --left-width: min(450px, 45%) !important;
+    --right-width: 32%;
+    --elements-gap: clamp(20px, 3vw, 150px);
+  }
+
+  // Adaptive breakpoint - when it no longer fits, change to vertical
+  @include viewport-between($mobile-breakpoint + 1, 900px) {
+    .dynamic-layout__content-wrapper {
+      flex-direction: column !important; // Force column direction regardless of layout
+    }
+
+    --elements-gap: clamp($spacing-lg, 5vw, $spacing-xl);
+    --right-width: min(70%, 300px);
+    --left-width: 100%;
+
+    &__left-wrapper,
+    &__right-wrapper {
+      max-width: 100% !important;
+      width: 100% !important;
+      flex: 0 0 auto !important;
+    }
+
+    &__right-wrapper {
+      height: auto !important;
+      margin-top: var(--elements-gap);
+    }
+  }
+
+  @include tablet {
+    --elements-gap: clamp($spacing-md, 2.5vw, $spacing-xl);
+    --right-width: 35%;
+    --left-width: min(450px, 42%);
+  }
+
+  @include mobile {
+    --right-width: min(85%, 300px);
+    --elements-gap: clamp($spacing-md, 3vw, $spacing-lg);
+    --left-width: 100%;
+    height: auto;
+    min-height: unset;
+    max-height: none;
+    padding: var(--padding-v) var(--padding-h);
+    contain: content;
+  }
+
+  @include mobile-small {
+    --elements-gap: clamp($spacing-sm, 2vw, $spacing-md);
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    padding: 0;
+    max-width: var(--total-content-width);
+    overflow: visible;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      overflow: hidden;
+    }
+
+    @include mobile {
+      max-width: 100%;
+      overflow: hidden;
+    }
+  }
+
+  &__content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--elements-gap);
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @include mobile {
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: $spacing-md 0;
+    }
+  }
+
+  &__left-wrapper {
+    position: relative;
+    width: 50% !important;
+    max-width: 50% !important;
+    z-index: 5;
+    height: auto;
+    flex: 0 0 50% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    contain: layout paint style;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0 auto;
+    }
+
+    @include mobile {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0 auto;
+      height: fit-content;
+      align-items: flex-start;
+      justify-content: flex-start;
+      z-index: 6;
+      contain: content;
+      margin-bottom: $spacing-md;
+
+      // En móvil, siempre debe mostrar el card primero, independientemente del layout
+      &.dynamic-layout__card-container {
+        order: 1;
+      }
+    }
+  }
+
+  &__right-wrapper {
+    position: relative;
+    width: 50% !important;
+    max-width: 50% !important;
+    flex: 0 0 50% !important;
+    height: 85%;
+    z-index: 4;
+    border-radius: $border-radius-md;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    contain: layout paint style;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto;
+      margin-top: var(--elements-gap);
+    }
+
+    @include mobile {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 0 0 auto !important;
+      margin: 0 auto;
+      align-items: center;
+      height: fit-content;
+      z-index: 5;
+      contain: content;
+
+      // En móvil, siempre debe mostrar las imágenes después del card
+      &.dynamic-layout__images-container {
+        order: 2;
+      }
+    }
+  }
+
+  // Clases específicas para garantizar la correcta visualización en móvil
+  &__card-container {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+      order: 1;
+    }
+  }
+
+  &__images-container {
+    @include mobile {
+      order: 2;
+    }
+  }
+
+  &--left-right &__content-wrapper {
+    flex-direction: row;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column;
+    }
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &--right-left &__content-wrapper {
+    flex-direction: row-reverse;
+
+    @include viewport-between($mobile-breakpoint + 1, 900px) {
+      flex-direction: column;
+    }
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  @include reduced-motion {
+    * {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dynamic-layout:hover {
+    .dynamic-layout__left-wrapper,
+    .dynamic-layout__right-wrapper {
+      filter: brightness(1.05);
+    }
+  }
+}
+
+// Asegurar que el contenedor móvil tenga los anchos correctos
+.dynamic-layout--mobile {
+  .dynamic-layout__left-wrapper,
+  .dynamic-layout__right-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  // En móvil, forzar el orden para que el card esté siempre arriba
+  .dynamic-layout__content-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+// Lo mismo para el modo adaptativo
+.dynamic-layout--adaptive {
+  .dynamic-layout__left-wrapper,
+  .dynamic-layout__right-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
+
+// Estilos específicos para el portfolio
+.projectLayout {
+  &--card-left {
+    .dynamic-layout__content-wrapper {
+      @include mobile {
+        flex-direction: column !important;
+      }
+    }
+  }
+
+  &--card-right {
+    .dynamic-layout__content-wrapper {
+      @include mobile {
+        flex-direction: column !important;
+      }
+    }
+  }
+}
