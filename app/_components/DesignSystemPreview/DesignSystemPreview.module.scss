@@ -57,10 +57,10 @@ $theme-map: (
     position: relative;
 
     &:first-child {
-      padding-left: $spacing-sm;
+      padding-left: 0;
     }
 
-    h5 {
+    p {
       transition: all 0.2s ease;
     }
 
@@ -114,13 +114,13 @@ $theme-map: (
         // }
 
         &:hover {
-          h5 {
+          p {
             color: map-get($values, text);
           }
         }
 
         &--active {
-          h5 {
+          p {
             @if $theme == "light" {
               color: $black-base !important;
             }

@@ -30,7 +30,7 @@ export const TypographySection: FC<TypographySectionProps> = ({
   return (
     <section className={cx("typography-section")}>
       <ThemedTypography
-        variant="h4"
+        variant="h5"
         fontWeight={500}
         color="secondary"
         noWrap

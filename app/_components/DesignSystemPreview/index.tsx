@@ -30,7 +30,7 @@ export const DesignSystemPreview: FC<DesignSystemPreviewProps> = ({
     { id: "colors", title: data.labels.colors.title },
     { id: "typography", title: data.labels.typography.title },
     { id: "spacing", title: data.labels.spacing.title },
-    { id: "components", title: data.labels.components.buttons.title },
+    { id: "components", title: data.labels.components.title },
   ];
 
   const handleSectionChange = (sectionId: string) => {
@@ -96,9 +96,9 @@ export const DesignSystemPreview: FC<DesignSystemPreviewProps> = ({
             })}
           >
             <ThemedTypography
-              variant="h5"
+              variant="p1"
               color="tertiary"
-              fontWeight={300}
+              // fontWeight={400}
               noWrap
             >
               {item.title}
