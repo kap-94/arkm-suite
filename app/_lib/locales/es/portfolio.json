@@ -24,7 +24,7 @@
       "id": "arkm-suite",
       "title": "ARKM Suite",
       "description": "Portal centralizado para gestión de proyectos con dashboard interactivo, seguimiento detallado de progreso mediante líneas de tiempo Gantt y sistema completo de entregables, optimizado para mejorar la comunicación entre equipos y clientes.",
-      "technologies": ["React", "TypeScript", "Next.js", "SASS", "RESTful API", "Recharts", "Next Auth Access Control"],
+      "technologies": ["React", "TypeScript", "Next.js", "SASS", "RESTful API", "Supabase", "Next Auth Access Control"],
       "images": [
         {
           "src": "/images/portfolio/arkm-signin.png",
