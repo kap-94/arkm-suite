@@ -40,35 +40,8 @@ export interface HeaderDictionary {
   };
 }
 
-export interface FooterLegends {
-  rights: string;
-  privacy: {
-    label: string;
-    aria: string;
-    href: string;
-  };
-  terms: {
-    label: string;
-    aria: string;
-    href: string;
-  };
-}
-
 export interface FooterDictionary {
-  description: string;
-  cta: string;
-  links: {
-    showcase: string;
-    solutions: string;
-    clientSuite: string;
-    journey: string;
-  };
   copyright: string;
-  company: {
-    title: string;
-    aria: string;
-  };
-  legends: FooterLegends;
   navigation: Record<string, NavigationItem>;
 }
 

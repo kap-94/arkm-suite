@@ -1,3 +1,5 @@
+// types/dictionary/home.types.ts
+
 interface Meta {
   title: string;
   description: string;
@@ -43,14 +45,9 @@ export interface BenefitData {
   description: string;
 }
 
-export interface ClientSuiteDictionary {
-  title: string;
-  subtitle: string;
-  benefits: BenefitData[];
-}
-
 export interface MethodologyDictionary {
   title: string;
+  subtitle: string;
   steps: {
     research: {
       title: string;
@@ -68,11 +65,11 @@ export interface MethodologyDictionary {
       title: string;
       description: string;
     };
-    launch: {
+    testing: {
       title: string;
       description: string;
     };
-    maintenance: {
+    launch: {
       title: string;
       description: string;
     };
@@ -153,12 +150,107 @@ export interface ProjectFormDictionary {
   error: string;
 }
 
+// About Me section for WorkExperience
+export interface AboutMeData {
+  title: string;
+  subtitle: string;
+  roles: string[];
+  description: string;
+  paragraphs?: string[];
+  skills?: string[];
+  skillsTitle?: string;
+  careerTitle?: string;
+  imageUrl?: string;
+}
+
+export interface JobExperience {
+  id: number;
+  company: string;
+  role: string;
+  location: string;
+  period: string;
+  description: string;
+  technologies: string[];
+  imageUrl: string;
+}
+
+// Interface for work experience positions
+export interface WorkPosition {
+  id: number;
+  company: string;
+  role: string;
+  location: string;
+  period: string;
+  description: string;
+  technologies?: string[];
+  imageUrl: string;
+  industry: string;
+  iconType: string;
+}
+
+// WorkExperience section dictionary
+export interface WorkExperienceDictionary {
+  title: string;
+  subtitle: string;
+  aboutMe: AboutMeData;
+  positions: WorkPosition[];
+}
+
+// New ContactForm dictionary interface
+export interface ContactFormDictionary {
+  title: string;
+  subtitle: string;
+  name: string;
+  namePlaceholder: string;
+  email: string;
+  emailPlaceholder: string;
+  message: string;
+  messagePlaceholder: string;
+  submit: string;
+  success: string;
+  error: string;
+  validation?: {
+    nameRequired: string;
+    emailRequired: string;
+    emailInvalid: string;
+    messageRequired: string;
+  };
+}
+
+// New Contact section dictionary
+export interface NavigationItem {
+  menu_item_id: number;
+  menu_item_parent: number;
+  label: string;
+  title: string;
+  href: string;
+  url: string;
+  aria: string;
+  showDropdownIcon: boolean;
+  meta?: {
+    description: string;
+    keywords?: string[];
+  };
+}
+
+export interface ContactDictionary {
+  title: string;
+  subtitle: string;
+  cta: string;
+  links: Record<string, string>;
+  navigation: Record<string, NavigationItem>;
+  forms: {
+    contactForm: ContactFormDictionary;
+  };
+}
+
 export interface HomeDictionary {
   meta: Meta;
   hero: HeroDictionary;
   solutions: SolutionsDictionary;
-  clientSuite: ClientSuiteDictionary;
   methodology: MethodologyDictionary;
+  workExperience: WorkExperienceDictionary;
+  contact: ContactDictionary;
   forms: {
     projectForm: ProjectFormDictionary;
   };

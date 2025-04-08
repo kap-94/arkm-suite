@@ -1,0 +1,109 @@
+{
+    "title": "Featured Projects",
+    "subtitle": "A collection of my recent work showcasing my skills and expertise in web development",
+    "projects": [
+      {
+        "id": "financial-dashboard",
+        "title": "Financial Dashboard",
+        "description": "A comprehensive financial dashboard for tracking investments, expenses, and financial goals. Built with React and TypeScript, featuring real-time data visualization and responsive design.",
+        "technologies": ["React", "TypeScript", "Next.js", "GSAP", "REST API", "Chart.js"],
+        "images": [
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Financial dashboard main interface showing investment portfolio"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Financial dashboard main interface showing investment portfolio"
+          }
+        ],
+        "liveUrl": "https://finance-dashboard.example.com",
+        "githubUrl": "https://github.com/username/finance-dashboard"
+      },
+      {
+        "id": "e-commerce-platform",
+        "title": "E-Commerce Platform",
+        "description": "A modern e-commerce platform with inventory management, payment processing, and customer analytics. Features include product filtering, user authentication, and responsive shopping cart.",
+        "technologies": ["React", "Node.js", "Express", "MongoDB", "Stripe API", "Redux"],
+        "images": [
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "E-commerce platform homepage with featured products"
+          },
+         
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Shopping cart with checkout process"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Shopping cart with checkout process"
+          }
+        ],
+        "liveUrl": "https://shop-example.com",
+        "githubUrl": "https://github.com/username/ecommerce-platform"
+      },
+      {
+        "id": "fitness-tracker",
+        "title": "Fitness Tracking App",
+        "description": "A cross-platform fitness tracking application built with Flutter. Users can track workouts, set goals, view progress, and receive personalized recommendations based on their activity history.",
+        "technologies": ["Flutter", "Dart", "Firebase", "REST API", "Google Fit API", "Material Design"],
+        "images": [
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Fitness tracker dashboard showing activity statistics"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Progress tracking with charts and achievements"
+          }
+        ],
+        "liveUrl": "https://fitness-app.example.com",
+        "githubUrl": "https://github.com/username/fitness-tracker"
+      },
+      {
+        "id": "hotel-booking",
+        "title": "Hotel Booking System",
+        "description": "A comprehensive hotel booking system with integrated payment processing, room availability management, and customer review features. The platform includes an admin dashboard for hotel management.",
+        "technologies": ["React", "TypeScript", "Node.js", "PostgreSQL", "Mapbox API", "Framer Motion"],
+        "images": [
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Hotel search interface with filters and map view"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Room details page with booking options"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Booking confirmation and payment process"
+          }
+        ],
+        "liveUrl": "https://hotel-booking.example.com",
+        "githubUrl": "https://github.com/username/hotel-booking"
+      },
+      {
+        "id": "project-management",
+        "title": "Project Management Tool",
+        "description": "A collaborative project management tool designed to streamline workflow and increase team productivity. Features include task assignment, progress tracking, resource management, and automated reporting.",
+        "technologies": ["React", "TypeScript", "GraphQL", "Apollo", "Jest", "Tailwind CSS"],
+        "images": [
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Project management dashboard with task overview"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Kanban board for task management"
+          },
+          {
+            "src": "/images/portfolio/arkm-timeline-dark.png",
+            "alt": "Analytics and reporting interface"
+          }
+        ],
+        "liveUrl": "https://project-management.example.com",
+        "githubUrl": "https://github.com/username/project-management"
+      }
+    ]
+  }
