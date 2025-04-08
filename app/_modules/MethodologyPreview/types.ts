@@ -26,11 +26,11 @@ export interface MethodologyDictionary {
       title: string;
       description: string;
     };
-    launch: {
+    testing: {
       title: string;
       description: string;
     };
-    maintenance: {
+    launch: {
       title: string;
       description: string;
     };
