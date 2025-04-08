@@ -1,109 +1,68 @@
 {
-    "title": "Featured Projects",
-    "subtitle": "A collection of my recent work showcasing my skills and expertise in web development",
-    "projects": [
-      {
-        "id": "financial-dashboard",
-        "title": "Financial Dashboard",
-        "description": "A comprehensive financial dashboard for tracking investments, expenses, and financial goals. Built with React and TypeScript, featuring real-time data visualization and responsive design.",
-        "technologies": ["React", "TypeScript", "Next.js", "GSAP", "REST API", "Chart.js"],
-        "images": [
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Financial dashboard main interface showing investment portfolio"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Financial dashboard main interface showing investment portfolio"
-          }
-        ],
-        "liveUrl": "https://finance-dashboard.example.com",
-        "githubUrl": "https://github.com/username/finance-dashboard"
-      },
-      {
-        "id": "e-commerce-platform",
-        "title": "E-Commerce Platform",
-        "description": "A modern e-commerce platform with inventory management, payment processing, and customer analytics. Features include product filtering, user authentication, and responsive shopping cart.",
-        "technologies": ["React", "Node.js", "Express", "MongoDB", "Stripe API", "Redux"],
-        "images": [
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "E-commerce platform homepage with featured products"
-          },
-         
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Shopping cart with checkout process"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Shopping cart with checkout process"
-          }
-        ],
-        "liveUrl": "https://shop-example.com",
-        "githubUrl": "https://github.com/username/ecommerce-platform"
-      },
-      {
-        "id": "fitness-tracker",
-        "title": "Fitness Tracking App",
-        "description": "A cross-platform fitness tracking application built with Flutter. Users can track workouts, set goals, view progress, and receive personalized recommendations based on their activity history.",
-        "technologies": ["Flutter", "Dart", "Firebase", "REST API", "Google Fit API", "Material Design"],
-        "images": [
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Fitness tracker dashboard showing activity statistics"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Progress tracking with charts and achievements"
-          }
-        ],
-        "liveUrl": "https://fitness-app.example.com",
-        "githubUrl": "https://github.com/username/fitness-tracker"
-      },
-      {
-        "id": "hotel-booking",
-        "title": "Hotel Booking System",
-        "description": "A comprehensive hotel booking system with integrated payment processing, room availability management, and customer review features. The platform includes an admin dashboard for hotel management.",
-        "technologies": ["React", "TypeScript", "Node.js", "PostgreSQL", "Mapbox API", "Framer Motion"],
-        "images": [
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Hotel search interface with filters and map view"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Room details page with booking options"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Booking confirmation and payment process"
-          }
-        ],
-        "liveUrl": "https://hotel-booking.example.com",
-        "githubUrl": "https://github.com/username/hotel-booking"
-      },
-      {
-        "id": "project-management",
-        "title": "Project Management Tool",
-        "description": "A collaborative project management tool designed to streamline workflow and increase team productivity. Features include task assignment, progress tracking, resource management, and automated reporting.",
-        "technologies": ["React", "TypeScript", "GraphQL", "Apollo", "Jest", "Tailwind CSS"],
-        "images": [
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Project management dashboard with task overview"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Kanban board for task management"
-          },
-          {
-            "src": "/images/portfolio/arkm-timeline-dark.png",
-            "alt": "Analytics and reporting interface"
-          }
-        ],
-        "liveUrl": "https://project-management.example.com",
-        "githubUrl": "https://github.com/username/project-management"
-      }
-    ]
-  }
+  "title": "Featured Projects",
+  "subtitle": "A collection of my recent work showcasing my skills and expertise in web development",
+  "projects": [
+    {
+      "id": "supreme-barf-canine",
+      "title": "Supreme BARF Canine E-commerce",
+      "description": "E-commerce specialized in natural dog food, with an intuitive interface, portion calculator, and discount package system. Designed to provide a smooth shopping experience for pet owners.",
+      "technologies": ["React", "Next.js", "TypeScript", "SASS", "GSAP", "Formik", "Shopify API"],
+      "images": [
+        {
+          "src": "/images/portfolio/supreme-barf-hero.png",
+          "alt": "Hero section of the Supreme BARF Canine site showcasing natural dog food"
+        },
+        {
+          "src": "/images/portfolio/supreme-barf-about.png",
+          "alt": "About the Food page displaying the benefits of natural dog products"
+        }
+      ],
+      "liveUrl": "https://supremebarfcanine.com",
+      "githubUrl": "https://github.com/kap-94/Supreme-BARF-Canine"
+    },
+    {
+      "id": "arkm-suite",
+      "title": "ARKM Suite",
+      "description": "Centralized project management portal with interactive dashboard, detailed progress tracking through Gantt timelines, and comprehensive deliverables system, optimized to improve communication between teams and clients.",
+      "technologies": ["React", "TypeScript", "Next.js", "SASS", "RESTful API", "Recharts", "Next Auth Access Control"],
+      "images": [
+        {
+          "src": "/images/portfolio/arkm-signin.png",
+          "alt": "ARKM Suite portal login page with modern and secure design"
+        },
+        {
+          "src": "/images/portfolio/arkm-design-system.png",
+          "alt": "Design system panel showing consistent UI components and documentation"
+        },
+        {
+          "src": "/images/portfolio/arkm-timeline-dark.png",
+          "alt": "Gantt timeline view showing project stages and dependencies"
+        }
+      ],
+      "liveUrl": "https://arkm-studio-git-beta-arkm-studios-projects.vercel.app/en/dashboard",
+      "githubUrl": "https://github.com/arkm-studio/arkm-studio"
+    },
+    {
+      "id": "trvlr-travel-platform",
+      "title": "TRVLR Travel Platform",
+      "description": "Modern travel website with destination search, guides, and blogs. Allows users to explore exclusive destinations, plan itineraries, and discover local recommendations with a visually appealing interface.",
+      "technologies": ["React", "Next.js", "TypeScript", "SASS", "Leaflet", "GSAP", "React Slick", "React Datepicker"],
+      "images": [
+        {
+          "src": "/images/portfolio/trvlr-hero.png",
+          "alt": "TRVLR main page showcasing international destinations with immersive navigation"
+        },
+        {
+          "src": "/images/portfolio/trvlr-trips.png",
+          "alt": "Travel itineraries visualization with interactive maps and route planning"
+        },
+        {
+          "src": "/images/portfolio/trvlr-why-travel.png",
+          "alt": "Why Travel page with inspirational content and reasons to travel around the world"
+        }
+      ],
+      "liveUrl": "https://trvlr-xi.vercel.app/",
+      "githubUrl": "https://github.com/kap-94/trvlr"
+    }
+  ]
+}

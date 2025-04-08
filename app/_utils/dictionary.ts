@@ -92,7 +92,7 @@ export const homeDictionary = new DictionaryService<HomeDictionary>(
 export const portfolioDictionary = new DictionaryService<PortfolioDictionary>(
   {
     en: () => import("@/app/_lib/locales/en/portfolio.json"),
-    es: () => import("@/app/_lib/locales/en/portfolio.json"),
+    es: () => import("@/app/_lib/locales/es/portfolio.json"),
   },
   (dict) =>
     validateDictionary<PortfolioDictionary>({} as PortfolioDictionary, dict)

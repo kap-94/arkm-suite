@@ -173,7 +173,9 @@ $tw-filter-chain: $tw-blur brightness(100%) contrast(100%) grayscale(0)
 
   // Right-aligned card styles
   &--right-aligned {
-    align-items: flex-start;
+    .portfolio-card__content {
+      align-items: flex-end;
+    }
 
     .portfolio-card__title-container {
       justify-content: flex-end;
