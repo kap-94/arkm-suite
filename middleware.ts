@@ -29,6 +29,14 @@ const IGNORED_PATHS = [
 
 const PROTECTED_PATHS = ["/dashboard", "/profile"] as const;
 
+// Nuevo array para rutas de autenticación
+const AUTH_PATHS = [
+  "/auth/signin",
+  "/auth/login",
+  "/auth/signup",
+  "/auth/register",
+] as const;
+
 function isIgnoredPath(pathname: string): boolean {
   if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) return true;
   if (IGNORED_PATHS.some((path) => pathname.startsWith(path))) return true;
@@ -129,6 +137,11 @@ function setDefaultViewPreference(
   }
 }
 
+// Función para verificar si una ruta es una ruta de autenticación
+function isAuthPath(pathname: string): boolean {
+  return AUTH_PATHS.some((path) => pathname.includes(path));
+}
+
 export default auth(async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   // Obtener el host actual para depuración
@@ -145,9 +158,11 @@ export default auth(async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Obtener la sesión del usuario
+  const session = await auth();
+
   // 3. Para rutas protegidas, verificar autenticación
   if (PROTECTED_PATHS.some((path) => pathname.includes(path))) {
-    const session = await auth();
     if (!session) {
       const locale = getPreferredLocale(request);
       // IMPORTANTE: Mantener el mismo host para la redirección
@@ -155,6 +170,14 @@ export default auth(async function middleware(request: NextRequest) {
       redirectUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(redirectUrl);
     }
+  }
+
+  // NUEVO: Para rutas de autenticación, redirigir si el usuario ya está autenticado
+  if (isAuthPath(pathname) && session) {
+    const locale = getPreferredLocale(request);
+    // Redirigir al dashboard si el usuario ya está logueado
+    const redirectUrl = new URL(`/${locale}/dashboard`, request.url);
+    return NextResponse.redirect(redirectUrl);
   }
 
   // 4. Si la ruta ya tiene un locale válido
