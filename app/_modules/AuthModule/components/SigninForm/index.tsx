@@ -27,6 +27,7 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
   return (
     <div className={cx("signin-form", className)}>
       <Typography
+        fontFamily="sofia"
         variant="h3"
         theme={{ type: "dark" }}
         className={cx("signin-form__title")}
@@ -34,6 +35,7 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
         {dictionary.header.title}
       </Typography>
       <Typography
+        fontFamily="sofia"
         variant="p1"
         fontWeight={400}
         theme={{ type: "dark" }}
@@ -58,7 +60,12 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
             {error && (
               <div className={cx("signin-form__error")}>
                 <AlertCircle size={16} />
-                <Typography as="span" color="error" variant="p2">
+                <Typography
+                  fontFamily="sofia"
+                  as="span"
+                  color="error"
+                  variant="p2"
+                >
                   {error}
                 </Typography>
               </div>
@@ -104,7 +111,12 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
             </Button>
 
             <div className={cx("signin-form__separator")}>
-              <Typography as="span" color="secondary" theme={{ type: "dark" }}>
+              <Typography
+                fontFamily="sofia"
+                as="span"
+                color="secondary"
+                theme={{ type: "dark" }}
+              >
                 {dictionary.form.buttons.separator.text}
               </Typography>
             </div>
@@ -115,10 +127,17 @@ export function SigninForm({ className, dictionary }: SigninFormProps) {
               radius="md"
               className={cx("signin-form__google-button")}
             >
-              {dictionary.form.buttons.google.label}
+              <Typography
+                fontFamily="sofia"
+                variant="p1"
+                theme={{ type: "dark" }}
+              >
+                {dictionary.form.buttons.google.label}
+              </Typography>
             </GoogleButton>
 
             <Typography
+              fontFamily="sofia"
               variant="p3"
               theme={{ type: "dark" }}
               className={cx("signin-form__note")}
