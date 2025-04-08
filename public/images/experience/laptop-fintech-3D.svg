@@ -1,0 +1,110 @@
+<svg viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradientes originales -->
+    <linearGradient id="fintechStory1Gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818cf8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <linearGradient id="bullGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <linearGradient id="bearGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <!-- Gradientes adicionales para profundidad 3D -->
+    <linearGradient id="fintechDarkGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4338ca" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <linearGradient id="bullDarkGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <linearGradient id="bearDarkGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#dc2626" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#b91c1c" stop-opacity="0.4"/>
+    </linearGradient>
+    
+    <!-- Filtros para efectos -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feFlood flood-color="#818cf8" flood-opacity="0.5" result="flood"/>
+      <feComposite in="flood" in2="SourceGraphic" operator="in" result="masked"/>
+      <feGaussianBlur in="masked" stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Laptop base en isométrica -->
+  <path d="M40,140 L120,120 L200,140 L120,160 Z" fill="url(#fintechStory1Gradient)" fill-opacity="0.8"/>
+  <path d="M40,140 L40,145 L120,165 L120,160 Z" fill="url(#fintechDarkGradient)" fill-opacity="0.7"/>
+  <path d="M120,160 L120,165 L200,145 L200,140 Z" fill="url(#fintechDarkGradient)" fill-opacity="0.6"/>
+  
+  <!-- Laptop pantalla en isométrica -->
+  <path d="M60,120 L120,100 L180,120 L120,140 Z" fill="url(#fintechStory1Gradient)" fill-opacity="0.7"/>
+  <path d="M60,75 L60,120 L120,140 L120,95 Z" fill="url(#fintechDarkGradient)" fill-opacity="0.6"/>
+  <path d="M120,95 L120,140 L180,120 L180,75 Z" fill="url(#fintechDarkGradient)" fill-opacity="0.5"/>
+  
+  <!-- Pantalla interna - transparente pero con brillo -->
+  <path d="M65,80 L120,100 L175,80 L120,60 Z" fill="none" stroke="url(#fintechStory1Gradient)" stroke-width="1" stroke-opacity="0.7"/>
+  <path d="M65,80 L65,120 L120,140 L120,100 Z" fill="none" stroke="url(#fintechStory1Gradient)" stroke-width="1" stroke-opacity="0.7"/>
+  <path d="M120,100 L120,140 L175,120 L175,80 Z" fill="none" stroke="url(#fintechStory1Gradient)" stroke-width="1" stroke-opacity="0.7"/>
+  
+  <!-- Barra de herramientas en pantalla -->
+  <path d="M70,85 L115,95 L170,85" stroke="url(#fintechStory1Gradient)" stroke-width="2" stroke-opacity="0.6"/>
+  
+  <!-- Contenido de la pantalla: gráfico de líneas -->
+  <path d="M70,110 L85,100 L100,105 L115,95 L130,110 L145,100 L160,105" 
+        stroke="url(#fintechStory1Gradient)" stroke-width="1.5" fill="none"/>
+  
+  <!-- Flecha conectora en 3D con gradiente original -->
+  <path d="M175,100 C190,100 200,100 215,100" 
+        stroke="url(#fintechStory1Gradient)" stroke-width="2.5" stroke-linecap="round" fill="none" filter="url(#neonGlow)"/>
+  
+  <!-- Punta de flecha 3D -->
+  <path d="M210,97 L220,100 L210,103" fill="#4f46e5" fill-opacity="0.9"/>
+  
+  <!-- Panel gráfico base en isométrica -->
+  <path d="M220,80 L260,65 L300,80 L260,95 Z" fill="url(#fintechStory1Gradient)" fill-opacity="0.1" stroke="url(#fintechStory1Gradient)" stroke-width="0.5" stroke-opacity="0.5"/>
+  <path d="M220,80 L220,150 L260,165 L260,95 Z" fill="url(#fintechStory1Gradient)" fill-opacity="0.05" stroke="url(#fintechStory1Gradient)" stroke-width="0.5" stroke-opacity="0.4"/>
+  <path d="M260,95 L260,165 L300,150 L300,80 Z" fill="url(#fintechStory1Gradient)" fill-opacity="0.05" stroke="url(#fintechStory1Gradient)" stroke-width="0.5" stroke-opacity="0.3"/>
+  
+  <!-- Barras 3D bull (verde) -->
+  <g>
+    <!-- Primera barra bull -->
+    <path d="M230,130 L230,100 L240,95 L240,125 Z" fill="url(#bullGradient)"/>
+    <path d="M230,100 L240,95 L250,100 L240,105 Z" fill="url(#bullDarkGradient)"/>
+    <path d="M240,105 L240,125 L250,120 L250,100 Z" fill="url(#bullDarkGradient)" fill-opacity="0.7"/>
+    
+    <!-- Segunda barra bear -->
+    <path d="M255,140 L255,90 L265,85 L265,135 Z" fill="url(#bearGradient)"/>
+    <path d="M255,90 L265,85 L275,90 L265,95 Z" fill="url(#bearDarkGradient)"/>
+    <path d="M265,95 L265,135 L275,130 L275,90 Z" fill="url(#bearDarkGradient)" fill-opacity="0.7"/>
+    
+    <!-- Tercera barra bull -->
+    <path d="M280,130 L280,100 L290,95 L290,125 Z" fill="url(#bullGradient)"/>
+    <path d="M280,100 L290,95 L300,100 L290,105 Z" fill="url(#bullDarkGradient)"/>
+    <path d="M290,105 L290,125 L300,120 L300,100 Z" fill="url(#bullDarkGradient)" fill-opacity="0.7"/>
+  </g>
+  
+  <!-- Líneas de referencia isométricas -->
+  <path d="M220,150 L300,135" stroke="url(#fintechStory1Gradient)" stroke-opacity="0.3" stroke-width="0.5"/>
+  <path d="M220,130 L300,115" stroke="url(#fintechStory1Gradient)" stroke-opacity="0.3" stroke-width="0.5" stroke-dasharray="2"/>
+  <path d="M220,110 L300,95" stroke="url(#fintechStory1Gradient)" stroke-opacity="0.3" stroke-width="0.5" stroke-dasharray="2"/>
+  <path d="M220,90 L300,75" stroke="url(#fintechStory1Gradient)" stroke-opacity="0.3" stroke-width="0.5" stroke-dasharray="2"/>
+  
+  <!-- Pequeños brillos para destacar profundidad -->
+  <circle cx="120" cy="100" r="25" fill="url(#fintechStory1Gradient)" fill-opacity="0.03"/>
+  <circle cx="260" cy="110" r="35" fill="url(#fintechStory1Gradient)" fill-opacity="0.03"/>
+  
+  <!-- Partículas sutiles -->
+  <circle cx="185" cy="100" r="1" fill="#818cf8" fill-opacity="0.7"/>
+  <circle cx="195" cy="100" r="0.8" fill="#818cf8" fill-opacity="0.7"/>
+  <circle cx="205" cy="100" r="1.2" fill="#818cf8" fill-opacity="0.7"/>
+</svg>

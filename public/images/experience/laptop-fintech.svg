@@ -1,0 +1,69 @@
+<svg viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradiente principal -->
+    <linearGradient id="fintechStory1Gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818cf8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4f46e5" stop-opacity="0.4"/>
+    </linearGradient>
+    <!-- Gradiente bull (verde) -->
+    <linearGradient id="bullGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0.4"/>
+    </linearGradient>
+    <!-- Gradiente bear (rojo) -->
+    <linearGradient id="bearGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Laptop moderna (base) -->
+  <rect x="45" y="125" width="80" height="5" rx="2"
+        fill="url(#fintechStory1Gradient)" fill-opacity="0.5"
+        stroke="url(#fintechStory1Gradient)" stroke-width="1"/>
+  
+  <!-- Laptop pantalla -->
+  <rect x="50" y="70" width="70" height="55" rx="4"
+        fill="url(#fintechStory1Gradient)" fill-opacity="0.15"
+        stroke="url(#fintechStory1Gradient)" stroke-width="2"/>
+  
+  <!-- Pantalla interna - Con fondo transparente -->
+  <rect x="55" y="75" width="60" height="45" rx="2"
+        fill="none"
+        stroke="url(#fintechStory1Gradient)" stroke-width="1"/>
+  
+  <!-- Barra de herramientas en pantalla -->
+  <rect x="60" y="80" width="50" height="5" rx="1"
+        fill="url(#fintechStory1Gradient)" fill-opacity="0.3"/>
+  
+  <!-- Contenido de la pantalla: mini gráfico de líneas -->
+  <polyline points="60,110 70,100 80,105 90,95 100,102 110,90" 
+           stroke="url(#fintechStory1Gradient)" stroke-width="1.5" fill="none"/>
+  
+  <!-- Flecha desde laptop a la gráfica - Inicio ajustado pero misma altura -->
+  <path d="M120 120 C135 120 135 100 155 100" 
+        stroke="url(#fintechStory1Gradient)" stroke-width="2" fill="none"
+        stroke-linecap="round" marker-end="url(#arrowHead1)"/>
+  <defs>
+    <marker id="arrowHead1" markerWidth="5" markerHeight="5" refX="2" refY="2" orient="auto">
+      <path d="M0,0 L0,4 L4,2 z" fill="#4f46e5" fill-opacity="0.7"/>
+    </marker>
+  </defs>
+  
+  <!-- Gráfica (barras bull/bear) -->
+  <rect x="165" y="110" width="10" height="30" fill="url(#bullGradient)" stroke="#22c55e" stroke-width="0.5" stroke-opacity="0.8"/>
+  <rect x="180" y="90" width="10" height="50" fill="url(#bearGradient)" stroke="#dc2626" stroke-width="0.5" stroke-opacity="0.8"/>
+  <rect x="195" y="100" width="10" height="40" fill="url(#bullGradient)" stroke="#22c55e" stroke-width="0.5" stroke-opacity="0.8"/>
+  <rect x="210" y="80" width="10" height="60" fill="url(#bearGradient)" stroke="#dc2626" stroke-width="0.5" stroke-opacity="0.8"/>
+  <rect x="225" y="95" width="10" height="45" fill="url(#bullGradient)" stroke="#22c55e" stroke-width="0.5" stroke-opacity="0.8"/>
+  
+  <!-- Líneas de referencia para gráfica -->
+  <line x1="160" y1="140" x2="240" y2="140" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1"/>
+  <line x1="160" y1="120" x2="240" y2="120" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="2"/>
+  <line x1="160" y1="100" x2="240" y2="100" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="2"/>
+  <line x1="160" y1="80" x2="240" y2="80" stroke="#818cf8" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="2"/>
+  
+  <!-- Brillo sutil para destacar elementos en fondos oscuros -->
+  <circle cx="85" cy="95" r="20" fill="url(#fintechStory1Gradient)" fill-opacity="0.03"/>
+  <circle cx="200" cy="110" r="30" fill="url(#fintechStory1Gradient)" fill-opacity="0.03"/>
+</svg>
