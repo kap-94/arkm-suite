@@ -1,7 +1,11 @@
 import { Metadata } from "next";
 import classNames from "classnames/bind";
 import { Language } from "@/app/_lib/config/i18n";
-import { getPageDictionary, homeDictionary } from "@/app/_utils/dictionary";
+import {
+  getPageDictionary,
+  homeDictionary,
+  mainLayoutDictionary,
+} from "@/app/_utils/dictionary";
 import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 import { UIProvider } from "@/app/_context/UIContext";
 import { Hero } from "@/app/_modules/Hero";
@@ -13,6 +17,7 @@ import ContactSection from "@/app/_modules/ContactSection";
 import Snackbar from "@/app/_components/Snackbar";
 import GlowBackground from "@/app/_components/GlowBackground";
 import styles from "./page.module.scss";
+import { MainLayoutDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 
@@ -51,6 +56,12 @@ export default async function Home({
     lang
   );
 
+  // Get main layout dictionary for contact section
+  const mainLayoutDict = await getPageDictionary<MainLayoutDictionary>(
+    mainLayoutDictionary,
+    lang
+  );
+
   return (
     <UIProvider>
       <div className={cx("home-page")}>
@@ -78,7 +89,7 @@ export default async function Home({
         </GlowBackground>
 
         <ContactSection
-          dictionary={dictionary.contact}
+          dictionary={mainLayoutDict.contact}
           customAnchorId="contact"
         />
       </div>

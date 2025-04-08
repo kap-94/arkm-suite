@@ -64,10 +64,43 @@ export interface Messages {
   };
 }
 
+// Added contact form dictionary interfaces
+export interface ContactFormValidation {
+  nameRequired: string;
+  emailRequired: string;
+  emailInvalid: string;
+  messageRequired: string;
+}
+
+export interface ContactFormDictionary {
+  title: string;
+  subtitle: string;
+  name: string;
+  namePlaceholder: string;
+  email: string;
+  emailPlaceholder: string;
+  message: string;
+  messagePlaceholder: string;
+  submit: string;
+  success: string;
+  error: string;
+  validation: ContactFormValidation;
+}
+
+export interface ContactDictionary {
+  title: string;
+  subtitle: string;
+  cta: string;
+  forms: {
+    contactForm: ContactFormDictionary;
+  };
+}
+
 export interface MainLayoutDictionary {
   meta: Meta;
   header: HeaderDictionary;
   footer: FooterDictionary;
   accessibility: Accessibility;
   messages: Messages;
+  contact: ContactDictionary; // Added contact dictionary to main layout
 }

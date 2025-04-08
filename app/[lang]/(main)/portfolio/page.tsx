@@ -4,6 +4,7 @@ import {
   getPageDictionary,
   portfolioDictionary,
   homeDictionary,
+  mainLayoutDictionary,
 } from "@/app/_utils/dictionary";
 import { HomeDictionary } from "@/app/_types/dictionary/home.types";
 import { UIProvider } from "@/app/_context/UIContext";
@@ -14,6 +15,7 @@ import styles from "./page.module.scss";
 import classNames from "classnames/bind";
 import { PortfolioDictionary } from "@/app/_types/dictionary/portfolio.types";
 import ContactSection from "@/app/_modules/ContactSection";
+import { MainLayoutDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 
@@ -61,6 +63,12 @@ export default async function PortfolioPage({
     lang
   );
 
+  // Get main layout dictionary for contact section
+  const mainLayoutDict = await getPageDictionary<MainLayoutDictionary>(
+    mainLayoutDictionary,
+    lang
+  );
+
   return (
     <UIProvider>
       <div className={cx("portfolio-page")}>
@@ -70,7 +78,10 @@ export default async function PortfolioPage({
         >
           <PortfolioModule dictionary={portfolioDictionaryData} />
         </GlowBackground>
-        <ContactSection />
+        <ContactSection
+          dictionary={mainLayoutDict.contact}
+          customAnchorId="contact"
+        />
       </div>
       <Snackbar duration={6000} position="top" />
     </UIProvider>

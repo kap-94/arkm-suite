@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2025-04-03",
+    "lastUpdated": "2025-04-08",
     "description": "Main layout configuration for public routes",
     "maintainer": "Development Team"
   },
@@ -238,6 +238,32 @@
       "notFound": "Page not found",
       "unauthorized": "Unauthorized access",
       "forbidden": "Access forbidden"
+    }
+  },
+  "contact": {
+    "title": "Let's connect, collaborate, and bring ideas to life",
+    "subtitle": "Questions or just saying hi? I'm here for you!",
+    "cta": "Send me a message",
+    "forms": {
+      "contactForm": {
+        "title": "Get in Touch",
+        "subtitle": "I'd love to hear from you",
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "your@email.com",
+        "message": "Message",
+        "messagePlaceholder": "Tell me about your project or ask me anything...",
+        "submit": "Send Message",
+        "success": "Message sent successfully! I'll get back to you soon.",
+        "error": "There was an error sending your message. Please try again.",
+        "validation": {
+          "nameRequired": "Please enter your name",
+          "emailRequired": "Please enter your email address",
+          "emailInvalid": "Please enter a valid email address",
+          "messageRequired": "Please enter your message"
+        }
+      }
     }
   }
 }

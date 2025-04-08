@@ -12,7 +12,7 @@ import { Mail, User, MessageSquare } from "lucide-react";
 import { useUIContext } from "@/app/_context/UIContext";
 import { sendContactEmail } from "@/app/_services/emailService";
 import styles from "./ContactForm.module.scss";
-import { ContactFormDictionary } from "@/app/_types/dictionary/home.types";
+import { ContactFormDictionary } from "@/app/_types/dictionary/mainLayout.types";
 
 const cx = classNames.bind(styles);
 

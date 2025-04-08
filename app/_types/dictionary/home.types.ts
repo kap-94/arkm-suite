@@ -196,28 +196,16 @@ export interface WorkExperienceDictionary {
   positions: WorkPosition[];
 }
 
-// New ContactForm dictionary interface
-export interface ContactFormDictionary {
+// Removed ContactFormDictionary and included links and navigation for the contact section
+export interface ContactDictionary {
   title: string;
   subtitle: string;
-  name: string;
-  namePlaceholder: string;
-  email: string;
-  emailPlaceholder: string;
-  message: string;
-  messagePlaceholder: string;
-  submit: string;
-  success: string;
-  error: string;
-  validation?: {
-    nameRequired: string;
-    emailRequired: string;
-    emailInvalid: string;
-    messageRequired: string;
-  };
+  cta: string;
+  links: Record<string, string>;
+  navigation: Record<string, NavigationItem>;
 }
 
-// New Contact section dictionary
+// Defined NavigationItem interface here to avoid circular dependencies
 export interface NavigationItem {
   menu_item_id: number;
   menu_item_parent: number;
@@ -230,17 +218,6 @@ export interface NavigationItem {
   meta?: {
     description: string;
     keywords?: string[];
-  };
-}
-
-export interface ContactDictionary {
-  title: string;
-  subtitle: string;
-  cta: string;
-  links: Record<string, string>;
-  navigation: Record<string, NavigationItem>;
-  forms: {
-    contactForm: ContactFormDictionary;
   };
 }
 
