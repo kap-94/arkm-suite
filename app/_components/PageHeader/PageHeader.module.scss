@@ -1,5 +1,6 @@
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
+@import "@/app/_components/Typography/Typography.module.scss";
 
 // Theme configuration map remains unchanged
 $header-theme-map: (
@@ -117,6 +118,10 @@ $header-theme-map: (
       height: 20px;
       width: 20px;
     }
+  }
+
+  &__title {
+    font-size: fluid-type(16, 20);
   }
 
   &__actions {

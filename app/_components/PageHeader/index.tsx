@@ -62,7 +62,12 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               {icon && (
                 <div className={cx("page-header__title-icon")}>{icon}</div>
               )}
-              <ThemedTypography variant="h4" fontWeight={400} color="primary">
+              <ThemedTypography
+                variant="h5"
+                fontWeight={400}
+                color="primary"
+                className={cx("page-header__title")}
+              >
                 {title}
               </ThemedTypography>
             </div>
