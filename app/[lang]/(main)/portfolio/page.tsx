@@ -22,7 +22,6 @@ export async function generateMetadata({
 }: {
   params: { lang: Language };
 }): Promise<Metadata> {
-  // Get meta information from home dictionary
   const homeDictionaryData = await getPageDictionary<HomeDictionary>(
     homeDictionary,
     lang
@@ -64,18 +63,14 @@ export default async function PortfolioPage({
 
   return (
     <UIProvider>
-      {/* Usamos className en lugar de style inline */}
       <div className={cx("portfolio-page")}>
         <GlowBackground
           variant="gradient-black"
           className={cx("portfolio-page__glow")}
         >
-          <PortfolioModule
-            dictionary={portfolioDictionaryData}
-            // No pasamos style directamente - usaremos CSS
-          />
-          <ContactSection />
+          <PortfolioModule dictionary={portfolioDictionaryData} />
         </GlowBackground>
+        <ContactSection />
       </div>
       <Snackbar duration={6000} position="top" />
     </UIProvider>
