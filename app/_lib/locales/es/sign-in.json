@@ -2,11 +2,7 @@
   "meta": {
     "title": "Iniciar Sesión",
     "description": "Accede de forma segura a tu panel personalizado",
-    "keywords": [
-      "iniciar sesión",
-      "login",
-      "acceso al panel"
-    ]
+    "keywords": ["iniciar sesión", "login", "acceso al panel"]
   },
   "header": {
     "title": "Iniciar Sesión",
@@ -52,7 +48,7 @@
         "text": "o"
       }
     },
-    "note": "* Acceso proporcionado por el administrador"
+    "note": "* Inicie sesión con su cuenta de Google o utilice el correo de prueba guestuser@arkm.com con contraseña @GuestUserPass123"
   },
   "status": {
     "loading": "Cargando...",
