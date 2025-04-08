@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import classnames from "classnames/bind";
@@ -10,172 +16,223 @@ import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import useScrollActiveSection from "@/app/_hooks/useScrollActiveSection";
 import { Typography } from "@/app/_components/Typography";
 import { buildLocalizedPath } from "@/app/_utils/path";
+import { Language } from "@/app/_lib/config/i18n";
 import styles from "./MenuList.module.scss";
 
-// Registrar plugins de GSAP
+// Register GSAP plugins
 gsap.registerPlugin(ScrollToPlugin);
 
-// Definición de la interfaz MenuItem que representa cada elemento del menú
+/**
+ * Interface for MenuItem objects from the API
+ */
 export interface MenuItem {
   menu_item_id: number;
   menu_item_parent: number;
   title: string;
-  url: string;
+  href: string;
   target?: string;
   icon?: React.ReactElement;
   dropdownIcon?: React.ReactElement;
   showDropdownIcon?: boolean;
-  isSectionLink?: boolean; // Prop para detectar si es un enlace interno a una sección
+  isSectionLink?: boolean;
 }
 
-// Definición de las props para el componente MenuList
+/**
+ * Props for the MenuList component
+ */
 interface MenuListProps {
-  data: MenuItem[]; // Array de elementos de menú
-  frontPageID: number | string; // ID de la página de inicio o código de idioma
-  onClick?: () => void; // Manejador de clic opcional
-  useActiveStyle?: boolean; // Prop para habilitar/deshabilitar estilos activos
-  orientation?: "horizontal" | "vertical"; // Prop para establecer la orientación del menú
-  gap?: number; // Valor numérico para el espaciado
-  showBorders?: boolean; // Prop para alternar el borde derecho entre elementos de la lista
+  /** Array of menu items */
+  data: MenuItem[];
+  /** ID of the front/home page */
+  frontPageID?: number | string;
+  /** Optional callback function when a menu item is clicked */
+  onClick?: () => void;
+  /** Whether to highlight the active menu item */
+  useActiveStyle?: boolean;
+  /** Orientation of the menu */
+  orientation?: "horizontal" | "vertical";
+  /** Gap between menu items in pixels */
+  gap?: number;
+  /** Whether to show borders between menu items */
+  showBorders?: boolean;
+  /** Current locale (language code) */
+  locale?: Language;
 }
 
-// Vinculación de estilos para nombres de clase condicionales
 const cx = classnames.bind(styles);
 
-// Componente principal MenuList
+/**
+ * MenuList component that renders a navigation menu with support for
+ * submenu items, smooth scrolling, and active state tracking.
+ */
 export const MenuList: React.FC<MenuListProps> = ({
   data,
   frontPageID,
   onClick,
-  useActiveStyle = true, // Por defecto en true para estilos activos
-  orientation = "horizontal", // Orientación por defecto horizontal
-  gap = 24, // Valor de espaciado por defecto
-  showBorders = false, // Por defecto en false para el borde
+  useActiveStyle = true,
+  orientation = "horizontal",
+  gap = 24,
+  showBorders = false,
+  locale = "en", // Default to English if not provided
 }) => {
-  // Retorno temprano si no se proporciona data
   if (!data || !Array.isArray(data)) return null;
 
   const router = useRouter();
   const pathname = usePathname();
 
-  // Estado para determinar si el viewport es de tamaño móvil
+  // State for mobile viewport detection
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  // Estado para mantener el elemento de menú actualmente activo
+  // State for tracking active menu item
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  // Refs para elementos del DOM
-  const ref = useRef<HTMLUListElement>(null); // Referencia a la lista del menú
-  const menuRef = useRef<HTMLUListElement>(null); // Referencia al contenedor del menú
-  const menuItemRefs = useRef<Array<HTMLLIElement | null>>([]); // Referencias a elementos individuales del menú
+  // Refs for DOM elements and state tracking
+  const ref = useRef<HTMLUListElement>(null); // Menu list reference
+  const menuRef = useRef<HTMLUListElement>(null); // Menu container reference
+  const menuItemRefs = useRef<Array<HTMLLIElement | null>>([]); // Individual menu items
+  const handledInitialScroll = useRef(false); // Track if initial scroll has been handled
+  const previousPathname = useRef(""); // Track previous pathname for navigation changes
 
-  // Separar los elementos del menú en elementos de nivel superior y submenús
+  // Split menu items into top-level and submenu items
   const topMenuItems = data.filter((item) => item.menu_item_parent === 0);
   const submenuItems = data.filter((item) => item.menu_item_parent !== 0);
 
-  // Extraer IDs de sección para el hook personalizado que rastrea secciones activas
+  // Extract section IDs for the scrolling hook
   const sectionIds = data
-    .filter((item) => item.url && item.url.startsWith("#"))
-    .map((item) => item.url.replace("#", ""));
+    .filter((item) => item.href.startsWith("#"))
+    .map((item) => item.href.replace("#", ""));
 
-  // Uso del hook personalizado para obtener el ID de la sección actualmente activa
+  // Get active section ID from custom hook
   const activeSectionId = useScrollActiveSection(sectionIds);
 
-  // Calcular el valor de gap basado en la orientación
+  // Set CSS variable for menu gap
   const menuStyle = {
     "--menu-gap": `${gap}px`,
   } as React.CSSProperties;
 
-  // Función para manejar los clics en elementos del menú
-  const handleMenuClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    href: string,
-    hasSubmenu: boolean,
-    menuItemId: number
-  ) => {
-    if (isMobile && hasSubmenu) {
-      // En móvil, alternar la visibilidad del submenú
-      e.preventDefault();
-      setActiveIndex(activeIndex === menuItemId ? null : menuItemId);
-    } else if (href.startsWith("#")) {
-      // Manejo de enlaces internos a secciones
-      e.preventDefault();
-      if (pathname !== "/") {
-        // Si no estás en la página de inicio, navega a la home con el hash
-        router.push(`/${href}`);
-      } else {
-        // Si ya estás en la página de inicio, simplemente desplázate a la sección
-        handleScrollToSection(href);
-      }
-      setActiveIndex(menuItemId); // Establece el elemento de menú activo
-      if (onClick) {
-        onClick(); // Llama al manejador onClick si se proporciona
-      }
-    } else if (hasSubmenu) {
-      // En desktop, abre el submenú
-      e.preventDefault();
-      setActiveIndex(activeIndex === menuItemId ? null : menuItemId);
-    } else {
-      // Para enlaces externos o rutas normales
-      if (onClick) {
-        onClick();
-      }
-    }
-  };
-
-  // Función de callback para manejar el desplazamiento suave a secciones
+  /**
+   * Handles smooth scrolling to a section
+   * @param href - The hash link to scroll to (e.g., "#contact")
+   */
   const handleScrollToSection = useCallback((href: string) => {
-    const targetElement = document.querySelector(href); // Obtener el elemento de destino
+    const targetElement = document.querySelector(href);
 
     if (targetElement) {
-      const offset = 120; // Desplazamiento adicional de 120px
+      const offset = 120; // Additional offset from the top
 
       gsap.to(window, {
-        duration: 1, // Duración de la animación
+        duration: 1, // Animation duration
         scrollTo: {
-          y: targetElement, // Scroll hasta el elemento de destino
-          offsetY: offset, // Desplazar hacia arriba por 120px
+          y: targetElement,
+          offsetY: offset,
         },
       });
     }
   }, []);
 
-  // Efecto para manejar eventos de redimensionamiento de ventana
+  /**
+   * Handles click events on menu items
+   * @param e - React mouse event
+   * @param href - URL to navigate to
+   * @param hasSubmenu - Whether the item has a submenu
+   * @param menuItemId - ID of the menu item
+   */
+  ("use client");
+
+  const handleMenuClick = useCallback(
+    (
+      e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+      href: string,
+      hasSubmenu: boolean,
+      menuItemId: number
+    ) => {
+      // Para submenú móvil
+      if (isMobile && hasSubmenu) {
+        e.preventDefault();
+        setActiveIndex(activeIndex === menuItemId ? null : menuItemId);
+      }
+      // Para enlaces con hash (navegación por secciones)
+      else if (href.includes("#")) {
+        e.preventDefault();
+
+        // Extraer la parte del hash
+        const hashPart = href.substring(href.indexOf("#"));
+
+        // Verificar si estamos en la página de inicio
+        const isHomePage =
+          pathname === "/" ||
+          pathname === `/${locale}` ||
+          pathname === `/${locale}/`;
+
+        if (!isHomePage) {
+          // Navegar a la página de inicio con el hash
+          router.push(`/${locale}/${hashPart}`);
+
+          // Esperar a que se complete la navegación y luego desplazarse a la sección
+          setTimeout(() => {
+            handleScrollToSection(hashPart);
+          }, 100);
+        } else {
+          // Ya en la página de inicio, solo desplazarse
+          handleScrollToSection(hashPart);
+        }
+
+        setActiveIndex(menuItemId);
+        if (onClick) onClick();
+      } else {
+        // Enlaces regulares - aquí implementamos el scroll al inicio
+        e.preventDefault();
+
+        // Navegar a la URL deseada
+        router.push(href);
+
+        // Hacer scroll al inicio después de la navegación
+        setTimeout(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth", // o 'auto' para scroll instantáneo
+          });
+        }, 100);
+
+        if (onClick) {
+          onClick();
+        }
+      }
+    },
+    [
+      isMobile,
+      activeIndex,
+      pathname,
+      locale,
+      router,
+      onClick,
+      handleScrollToSection,
+    ]
+  );
+  // Effect to detect mobile viewport
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1360);
     };
 
-    // Comprobación inicial al montar el componente
-    handleResize();
-
-    // Añadir listener para redimensionamiento
+    handleResize(); // Initial check
     window.addEventListener("resize", handleResize);
-
-    // Limpiar listener al desmontar
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Efecto para manejar clics fuera del menú (para escritorio)
+  // Effect to handle clicks outside the menu (for desktop)
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && ref.current) {
       const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-        if (
-          menuRef.current &&
-          !menuRef.current.contains(event.target as Node)
-        ) {
-          // Cerrar cualquier submenú abierto
+        if (!ref.current?.contains(event.target as Node)) {
+          // Close any open submenu
           setActiveIndex(null);
         }
       };
 
-      // Añadir listeners para eventos de mouse y touch
       document.addEventListener("mousedown", handleClickOutside);
       document.addEventListener("touchstart", handleClickOutside);
 
-      // Limpiar listeners al desmontar
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
         document.removeEventListener("touchstart", handleClickOutside);
@@ -183,88 +240,152 @@ export const MenuList: React.FC<MenuListProps> = ({
     }
   }, [isMobile]);
 
-  // Efecto para actualizar el elemento de menú activo basado en la posición de scroll
+  // Effect to update active menu item based on current route/section
   useEffect(() => {
+    // First check if there's an active section
     if (activeSectionId) {
       const activeItem = data.find(
-        (item) => item.url === `#${activeSectionId}`
+        (item) => item.href === `#${activeSectionId}`
       );
       if (activeItem) {
         setActiveIndex(activeItem.menu_item_id);
+        return;
+      }
+    }
+
+    // If no active section, check if current path matches any menu item
+    if (pathname) {
+      // Remove locale prefix for comparison
+      const pathnameWithoutLocale = pathname.replace(
+        new RegExp(`^/${locale}`),
+        ""
+      );
+
+      // Check top-level menu items
+      const matchingItem = topMenuItems.find((item) => {
+        return (
+          pathnameWithoutLocale === item.href ||
+          (pathnameWithoutLocale.startsWith(item.href) && item.href !== "/")
+        );
+      });
+
+      if (matchingItem) {
+        setActiveIndex(matchingItem.menu_item_id);
       } else {
-        setActiveIndex(null);
+        // Check submenu items
+        const matchingSubmenuItem = submenuItems.find((item) => {
+          return (
+            pathnameWithoutLocale === item.href ||
+            (pathnameWithoutLocale.startsWith(item.href) && item.href !== "/")
+          );
+        });
+
+        if (matchingSubmenuItem) {
+          // Activate parent menu item
+          setActiveIndex(matchingSubmenuItem.menu_item_parent);
+        } else {
+          // No matches, deactivate all
+          setActiveIndex(null);
+        }
       }
     } else {
       setActiveIndex(null);
     }
-  }, [activeSectionId, data]);
+  }, [pathname, activeSectionId, data, topMenuItems, submenuItems, locale]);
 
-  // Efecto para manejar el desplazamiento a la sección cuando la URL tiene un hash
+  // Effect to handle scrolling to section when URL has a hash
   useEffect(() => {
-    // Solo ejecutar en el cliente
     if (typeof window !== "undefined") {
-      if (pathname === "/" && window.location.hash) {
-        const hash = window.location.hash;
-        if (hash) {
+      // Check if we're on the home page
+      const isHomePage =
+        pathname === "/" ||
+        pathname === `/${locale}` ||
+        pathname === `/${locale}/`;
+
+      const hash = window.location.hash;
+
+      // Check if we changed pages
+      const hasChangedPage = previousPathname.current !== pathname;
+      previousPathname.current = pathname;
+
+      // Scroll when:
+      // 1. We're on the home page AND there's a hash
+      // 2. AND (we changed pages OR haven't handled initial scroll)
+      if (
+        isHomePage &&
+        hash &&
+        (hasChangedPage || !handledInitialScroll.current)
+      ) {
+        // Small delay to ensure DOM elements are ready
+        setTimeout(() => {
           handleScrollToSection(hash);
-        }
+          handledInitialScroll.current = true;
+        }, 100);
+      } else if (!hash || hasChangedPage) {
+        // Reset flag when:
+        // - No hash in URL
+        // - Or we changed to a different page
+        handledInitialScroll.current = false;
       }
     }
-  }, [pathname, handleScrollToSection]);
+  }, [pathname, handleScrollToSection, locale]);
 
-  // Efecto para actualizar la posición del indicador bajo el elemento de menú activo
-  useEffect(() => {
+  // Effect to update the active indicator position
+  useLayoutEffect(() => {
     if (menuRef.current) {
-      if (useActiveStyle && activeIndex !== null && menuItemRefs.current) {
+      if (
+        useActiveStyle &&
+        activeIndex !== null &&
+        menuItemRefs.current.length
+      ) {
         const activeItemIndex = topMenuItems.findIndex(
           (item) => item.menu_item_id === activeIndex
         );
+
         const activeItem = menuItemRefs.current[activeItemIndex];
         if (activeItem) {
           const menuElement = menuRef.current;
           const itemRect = activeItem.getBoundingClientRect();
           const menuRect = menuElement.getBoundingClientRect();
 
+          // Calculate position for the active indicator
           const left = itemRect.left - menuRect.left;
           const width = itemRect.width;
 
-          // Actualizar propiedades CSS personalizadas para el indicador
+          // Set CSS variables for indicator position
           menuElement.style.setProperty("--indicator-left", `${left}px`);
           menuElement.style.setProperty("--indicator-width", `${width}px`);
         }
       } else {
-        // Ocultar el indicador si no hay elemento activo o los estilos activos están deshabilitados
+        // Hide indicator when no active item
         menuRef.current.style.setProperty("--indicator-width", `0px`);
       }
     }
   }, [useActiveStyle, activeIndex, topMenuItems]);
 
-  // Mapear sobre los elementos de menú de nivel superior para renderizar el menú
+  // Render top-level menu items and their submenus
   const menu = topMenuItems.map((menuItem, index) => {
-    // Preferir url, pero usar href si url no está disponible
-    const itemUrl = menuItem.url || (menuItem as any).href || "/";
+    // Get localized path
+    const path = buildLocalizedPath(menuItem.href, locale);
 
-    // Usar buildLocalizedPath con frontPageID (puede ser un ID numérico o un código de idioma)
-    const path = buildLocalizedPath(itemUrl, "en");
-
+    // Find child submenu items
     const childSubmenuItems = submenuItems.filter(
       (item) => item.menu_item_parent === menuItem.menu_item_id
     );
 
-    const hasSubmenu = childSubmenuItems.length > 0; // Verificar si el elemento tiene un submenú
-    const isActive = activeIndex === menuItem.menu_item_id; // Verificar si el elemento está activo
-    const hasIcon = Boolean(menuItem.icon); // Check if menu item has icon
+    const hasSubmenu = childSubmenuItems.length > 0;
+    const isActive = activeIndex === menuItem.menu_item_id;
 
     return (
       <li
         key={menuItem.menu_item_id}
         ref={(el) => {
-          menuItemRefs.current[index] = el; // Almacenar referencia al elemento de menú
+          menuItemRefs.current[index] = el;
         }}
         className={cx("menu__item", {
-          "menu__item--active": useActiveStyle && isActive, // Aplicar clase activa condicionalmente
+          "menu__item--active": useActiveStyle && isActive,
           "menu__item--border":
-            showBorders && index !== topMenuItems.length - 1, // Aplicar borde si showBorders es true y no es el último elemento
+            showBorders && index !== topMenuItems.length - 1,
         })}
       >
         <Link
@@ -275,12 +396,10 @@ export const MenuList: React.FC<MenuListProps> = ({
             handleMenuClick(e, path, hasSubmenu, menuItem.menu_item_id)
           }
         >
-          {/* Renderizar el icono si se proporciona */}
-          <span className={cx("menu__icon")}>
-            {menuItem.icon && menuItem.icon}
-          </span>
+          {menuItem.icon && (
+            <span className={cx("menu__icon")}>{menuItem.icon}</span>
+          )}
 
-          {/* Renderizar solo el título del elemento de menú */}
           <Typography
             variant="p1"
             theme="dark"
@@ -291,7 +410,6 @@ export const MenuList: React.FC<MenuListProps> = ({
             {menuItem.title}
           </Typography>
 
-          {/* Renderizar icono de dropdown si hay un submenú */}
           {hasSubmenu &&
             menuItem.showDropdownIcon !== false &&
             (menuItem.dropdownIcon || (
@@ -299,18 +417,15 @@ export const MenuList: React.FC<MenuListProps> = ({
             ))}
         </Link>
 
-        {/* Renderizar el submenú si existe */}
         {hasSubmenu && (
           <ul
             className={cx("submenu", {
-              "submenu--open": isActive, // Abrir el submenú si el elemento está activo
-              "submenu--vertical": orientation === "vertical", // Aplicar estilos verticales si es necesario
+              "submenu--open": isActive,
+              "submenu--vertical": orientation === "vertical",
             })}
           >
             {childSubmenuItems.map((submenuItem) => {
-              const subItemUrl =
-                submenuItem.url || (submenuItem as any).href || "/";
-              const subpath = buildLocalizedPath(subItemUrl, "en");
+              const subpath = buildLocalizedPath(submenuItem.href, locale);
 
               return (
                 <li
@@ -323,12 +438,12 @@ export const MenuList: React.FC<MenuListProps> = ({
                     onClick={onClick}
                     target={submenuItem.target}
                   >
-                    {/* Renderizar el icono si se proporciona */}
-                    <span className={cx("submenu__icon")}>
-                      {submenuItem.icon && submenuItem.icon}
-                    </span>
+                    {submenuItem.icon && (
+                      <span className={cx("submenu__icon")}>
+                        {submenuItem.icon}
+                      </span>
+                    )}
 
-                    {/* Renderizar el título del elemento del submenú */}
                     <Typography
                       variant="p3"
                       fontFamily="sofia"
@@ -347,12 +462,11 @@ export const MenuList: React.FC<MenuListProps> = ({
     );
   });
 
-  // Renderizar el menú completo
   return (
     <ul
       ref={menuRef}
       className={cx("menu", {
-        "menu--vertical": orientation === "vertical", // Aplicar orientación vertical si se especifica
+        "menu--vertical": orientation === "vertical",
       })}
       style={menuStyle}
     >

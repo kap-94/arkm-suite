@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   gap: 68px;
-  gap: clamp(12px, 5vw, 68px);
+  gap: clamp(12px, 5vw, 70px);
 
   position: relative;
   z-index: 10; // Aumentado para asegurar que esté por encima de otros elementos
