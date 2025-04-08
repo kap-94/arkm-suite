@@ -145,7 +145,8 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
               <div className={cx("project-header__title-section")}>
                 <div className={cx("project-header__title-wrapper")}>
                   <ThemedTypography
-                    variant="h4"
+                    variant="h5"
+                    color="secondary"
                     className={cx("project-header__title")}
                     fontWeight={400}
                     noWrap
@@ -170,8 +171,8 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                   {client && owner && (
                     <ThemedTypography
                       variant="p2"
-                      color="tertiary"
-                      fontWeight={300}
+                      color="secondary"
+                      fontWeight={400}
                       className={cx("project-header__divider")}
                     >
                       •
@@ -180,9 +181,9 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                   {client && (
                     <ThemedTypography
                       variant="p2"
-                      color="tertiary"
+                      color="secondary"
                       className={cx("project-header__client")}
-                      fontWeight={300}
+                      fontWeight={400}
                     >
                       {client.name}
                     </ThemedTypography>
@@ -190,8 +191,8 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                   {client && owner && (
                     <ThemedTypography
                       variant="p2"
-                      color="tertiary"
-                      fontWeight={300}
+                      color="secondary"
+                      fontWeight={400}
                       className={cx("project-header__divider")}
                     >
                       •
@@ -200,8 +201,8 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                   {owner && (
                     <ThemedTypography
                       variant="p2"
-                      color="tertiary"
-                      fontWeight={300}
+                      color="secondary"
+                      fontWeight={400}
                       className={cx("project-header__owner")}
                     >
                       {dictionary.owner.label.replace("{{name}}", owner.name)}
@@ -238,7 +239,8 @@ const ProjectHeader: React.FC<ProjectHeaderProps> = ({
             <div className={cx("project-header__info")}>
               <ThemedTypography
                 variant="p1"
-                fontWeight={300}
+                color="tertiary"
+                fontWeight={400}
                 className={cx("project-header__description")}
               >
                 {description}
