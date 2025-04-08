@@ -15,6 +15,7 @@
     "@formatjs/intl-localematcher": "^0.5.9",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@gsap/react": "^2.1.2",
     "@react-pdf/renderer": "^4.2.1",
     "@react-three/drei": "^9.88.0",
     "@react-three/fiber": "^8.18.0",
