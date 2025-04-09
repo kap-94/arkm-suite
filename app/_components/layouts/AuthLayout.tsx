@@ -7,7 +7,7 @@ import {
   getPageDictionary,
 } from "@/app/_utils/dictionary";
 import { UIProvider } from "../../_context/UIContext";
-import Brand from "../BrandNoimage";
+import Brand from "../Brand";
 import { FeatureCard } from "../FeatureCard";
 import { getIconComponent } from "@/app/_utils/iconUtils";
 import Typography from "../Typography";

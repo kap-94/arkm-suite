@@ -7,8 +7,8 @@ import { SidebarProps } from "./types/sidebar.types";
 import { SidebarItem } from "./components/SidebarItem";
 import { Hamburger } from "../Hamburger";
 import { useDashboard } from "../../_context/DashboardContext";
+import Brand from "../Brand";
 import styles from "./styles/Sidebar.module.scss";
-import Brand from "../BrandNoimage";
 
 const cx = classNames.bind(styles);
 
@@ -90,6 +90,7 @@ export function Sidebar({
               <Brand
                 size="sm"
                 variant="minimal"
+                theme={theme.type}
                 className={cx("sidebar__logo")}
               />
 

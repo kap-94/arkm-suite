@@ -15,7 +15,6 @@ import { UserInfo } from "../UserInfo";
 import { SearchBar, SearchBarOption } from "../SearchBar";
 import { Hamburger } from "../Hamburger";
 import { useDashboard } from "../../_context/DashboardContext";
-import styles from "./DashboardHeader.module.scss";
 import type {
   HeaderSection,
   UserMenuItem,
@@ -24,7 +23,8 @@ import { getIconComponent } from "@/app/_utils/iconUtils";
 import { SearchableEntity, searchService } from "../../_services/searchService";
 import { UserProfile } from "../../[lang]/dashboard/account/profile/ProfileClient";
 import { Language } from "@/app/_lib/config/i18n";
-import Brand from "../BrandNoimage";
+import Brand from "../Brand";
+import styles from "./DashboardHeader.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -239,6 +239,7 @@ export const DashboardHeader = forwardRef<HTMLDivElement, DashboardHeaderProps>(
             <Brand
               size="sm"
               variant="minimal"
+              theme={theme.type}
               className={cx("dashboard-header__logo")}
             />
 
