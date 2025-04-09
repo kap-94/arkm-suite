@@ -1,24 +1,30 @@
 "use client"; // Importante para componentes del cliente en App Router
 
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useRouter } from "next/navigation"; // Importa desde next/navigation
+import Link from "next/link";
 import classNames from "classnames/bind";
 import styles from "./Brand.module.scss";
 
 const cx = classNames.bind(styles);
 
 export type BrandSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type BrandVariant = "minimal" | "minimal-right";
+export type BrandTheme = "dark" | "light" | "custom";
 
 export interface BrandProps {
+  variant?: BrandVariant;
   size?: BrandSize;
   className?: string;
   showStudio?: boolean;
+  theme?: BrandTheme;
 }
 
 export const Brand: React.FC<BrandProps> = ({
   className,
+  variant = "minimal",
   size = "md",
   showStudio = true,
+  theme = "dark",
 }) => {
   const router = useRouter();
 
@@ -42,26 +48,41 @@ export const Brand: React.FC<BrandProps> = ({
     <div className={cx("brand", className)}>
       <a
         href="/"
-        className={cx("logo", `logo--minimal`, `logo--${size}`)}
+        className={cx("logo", `logo--${variant}`, `logo--${size}`, {
+          "logo--light": theme === "light",
+        })}
         onClick={handleClick}
       >
-        <div className={cx("logo-container", "logo-container--minimal")}>
-          <div className={cx("logo-image-container")}>
-            <Image
-              src="/images/logo.png" // Asegúrate de tener este archivo en tu carpeta public
-              alt="Logo"
-              width={48}
-              height={48}
-              className={cx("logo-image")}
-              priority // Añadido para cargar el logo con prioridad
-            />
+        {/* Variation: Minimal - clean and simple with smaller STUDIO underneath */}
+        {variant === "minimal" && (
+          <div className={cx("logo-container", "logo-container--minimal")}>
+            <span className={cx("logo-text", "logo-text--bold")}>ARKM</span>
+            {showStudio && (
+              <span
+                className={cx("logo-text", "logo-text--studio-under")}
+                style={{ marginRight: "-1px" }}
+              >
+                SUITE
+              </span>
+            )}
           </div>
-          {/* {showStudio && (
-            <span className={cx("logo-text", "logo-text--studio-under")}>
-              Pablo Karam
-            </span>
-          )} */}
-        </div>
+        )}
+
+        {/* Variation: Minimal Right - clean and simple with smaller STUDIO on the right */}
+        {variant === "minimal-right" && (
+          <div
+            className={cx("logo-container", "logo-container--minimal-right")}
+          >
+            <span className={cx("logo-text", "logo-text--bold")}>ARKM</span>
+            {showStudio && (
+              <span
+                className={cx("logo-text", "logo-text--studio-right-aligned")}
+              >
+                SUITE
+              </span>
+            )}
+          </div>
+        )}
       </a>
     </div>
   );
