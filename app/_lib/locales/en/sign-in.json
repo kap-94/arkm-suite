@@ -52,7 +52,7 @@
         "text": "or"
       }
     },
-    "note": "* Sign in with your Google account or use the test email guestuser@arkm.com with password GuestUserPass123"
+    "note": "* Sign in with your Google account or use the test email guestuser@arkm.com with password @GuestUserPass123"
   },
   "status": {
     "loading": "Loading...",
