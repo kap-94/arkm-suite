@@ -32,7 +32,7 @@ ARKM Suite is a centralized project management portal offering an interactive da
 git clone https://github.com/kap-94/arkm-suite.git
 
 # Navigate to the directory
-cd arkm-studio
+cd arkm-suite
 
 # Install dependencies
 npm install

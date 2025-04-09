@@ -1,15 +1,26 @@
+// Brand.module.scss
 @import "@/app/_styles/variables";
 @import "@/app/_styles/mixins";
 
 .brand {
   .logo {
     font-family: "sofia-pro", sans-serif;
-    font-size: 26px !important;
+    font-size: 26px;
+    color: rgba($text-primary, 0.9);
     color: $white-base;
     text-decoration: none;
     letter-spacing: 0.03em;
     transition: all $transition-duration $transition-bezier;
     display: inline-block;
+
+    // Tema claro
+    &--light {
+      color: rgba($black-base, 0.9);
+
+      .logo-text {
+        color: rgba($black-base, 0.9);
+      }
+    }
 
     &-container {
       position: relative;
@@ -19,34 +30,39 @@
       // Minimal variant container
       &--minimal {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-end;
+        gap: 2px;
       }
-    }
 
-    &-image-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.3s ease;
-
-      &:hover {
-        transform: scale(1.05); // Mantener el traslado incluso al hacer hover
+      // Minimal Right variant container
+      &--minimal-right {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 8px;
       }
-    }
-
-    &-image {
-      display: block;
-      filter: brightness(0) invert(92%) sepia(30%) saturate(866%)
-        hue-rotate(293deg) brightness(123%) contrast(87%);
     }
 
     &-text {
+      // Default text styles
+
+      &--bold {
+        font-weight: 500 !important;
+      }
+
+      // Studio underneath style
       &--studio-under {
         font-size: 0.4em;
-        font-weight: 400;
-        color: $text-secondary;
-        letter-spacing: 0.07em;
-        transform: translateY(-6px);
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        margin-top: -4px;
+      }
+
+      // Studio right-aligned for minimal-right variant
+      &--studio-right-aligned {
+        font-size: 0.4em;
+        font-weight: 300;
+        letter-spacing: 0.08em;
+        transform: translateY(2px);
       }
     }
 
@@ -57,13 +73,6 @@
       .logo-container {
         padding: 6px 0;
       }
-
-      .logo-image-container {
-        .logo-image {
-          width: 24px !important;
-          height: 24px !important;
-        }
-      }
     }
 
     &--sm {
@@ -72,23 +81,10 @@
       .logo-container {
         padding: 8px 0;
       }
-
-      .logo-image-container {
-        .logo-image {
-          width: 32px !important;
-          height: 32px !important;
-        }
-      }
     }
 
     &--md {
-      // Default size
-      .logo-image-container {
-        .logo-image {
-          width: 48px !important;
-          height: 48px !important;
-        }
-      }
+      // Default size - no changes needed
     }
 
     &--lg {
@@ -96,13 +92,6 @@
 
       .logo-container {
         padding: 12px 0;
-      }
-
-      .logo-image-container {
-        .logo-image {
-          width: 72px !important;
-          height: 72px !important;
-        }
       }
     }
 
@@ -112,62 +101,29 @@
       .logo-container {
         padding: 16px 0;
       }
-
-      .logo-image-container {
-        .logo-image {
-          width: 56px !important;
-          height: 56px !important;
-        }
-      }
     }
 
     // Minimal variant
     &--minimal {
-      .logo-image-container {
-        position: relative;
+      .logo-text--bold {
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
       }
 
-      &:hover .logo-image-container::after {
-        width: 100%;
-      }
-    }
-
-    @include tablet {
-      transform: translateY(-4px); // Un poco menos de traslado en móviles
-    }
-
-    // Mobile styles
-    @include mobile {
-      font-size: 20px !important;
-      transform: translateY(-10px); // Un poco menos de traslado en móviles
-
-      .logo-image-container {
-        transform: translateY(10px); // Un poco menos de traslado en móviles
-
-        &:hover {
-          transform: translateY(10px) scale(1.05);
-        }
-
-        .logo-image {
-          width: 60px !important;
-          height: 60px !important;
-        }
-      }
-
-      .logo-text--studio-under {
-        transform: translateY(0px);
-        display: none;
+      &:hover .logo-text--bold {
+        // border-bottom-color: $primary-color;
       }
     }
-    // Mobile styles
-    @include mobile-medium {
-      transform: translateY(-8px); // Un poco menos de traslado en móviles
 
-      .logo-image-container {
-        .logo-image {
-          width: 54px !important;
-          height: 54px !important;
-        }
+    // Minimal Right variant
+    &--minimal-right {
+      .logo-text--bold {
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
+      }
+
+      &:hover .logo-text--bold {
+        // border-bottom-color: $primary-color;
       }
     }
   }
@@ -175,26 +131,16 @@
 
 @include mobile-medium {
   .brand {
+    margin-inline: auto;
+
     .logo {
       // Reducir el tamaño de fuente en móviles
-      font-size: 18px !important;
+      font-size: 20px !important;
       letter-spacing: 0.02em;
 
       // Ajuste de la caja del logo
       .logo-container {
         padding: $spacing-sm 0;
-      }
-
-      .logo-image-container {
-        transform: translateY(8px); // Aún menos traslado en móviles pequeños
-
-        &:hover {
-          transform: translateY(8px) scale(1.05);
-        }
-      }
-
-      .logo-text--studio-under {
-        // margin-top: 12px; // Ajustado para móviles pequeños
       }
     }
   }
