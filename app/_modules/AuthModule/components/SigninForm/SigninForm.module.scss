@@ -89,7 +89,10 @@
   &__note {
     font-style: italic;
     max-width: 340px;
-    // align-self: flex-start;
+
+    @include tablet {
+      text-align: center;
+    }
   }
 }
 
