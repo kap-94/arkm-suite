@@ -131,8 +131,6 @@
 
 @include mobile-medium {
   .brand {
-    margin-inline: auto;
-
     .logo {
       // Reducir el tamaño de fuente en móviles
       font-size: 20px !important;
