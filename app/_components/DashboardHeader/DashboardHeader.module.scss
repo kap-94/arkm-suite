@@ -67,6 +67,12 @@ $header-theme-map: (
     max-width: 460px;
   }
 
+  &__logo {
+    @include mobile {
+      margin-inline: auto;
+    }
+  }
+
   &__mobile-menu {
     display: none;
     visibility: hidden;

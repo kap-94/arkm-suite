@@ -5,14 +5,14 @@
 // Theme configuration map
 $hamburger-theme-map: (
   light: (
-    primary: $white-color,
-    secondary: convert-to-rgba($white-color, 0.7),
+    primary: $black-base,
+    secondary: convert-to-rgba($black-base, 0.7),
     background: transparent,
-    hover: convert-to-rgba($white-color, 0.1),
-    gradient-primary: convert-to-rgba($white-base, 0.75),
-    gradient-secondary: $white-color,
+    hover: convert-to-rgba($black-base, 0.1),
+    gradient-primary: convert-to-rgba($black-base, 0.75),
+    gradient-secondary: $black-base,
     // gradient-primary: convert-to-rgba(#4158d0, 0.7),
-    // gradient-secondary: #4158d0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+    // gradient-secondary: #4158d0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
   ),
   dark: (
     primary: $black-base,
