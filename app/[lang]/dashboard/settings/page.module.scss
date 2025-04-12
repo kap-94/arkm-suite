@@ -13,8 +13,7 @@
     margin: $spacing-xl $spacing-xxl;
 
     @include mobile-medium {
-      margin: $spacing-md $spacing-xs;
-      // padding: 0 $spacing-sm;
+      margin: $spacing-md;
     }
   }
 
