@@ -91,6 +91,12 @@
     width: 32px;
     height: 32px;
 
+    .sidebar[data-theme="light"] & {
+      span {
+        background: map-get($sidebar-light, "icon");
+      }
+    }
+
     @include hover {
       transform: scale(1.05);
     }

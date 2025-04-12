@@ -62,7 +62,6 @@
         font-size: 0.4em;
         font-weight: 300;
         letter-spacing: 0.08em;
-        transform: translateY(2px);
       }
     }
 
@@ -131,8 +130,6 @@
 
 @include mobile-medium {
   .brand {
-    margin-inline: auto;
-
     .logo {
       // Reducir el tamaño de fuente en móviles
       font-size: 20px !important;
