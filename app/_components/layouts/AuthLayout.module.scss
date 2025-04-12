@@ -107,19 +107,21 @@
   &__info {
     flex: 1;
     min-height: 100vh;
-    @include flex($direction: column, $align: flex-start, $justify: flex-end);
-    padding: $spacing-lg 0;
+    @include flex($direction: column, $align: flex-start, $justify: flex-start);
+    padding: 106px 0 60px; // Match the top and bottom padding of the form section
     position: relative;
   }
 
   &__content {
     flex: 1;
     max-width: 680px;
-    @include flex($direction: column, $align: flex-start, $justify: center);
+    @include flex($direction: column, $align: flex-start, $justify: flex-start);
+    margin-top: 0; // Remove margin-top as we're using padding in the parent
   }
 
   &__header {
     margin-bottom: 52px;
+    padding-top: 42px; // Remove padding since parent now has padding
     padding-inline: $spacing-sm;
   }
 
@@ -142,11 +144,11 @@
     display: none;
 
     @include tablet {
-      @include flex($direction: column, $align: center);
+      @include flex($direction: column, $align: center, $justify: flex-start);
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      padding: 0 0 $spacing-xxl;
+      // padding: 0 0 $spacing-xxl;
       position: relative;
       z-index: 1;
     }
@@ -155,12 +157,12 @@
   &__mobile-features {
     display: none;
 
-    @include tablet {
-      @include flex($justify: center);
-      gap: $spacing-md;
-      margin: 0 0 $spacing-xxxl;
-      width: 100%;
-    }
+    // @include tablet {
+    //   @include flex($justify: center);
+    //   gap: $spacing-md;
+    //   margin: 0 0 $spacing-xxxl;
+    //   width: 100%;
+    // }
   }
 
   &__mobile-header {
@@ -171,6 +173,7 @@
       position: relative;
       padding: $spacing-md 0 $spacing-lg;
       width: 100%;
+      margin-bottom: 10vh;
     }
   }
 

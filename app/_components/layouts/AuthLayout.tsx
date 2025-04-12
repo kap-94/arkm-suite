@@ -40,14 +40,10 @@ export default async function AuthLayout({
           </section>
 
           <section className={cx("auth__info")}>
-            {/* <Brand variant="double-border" size="sm" /> */}
             <div className={cx("auth__content")}>
               <div className={cx("auth__header")}>
                 <Brand size="lg" variant="minimal-right" />
-                {/* <Typography
-                fontFamily="sofia" variant="h3" className={cx("auth__title")}>
-                  {dict.header.title}
-                </Typography> */}
+
                 <Typography
                   fontFamily="sofia"
                   variant="p1"
